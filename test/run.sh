@@ -1,5 +1,5 @@
 cd $(dirname $0)
-cd 
+cd ..
 mvn clean compile
 # java -jar target/flags-rest-service-0.1.1.jar &
 # PID=$!
