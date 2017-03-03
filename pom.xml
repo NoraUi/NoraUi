@@ -27,6 +27,8 @@
 		<maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
 		<maven-source-plugin.version>3.0.1</maven-source-plugin.version>
 		<maven-javadoc-plugin.version>2.10.4</maven-javadoc-plugin.version>
+		<maven-release-plugin.version>2.3.2</maven-release-plugin.version>
+		<maven-scm-provider-gitexe.version>1.9</maven-scm-provider-gitexe.version>
 		<junit.version>3.8.1</junit.version>
 	</properties>
 
@@ -77,7 +79,18 @@
 					</execution>
 				</executions>
 			</plugin>
-		</plugins>
+			<plugin>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>${maven-release-plugin.version}</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.maven.scm</groupId>
+						<artifactId>maven-scm-provider-gitexe</artifactId>
+						<version>${maven-scm-provider-gitexe.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+	</plugins>
 	</build>
 
 </project>
