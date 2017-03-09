@@ -1,5 +1,5 @@
 # NoraUi
-Non-Regression Automation for User Interface
+Non-Regression Automation for User Interfaces
 
 # technical documentation
 
