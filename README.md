@@ -1,7 +1,7 @@
 # NoraUi
 Non-Regression Automation for User Interfaces
 
-# technical documentation
+# Technical documentation
 
 [Public website for NoraUi (Non-Regression Automation for User Interfaces)](https://noraui.github.io/).
 
