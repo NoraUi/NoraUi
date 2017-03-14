@@ -1,4 +1,4 @@
-Copyright (c) 2017 NoraUi Organization https://github.com/NoraUi/NoraUi
+Copyright (c) 2017 NoraUi Organization https://github.com/NoraUi
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
