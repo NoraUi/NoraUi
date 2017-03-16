@@ -190,8 +190,8 @@
 
         <!-- database drivers -->
         <dependency>
-            <groupId>com.hynnet</groupId>
-            <artifactId>oracle-driver-ojdbc</artifactId>
+            <groupId>com.github.noraui</groupId>
+            <artifactId>ojdbc7</artifactId>
             <version>${oracle.driver.version}</version>
         </dependency>
         <dependency>
