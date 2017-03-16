@@ -1,0 +1,1 @@
+(select "author" as "author", "zip" as "zip", "city" as "city", "element" as "element", "date" as "date", '' as Résultat from bonjour) ORDER BY "author"
