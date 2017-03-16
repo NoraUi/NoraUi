@@ -481,6 +481,12 @@
                                     <arguments>
                                         <argument>${excelfilename}</argument>
                                     </arguments>
+                                    <systemProperties>
+                                        <systemProperty>
+                                            <key>resourcespath</key>
+                                            <value>${jenkinsresourcespath}</value>
+                                        </systemProperty>
+                                    </systemProperties>
                                 </configuration>
                             </execution>
                         </executions>
