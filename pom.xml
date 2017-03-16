@@ -383,6 +383,9 @@
                                 </goals>
                                 <configuration>
                                     <mainClass>noraui.indus.Counter</mainClass>
+                                    <arguments>
+                                        <argument>Excel</argument>
+                                    </arguments>
                                     <cleanupDaemonThreads>false</cleanupDaemonThreads>
                                     <systemProperties>
                                         <systemProperty>
@@ -399,7 +402,10 @@
                                     <goal>java</goal>
                                 </goals>
                                 <configuration>
-                                    <mainClass>noraui.indus.CounterCsv</mainClass>
+                                    <mainClass>noraui.indus.Counter</mainClass>
+                                    <arguments>
+                                        <argument>Csv</argument>
+                                    </arguments>
                                     <cleanupDaemonThreads>false</cleanupDaemonThreads>
                                     <systemProperties>
                                         <systemProperty>
@@ -416,7 +422,10 @@
                             <!-- <goal>java</goal> -->
                             <!-- </goals> -->
                             <!-- <configuration> -->
-                            <!-- <mainClass>wiitty.indus.CounterDbOracle</mainClass> -->
+                            <!-- <mainClass>wiitty.indus.Counter</mainClass> -->
+                            <!-- <arguments> -->
+                            <!-- <argument>DbOracle</argument> -->
+                            <!-- </arguments> -->
                             <!-- <systemProperties> -->
                             <!-- <systemProperty> -->
                             <!-- <key>resourcespath</key> -->
@@ -432,7 +441,10 @@
                             <!-- <goal>java</goal> -->
                             <!-- </goals> -->
                             <!-- <configuration> -->
-                            <!-- <mainClass>wiitty.indus.CounterDbPostgre</mainClass> -->
+                            <!-- <mainClass>wiitty.indus.Counter</mainClass> -->
+                            <!-- <arguments> -->
+                            <!-- <argument>DbPostgre</argument> -->
+                            <!-- </arguments> -->
                             <!-- <systemProperties> -->
                             <!-- <systemProperty> -->
                             <!-- <key>resourcespath</key> -->
