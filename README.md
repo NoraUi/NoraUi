@@ -17,6 +17,18 @@ Does NoraUi not support your language? Please help us with a PR!
 # Travis CI status
 [![Build Status](https://travis-ci.org/NoraUi/NoraUi.svg?branch=master)](https://travis-ci.org/NoraUi/NoraUi)
 
+# How use
+
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.noraui/noraui/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.noraui/noraui)
+
+```xml
+<dependency>
+    <groupId>com.github.noraui</groupId>
+    <artifactId>noraui</artifactId>
+    <version>2.0.2-SNAPSHOT</version>
+</dependency>
+```
+
 # Gitter chat
 [![Join the chat at https://gitter.im/NoraUiChat](https://badges.gitter.im/NoraUiChat/NoraUi.svg)](https://gitter.im/NoraUiChat/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
