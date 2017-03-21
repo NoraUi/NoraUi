@@ -22,7 +22,7 @@ public class InputExcelDataProvider extends ExcelDataProvider {
             initColumns();
         } catch (EmptyDataFileContentException | WrongDataFileFormatException e) {
             logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION, e);
-            throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION, e);
+            System.exit(-1);
         }
     }
 

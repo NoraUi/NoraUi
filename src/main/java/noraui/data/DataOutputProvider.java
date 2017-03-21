@@ -12,9 +12,21 @@ public interface DataOutputProvider extends DataProvider {
      * @param value
      *            the value to write
      * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      */
     void writeFailedResult(int line, String value) throws TechnicalException;
+
+    /**
+     * Writes a warning message in the output file.
+     *
+     * @param line
+     *            the line to write the message on
+     * @param value
+     *            the value to write
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     */
+    void writeWarningResult(int line, String value) throws TechnicalException;
 
     /**
      * Writes a successful message in the output file.
@@ -22,7 +34,7 @@ public interface DataOutputProvider extends DataProvider {
      * @param line
      *            the line to write the message on
      * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      */
     void writeSuccessResult(int line) throws TechnicalException;
 
@@ -36,7 +48,7 @@ public interface DataOutputProvider extends DataProvider {
      * @param value
      *            the value to write
      * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      */
     void writeDataResult(String column, int line, String value) throws TechnicalException;
 

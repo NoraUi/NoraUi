@@ -66,7 +66,7 @@ public class Step implements IStep {
      * @param args
      *            list of arguments to format the found selector with
      * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK} message (with screenshot, with exception)
      * @throws FailureException
      *             if the scenario encounters a functional error
@@ -88,7 +88,7 @@ public class Step implements IStep {
      * @param args
      *            list of arguments to format the found selector with
      * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK} message (with screenshot, with exception)
      * @throws FailureException
      *             if the scenario encounters a functional error
@@ -112,7 +112,7 @@ public class Step implements IStep {
      * @param xpath
      *            XPath of an element to evaluate
      * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK} message (with screenshot, with exception)
      * @throws FailureException
      *             if the scenario encounters a functional error
@@ -137,7 +137,7 @@ public class Step implements IStep {
      * @param args
      *            list of arguments to format the found selector with
      * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_ERROR_ON_INPUT} message (with screenshot, no exception)
      * @throws FailureException
      *             if the scenario encounters a functional error
@@ -158,7 +158,7 @@ public class Step implements IStep {
      * @param args
      *            list of arguments to format the found selector with
      * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_ERROR_ON_INPUT} message (with screenshot, no exception)
      * @throws FailureException
      *             if the scenario encounters a functional error
@@ -189,7 +189,7 @@ public class Step implements IStep {
      * @param args
      *            list of arguments to format the found selector with
      * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_ERROR_CLEAR_ON_INPUT} message (with screenshot, no exception)
      * @throws FailureException
      *             if the scenario encounters a functional error
@@ -208,7 +208,7 @@ public class Step implements IStep {
      * @param args
      *            list of arguments to format the found selector with
      * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_ERROR_CLEAR_ON_INPUT} message (with screenshot, no exception)
      * @throws FailureException
      *             if the scenario encounters a functional error
@@ -288,7 +288,7 @@ public class Step implements IStep {
      * @param value
      *            Is expected value in input text (value can be null).
      * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_WRONG_EXPECTED_VALUE} message (with screenshot, with exception) or with
      *             {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} message
      *             (with screenshot, with exception)
@@ -319,7 +319,7 @@ public class Step implements IStep {
      * @param text
      *            Is the new data (text)
      * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_ERROR_ON_INPUT} message (with screenshot, no exception)
      *             or
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_VALUE_NOT_AVAILABLE_IN_THE_LIST} message (no screenshot, no exception)
@@ -368,7 +368,7 @@ public class Step implements IStep {
      * @param date
      *            Is the new data (date)
      * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_WRONG_DATE_FORMAT} message (no screenshot, no exception) or with
      *             {@value noraui.utils.Messages#FAIL_MESSAGE_UNEXPECTED_DATE} message
      *             (with screenshot, no exception)
@@ -407,7 +407,7 @@ public class Step implements IStep {
      * @param page
      *            is target page.
      * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} message (with screenshot, with exception) or with
      *             {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_RETRIEVE_VALUE} message
      *             (with screenshot, with exception)
@@ -429,7 +429,7 @@ public class Step implements IStep {
      * @param page
      *            is target page.
      * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} message (with screenshot, with exception) or with
      *             {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_RETRIEVE_VALUE} message
      *             (with screenshot, with exception)
@@ -463,7 +463,7 @@ public class Step implements IStep {
      * @param printedValues
      *            contain all possible value (order by key)
      * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_SELECT_RADIO_BUTTON} message (with screenshot, with exception)
      * @throws FailureException
      *             if the scenario encounters a functional error

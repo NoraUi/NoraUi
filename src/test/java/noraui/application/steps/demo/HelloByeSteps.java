@@ -74,7 +74,7 @@ public class HelloByeSteps extends Step {
     @Given("me a error if '(.*)' is Paris.")
     public void error(String city) throws FailureException {
         if ("Paris".equals(city)) {
-            new Result.Failure<>(city, Messages.FAIL_MESSAGE_DEFAULT + "The city is Paris!!", true, demoPage.getCallBack());
+            new Result.Failure<>(city, "The city is Paris!!", true, demoPage.getCallBack());
         }
     }
 
@@ -85,7 +85,7 @@ public class HelloByeSteps extends Step {
         articles.deserialize(jsonArticles);
         for (Article article : articles) {
             if ("anonymous".equals(article.getAuthor())) {
-                new Result.Failure<>("anonymous", Messages.FAIL_MESSAGE_DEFAULT + "anonymous is prohibited in demo blog!!", true, demoPage.getCallBack());
+                new Result.Failure<>("anonymous", "anonymous is prohibited in demo blog!!", true, demoPage.getCallBack());
             } else {
                 logger.info("> " + blog);
                 logger.info("    > " + article.getTitle() + ": " + article.getText());

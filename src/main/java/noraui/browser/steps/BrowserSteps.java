@@ -65,7 +65,7 @@ public class BrowserSteps {
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinCondition}).
      * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_OPEN_APPLICATION} message (with screenshot, with exception)
      * @throws FailureException
      *             if the scenario encounters a functional error
@@ -84,7 +84,7 @@ public class BrowserSteps {
      * @param pageKey
      *            is key corresponding to url of target.
      * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_OPEN_A_NEW_WINDOW} message (with screenshot, with exception)
      * @throws FailureException
      *             if the scenario encounters a functional error
@@ -101,7 +101,7 @@ public class BrowserSteps {
      * @param windowKey
      *            the key of window (popup, ...) Example: OSCAR.
      * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_SWITCH_WINDOW} message (with screenshot, with exception)
      * @throws FailureException
      *             if the scenario encounters a functional error
@@ -137,7 +137,7 @@ public class BrowserSteps {
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinCondition}).
      * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_CLOSE_APP} message (with screenshot, no exception)
      * @throws FailureException
      *             if the scenario encounters a functional error
@@ -157,7 +157,7 @@ public class BrowserSteps {
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinCondition}).
      * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_CLOSE_APP} message (with screenshot, no exception)
      * @throws FailureException
      *             if the scenario encounters a functional error
@@ -178,7 +178,7 @@ public class BrowserSteps {
      * @param backTo
      *            url to go back to
      * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_CLOSE_APP} message (with screenshot, with exception)
      *             or {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_OPEN_APPLICATION} message (with screenshot, with exception)
      * @throws FailureException
@@ -218,7 +218,7 @@ public class BrowserSteps {
      * @param key
      *            window key to keep
      * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_CLOSE_APP} message (with screenshot, with exception)
      * @throws FailureException
      *             if the scenario encounters a functional error

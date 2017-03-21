@@ -35,7 +35,7 @@ public class DemoSteps extends Step {
      * @param toClick
      *            html element
      * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK} message (with screenshot, with exception)
      * @throws FailureException
      */
@@ -65,7 +65,7 @@ public class DemoSteps extends Step {
      * @param input
      *            is the new value
      * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_SELECT_RADIO_BUTTON} message (with screenshot, with exception)
      * @throws FailureException
      */
@@ -87,7 +87,7 @@ public class DemoSteps extends Step {
      * @param toClick
      *            html element
      * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK} message (with screenshot, with exception)
      * @throws FailureException
      */
@@ -114,7 +114,7 @@ public class DemoSteps extends Step {
      * @param text
      *            Is the new data (text)
      * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_ERROR_ON_INPUT} message (with screenshot, no exception)
      * @throws FailureException
      */
@@ -144,7 +144,7 @@ public class DemoSteps extends Step {
      * @param text
      *            Is the new data
      * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_ERROR_ON_INPUT} message (with screenshot, no exception)
      * @throws FailureException
      */

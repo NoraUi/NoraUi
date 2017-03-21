@@ -106,7 +106,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
      * {@inheritDoc}
      *
      * @throws TechnicalException
-     *             is throws if you have a technical error (IOException on .sql file) in NoraUi.
+     *             is thrown if you have a technical error (IOException on .sql file) in NoraUi.
      */
     @Override
     public int getNbLines() throws TechnicalException {
@@ -132,7 +132,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
      * {@inheritDoc}
      *
      * @throws TechnicalException
-     *             is throws if you have a technical error (IOException on .sql file) in NoraUi.
+     *             is thrown if you have a technical error (IOException on .sql file) in NoraUi.
      */
     @Override
     public String readValue(String column, int line) throws TechnicalException {
@@ -161,7 +161,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
      * {@inheritDoc}
      *
      * @throws TechnicalException
-     *             is throws if you have a technical error (IOException on .sql file) in NoraUi.
+     *             is thrown if you have a technical error (IOException on .sql file) in NoraUi.
      */
     @Override
     public String[] readLine(int line, boolean readResult) throws TechnicalException {

@@ -49,7 +49,7 @@ public class CommonSteps extends Step {
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinCondition}).
      * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_EMPTY_DATA} message (no screenshot)
      * @throws FailureException
      *             if the scenario encounters a functional error
@@ -73,8 +73,8 @@ public class CommonSteps extends Step {
      * @param mandatoryFields
      *            is a Map of mandatory fields
      * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
-     *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_EMPTY_DATA_DETAIL} message (no screenshot)
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_EMPTY_DATA} message (no screenshot)
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
@@ -89,10 +89,9 @@ public class CommonSteps extends Step {
         }
         if (!errors.isEmpty()) {
             StringBuilder errorMessage = new StringBuilder();
-            errorMessage.append(Messages.FAIL_MESSAGE_DEFAULT);
             int index = errorMessage.length();
             for (int j = 0; j < errors.size(); j++) {
-                errorMessage.append(Messages.format(Messages.FAIL_MESSAGE_EMPTY_DATA_DETAIL, errors.get(j)));
+                errorMessage.append(Messages.format(Messages.FAIL_MESSAGE_EMPTY_DATA, errors.get(j)));
                 if (j == 0) {
                     errorMessage.setCharAt(index, Character.toUpperCase(errorMessage.charAt(index)));
                 } else {

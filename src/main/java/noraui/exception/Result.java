@@ -7,6 +7,7 @@ import org.junit.Assert;
 
 import noraui.exception.Callbacks.Callback;
 import noraui.utils.Context;
+import noraui.utils.Messages;
 import noraui.utils.Utilities;
 
 public abstract class Result {
@@ -39,13 +40,41 @@ public abstract class Result {
         }
     }
 
+    public static class Warning<O> extends Result {
+        private final O object;
+        private static final Logger logger = Logger.getLogger(Warning.class.getName());
+
+        public Warning(O object, String message) throws TechnicalException {
+            this.object = object;
+            this.message = message;
+            for (Integer i : Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData()).getIndexes()) {
+                try {
+                    Context.getDataOutputProvider().writeWarningResult(i, message);
+                } catch (TechnicalException e) {
+                    logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE + e.getMessage(), e);
+                }
+            }
+            if (!Context.scenarioHasWarning()) {
+                Context.addWarning();
+                Context.scenarioHasWarning(true);
+            }
+
+            logger.info(message + " [" + warning() + "]");
+        }
+
+        public O warning() {
+            Optional<O> o = Optional.ofNullable(object);
+            return o.isPresent() ? o.get() : null;
+        }
+    }
+
     public static class Failure<O> extends Result {
         private final O error;
         private static final Logger logger = Logger.getLogger(Failure.class.getName());
 
         public Failure(O error, String message, boolean takeScreenshot, Callback callback) throws FailureException {
             this.error = error;
-            this.message = message;
+            this.message = Messages.FAIL_MESSAGE_DEFAULT + message;
             this.takeScreenshot = takeScreenshot;
             this.callback = callback;
 
@@ -66,6 +95,10 @@ public abstract class Result {
                 }
             }
             Context.addFailure();
+            if (Context.scenarioHasWarning()) {
+                Context.setNbWarning(Context.getNbWarning() - 1);
+                Context.scenarioHasWarning(false);
+            }
             if (takeScreenshot) {
                 logger.debug("Current scenario is " + Context.getCurrentScenario());
                 Utilities.takeScreenshot(Context.getCurrentScenario());

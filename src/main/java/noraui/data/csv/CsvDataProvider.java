@@ -26,7 +26,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
 
     public CsvDataProvider() {
         super();
-        logger.info("dataProvider use is CSV");
+        logger.info("dataProvider used is CSV");
     }
 
     /**
@@ -39,7 +39,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
             initColumns();
         } catch (IOException | EmptyDataFileContentException | WrongDataFileFormatException e) {
             logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION, e);
-            throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION, e);
+            System.exit(-1);
         }
     }
 
@@ -73,6 +73,15 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
     public void writeSuccessResult(int line) {
         logger.debug("writeSuccessResult => line:" + line);
         writeValue(NAME_OF_RESULT_COLUMN, line, Messages.SUCCESS_MESSAGE);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void writeWarningResult(int line, String value) throws TechnicalException {
+        logger.debug("writeWarningResult => line:" + line + " value:" + value);
+        writeValue(NAME_OF_RESULT_COLUMN, line, value);
     }
 
     /**

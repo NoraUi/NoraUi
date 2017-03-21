@@ -106,6 +106,13 @@ public class Context {
     private int nbFailure;
 
     /**
+     * Current number of warnings from Scenario.
+     */
+    private int nbWarning;
+
+    private boolean scenarioHasWarning;
+
+    /**
      * Excel filename for the current running scenario
      */
     private String scenarioName;
@@ -188,8 +195,8 @@ public class Context {
         driverFactory = new DriverFactory();
         windowManager = new WindowManager();
         scenarioRegistry = new ScenarioRegistry();
-        currentScenarioData = 0;
-        nbFailure = 0;
+        currentScenarioData = nbFailure = nbWarning = 0;
+        scenarioHasWarning = false;
         exceptionCallbacks = new Callbacks();
         applications = new HashMap<>();
     }
@@ -315,10 +322,15 @@ public class Context {
 
     public static void goToNextData() {
         getInstance().currentScenarioData++;
+        getInstance().scenarioHasWarning = false;
     }
 
     public static void addFailure() {
         getInstance().nbFailure++;
+    }
+
+    public static void addWarning() {
+        getInstance().nbWarning++;
     }
 
     /**
@@ -332,17 +344,34 @@ public class Context {
         return getInstance().nbFailure;
     }
 
-    public static void setCurrentScenarioData(int current) {
-        getInstance().currentScenarioData = current;
+    public static int getNbWarning() {
+        return getInstance().nbWarning;
     }
 
-    public static void setNbFailure(int nbFailue) {
-        getInstance().nbFailure = nbFailue;
+    public static void setNbFailure(int nbFailure) {
+        getInstance().nbFailure = nbFailure;
+    }
+
+    public static void setNbWarning(int nbWarning) {
+        getInstance().nbWarning = nbWarning;
+    }
+
+    public static void scenarioHasWarning(boolean warning) {
+        getInstance().scenarioHasWarning = warning;
+    }
+
+    public static boolean scenarioHasWarning() {
+        return getInstance().scenarioHasWarning;
+    }
+
+    public static void setCurrentScenarioData(int current) {
+        getInstance().currentScenarioData = current;
     }
 
     public static void goToNextFeature() {
         getInstance().currentScenarioData = 0;
         getInstance().nbFailure = 0;
+        getInstance().nbWarning = 0;
     }
 
     public static String getScenarioName() {

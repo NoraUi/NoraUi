@@ -38,6 +38,7 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
 
     private CellStyle styleSuccess;
     private CellStyle styleFailed;
+    private CellStyle styleWarning;
 
     /**
      * {@inheritDoc}
@@ -72,6 +73,12 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
     public void writeSuccessResult(int line) throws TechnicalException {
         logger.debug("writeSuccessResult => line:" + line);
         writeValue(NAME_OF_RESULT_COLUMN, line, Messages.SUCCESS_MESSAGE, styleSuccess);
+    }
+
+    @Override
+    public void writeWarningResult(int line, String value) throws TechnicalException {
+        logger.debug("writeWarningResult => line:" + line);
+        writeValue(NAME_OF_RESULT_COLUMN, line, value, styleWarning);
     }
 
     /**
@@ -146,7 +153,7 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
 
     /**
      * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      */
     protected void openInputData() throws TechnicalException {
         try (FileInputStream fileIn = new FileInputStream(dataInPath + scenarioName + "." + EXCEL_TYPE);) {
@@ -171,7 +178,7 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
 
     /**
      * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      */
     void openOutputData() throws TechnicalException {
         try (FileInputStream fileOut = new FileInputStream(dataOutPath + scenarioName + "." + EXCEL_TYPE);) {
@@ -199,6 +206,11 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
         Font fontFailed = workbook.createFont();
         fontFailed.setColor(HSSFColor.RED.index);
         styleFailed.setFont(fontFailed);
+
+        styleWarning = workbook.createCellStyle();
+        Font fontWarning = workbook.createFont();
+        fontWarning.setColor(HSSFColor.ORANGE.index);
+        styleWarning.setFont(fontWarning);
     }
 
     /**
@@ -232,11 +244,11 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
             logger.debug("readCellByType with type: " + cell.getCellType());
             txt = readCellByType(cell, cell.getCellType());
         }
-        return txt;
+        return txt.trim();
     }
 
     /**
-     * readCellByType is use because CELL_TYPE_FORMULA can be CELL_TYPE_NUMERIC, CELL_TYPE_NUMERIC(date) or CELL_TYPE_STRING.
+     * readCellByType is used because CELL_TYPE_FORMULA can be CELL_TYPE_NUMERIC, CELL_TYPE_NUMERIC(date) or CELL_TYPE_STRING.
      *
      * @param cellcell
      *            read (line and column)
