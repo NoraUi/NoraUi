@@ -25,7 +25,7 @@ Does NoraUi not support your language? Please help us with a PR!
 <dependency>
     <groupId>com.github.noraui</groupId>
     <artifactId>noraui</artifactId>
-    <version>2.0.2-SNAPSHOT</version>
+    <version>2.0.3-SNAPSHOT</version>
 </dependency>
 ```
 
