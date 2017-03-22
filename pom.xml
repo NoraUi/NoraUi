@@ -62,6 +62,8 @@
         <mysql.driver.version>5.1.6</mysql.driver.version>
         <joda-time.version>2.9.7</joda-time.version>
         <joda-convert.version>1.8.1</joda-convert.version>
+        <reflections.version>0.9.9-RC2</reflections.version>
+        <xml-apis.version>1.4.01</xml-apis.version>
         <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
         <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
         <maven-javadoc-plugin.version>2.10.4</maven-javadoc-plugin.version>
@@ -87,17 +89,6 @@
     </repositories>
 
     <dependencies>
-
-        <dependency>
-            <groupId>org.reflections</groupId>
-            <artifactId>reflections</artifactId>
-            <version>0.9.9-RC2</version>
-        </dependency>
-        <dependency>
-            <groupId>xml-apis</groupId>
-            <artifactId>xml-apis</artifactId>
-            <version>1.4.01</version>
-        </dependency>
 
         <!-- cucumber -->
         <dependency>
@@ -171,7 +162,7 @@
             <version>2.3</version>
         </dependency>
 
-        <!-- Framework de log log4j -->
+        <!-- Framework of log log4j -->
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
@@ -183,7 +174,6 @@
             <groupId>org.powermock</groupId>
             <artifactId>powermock-api-mockito</artifactId>
             <version>${powermock.version}</version>
-            <!-- <scope>test</scope> -->
         </dependency>
         <dependency>
             <groupId>org.powermock</groupId>
@@ -227,6 +217,18 @@
             <artifactId>joda-convert</artifactId>
             <version>${joda-convert.version}</version>
             <scope>provided</scope>
+        </dependency>
+        
+        <!-- Framework of java reflections -->
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>${reflections.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+            <version>${xml-apis.version}</version>
         </dependency>
 
     </dependencies>
