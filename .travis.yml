@@ -1,8 +1,13 @@
 sudo: false
+
 language: java
+
 jdk:
 - oraclejdk8
+- openjdk8
+
 before_install:
  - chmod +x test/run.sh
+ 
 script:
 - test/run.sh
