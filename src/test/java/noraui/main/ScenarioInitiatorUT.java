@@ -3,6 +3,7 @@ package noraui.main;
 import org.junit.Assert;
 import org.junit.Test;
 
+import noraui.application.model.demo.Article;
 import noraui.utils.Context;
 
 public class ScenarioInitiatorUT {
@@ -14,14 +15,14 @@ public class ScenarioInitiatorUT {
 
     @Test
     public void mainTest() {
-        Context.getInstance().initializeEnv("demoExcel.properties");
+        Context.getInstance().initializeEnv("demoExcel.properties", Article.class.getClassLoader());
         new ScenarioInitiator().start(null);
         Context.clear();
     }
 
     @Test
     public void mainWithArgsTest() {
-        Context.getInstance().initializeEnv("demoExcel.properties");
+        Context.getInstance().initializeEnv("demoExcel.properties", Article.class.getClassLoader());
         String[] args = new String[1];
         args[0] = "hello";
         new ScenarioInitiator().start(args);

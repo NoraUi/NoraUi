@@ -7,13 +7,17 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
 
 import noraui.annotation.Column;
 import noraui.data.excel.ExcelDataProvider;
 import noraui.exception.TechnicalException;
 import noraui.model.Model;
+import noraui.utils.Context;
 
 public abstract class CommonDataProvider implements DataProvider {
 
@@ -69,7 +73,7 @@ public abstract class CommonDataProvider implements DataProvider {
             try {
                 if (packages.length > 0) {
                     Class<?>[] returnedClasses;
-                    ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+                    ClassLoader classLoader = Context.getClassLoaderPackages();
                     assert classLoader != null;
                     for (String p : packages) {
                         returnedClasses = getClasses(p, classLoader);
@@ -129,21 +133,8 @@ public abstract class CommonDataProvider implements DataProvider {
         return classes.toArray(new Class[classes.size()]);
     }
 
-    private List<Class<?>> findClasses(File directory, String packageName) throws ClassNotFoundException {
-        List<Class<?>> classes = new ArrayList<>();
-        if (!directory.exists()) {
-            return classes;
-        }
-        File[] files = directory.listFiles();
-        for (File file : files) {
-            if (file.isDirectory()) {
-                assert !file.getName().contains(".");
-                classes.addAll(findClasses(file, packageName + "." + file.getName()));
-            } else if (file.getName().endsWith(".class")) {
-                classes.add(Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
-            }
-        }
-        return classes;
+    private Set<Class<?>> findClasses(File directory, String packageName) throws ClassNotFoundException {
+        return new Reflections(packageName, new SubTypesScanner(false)).getSubTypesOf(Object.class);
     }
 
 }

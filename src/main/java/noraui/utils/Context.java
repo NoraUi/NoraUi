@@ -152,6 +152,8 @@ public class Context {
      */
     private String modelPackages = "";
 
+    private ClassLoader classLoaderPackages;
+
     /**
      * Is stacktrace displayed ?
      */
@@ -213,7 +215,7 @@ public class Context {
         return instance;
     }
 
-    public synchronized void initializeEnv(String propertiesFile) {
+    public synchronized void initializeEnv(String propertiesFile, ClassLoader classLoader) {
         logger.info("Context > initializeEnv()");
 
         iniFiles = new HashMap<>();
@@ -223,6 +225,7 @@ public class Context {
 
         // set list of model packages
         modelPackages = setProperty(MODEL_PACKAGES, applicationProperties);
+        classLoaderPackages = classLoader;
 
         plugDataProvider(applicationProperties);
 
@@ -232,7 +235,7 @@ public class Context {
 
     }
 
-    public synchronized void initializeRobot(ClassLoader loader) {
+    public synchronized void initializeRobot() {
         logger.info("Context > initializeRobot()");
         // set browser: phantom, ie or chrome
         browser = setProperty(BROWSER_KEY, applicationProperties);
@@ -258,9 +261,9 @@ public class Context {
         exceptionCallbacks.put("GO_TO_LOGOGAME_HOME", STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, LOGOGAME_HOME);
 
         // init applications
-        initApplicationDom(loader, selectorsVersion, DEMO_KEY);
+        initApplicationDom(Context.getClassLoaderPackages(), selectorsVersion, DEMO_KEY);
         applications.put(DEMO_KEY, new Application(DEMO_HOME, setProperty(DEMO_KEY, applicationProperties) + "/index.html"));
-        initApplicationDom(loader, selectorsVersion, LOGOGAME_KEY);
+        initApplicationDom(Context.getClassLoaderPackages(), selectorsVersion, LOGOGAME_KEY);
         applications.put(LOGOGAME_KEY, new Application(LOGOGAME_HOME, setProperty(LOGOGAME_KEY, applicationProperties) + "/index.html"));
     }
 
@@ -513,6 +516,10 @@ public class Context {
 
     public static String getModelPackages() {
         return getInstance().modelPackages;
+    }
+
+    public static ClassLoader getClassLoaderPackages() {
+        return getInstance().classLoaderPackages;
     }
 
     public static String getSelectorsVersion() {
