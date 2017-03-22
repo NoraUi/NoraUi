@@ -446,11 +446,10 @@ public class Step implements IStep {
         }
         try {
             Context.saveValue(targetKey, txt);
+            Context.getCurrentScenario().write("SAVE " + targetKey + "=" + txt);
         } catch (Exception e) {
             new Result.Failure<>(e, Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_RETRIEVE_VALUE, page.getPageElementByKey(field), page.getApplication()), true, page.getCallBack());
-
         }
-
     }
 
     /**
