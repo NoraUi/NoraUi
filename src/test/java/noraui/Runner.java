@@ -17,8 +17,8 @@ public class Runner {
      */
     @BeforeClass
     public static void setUpClass() {
-        Context.getInstance().initializeEnv("demoExcel.properties", Runner.class.getClassLoader());
-        Context.getInstance().initializeRobot();
+        Context.getInstance().initializeEnv("demoExcel.properties");
+        Context.getInstance().initializeRobot(Runner.class.getClassLoader());
     }
 
     /**

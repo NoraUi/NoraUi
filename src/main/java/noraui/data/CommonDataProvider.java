@@ -1,11 +1,8 @@
 package noraui.data;
 
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Set;
 
@@ -17,7 +14,6 @@ import noraui.annotation.Column;
 import noraui.data.excel.ExcelDataProvider;
 import noraui.exception.TechnicalException;
 import noraui.model.Model;
-import noraui.utils.Context;
 
 public abstract class CommonDataProvider implements DataProvider {
 
@@ -72,11 +68,9 @@ public abstract class CommonDataProvider implements DataProvider {
             String[] packages = modelPackagesCsv.split(";");
             try {
                 if (packages.length > 0) {
-                    Class<?>[] returnedClasses;
-                    ClassLoader classLoader = Context.getClassLoaderPackages();
-                    assert classLoader != null;
+                    Set<Class<?>> returnedClasses;
                     for (String p : packages) {
-                        returnedClasses = getClasses(p, classLoader);
+                        returnedClasses = getClasses(p);
                         for (Class<?> c : returnedClasses) {
                             if (Model.class.isAssignableFrom(c)) {
                                 boolean mappingOK = false;
@@ -118,22 +112,7 @@ public abstract class CommonDataProvider implements DataProvider {
         this.dataOutPath = dataOutPath;
     }
 
-    private Class<?>[] getClasses(String packageName, ClassLoader classLoader) throws ClassNotFoundException, IOException {
-        String path = packageName.replace('.', '/');
-        Enumeration<URL> resources = classLoader.getResources(path);
-        List<File> dirs = new ArrayList<>();
-        while (resources.hasMoreElements()) {
-            URL resource = resources.nextElement();
-            dirs.add(new File(resource.getFile()));
-        }
-        ArrayList<Class<?>> classes = new ArrayList<>();
-        for (File directory : dirs) {
-            classes.addAll(findClasses(directory, packageName));
-        }
-        return classes.toArray(new Class[classes.size()]);
-    }
-
-    private Set<Class<?>> findClasses(File directory, String packageName) throws ClassNotFoundException {
+    private Set<Class<?>> getClasses(String packageName) throws ClassNotFoundException, IOException {
         return new Reflections(packageName, new SubTypesScanner(false)).getSubTypesOf(Object.class);
     }
 

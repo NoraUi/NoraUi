@@ -23,7 +23,7 @@ public class Counter {
 
             versionControlSystemsBlacklist.add(".svn");
 
-            Context.getInstance().initializeEnv("demo" + args[0] + ".properties", Counter.class.getClassLoader());
+            Context.getInstance().initializeEnv("demo" + args[0] + ".properties");
 
             if (args[0].contains("Db")) {
                 scenarioBlacklist.add("blog");
