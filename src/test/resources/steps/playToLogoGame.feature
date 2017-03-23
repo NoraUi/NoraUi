@@ -20,7 +20,4 @@ Feature: playToLogoGame (Scenario that plays logo game.)
   Examples:
     #DATA
     |id|player|DataJson|
-    |1|Peter|[{"brand":"amazon"},{"brand":"burger king"},{"brand":"citroën"},{"brand":"ebay"},{"brand":"hello kitty"},{"brand":"michelin"},{"brand":"napster"},{"brand":"pringles"}]|
-    |2|Wendy|[{"brand":"amazon"},{"brand":"burger king"},{"brand":"citroën"},{"brand":"ebay"},{"brand":"hello kitty"},{"brand":"michelin"},{"brand":"napster"},{"brand":"pringles"},{"brand":"red bull"},{"brand":"reebook"},{"brand":"twitter"},{"brand":"youtube"}]|
-    |3|Mr Bean|[{"brand":"hello kitty"},{"brand":"fake"},{"brand":"amazon"}]|
     #END

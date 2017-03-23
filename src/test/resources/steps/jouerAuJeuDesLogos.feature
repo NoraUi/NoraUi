@@ -20,7 +20,4 @@ Fonctionnalité: jouerAuJeuDesLogos (Scénario qui joue au jeu des logos)
   Exemples:
     #DATA
     |id|player|DataJson|
-    |1|Peter|[{"brand":"amazon"},{"brand":"burgerking"},{"brand":"citroën"},{"brand":"ebay"},{"brand":"hellokitty"},{"brand":"michelin"},{"brand":"napster"},{"brand":"pringles"}]|
-    |2|Wendy|[{"brand":"amazon"},{"brand":"burgerking"},{"brand":"citroën"},{"brand":"ebay"},{"brand":"hellokitty"},{"brand":"michelin"},{"brand":"napster"},{"brand":"pringles"},{"brand":"redbull"},{"brand":"reebook"},{"brand":"twitter"},{"brand":"youtube"}]|
-    |3|Mr Bean|[{"brand":"hellokitty"},{"brand":"fake"},{"brand":"amazon"}]|
     #END

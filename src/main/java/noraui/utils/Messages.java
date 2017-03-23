@@ -18,7 +18,7 @@ public class Messages {
      */
     public static final String FAIL_MESSAGE_DEFAULT = "Échec : ";
     public static final String WARNING_MESSAGE_DEFAULT = "Alerte : ";
-    public static final String SUCCESS_MESSAGE_DEFAULT = "Succès : ";
+    public static final String SUCCESS_MESSAGE_WITH_RESERVE = "Succès avec réserves : ";
 
     /**
      * Errors of Gherkin and Cucumber.
