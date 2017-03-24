@@ -21,11 +21,22 @@ Does NoraUi not support your language? Please help us with a PR!
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.noraui/noraui/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.noraui/noraui)
 
+stable
+
 ```xml
 <dependency>
     <groupId>com.github.noraui</groupId>
     <artifactId>noraui</artifactId>
-    <version>2.0.3-SNAPSHOT</version>
+    <version>2.0.3</version>
+</dependency>
+```
+SNAPSHOT
+
+```xml
+<dependency>
+    <groupId>com.github.noraui</groupId>
+    <artifactId>noraui</artifactId>
+    <version>2.1.0-SNAPSHOT</version>
 </dependency>
 ```
 
