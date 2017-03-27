@@ -32,6 +32,7 @@ public class Messages {
      * Functional fail messages.
      */
     public static final String FAIL_MESSAGE_UNKNOWN_CREDENTIALS = "Impossible de s'authentifier avec les informations fournies.";
+    public static final String FAIL_MESSAGE_LOGOUT = "Impossible de se déconnecter.";
     public static final String FAIL_MESSAGE_LIST = "Erreur sur la donnée liste.";
     public static final String FAIL_MESSAGE_TEXT = "Erreur sur la donnée texte.";
     public static final String FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT = "Élément non trouvé sur la page.";
