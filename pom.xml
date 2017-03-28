@@ -41,7 +41,7 @@
         <connection>scm:git:git://github.com/NoraUi/NoraUi.git</connection>
         <developerConnection>scm:git:git@github.com:NoraUi/NoraUi.git</developerConnection>
         <url>git://github.com/NoraUi/NoraUi.git</url>
-        <tag>v2.0.0</tag>
+        <tag>v2.1.1</tag>
     </scm>
 
     <properties>

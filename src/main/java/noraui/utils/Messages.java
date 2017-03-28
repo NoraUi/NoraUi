@@ -58,6 +58,7 @@ public class Messages {
     public static final String FAIL_MESSAGE_VALUE_NOT_AVAILABLE_IN_THE_LIST = "Sélection de « %s » dans %s.";
     public static final String FAIL_MESSAGE_WRONG_PAGE = "La page « %s » est indisponible dans %s.";
     public static final String FAIL_MESSAGE_EMPTY_DATA = "La donnée « %s » fournie ne peut pas être vide.";
+    public static final String FAIL_MESSAGE_EMPTY_DATAS = "Les données « %s » fournies ne peuvent pas être vides, ni égales à 0.";
     public static final String FAIL_MESSAGE_WRONG_EXPECTED_VALUE = "La valeur du champ « %s » n'est pas celle attendue (%s) dans %s.";
     public static final String FAIL_MESSAGE_UNABLE_TO_EVALUATE_XPATH = "Impossible d'évaluer le xpath: « %s » dans %s.";
     public static final String FAIL_MESSAGE_UNABLE_TO_CHECK_ELEMENT = "(Dé)Cochage %s dans %s.";
