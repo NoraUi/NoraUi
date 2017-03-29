@@ -4,7 +4,7 @@ mvn clean test javadoc:javadoc -Dcucumber.options="--tags @hello,@bonjour,@blog,
 
 ruby -v
 
-echo "y" | gem install travis -v 1.8.8 --no-document
+gem install travis -v 1.8.8 --no-document --skip-completion-check
 
 travis version
 
