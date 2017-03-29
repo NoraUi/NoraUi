@@ -27,7 +27,7 @@ stable
 <dependency>
     <groupId>com.github.noraui</groupId>
     <artifactId>noraui</artifactId>
-    <version>2.0.3</version>
+    <version>2.1.0</version>
 </dependency>
 ```
 SNAPSHOT
