@@ -2,7 +2,11 @@ cd $(dirname $0)
 cd ..
 mvn clean test javadoc:javadoc -Dcucumber.options="--tags @hello,@bonjour,@blog,@playToLogoGame,@jouerAuJeuDesLogos" -PscenarioInitiator,javadoc,unit-tests -Dmaven.test.failure.ignore=true
 
-gem install travis
+ruby -v
+
+gem install travis -v 1.8.8 --no-rdoc --no-ri
+
+travis version
 
 travis logs
 
