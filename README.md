@@ -36,7 +36,7 @@ SNAPSHOT
 <dependency>
     <groupId>com.github.noraui</groupId>
     <artifactId>noraui</artifactId>
-    <version>2.1.0-SNAPSHOT</version>
+    <version>2.1.2-SNAPSHOT</version>
 </dependency>
 ```
 
