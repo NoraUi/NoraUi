@@ -1,3 +1,3 @@
 echo "******** start log *****"
-echo "yes" | travis logs
+call `echo "yes" | travis logs` > logs.txt
 echo "******** stop log *****"
