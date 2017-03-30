@@ -2,13 +2,17 @@ sudo: false
 
 language: java
 
+env:
+  global:
+    secure: "62777a7617b560275d2057a6ce1ab95822cd8b8a"
+
 jdk:
 - oraclejdk8
 
 before_install:
 - chmod +x test/run.sh
 - gem install travis -v 1.8.8 --no-rdoc --no-ri
-- echo "y"
+- travis encrypt -r sgrillon14/NoraUi GH_TOKEN=[62777a7617b560275d2057a6ce1ab95822cd8b8a] --add
  
 script:
 - test/run.sh
