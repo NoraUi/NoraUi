@@ -2,18 +2,12 @@ sudo: false
 
 language: java
 
-env:
-  global:
-    secure: "6c33d8f5d9a9f2fbe2bb1a7d1ec243ac9a1aebb0"
-
 jdk:
 - oraclejdk8
 
 before_install:
 - chmod +x test/run.sh
 - chmod +x test/ci-validation.sh
-- gem install travis -v 1.8.8 --no-rdoc --no-ri
-- echo "y" | travis login --github-token "6c33d8f5d9a9f2fbe2bb1a7d1ec243ac9a1aebb0"
  
 script:
 - test/run.sh
