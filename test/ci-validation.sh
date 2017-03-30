@@ -4,7 +4,7 @@ cat nonaui.log
 
 echo "******** count log *****"
 
-sed -n ':;s/~/<EXPECTED_RESULTS>(.*)<\/EXPECTED_RESULTS>///p;t' nonaui.log | sed -n '$='
+sed -n ':;~/<EXPECTED_RESULTS>(.*)<\/EXPECTED_RESULTS>///p;t' nonaui.log | sed -n '$='
 
 
 
