@@ -8,7 +8,11 @@ jdk:
 before_install:
  - chmod +x test/run.sh
  
+before_install:
+- install travis -v 1.8.8 --no-rdoc --no-ri
+ 
 script:
 - test/run.sh
 
-after_script: travis version
+after_script:
+- travis version
