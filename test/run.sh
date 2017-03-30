@@ -5,7 +5,7 @@ mvn clean compile
 
 echo "NORA-UI is ready"
 
-a = `travis logs`
+a = `echo "yes" | travis logs`
 
 echo "******** start log *****"
 echo $a
