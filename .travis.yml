@@ -4,7 +4,7 @@ language: java
 
 env:
   global:
-    secure: "62777a7617b560275d2057a6ce1ab95822cd8b8a"
+    secure: "6c33d8f5d9a9f2fbe2bb1a7d1ec243ac9a1aebb0"
 
 jdk:
 - oraclejdk8
@@ -12,7 +12,7 @@ jdk:
 before_install:
 - chmod +x test/run.sh
 - gem install travis -v 1.8.8 --no-rdoc --no-ri
-- echo "y" | travis login --github-token "62777a7617b560275d2057a6ce1ab95822cd8b8a"
+- echo "y" | travis login --github-token "6c33d8f5d9a9f2fbe2bb1a7d1ec243ac9a1aebb0"
  
 script:
 - test/run.sh
@@ -20,4 +20,4 @@ script:
 after_script:
 - travis version
 - travis logs
-- echo "yes" | travis login --github-token "62777a7617b560275d2057a6ce1ab95822cd8b8a"
+- echo "yes" | travis login --github-token "6c33d8f5d9a9f2fbe2bb1a7d1ec243ac9a1aebb0"
