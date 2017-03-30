@@ -11,4 +11,4 @@ before_install:
 script:
 - test/run.sh
 
-after_success: travis version
+after_script: travis version
