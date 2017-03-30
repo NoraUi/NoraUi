@@ -19,4 +19,3 @@ script:
 
 after_script:
 - travis version
-- echo "yes" | travis logs
