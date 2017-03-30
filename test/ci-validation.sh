@@ -4,8 +4,8 @@ cat nonaui.log
 
 echo "******** count log *****"
 
-sed -n 's:.*<EXPECTED_RESULTS>\(.*\)</EXPECTED_RESULTS>.*:\1:p' nonaui.log | head -n 1
-
+expectation = `sed -n 's:.*<EXPECTED_RESULTS>\(.*\)</EXPECTED_RESULTS>.*:\1:p' nonaui.log | head -n 1`
+echo $expectation
 
 
 echo "******** stop log *****"
