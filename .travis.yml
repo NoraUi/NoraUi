@@ -7,11 +7,13 @@ jdk:
 
 before_install:
 - chmod +x test/run.sh
+- chmod +x test/after_success.sh
  
 script:
 - test/run.sh
 
 after_success: test/after_success.sh
+
 notifications:
   webhooks:
     urls:
