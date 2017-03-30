@@ -9,11 +9,9 @@ nb_expectation=`sed -n ":;s/$expectation//p;t" nonaui.log | sed -n '$='`
 
 if [ "$nb_expectation" == "3" ]; then
     echo "******** All counter is SUCCESS"
-    let ret=0
 else
     echo "******** All counter is FAIL"
-    let ret=255
-    exit $ret
+    exit 255
 fi
 
-exit
+exit 0
