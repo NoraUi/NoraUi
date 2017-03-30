@@ -22,11 +22,14 @@ Does NoraUi not support your language? Please help us with a PR!
 [![GitHub contributors](https://img.shields.io/github/contributors/NoraUi/NoraUi.svg)](https://github.com/NoraUi/NoraUi/graphs/contributors)
 [![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/NoraUi/NoraUi.svg)](https://github.com/NoraUi/NoraUi/pulls?q=is%3Apr+is%3Aclosed)
 
+# Gitter chat
+[![Join the chat at https://gitter.im/NoraUiChat](https://badges.gitter.im/NoraUiChat/NoraUi.svg)](https://gitter.im/NoraUiChat/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 # How use
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.noraui/noraui/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.noraui/noraui)
 
-stable
+Stable
 
 ```xml
 <dependency>
@@ -44,9 +47,6 @@ SNAPSHOT
     <version>2.1.2-SNAPSHOT</version>
 </dependency>
 ```
-
-# Gitter chat
-[![Join the chat at https://gitter.im/NoraUiChat](https://badges.gitter.im/NoraUiChat/NoraUi.svg)](https://gitter.im/NoraUiChat/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 # Technology
 
