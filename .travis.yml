@@ -18,4 +18,4 @@ script:
 - test/run.sh
 
 after_script:
-- travis version
+- test/ci-validation.sh
