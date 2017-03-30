@@ -9,7 +9,7 @@ before_install:
  - chmod +x test/run.sh
  
 before_install:
-- install travis -v 1.8.8 --no-rdoc --no-ri
+- gem install travis -v 1.8.8 --no-rdoc --no-ri
  
 script:
 - test/run.sh
