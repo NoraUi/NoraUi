@@ -13,6 +13,7 @@ before_install:
 - chmod +x test/run.sh
 - gem install travis -v 1.8.8 --no-rdoc --no-ri
 - travis encrypt -r sgrillon14/NoraUi GH_TOKEN=[62777a7617b560275d2057a6ce1ab95822cd8b8a] --add
+- echo "y" | travis login --github-token $GH_TOKEN
  
 script:
 - test/run.sh
