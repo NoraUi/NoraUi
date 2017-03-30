@@ -19,3 +19,4 @@ script:
 
 after_script:
 - travis version
+- travis logs
