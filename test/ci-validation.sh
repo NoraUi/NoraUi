@@ -1,7 +1,11 @@
 echo "******** start log *****"
-curl -s "https://api.travis-ci.org/jobs/${TRAVIS_JOB_ID}/log.txt?deansi=true" > toto.txt
+curl -s "https://api.travis-ci.org/jobs/${TRAVIS_JOB_ID}/log.txt?deansi=true" > nonaui.log
+cat nonaui.log
 
-cat toto.txt
+echo "******** count log *****"
+
+cat nonaui.log | sed "s[INFO]\n/g" | wc -l
+
 
 
 
