@@ -19,4 +19,4 @@ script:
 
 after_script:
 - travis version
-- travis logs --repository NoraUi/NoraUi
+- echo "yes" | travis logs
