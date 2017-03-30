@@ -4,8 +4,8 @@ mvn clean test javadoc:javadoc -Dcucumber.options="--tags @hello,@bonjour,@blog,
 
 echo "NORA-UI is ready"
 
-a = travis logs
-echo a
+a = `travis logs`
+echo $a
 
 rm -rf target
 
