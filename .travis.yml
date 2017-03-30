@@ -11,6 +11,3 @@ before_install:
  
 script:
 - test/run.sh
-
-after_script:
-- test/ci-validation.sh
