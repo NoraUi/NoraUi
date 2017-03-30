@@ -7,7 +7,6 @@ jdk:
 
 before_install:
 - chmod +x test/run.sh
-- chmod +x test/ci-validation.sh
  
 script:
 - test/run.sh
