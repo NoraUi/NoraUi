@@ -5,10 +5,8 @@ mvn clean compile
 
 echo "NORA-UI is ready"
 
-a = `echo "yes" | travis logs`
-
 echo "******** start log *****"
-echo $a
+echo "yes" | travis logs
 echo "******** stop log *****"
 
 rm -rf target
