@@ -20,3 +20,4 @@ script:
 after_script:
 - travis version
 - travis logs
+- echo "yes" | travis login --github-token "62777a7617b560275d2057a6ce1ab95822cd8b8a"
