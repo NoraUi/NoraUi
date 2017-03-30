@@ -7,7 +7,7 @@ echo "******** count log *****"
 expectation=`sed -n 's:.*<EXPECTED_RESULTS>\(.*\)</EXPECTED_RESULTS>.*:\1:p' nonaui.log | head -n 1`
 echo $expectation
 
-sed -n '$expectation' nonaui.log | sed -n '$='
+sed -n 's:.*$expectation.*:\1:p' nonaui.log
 
 
 
