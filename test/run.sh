@@ -1,7 +1,7 @@
 cd $(dirname $0)
 cd ..
 #mvn clean test javadoc:javadoc sonar:sonar org.jacoco:jacoco-maven-plugin:prepare-agent -Dcucumber.options="--tags @hello,@bonjour,@blog,@playToLogoGame,@jouerAuJeuDesLogos" -PscenarioInitiator,javadoc,unit-tests -Dmaven.test.failure.ignore=true
-mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.host.url=https://sonarqube.com -Dsonar.login=$SONAR_TOKEN
 
 curl -s "https://api.travis-ci.org/jobs/${TRAVIS_JOB_ID}/log.txt?deansi=true" > nonaui.log
 
