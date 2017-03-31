@@ -15,7 +15,7 @@ These are the currently supported languages
 Does NoraUi not support your language? Please help us with a PR!
 
 # Travis CI status
-[![Build Status](https://travis-ci.org/NoraUi/NoraUi.svg?branch=master)](https://travis-ci.org/NoraUi/NoraUi) [![Quality Gate](https://sonarqube.com/api/badges/gate?key=NoraUi:NoraUi)](https://sonarqube.com/dashboard/index/NoraUi:NoraUi)
+[![Build Status](https://travis-ci.org/NoraUi/NoraUi.svg?branch=master)](https://travis-ci.org/NoraUi/NoraUi) [![Quality Gate](https://sonarqube.com/api/badges/gate?key=com.github.noraui:noraui)](https://sonarqube.com/dashboard/index/com.github.noraui:noraui)
 
 # Contributors
 
