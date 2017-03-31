@@ -402,8 +402,7 @@
         <profile>
             <id>analyze</id>
             <properties>
-                <!-- optional URL to server. Default value is http://localhost:9000 -->
-                <sonar.host.url>http://slnxdpmnewsalto01.renn.fr.sopra:10506</sonar.host.url>
+                <sonar.host.url>https://sonarqube.com</sonar.host.url>
                 <sonar.sources>${project.basedir}/src/main/java</sonar.sources>
                 <sonar.scm.provider>svn</sonar.scm.provider>
                 <sonar.jacoco.reportPath>${project.build.directory}/coverage-reports/jacoco-ut.exec</sonar.jacoco.reportPath>
