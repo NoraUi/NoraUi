@@ -5,8 +5,6 @@ language: java
 addons:
   sonarqube:
     organization: "noraui"
-    token:
-      secure: a1db2f2fa275c0472a6111d6bd773d878e375aeb
 
 jdk:
 - oraclejdk8
