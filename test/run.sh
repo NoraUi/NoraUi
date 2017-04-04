@@ -1,6 +1,6 @@
 cd $(dirname $0)
 cd ..
-mvn clean test javadoc:javadoc sonar:sonar -Dsonar.host.url=https:/sonarqube.com -Dsonar.login=a1db2f2fa275c0472a6111d6bd773d878e375aeb -Dcucumber.options="--tags @hello,@bonjour,@blog,@playToLogoGame,@jouerAuJeuDesLogos" -PscenarioInitiator,javadoc,unit-tests,analyse -Dmaven.test.failure.ignore=true
+mvn clean test javadoc:javadoc sonar:sonar -Dsonar.host.url=https:/sonarqube.com -Dsonar.login=a1db2f2fa275c0472a6111d6bd773d878e375aeb -Dcucumber.options="--tags @hello,@bonjour,@blog,@playToLogoGame,@jouerAuJeuDesLogos" -PscenarioInitiator,javadoc,unit-tests,analyze -Dmaven.test.failure.ignore=true
 #org.jacoco:jacoco-maven-plugin:prepare-agent
 
 curl -s "https://api.travis-ci.org/jobs/${TRAVIS_JOB_ID}/log.txt?deansi=true" > nonaui.log
