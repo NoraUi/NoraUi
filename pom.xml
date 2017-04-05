@@ -572,7 +572,7 @@
                                 <include>**/*UT.java</include>
                                 <include>**/Runner.java</include>
                             </includes>
-                            <argLine>-Dfile.encoding=UTF-8 ${surefireArgLine}</argLine>
+                            <argLine>-Dfile.encoding=UTF-8</argLine>
                         </configuration>
                     </plugin>
                 </plugins>
