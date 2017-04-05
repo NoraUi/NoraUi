@@ -10,7 +10,7 @@ nb_counters=`sed -n ":;s/$counters//p;t" nonaui.log | sed -n '$='`
 # check if BUILD FAILURE finded in logs
 nb_failure=`sed -n ":;s/BUILD FAILURE//p;t" nonaui.log | sed -n '$='`
 if [ "$nb_failure" != "0" ]; then
-    echo "******** BUILD FAILURE find in build"
+    echo "******** BUILD FAILURE find $nb_failure time in build"
     exit 255
 fi
 
