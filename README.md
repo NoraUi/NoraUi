@@ -14,7 +14,7 @@ These are the currently supported languages
 
 Does NoraUi not support your language? Please help us with a PR!
 
-# Travis CI status
+# Continuous Integration status
 [![Build Status](https://travis-ci.org/NoraUi/NoraUi.svg?branch=master)](https://travis-ci.org/NoraUi/NoraUi)
 [![Quality Gate](https://sonarqube.com/api/badges/gate?key=com.github.noraui:noraui)](https://sonarqube.com/dashboard/index/com.github.noraui:noraui)
 [![SonarQube Coverage](https://img.shields.io/sonar63/https/sonarqube.com/com.github.noraui:noraui/coverage.svghttps://img.shields.io/sonar/https/sonarqube.org/com.github.noraui:noraui/coverage.svg?label=Sonarqube%20coverage)](https://sonarqube.com/component_measures/metric/coverage/list?id=com.github.noraui:noraui)
@@ -61,7 +61,6 @@ SNAPSHOT
 * Java 8
 * Maven
 * JUnit
-* Travis CI
 
 # Run Anywhere
 ![RunAnywhere](/screenshots/plateforme.png)
