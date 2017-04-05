@@ -4,14 +4,18 @@ mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package javadoc:javadoc s
 
 curl -s "https://api.travis-ci.org/jobs/${TRAVIS_JOB_ID}/log.txt?deansi=true" > nonaui.log
 
-expectation=`sed -n 's:.*<EXPECTED_RESULTS>\(.*\)</EXPECTED_RESULTS>.*:\1:p' nonaui.log | head -n 1`
-nb_expectation=`sed -n ":;s/$expectation//p;t" nonaui.log | sed -n '$='`
+counters=`sed -n 's:.*<EXPECTED_RESULTS>\(.*\)</EXPECTED_RESULTS>.*:\1:p' nonaui.log | head -n 1`
+nb_counters=`sed -n ":;s/$counters//p;t" nonaui.log | sed -n '$='`
 
-# check if [INFO] BUILD FAILURE
-#
+# check if BUILD FAILURE finded in logs
+nb_failure=`sed -n ":;s/BUILD FAILURE//p;t" nonaui.log | sed -n '$='`
+if [ "$nb_failure" != "0" ]; then
+    echo "******** BUILD FAILURE find in build"
+    exit 255
+fi
 
 # 3 = 1 (real) + 2 counters (Excel and CSV)
-if [ "$nb_expectation" == "3" ]; then
+if [ "$nb_counters" == "3" ]; then
     echo "******** All counter is SUCCESS"
 else
     echo "******** All counter is FAIL"
