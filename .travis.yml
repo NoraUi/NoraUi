@@ -17,7 +17,7 @@ before_install:
  
 script:
 #- test/run.sh
-- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar -Dsonar.host.url=https://sonarqube.com -Dsonar.organization=noraui -Dsonar.login=a1db2f2fa275c0472a6111d6bd773d878e375aeb
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar -Dsonar.host.url=https://sonarqube.com -Dsonar.organization=noraui -Dsonar.login=a1db2f2fa275c0472a6111d6bd773d878e375aeb -Punit-tests
 
 after_success: test/after_success.sh
 
