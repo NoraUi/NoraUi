@@ -163,8 +163,8 @@ public class BrowserSteps {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Lorsque("^Je ferme toutes les fenêtres sauf '(.*)'.")
-    @Then("^I close all windows except '(.*)'.")
+    @Lorsque("Je ferme toutes les fenêtres sauf '(.*)'.")
+    @Then("I close all windows except '(.*)'.")
     public void closeAllWindowsAndSwitchTo(String key, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
         closeAllWindowsAndSwitchTo(key);
     }
