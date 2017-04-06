@@ -243,7 +243,7 @@ public class Step implements IStep {
         } catch (Exception e) {
             new Result.Failure<>(e, Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT, true, pageElement.getPage().getCallBack());
         }
-        if (inputText == null || value == null || !value.equals(inputText.getAttribute(VALUE))) {
+        if (inputText == null || value == null || !value.equals(inputText.getAttribute(VALUE).trim())) {
             return false;
         }
         return true;
@@ -265,7 +265,7 @@ public class Step implements IStep {
         } catch (Exception e) {
             new Result.Failure<>(e, Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT, true, pageElement.getPage().getCallBack());
         }
-        if (inputText == null || "".equals(inputText.getAttribute(VALUE))) {
+        if (inputText == null || "".equals(inputText.getAttribute(VALUE).trim())) {
             return false;
         }
         return true;
@@ -440,7 +440,8 @@ public class Step implements IStep {
         loggerStep.debug(String.format("saveValueInStep: %s to %s in %s.", field, targetKey, page.getApplication()));
         String txt = "";
         try {
-            txt = Utilities.findElement(page, field).getText();
+            WebElement elem = Utilities.findElement(page, field);
+            txt = elem.getAttribute(VALUE) != null ? elem.getAttribute(VALUE) : elem.getText();
         } catch (Exception e) {
             new Result.Failure<>(e, Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT, true, page.getCallBack());
         }
