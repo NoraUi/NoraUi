@@ -65,6 +65,7 @@ public class Messages {
     public static final String FAIL_MESSAGE_EMPTY_FIELD = "Champ « %s » non valorisé dans %s.";
     public static final String FAIL_MESSAGE_NOT_FOUND_ON_ALERT = "Message « %s » non trouvé sur l'alerte.";
     public static final String FAIL_MESSAGE_ALERT_NOT_FOUND = "Alerte non trouvée.";
+    public static final String FAIL_MESSAGE_UNABLE_TO_WRITE_MESSAGE_IN_RESULT_FILE = "Écriture de la valeur %s dans le fichier résultat.";
 
     /**
      * Format given message with provided arguments
