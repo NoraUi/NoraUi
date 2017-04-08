@@ -2,8 +2,9 @@ language: java
 sudo: false
 install: true
 
-env:
-  secure: "fmVuu2SfHe9r4jbYjbDe132lD+/+pVfZfGwk4pEfHs67S0oRmTd5cbJby1luAFZ6tw9xZTMv/RNeUL6ZjF3W3kjXMcDYexLx+eEbBxMP/gWtPx8/bKuonen+LN23TiS1XXHuZ+sSlSOcXMJ/guuhu1IVuFwZCHQ5KJp0LOERJRpYa9FnYg5yCWyDteITWSM7JgnZ36+KU49M2UEvrXzErvfKa4uZO1av4b/g99EoHaxRamt6mDHTPYD3bWMyQXm2QdxQHyzPxv7vxxh6gPUz4GnTP7IKeNt4iutisoj4Yny/DyIARg7jTgwPcl7WF84+ETu+WLw5tMZ2Uia3QA1PZqLArp6nTzngkIjwXE8fyckQL3wSSXFzwbAk7ZF99BMdtuF3o29/ygZFCeQiV9t5FEiVONPs0xzMxnj64nOE2euTVwMSvdieTG9+2CHJWd4YtXGd0nqNMIUskqR1YzBCiULNcJ0KWbfFZfIRXVEqYDCjCzQJMt0Mm+P3XaNX5ZPZig+RU+gJhod7R0ysm1bo6tfD24aHq+Ja8t+nEb6AKKrn2pqULHSNa30T0Pz1RVH8fkSjnPDCntC2X9G5xFRnKZHrJOvU+N2oJCGKei7bM/c1bTCf3iuI46llzGLC6pZxGcnVgggnm/Udhxpgp/34WmA+0Z4B8UcHQmRtya4AMLY="
+services:
+- mysql
+- postgresql
 
 addons:
   sonarqube:
@@ -15,6 +16,8 @@ jdk:
 before_install:
 - chmod +x test/run.sh
 - chmod +x test/after_success.sh
+- mysql -e 'CREATE DATABASE noraui;'
+- psql -c 'create database noraui;' -U postgres
  
 script:
 - test/run.sh
