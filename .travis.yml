@@ -3,7 +3,7 @@ sudo: false
 install: true
 
 services:
-- mysql
+- postgresql
 
 addons:
   sonarqube:
