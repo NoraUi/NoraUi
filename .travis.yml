@@ -2,6 +2,9 @@ language: java
 sudo: false
 install: true
 
+services:
+- mysql
+
 addons:
   sonarqube:
     organization: "noraui"
@@ -12,6 +15,7 @@ jdk:
 before_install:
 - chmod +x test/run.sh
 - chmod +x test/after_success.sh
+- mysql -e 'CREATE DATABASE noraui;'
  
 script:
 - test/run.sh
