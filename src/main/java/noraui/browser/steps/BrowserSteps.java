@@ -43,8 +43,8 @@ public class BrowserSteps {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Quand("J'ouvre une nouvelle fenêtre.")
-    @When("I open a new window.")
+    @Quand("J'ouvre une nouvelle fenêtre\\?")
+    @When("I open a new window\\?")
     public void openNewWindow(List<GherkinCondition> conditions) throws FailureException {
         try {
             Set<String> initialWindows = Context.getDriver().getWindowHandles();
@@ -53,7 +53,7 @@ public class BrowserSteps {
             String newWindowHandle = Context.waitUntil(WindowManager.newWindowOpens(initialWindows));
             Context.getDriver().switchTo().window(newWindowHandle);
         } catch (Exception e) {
-            new Result.Failure<>(e, Messages.FAIL_MESSAGE_UNABLE_TO_OPEN_A_NEW_WINDOW, true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+            new Result.Failure<>(e.getMessage(), Messages.FAIL_MESSAGE_UNABLE_TO_OPEN_A_NEW_WINDOW, true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
     }
 
@@ -72,8 +72,8 @@ public class BrowserSteps {
      */
     @Times({ @Time(name = "AM"), @Time(name = "{pageKey}") })
     @Conditioned
-    @Lorsque("'(.*)' est ouvert.")
-    @Given("'(.*)' is opened.")
+    @Lorsque("'(.*)' est ouvert\\?")
+    @Given("'(.*)' is opened\\?")
     public void openUrlIfDifferent(@TimeName("pageKey") String pageKey, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
         goToUrl(pageKey, false);
     }
@@ -143,8 +143,8 @@ public class BrowserSteps {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Lorsque("Je ferme la fenêtre actuelle et passe à la fenêtre '(.*)'.")
-    @Then("I close current window and switch to '(.*)' window.")
+    @Lorsque("Je ferme la fenêtre actuelle et passe à la fenêtre '(.*)'\\?")
+    @Then("I close current window and switch to '(.*)' window\\?")
     public void closeWindowAndSwitchTo(String key, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
         closeWindowAndSwitchTo(key);
     }
@@ -163,8 +163,8 @@ public class BrowserSteps {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Lorsque("Je ferme toutes les fenêtres sauf '(.*)'.")
-    @Then("I close all windows except '(.*)'.")
+    @Lorsque("Je ferme toutes les fenêtres sauf '(.*)'\\?")
+    @Then("I close all windows except '(.*)'\\?")
     public void closeAllWindowsAndSwitchTo(String key, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
         closeAllWindowsAndSwitchTo(key);
     }
@@ -197,7 +197,7 @@ public class BrowserSteps {
             }
             switchWindow(key);
         } catch (Exception e) {
-            new Result.Failure<>(e, Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_CLOSE_APP, mainWindow), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_CLOSE_APP, mainWindow), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
     }
 
@@ -237,7 +237,7 @@ public class BrowserSteps {
                 goToUrl(Context.getApplication(key).getHomeKey(), true);
             }
         } catch (Exception e) {
-            new Result.Failure<>(e, Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_CLOSE_APP, openedWindows), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_CLOSE_APP, openedWindows), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
     }
 
@@ -258,7 +258,7 @@ public class BrowserSteps {
             logger.error("Error in goToUrl:", e);
             int indexOfUnderscore = pageKey.indexOf('_');
             String appName = indexOfUnderscore != -1 ? pageKey.substring(0, indexOfUnderscore) : pageKey;
-            new Result.Failure<>(e, Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_OPEN_PAGE, appName), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_OPEN_PAGE, appName), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
     }
 

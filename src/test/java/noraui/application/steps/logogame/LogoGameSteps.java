@@ -114,7 +114,7 @@ public class LogoGameSteps extends Step {
                 logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE + e.getMessage(), e);
             }
         } catch (Exception e) {
-            new Result.Failure<>(e, "", true, logoGamePage.getCallBack());
+            new Result.Failure<>(e.getMessage(), "", true, logoGamePage.getCallBack());
         }
     }
 

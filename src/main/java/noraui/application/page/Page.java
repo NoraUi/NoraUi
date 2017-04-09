@@ -6,11 +6,13 @@ import java.util.ArrayList;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 
-import noraui.exception.TechnicalException;
 import noraui.exception.Callbacks.Callback;
+import noraui.exception.TechnicalException;
 import noraui.utils.Context;
 
 public abstract class Page implements IPage {
+
+    private static String pages_package = Page.class.getPackage().getName() + '.';
 
     private static Logger logger = Logger.getLogger(Page.class.getName());
 
@@ -59,6 +61,35 @@ public abstract class Page implements IPage {
         } catch (InstantiationException | IllegalAccessException e) {
             throw new TechnicalException("InstantiationException or IllegalAccessException in getInstance of Page", e);
         }
+    }
+
+    /**
+     * Finds a Page by its name (not the full qualified name).
+     * 
+     * @param className
+     *            The name of the class to find. Full qualified name is not required.
+     *            Ex: 'MyPage' or 'mypackageinpages.MyPage'
+     * @return
+     *         A Page instance
+     * @throws TechnicalException
+     *             if InstantiationException or IllegalAccessException in getInstance of Page.
+     */
+    public static Page getInstance(String className) throws TechnicalException {
+        try {
+            return getInstance(Class.forName(pages_package + className));
+        } catch (ClassNotFoundException e) {
+            throw new TechnicalException("Unable to retrieve Page with name: " + className, e);
+        }
+    }
+
+    /**
+     * Sets the Page main package used to find pages by their class name.
+     * 
+     * @param packageName
+     *            The new Page package name
+     */
+    public static void setPageMainPackage(String packageName) {
+        pages_package = packageName;
     }
 
     /**
