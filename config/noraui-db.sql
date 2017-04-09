@@ -1,6 +1,6 @@
-CREATE TABLE Loginlogout (
-    user text,
-    password text
+CREATE TABLE LOGINLOGOUT (
+    USER text,
+    PASSWORD text
 );
 
-INSERT INTO Loginlogout VALUES ('user', 'user');
+INSERT INTO LOGINLOGOUT VALUES ('user', 'user');
