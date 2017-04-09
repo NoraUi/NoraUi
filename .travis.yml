@@ -18,6 +18,7 @@ before_install:
 - chmod +x test/after_success.sh
 - mysql -e 'CREATE DATABASE noraui;'
 - psql -c 'create database noraui;' -U postgres
+- psql -U noraui -d postgres -a -f config/noraui-db.sql
  
 script:
 - test/run.sh
