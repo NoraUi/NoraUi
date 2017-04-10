@@ -1,9 +1,9 @@
-CREATE TABLE Loginlogout (
+CREATE TABLE hello (
     login text,
     password text
 );
 
-INSERT INTO Loginlogout VALUES ('user', 'user');
-INSERT INTO Loginlogout VALUES ('user', 'user');
-INSERT INTO Loginlogout VALUES ('user', 'user');
-INSERT INTO Loginlogout VALUES ('user', 'user');
+INSERT INTO hello VALUES ('user', 'user');
+INSERT INTO hello VALUES ('user', 'user');
+INSERT INTO hello VALUES ('user', 'user');
+INSERT INTO hello VALUES ('user', 'user');
