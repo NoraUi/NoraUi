@@ -1,6 +1,6 @@
 CREATE TABLE hello (
-    user text,
-    zip text
+    login text,
+    password text
 );
 
 INSERT INTO hello VALUES ('user', 'user');
