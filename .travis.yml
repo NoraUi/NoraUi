@@ -3,7 +3,6 @@ sudo: false
 install: true
 
 services:
-- mysql
 - postgresql
 
 addons:
@@ -16,8 +15,7 @@ jdk:
 before_install:
 - chmod +x test/run.sh
 - chmod +x test/after_success.sh
-- mysql -e 'CREATE DATABASE noraui;'
-- psql -c 'create database noraui;' -U postgres
+- psql -c 'create database noraui owner travis;' -U postgres
 - psql -U travis -d postgres -a -f config/noraui-db.sql
  
 script:
