@@ -1,5 +1,4 @@
 test:
-  adapter: mysql2
+  adapter: postgresql
   database: noraui
   username: travis
-  encoding: utf8
