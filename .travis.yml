@@ -20,7 +20,7 @@ before_install:
 - chmod +x test/run.sh
 - chmod +x test/after_success.sh
 - psql -c 'create database noraui owner travis;' -U postgres
-- psql -U travis -d postgres -a -f config/noraui-db.sql
+- psql -U travis -d noraui -a -f config/noraui-db.sql
  
 script:
 - test/run.sh
