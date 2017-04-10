@@ -1,4 +1,3 @@
 test:
   adapter: postgresql
   database: noraui
-  username: travis
