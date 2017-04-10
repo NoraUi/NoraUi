@@ -1,6 +1,6 @@
 CREATE TABLE hello (
-    author text,
+    user text,
     zip text
 );
 
-INSERT INTO hello VALUES ('Jenkins T1', '35000');
+INSERT INTO hello VALUES ('user', 'user');
