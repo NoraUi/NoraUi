@@ -11,6 +11,7 @@ postgresql: &postgresql
 defaults: &defaults
   pool: 5
   timeout: 5000
+  <<: *<%= ENV['DB'] %>
   
 test:
   <<: *defaults
