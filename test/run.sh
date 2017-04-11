@@ -20,6 +20,7 @@ if [ "$nb_counters" == "3" ]; then
     echo "******** All counter is SUCCESS"
 else
     echo "******** All counter is FAIL"
+    echo "$counters find $nb_counters times"
     exit 255
 fi
 
