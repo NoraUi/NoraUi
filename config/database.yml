@@ -1,4 +1,16 @@
-test:
-  adapter: postgresql
-  database: noraui
+mysql: &mysql
+  adapter: mysql2
   username: travis
+  database: noraui
+
+postgresql: &postgresql
+  adapter: postgresql
+  username: travis
+  database: noraui
+
+defaults: &defaults
+  pool: 5
+  timeout: 5000
+  
+test:
+  <<: *defaults
