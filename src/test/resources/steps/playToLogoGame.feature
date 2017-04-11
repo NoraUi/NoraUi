@@ -2,9 +2,9 @@
 Feature: playToLogoGame (Scenario that plays logo game.) 
 
 	Scenario Outline: Scenario that plays logo game.
-    Given I check that player '<player>' is not empty?
+    Given I check that player '<player>' is not empty.
     
-    Given 'LOGOGAME_HOME' is opened?
+    Given 'LOGOGAME_HOME' is opened.
     Then The LOGOGAME portal is displayed
     
     Then I play with 'amazon'

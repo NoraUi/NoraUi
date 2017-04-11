@@ -39,8 +39,8 @@ public class CommonSteps extends Step {
      *             Exception for the sleep
      */
     @Conditioned
-    @Lorsque("Puis j'attends '(.*)' secondes\\?")
-    @Then("I wait '(.*)' seconds\\?")
+    @Lorsque("Puis j'attends '(.*)' secondes[\\.|\\?]")
+    @Then("I wait '(.*)' seconds[\\.|\\?]")
     public void wait(int time, List<GherkinCondition> conditions) throws InterruptedException {
         Thread.sleep((long) time * 1000);
     }
@@ -63,8 +63,8 @@ public class CommonSteps extends Step {
      */
     @Conditioned
     @Time(name = "{textOrKey}")
-    @Lorsque("Je vérifie que (.*) '(.*)' n'est pas vide\\?")
-    @Given("I check that (.*) '(.*)' is not empty\\?")
+    @Lorsque("Je vérifie que (.*) '(.*)' n'est pas vide[\\.|\\?]")
+    @Given("I check that (.*) '(.*)' is not empty[\\.|\\?]")
     public void checkNotEmpty(String data, @TimeName("textOrKey") String textOrKey, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
         if (!"".equals(data)) {
             String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
@@ -134,7 +134,7 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @And("I save the value of '(.*)-(.*)'\\?")
+    @And("I save the value of '(.*)-(.*)'[\\.|\\?]")
     public void saveElementValue(String page, String field, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
         saveElementValue('-' + field, Page.getInstance(page));
     }
@@ -158,7 +158,7 @@ public class CommonSteps extends Step {
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} or {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_RETRIEVE_VALUE}
      */
     @Conditioned
-    @And("I save the value of '(.*)-(.*)' in '(.*)' context key\\?")
+    @And("I save the value of '(.*)-(.*)' in '(.*)' context key[\\.|\\?]")
     public void saveValue(String page, String field, String targetKey, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
         saveElementValue('-' + field, targetKey, Page.getInstance(page));
     }
@@ -179,7 +179,7 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @When("I click on '(.*)-(.*)'\\?")
+    @When("I click on '(.*)-(.*)'[\\.|\\?]")
     public void clickOn(String page, String toClick, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
         loggerStep.debug(page + " clickOn: " + toClick);
         clickOn(Page.getInstance(page).getPageElementByKey('-' + toClick));
@@ -201,7 +201,7 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @When("I click by js on '(.*)-(.*)'\\?")
+    @When("I click by js on '(.*)-(.*)'[\\.|\\?]")
     public void clickOnByJs(String page, String toClick, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
         loggerStep.debug(page + " clickOnByJs: " + toClick);
         clickOnByJs(Page.getInstance(page).getPageElementByKey('-' + toClick));
@@ -227,7 +227,7 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @When("I update date '(.*)-(.*)' with a '(.*)' date '(.*)'\\?")
+    @When("I update date '(.*)-(.*)' with a '(.*)' date '(.*)'[\\.|\\?]")
     public void updateDate(String page, String elementName, String dateType, String date, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
         if (!"".equals(date)) {
             PageElement pageElement = Page.getInstance(page).getPageElementByKey('-' + elementName);
@@ -257,7 +257,7 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @When("I update select list '(.*)-(.*)' with '(.*)'\\?")
+    @When("I update select list '(.*)-(.*)' with '(.*)'[\\.|\\?]")
     public void updateList(String page, String elementName, String text, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
         updateList(Page.getInstance(page).getPageElementByKey('-' + elementName), text);
     }
@@ -280,7 +280,7 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @When("I update text '(.*)-(.*)' with '(.*)'\\?")
+    @When("I update text '(.*)-(.*)' with '(.*)'[\\.|\\?]")
     public void updateText(String page, String elementName, String text, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
         updateText(Page.getInstance(page).getPageElementByKey('-' + elementName), text);
     }
@@ -302,7 +302,7 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @When("I update text '(.*)-(.*)' and type ENTER with '(.*)'\\?")
+    @When("I update text '(.*)-(.*)' and type ENTER with '(.*)'[\\.|\\?]")
     public void updateTextAndEnter(String page, String elementName, String textOrKey, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
         updateText(Page.getInstance(page).getPageElementByKey('-' + elementName), textOrKey, Keys.ENTER);
     }
@@ -325,7 +325,7 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Then("I check mandatory field '(.*)-(.*)' of type '(.*)'\\?")
+    @Then("I check mandatory field '(.*)-(.*)' of type '(.*)'[\\.|\\?]")
     public void checkMandatoryField(String page, String fieldName, String type, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
         PageElement pageElement = Page.getInstance(page).getPageElementByKey('-' + fieldName);
         if (pageElement != null) {
@@ -363,7 +363,7 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @And("I check text '(.*)-(.*)' with '(.*)'\\?")
+    @And("I check text '(.*)-(.*)' with '(.*)'[\\.|\\?]")
     public void checkInputText(String page, String elementName, String text, List<GherkinCondition> conditions) throws FailureException, TechnicalException {
         checkInputText(Page.getInstance(page).getPageElementByKey('-' + elementName), text);
     }
@@ -382,7 +382,7 @@ public class CommonSteps extends Step {
      *             Exception with message and with screenshot and with exception if functional error but no screenshot and no exception if technical error.
      */
     @Conditioned
-    @Then("I check absence of alert in '(.*)'\\?")
+    @Then("I check absence of alert in '(.*)'[\\.|\\?]")
     public void checkAlert(String page, List<GherkinCondition> conditions) throws FailureException, TechnicalException {
         checkAlert(Page.getInstance(page));
     }
@@ -405,7 +405,7 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @And("I update radio list '(.*)-(.*)' with '(.*)'\\?")
+    @And("I update radio list '(.*)-(.*)' with '(.*)'[\\.|\\?]")
     public void updateRadioList(String page, String elementName, String input, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
         updateRadioList(Page.getInstance(page).getPageElementByKey('-' + elementName), input);
     }
@@ -449,7 +449,7 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Then("I update checkbox '(.*)-(.*)' with '(.*)'\\?")
+    @Then("I update checkbox '(.*)-(.*)' with '(.*)'[\\.|\\?]")
     public void selectCheckbox(String page, String elementKey, boolean value, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
         selectCheckbox(Page.getInstance(page).getPageElementByKey('-' + elementKey), value);
     }
@@ -490,7 +490,7 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @When("I clear text in '(.*)-(.*)'\\?")
+    @When("I clear text in '(.*)-(.*)'[\\.|\\?]")
     public void clearText(String page, String elementName, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
         clearText(Page.getInstance(page).getPageElementByKey('-' + elementName));
     }

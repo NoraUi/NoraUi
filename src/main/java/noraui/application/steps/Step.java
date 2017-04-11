@@ -174,7 +174,8 @@ public class Step implements IStep {
                     element.sendKeys(keysToSend);
                 }
             } catch (Exception e) {
-                new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_ERROR_ON_INPUT, pageElement, pageElement.getPage().getApplication()), true, pageElement.getPage().getCallBack());
+                new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_ERROR_ON_INPUT, pageElement, pageElement.getPage().getApplication()), true,
+                        pageElement.getPage().getCallBack());
             }
         } else {
             loggerStep.debug("Empty data provided. No need to update text.");
@@ -221,7 +222,8 @@ public class Step implements IStep {
                 element.sendKeys(keysToSend);
             }
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_ERROR_CLEAR_ON_INPUT, pageElement, pageElement.getPage().getApplication()), true, pageElement.getPage().getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_ERROR_CLEAR_ON_INPUT, pageElement, pageElement.getPage().getApplication()), true,
+                    pageElement.getPage().getCallBack());
         }
     }
 
@@ -331,7 +333,8 @@ public class Step implements IStep {
             try {
                 setDropDownValue(pageElement, text);
             } catch (Exception e) {
-                new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_ERROR_ON_INPUT, pageElement, pageElement.getPage().getApplication()), true, pageElement.getPage().getCallBack());
+                new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_ERROR_ON_INPUT, pageElement, pageElement.getPage().getApplication()), true,
+                        pageElement.getPage().getCallBack());
             }
         }
     }
@@ -557,7 +560,8 @@ public class Step implements IStep {
             ((JavascriptExecutor) Step.getDriver()).executeScript(javascript, Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(element))));
 
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_PASS_OVER_ELEMENT, element, element.getPage().getApplication()), true, element.getPage().getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_PASS_OVER_ELEMENT, element, element.getPage().getApplication()), true,
+                    element.getPage().getCallBack());
         }
 
     }

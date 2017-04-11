@@ -3,8 +3,8 @@
 Fonctionnalité: jouerAuJeuDesLogos (Scénario qui joue au jeu des logos) 
 
   Plan du Scénario: Scénario qui joue au jeu des logos.
-    Lorsque Je vérifie que player '<player>' n'est pas vide?
-    Lorsque 'LOGOGAME_HOME' est ouvert?
+    Lorsque Je vérifie que player '<player>' n'est pas vide.
+    Lorsque 'LOGOGAME_HOME' est ouvert.
     Alors Le portail LOGOGAME est affiché
     
     Alors Je joue avec 'amazon'

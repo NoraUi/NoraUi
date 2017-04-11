@@ -80,6 +80,8 @@ public class Utilities {
                 locator = By.name(selector);
             } else if ("xpath".equals(entry.getKey())) {
                 locator = By.xpath(selector);
+            } else if ("class".equals(entry.getKey())) {
+                locator = By.className(selector);
             } else {
                 Assert.fail(entry.getKey() + " NOT implemented!");
             }
