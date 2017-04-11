@@ -1,5 +1,16 @@
-test:
+mysql: &mysql
   adapter: mysql2
-  database: noraui
   username: travis
-  encoding: utf8
+  database: noraui
+
+postgresql: &postgresql
+  adapter: postgresql
+  username: travis
+  database: noraui
+
+defaults: &defaults
+  pool: 5
+  timeout: 5000
+  
+test:
+  <<: *defaults
