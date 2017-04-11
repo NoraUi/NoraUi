@@ -21,6 +21,7 @@ if [ "$nb_counters" == "3" ]; then
 else
     echo "******** All counter is FAIL"
     echo "$counters find $nb_counters times"
+    cat nonaui.log
     exit 255
 fi
 
