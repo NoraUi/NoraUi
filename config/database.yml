@@ -1,17 +1,9 @@
-mysql: &mysql
+mysql:
   adapter: mysql2
   username: travis
   database: noraui
 
-postgresql: &postgresql
+postgresql:
   adapter: postgresql
   username: travis
   database: noraui
-
-defaults: &defaults
-  pool: 5
-  timeout: 5000
-  <<: *<%= ENV['DB'] %>
-  
-test:
-  <<: *defaults
