@@ -4,6 +4,7 @@ install: true
 
 env:
 - DB=pgsql
+- DB=mysql
 
 services:
 - postgresql
