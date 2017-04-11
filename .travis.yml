@@ -2,9 +2,9 @@ language: java
 sudo: false
 install: true
 
-env:
-- DB=pgsql
-- DB=mysql
+#env:
+#- DB=pgsql
+#- DB=mysql
 
 services:
 - postgresql
