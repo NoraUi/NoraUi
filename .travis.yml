@@ -7,6 +7,7 @@ env:
 
 services:
 - postgresql
+- mysql
 
 addons:
   postgresql: "9.4"
