@@ -1,5 +1,9 @@
-test:
+mysql:
   adapter: mysql2
-  database: noraui
   username: travis
-  encoding: utf8
+  database: noraui
+
+postgresql:
+  adapter: postgresql
+  username: travis
+  database: noraui

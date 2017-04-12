@@ -8,6 +8,7 @@ public class TechnicalException extends Exception {
     private static final long serialVersionUID = -8316324009963694711L;
 
     public static final String TECHNICAL_ERROR_MESSAGE = "[ERROR] Erreur technique dans NoraUi: ";
+    public static final String TECHNICAL_SUBSTEP_ERROR_MESSAGE = "Erreur lors de l'exécution de la sous-étape: ";
     public static final String TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION = "Wrong data file (IOException, EmptyDataFileContentException or WrongDataFileFormatException)";
     public static final String TECHNICAL_ERROR_MESSAGE_CHECKSUM_IO_EXCEPTION = "NoraUi Security Exception (NoSuchAlgorithmException or IOException)";
 

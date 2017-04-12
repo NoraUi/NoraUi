@@ -2,13 +2,17 @@ package noraui.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.ini4j.Ini;
@@ -17,11 +21,16 @@ import org.joda.time.DateTime;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
 
 import com.google.inject.Injector;
 
+import cucumber.api.CucumberOptions;
 import cucumber.api.Scenario;
+import cucumber.runtime.java.StepDefAnnotation;
 import noraui.application.Application;
+import noraui.application.steps.Step;
 import noraui.browser.DriverFactory;
 import noraui.browser.WindowManager;
 import noraui.browser.steps.BrowserSteps;
@@ -175,6 +184,11 @@ public class Context {
     private Injector noraUiInjectorSource;
 
     /**
+     * All java methods mapped by cucumber annotations.
+     */
+    private Map<String, Method> cucumberMethods;
+
+    /**
      * Selectors version
      */
     protected String selectorsVersion;
@@ -206,6 +220,7 @@ public class Context {
         scenarioHasWarning = false;
         exceptionCallbacks = new Callbacks();
         applications = new HashMap<>();
+        cucumberMethods = new HashMap<>();
     }
 
     /**
@@ -239,7 +254,7 @@ public class Context {
 
     }
 
-    public synchronized void initializeRobot(ClassLoader classLoader) {
+    public synchronized void initializeRobot(Class clazz) {
         logger.info("Context > initializeRobot()");
         // set browser: phantom, ie or chrome
         browser = setProperty(BROWSER_KEY, applicationProperties);
@@ -265,10 +280,46 @@ public class Context {
         exceptionCallbacks.put("GO_TO_LOGOGAME_HOME", STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, LOGOGAME_HOME);
 
         // init applications
-        initApplicationDom(classLoader, selectorsVersion, DEMO_KEY);
+        initApplicationDom(clazz.getClassLoader(), selectorsVersion, DEMO_KEY);
         applications.put(DEMO_KEY, new Application(DEMO_HOME, setProperty(DEMO_KEY, applicationProperties) + "/index.html"));
-        initApplicationDom(classLoader, selectorsVersion, LOGOGAME_KEY);
+        initApplicationDom(clazz.getClassLoader(), selectorsVersion, LOGOGAME_KEY);
         applications.put(LOGOGAME_KEY, new Application(LOGOGAME_HOME, setProperty(LOGOGAME_KEY, applicationProperties) + "/index.html"));
+
+        //////////////////////
+        CucumberOptions co = (CucumberOptions) clazz.getAnnotation(CucumberOptions.class);
+        String[] gl = co.glue();
+        System.out.println("SGR: " + gl.length);
+
+        Set<Class<?>> c = getClasses(gl);
+        c.add(BrowserSteps.class);
+
+        for (Class<?> class1 : c) {
+            System.out.println("SGR3: " + class1);
+            Method[] methods = class1.getDeclaredMethods();
+            System.out.println("SGR4: " + methods.length);
+            for (Method method : methods) {
+                System.out.println("SGR5: " + methods);
+                Annotation[] annotations = method.getAnnotations();
+                if (annotations.length > 0) {
+                    Annotation stepAnnotation = annotations[annotations.length - 1];
+                    System.out.println("SGR6: " + stepAnnotation);
+                    if (stepAnnotation.annotationType().isAnnotationPresent(StepDefAnnotation.class)) {
+                        cucumberMethods.put(stepAnnotation.toString(), method);
+                    }
+                }
+            }
+        }
+        System.out.println("SGR4");
+    }
+
+    private Set<Class<?>> getClasses(String[] packagesName) {
+        Set<Class<?>> result = new HashSet<>();
+        for (String packageName : packagesName) {
+            Set<Class<? extends Step>> ref = new Reflections(packageName, new SubTypesScanner(false)).getSubTypesOf(Step.class);
+            System.out.println("SGR2: " + ref.size());
+            result.addAll(ref);
+        }
+        return result;
     }
 
     /**
@@ -532,6 +583,10 @@ public class Context {
 
     public static void setNoraUiInjectorSource(Injector noraUiInjectorSource) {
         getInstance().noraUiInjectorSource = noraUiInjectorSource;
+    }
+
+    public static Map<String, Method> getCucumberMethods() {
+        return getInstance().cucumberMethods;
     }
 
     public static Callback getCallBack(String key) {

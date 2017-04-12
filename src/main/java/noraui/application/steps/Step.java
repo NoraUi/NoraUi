@@ -441,7 +441,6 @@ public class Step implements IStep {
      */
     protected void saveElementValue(String field, String targetKey, Page page) throws TechnicalException, FailureException {
         loggerStep.debug(String.format("saveValueInStep: %s to %s in %s.", field, targetKey, page.getApplication()));
-        System.out.println(String.format("saveValueInStep: %s to %s in %s.", field, targetKey, page.getApplication()));
         String txt = "";
         try {
             WebElement elem = Utilities.findElement(page, field);

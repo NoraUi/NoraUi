@@ -1,22 +1,16 @@
 package noraui.application.steps;
 
-import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.openqa.selenium.Keys;
-import org.reflections.Reflections;
-import org.reflections.scanners.SubTypesScanner;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
@@ -25,7 +19,6 @@ import cucumber.api.java.en.When;
 import cucumber.api.java.fr.Lorsque;
 import cucumber.metrics.annotation.time.Time;
 import cucumber.metrics.annotation.time.TimeName;
-import cucumber.runtime.java.StepDefAnnotation;
 import noraui.application.page.Page;
 import noraui.application.page.Page.PageElement;
 import noraui.cucumber.annotation.Conditioned;
@@ -58,114 +51,56 @@ public class CommonSteps extends Step {
         Thread.sleep((long) time * 1000);
     }
 
-    @Then("I toto")
-    public void toto() throws InterruptedException {
-        System.out.println("DEBUG: toto");
-        Thread.sleep(1000);
-    }
-
-    @Then("I tutu '(.*)'")
-    public void toto(boolean bool) throws InterruptedException {
-        System.out.println("DEBUG: toto");
-        Thread.sleep(1000);
-    }
-
+    /**
+     * Loop.
+     *
+     * @param time
+     *            number of run.
+     * @param conditions
+     *            list of steps run in a loop.
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (IllegalAccessException, IllegalArgumentException, InvocationTargetException, ...) in NoraUi.
+     *             Exception with {@value noraui.exception.TechnicalException#TECHNICAL_SUBSTEP_ERROR_MESSAGE} message.
+     */
     @Then("I do '(.*)' times:")
-    public void loop(int time, List<GherkinLoopedStepCondition> conditions)
-            throws InterruptedException, ClassNotFoundException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {
-        Map<String, Method> cucumberClass = getAllCucumberMethods();
-        for (int i = 0; i < time; i++) {
-            System.out.println(i + "  ************  I do '(.*)' times: **************************");
-            runAllStepsInLoop(conditions, cucumberClass);
+    public void loop(int time, List<GherkinLoopedStepCondition> conditions) throws TechnicalException {
+        try {
+            Map<String, Method> cucumberClass = Context.getCucumberMethods();
+            for (int i = 0; i < time; i++) {
+                runAllStepsInLoop(conditions, cucumberClass);
+            }
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            throw new TechnicalException(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE, e.getCause());
         }
-
     }
 
+    /**
+     * Do until.
+     *
+     * @param key
+     *            key of 'expected' values ('actual' values)
+     * @param breakCondition
+     *            'expected' values
+     * @param tries
+     *            number of max tries (no infinity loop).
+     * @param conditions
+     *            list of steps run in a loop.
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (IllegalAccessException, IllegalArgumentException, InvocationTargetException, ...) in NoraUi.
+     *             Exception with {@value noraui.exception.TechnicalException#TECHNICAL_SUBSTEP_ERROR_MESSAGE} message.
+     */
     @Then("I do until '(.*)' respects '(.*)' with '(.*)' max tries:")
-    public void doUntil(String key, String breakCondition, int tries, List<GherkinLoopedStepCondition> conditions)
-            throws ClassNotFoundException, IOException, IllegalAccessException, InvocationTargetException {
-        Map<String, Method> cucumberClass = getAllCucumberMethods();
-        int i = 0;
-        do {
-            i++;
-            System.out.println(i + "  ************  I do until **************************");
-            runAllStepsInLoop(conditions, cucumberClass);
-            System.out.println("Context.getValue(key) = " + Context.getValue(key));
-        } while (!(Pattern.compile(breakCondition).matcher(Context.getValue(key) == null ? "" : Context.getValue(key)).find() || tries == i));
-    }
-
-    // TODO a deplacer dans le context
-    private Map<String, Method> getAllCucumberMethods() throws ClassNotFoundException, IOException {
-        Map<String, Method> cucumberClass = new HashMap<>();
-        Set<Class<?>> classes = getClasses("noraui.application.steps");
-        for (Class<?> class1 : classes) {
-            Method[] methods = class1.getDeclaredMethods();
-            for (Method method : methods) {
-                Annotation[] annotations = method.getAnnotations();
-                if (annotations.length > 0) {
-                    Annotation stepAnnotation = annotations[annotations.length - 1];
-                    if (stepAnnotation.annotationType().isAnnotationPresent(StepDefAnnotation.class)) {
-                        // System.out.println(" ------>: " + stepAnnotation.toString());
-                        cucumberClass.put(stepAnnotation.toString(), method);
-                    }
-                }
-            }
+    public void doUntil(String key, String breakCondition, int tries, List<GherkinLoopedStepCondition> conditions) throws TechnicalException {
+        try {
+            Map<String, Method> cucumberClass = Context.getCucumberMethods();
+            int i = 0;
+            do {
+                i++;
+                runAllStepsInLoop(conditions, cucumberClass);
+            } while (!(Pattern.compile(breakCondition).matcher(Context.getValue(key) == null ? "" : Context.getValue(key)).find() || tries == i));
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            throw new TechnicalException(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE, e.getCause());
         }
-        return cucumberClass;
-    }
-
-    private void runAllStepsInLoop(List<GherkinLoopedStepCondition> conditions, Map<String, Method> cucumberClass) throws IllegalAccessException, InvocationTargetException {
-        for (GherkinLoopedStepCondition condition : conditions) {
-            List<GherkinStepCondition> stepConditions = new ArrayList<>();
-            GherkinStepCondition g = new GherkinStepCondition();
-            g.setActual(condition.getActual());
-            g.setExpected(condition.getExpected());
-            stepConditions.add(g);
-            System.out.println("SGR: " + condition.getStep());
-            for (Entry<String, Method> elem : cucumberClass.entrySet()) {
-                Matcher matcher = Pattern.compile("value=(.*)\\)").matcher(elem.getKey());
-                if (matcher.find()) {
-                    Matcher matcher2 = Pattern.compile(matcher.group(1)).matcher(condition.getStep());
-                    if (matcher2.find()) {
-
-                        Object[] tab;
-                        if (elem.getValue().isAnnotationPresent(Conditioned.class)) {
-                            System.out.println("SGR run with condition  >");
-                            tab = new Object[matcher2.groupCount() + 1];
-                            tab[matcher2.groupCount()] = stepConditions;
-                        } else {
-                            System.out.println("SGR run without condition  >");
-                            tab = new Object[matcher2.groupCount()];
-                        }
-
-                        // System.out.println("groupCount--->" + matcher2.groupCount());
-                        for (int i = 0; i < matcher2.groupCount(); i++) {
-                            Parameter param = elem.getValue().getParameters()[i];
-                            // System.out.println("Param type--->" + param.getType());
-                            if (param.getType() == int.class) {
-                                int ii = Integer.parseInt(matcher2.group(i + 1));
-                                tab[i] = ii;
-                            } else if (param.getType() == boolean.class) {
-                                tab[i] = Boolean.parseBoolean(matcher2.group(i + 1));
-                            } else {
-                                tab[i] = matcher2.group(i + 1);
-                            }
-                        }
-
-                        for (Object object : tab) {
-                            // System.out.println("-*-*-*-*-*-*-*-*--->" + object);
-                        }
-                        // GuiceFactory guiceFactory = new GuiceFactory();
-                        // elem.getValue().invoke(elem.getValue().getDeclaringClass().newInstance(), tab);
-                        elem.getValue().invoke(Context.getNoraUiInjectorSource().getInstance(elem.getValue().getDeclaringClass()), tab);
-                    }
-                }
-            }
-        }
-    }
-
-    private Set<Class<?>> getClasses(String packageName) throws ClassNotFoundException, IOException {
-        return new Reflections(packageName, new SubTypesScanner(false)).getSubTypesOf(Object.class);
     }
 
     /**
@@ -617,4 +552,45 @@ public class CommonSteps extends Step {
     public void clearText(String page, String elementName, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         clearText(Page.getInstance(page).getPageElementByKey('-' + elementName));
     }
+
+    private void runAllStepsInLoop(List<GherkinLoopedStepCondition> conditions, Map<String, Method> cucumberClass)
+            throws TechnicalException, InvocationTargetException, IllegalAccessException, IllegalArgumentException {
+        for (GherkinLoopedStepCondition condition : conditions) {
+            List<GherkinStepCondition> stepConditions = new ArrayList<>();
+            GherkinStepCondition g = new GherkinStepCondition();
+            g.setActual(condition.getActual());
+            g.setExpected(condition.getExpected());
+            stepConditions.add(g);
+            for (Entry<String, Method> elem : cucumberClass.entrySet()) {
+                Matcher matcher = Pattern.compile("value=(.*)\\)").matcher(elem.getKey());
+                if (matcher.find()) {
+                    Matcher matcher2 = Pattern.compile(matcher.group(1)).matcher(condition.getStep());
+                    if (matcher2.find()) {
+                        Object[] tab;
+                        if (elem.getValue().isAnnotationPresent(Conditioned.class)) {
+                            tab = new Object[matcher2.groupCount() + 1];
+                            tab[matcher2.groupCount()] = stepConditions;
+                        } else {
+                            tab = new Object[matcher2.groupCount()];
+                        }
+
+                        for (int i = 0; i < matcher2.groupCount(); i++) {
+                            Parameter param = elem.getValue().getParameters()[i];
+                            if (param.getType() == int.class) {
+                                int ii = Integer.parseInt(matcher2.group(i + 1));
+                                tab[i] = ii;
+                            } else if (param.getType() == boolean.class) {
+                                tab[i] = Boolean.parseBoolean(matcher2.group(i + 1));
+                            } else {
+                                tab[i] = matcher2.group(i + 1);
+                            }
+                        }
+                        elem.getValue().invoke(Context.getNoraUiInjectorSource().getInstance(elem.getValue().getDeclaringClass()), tab);
+                    }
+
+                }
+            }
+        }
+    }
+
 }
