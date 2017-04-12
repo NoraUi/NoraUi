@@ -49,8 +49,8 @@ public class HelloByeSteps extends Step {
     @Time
     @SpeedRegulators({ @SpeedRegulator(application = "DEMO2", costString = "${demo2.cost}", verbose = true), @SpeedRegulator(application = "DEMO3", cost = 2, unit = TimeUnit.SECONDS) })
     @Conditioned
-    @Etantdonné("j'ai un bonjour, s'il vous plaît. Cordialement '(.*)'\\?")
-    @Given("me a hello, please. Best Regards '(.*)'\\?")
+    @Etantdonné("j'ai un bonjour, s'il vous plaît. Cordialement '(.*)'[\\.|\\?]")
+    @Given("me a hello, please. Best Regards '(.*)'[\\.|\\?]")
     public void hello(String name, List<GherkinStepCondition> conditions) {
         logger.info("Hello " + name + "!");
     }

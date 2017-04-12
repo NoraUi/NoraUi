@@ -43,8 +43,8 @@ public class BrowserSteps {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Quand("J'ouvre une nouvelle fenêtre\\?")
-    @When("I open a new window\\?")
+    @Quand("J'ouvre une nouvelle fenêtre[\\.|\\?]")
+    @When("I open a new window[\\.|\\?]")
     public void openNewWindow(List<GherkinStepCondition> conditions) throws FailureException {
         try {
             Set<String> initialWindows = Context.getDriver().getWindowHandles();
@@ -72,8 +72,8 @@ public class BrowserSteps {
      */
     @Times({ @Time(name = "AM"), @Time(name = "{pageKey}") })
     @Conditioned
-    @Lorsque("'(.*)' est ouvert\\?")
-    @Given("'(.*)' is opened\\?")
+    @Lorsque("'(.*)' est ouvert[\\.|\\?]")
+    @Given("'(.*)' is opened[\\.|\\?]")
     public void openUrlIfDifferent(@TimeName("pageKey") String pageKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         goToUrl(pageKey, false);
     }
@@ -143,8 +143,8 @@ public class BrowserSteps {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Lorsque("Je ferme la fenêtre actuelle et passe à la fenêtre '(.*)'\\?")
-    @Then("I close current window and switch to '(.*)' window\\?")
+    @Lorsque("Je ferme la fenêtre actuelle et passe à la fenêtre '(.*)'[\\.|\\?]")
+    @Then("I close current window and switch to '(.*)' window[\\.|\\?]")
     public void closeWindowAndSwitchTo(String key, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         closeWindowAndSwitchTo(key);
     }
@@ -163,8 +163,8 @@ public class BrowserSteps {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Lorsque("Je ferme toutes les fenêtres sauf '(.*)'\\?")
-    @Then("I close all windows except '(.*)'\\?")
+    @Lorsque("Je ferme toutes les fenêtres sauf '(.*)'[\\.|\\?]")
+    @Then("I close all windows except '(.*)'[\\.|\\?]")
     public void closeAllWindowsAndSwitchTo(String key, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         closeAllWindowsAndSwitchTo(key);
     }
