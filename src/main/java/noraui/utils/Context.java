@@ -287,37 +287,27 @@ public class Context {
 
         //////////////////////
         CucumberOptions co = (CucumberOptions) clazz.getAnnotation(CucumberOptions.class);
-        String[] gl = co.glue();
-        System.out.println("SGR: " + gl.length);
-
-        Set<Class<?>> c = getClasses(gl);
+        Set<Class<?>> c = getClasses(co.glue());
         c.add(BrowserSteps.class);
 
         for (Class<?> class1 : c) {
-            System.out.println("SGR3: " + class1);
             Method[] methods = class1.getDeclaredMethods();
-            System.out.println("SGR4: " + methods.length);
             for (Method method : methods) {
-                System.out.println("SGR5: " + methods);
                 Annotation[] annotations = method.getAnnotations();
                 if (annotations.length > 0) {
                     Annotation stepAnnotation = annotations[annotations.length - 1];
-                    System.out.println("SGR6: " + stepAnnotation);
                     if (stepAnnotation.annotationType().isAnnotationPresent(StepDefAnnotation.class)) {
                         cucumberMethods.put(stepAnnotation.toString(), method);
                     }
                 }
             }
         }
-        System.out.println("SGR4");
     }
 
     private Set<Class<?>> getClasses(String[] packagesName) {
         Set<Class<?>> result = new HashSet<>();
         for (String packageName : packagesName) {
-            Set<Class<? extends Step>> ref = new Reflections(packageName, new SubTypesScanner(false)).getSubTypesOf(Step.class);
-            System.out.println("SGR2: " + ref.size());
-            result.addAll(ref);
+            result.addAll(new Reflections(packageName, new SubTypesScanner(false)).getSubTypesOf(Step.class));
         }
         return result;
     }
