@@ -49,8 +49,15 @@ SNAPSHOT
 <dependency>
     <groupId>com.github.noraui</groupId>
     <artifactId>noraui</artifactId>
-    <version>2.1.2-SNAPSHOT</version>
+    <version>2.3.0-SNAPSHOT</version>
 </dependency>
+```
+
+```xml
+<repository>
+    <id>sonatype-snapshots</id>
+    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+</repository>
 ```
 
 # Technology
