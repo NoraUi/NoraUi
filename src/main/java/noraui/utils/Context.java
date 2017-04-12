@@ -18,6 +18,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.google.inject.Injector;
+
 import cucumber.api.Scenario;
 import noraui.application.Application;
 import noraui.browser.DriverFactory;
@@ -166,6 +168,11 @@ public class Context {
      * Instance of DataOutputProvider
      */
     private DataOutputProvider dataOutputProvider;
+
+    /**
+     * Instance of Guice injector. ({@link noraui.cucumber.injector.NoraUiInjectorSource}).
+     */
+    private Injector noraUiInjectorSource;
 
     /**
      * Selectors version
@@ -517,6 +524,14 @@ public class Context {
 
     public static String getSelectorsVersion() {
         return getInstance().selectorsVersion;
+    }
+
+    public static Injector getNoraUiInjectorSource() {
+        return getInstance().noraUiInjectorSource;
+    }
+
+    public static void setNoraUiInjectorSource(Injector noraUiInjectorSource) {
+        getInstance().noraUiInjectorSource = noraUiInjectorSource;
     }
 
     public static Callback getCallBack(String key) {

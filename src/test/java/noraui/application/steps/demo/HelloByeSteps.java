@@ -24,7 +24,7 @@ import noraui.cucumber.annotation.RetryOnFailure;
 import noraui.exception.FailureException;
 import noraui.exception.Result;
 import noraui.exception.TechnicalException;
-import noraui.gherkin.GherkinCondition;
+import noraui.gherkin.GherkinStepCondition;
 import noraui.utils.Messages;
 
 public class HelloByeSteps extends Step {
@@ -51,7 +51,7 @@ public class HelloByeSteps extends Step {
     @Conditioned
     @Etantdonné("j'ai un bonjour, s'il vous plaît. Cordialement '(.*)'\\?")
     @Given("me a hello, please. Best Regards '(.*)'\\?")
-    public void hello(String name, List<GherkinCondition> conditions) {
+    public void hello(String name, List<GherkinStepCondition> conditions) {
         logger.info("Hello " + name + "!");
     }
 

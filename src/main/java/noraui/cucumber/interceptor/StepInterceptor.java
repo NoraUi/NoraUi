@@ -23,6 +23,9 @@ public class StepInterceptor implements MethodInterceptor {
      */
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
+
+        System.out.println("*$*$*$*$*$*$*$*$*$*$*$*$*$*$*$");
+
         Object result = null;
         Method m = invocation.getMethod();
         Annotation[] annotations = m.getAnnotations();

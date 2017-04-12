@@ -26,7 +26,7 @@ import noraui.exception.Callbacks;
 import noraui.exception.FailureException;
 import noraui.exception.Result;
 import noraui.exception.TechnicalException;
-import noraui.gherkin.GherkinCondition;
+import noraui.gherkin.GherkinStepCondition;
 import noraui.utils.Context;
 import noraui.utils.Messages;
 
@@ -38,14 +38,14 @@ public class BrowserSteps {
      * Open new window with conditions.
      *
      * @param conditions
-     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinCondition}).
+     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
     @Conditioned
     @Quand("J'ouvre une nouvelle fenêtre\\?")
     @When("I open a new window\\?")
-    public void openNewWindow(List<GherkinCondition> conditions) throws FailureException {
+    public void openNewWindow(List<GherkinStepCondition> conditions) throws FailureException {
         try {
             Set<String> initialWindows = Context.getDriver().getWindowHandles();
             String js = "window.open(\"\");";
@@ -63,7 +63,7 @@ public class BrowserSteps {
      * @param pageKey
      *            is the key of page (example: SALTO_HOME)
      * @param conditions
-     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinCondition}).
+     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_OPEN_APPLICATION} message (with screenshot, with exception)
@@ -74,7 +74,7 @@ public class BrowserSteps {
     @Conditioned
     @Lorsque("'(.*)' est ouvert\\?")
     @Given("'(.*)' is opened\\?")
-    public void openUrlIfDifferent(@TimeName("pageKey") String pageKey, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
+    public void openUrlIfDifferent(@TimeName("pageKey") String pageKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         goToUrl(pageKey, false);
     }
 
@@ -135,7 +135,7 @@ public class BrowserSteps {
      * @param key
      *            is the key of application (Ex: SALTO).
      * @param conditions
-     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinCondition}).
+     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_CLOSE_APP} message (with screenshot, no exception)
@@ -145,7 +145,7 @@ public class BrowserSteps {
     @Conditioned
     @Lorsque("Je ferme la fenêtre actuelle et passe à la fenêtre '(.*)'\\?")
     @Then("I close current window and switch to '(.*)' window\\?")
-    public void closeWindowAndSwitchTo(String key, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
+    public void closeWindowAndSwitchTo(String key, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         closeWindowAndSwitchTo(key);
     }
 
@@ -155,7 +155,7 @@ public class BrowserSteps {
      * @param key
      *            is the key of application (Ex: SALTO).
      * @param conditions
-     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinCondition}).
+     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_CLOSE_APP} message (with screenshot, no exception)
@@ -165,7 +165,7 @@ public class BrowserSteps {
     @Conditioned
     @Lorsque("Je ferme toutes les fenêtres sauf '(.*)'\\?")
     @Then("I close all windows except '(.*)'\\?")
-    public void closeAllWindowsAndSwitchTo(String key, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
+    public void closeAllWindowsAndSwitchTo(String key, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         closeAllWindowsAndSwitchTo(key);
     }
 

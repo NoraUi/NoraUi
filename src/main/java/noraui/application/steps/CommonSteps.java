@@ -1,11 +1,22 @@
 package noraui.application.steps;
 
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.openqa.selenium.Keys;
+import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
@@ -14,6 +25,7 @@ import cucumber.api.java.en.When;
 import cucumber.api.java.fr.Lorsque;
 import cucumber.metrics.annotation.time.Time;
 import cucumber.metrics.annotation.time.TimeName;
+import cucumber.runtime.java.StepDefAnnotation;
 import noraui.application.page.Page;
 import noraui.application.page.Page.PageElement;
 import noraui.cucumber.annotation.Conditioned;
@@ -21,7 +33,8 @@ import noraui.exception.Callbacks;
 import noraui.exception.FailureException;
 import noraui.exception.Result;
 import noraui.exception.TechnicalException;
-import noraui.gherkin.GherkinCondition;
+import noraui.gherkin.GherkinLoopedStepCondition;
+import noraui.gherkin.GherkinStepCondition;
 import noraui.utils.Constants;
 import noraui.utils.Context;
 import noraui.utils.Messages;
@@ -34,15 +47,126 @@ public class CommonSteps extends Step {
      * @param time
      *            is time to wait
      * @param conditions
-     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinCondition}).
+     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
      * @throws InterruptedException
      *             Exception for the sleep
      */
     @Conditioned
-    @Lorsque("Puis j'attends '(.*)' secondes\\?")
-    @Then("I wait '(.*)' seconds\\?")
-    public void wait(int time, List<GherkinCondition> conditions) throws InterruptedException {
+    @Lorsque("Puis j'attends '(.*)' secondes[\\.|\\?]")
+    @Then("I wait '(.*)' seconds[\\.|\\?]")
+    public void wait(int time, List<GherkinStepCondition> conditions) throws InterruptedException {
+        System.out.println("DEBUG: I wait '" + time + "' seconds");
         Thread.sleep((long) time * 1000);
+    }
+
+    @Then("I toto")
+    public void toto() throws InterruptedException {
+        System.out.println("DEBUG: toto");
+        Thread.sleep(1000);
+    }
+
+    @Then("I tutu '(.*)'")
+    public void toto(boolean bool) throws InterruptedException {
+        System.out.println("DEBUG: toto");
+        Thread.sleep(1000);
+    }
+
+    @Then("I do '(.*)' times:")
+    public void loop(int time, List<GherkinLoopedStepCondition> conditions)
+            throws InterruptedException, ClassNotFoundException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {
+        Map<String, Method> cucumberClass = getAllCucumberMethods();
+        for (int i = 0; i < time; i++) {
+            System.out.println(i + "  ************  I do '(.*)' times: **************************");
+            runAllStepsInLoop(conditions, cucumberClass);
+        }
+
+    }
+
+    @Then("I do until '(.*)' respects '(.*)' with '(.*)' max tries:")
+    public void doUntil(String key, String breakCondition, int tries, List<GherkinLoopedStepCondition> conditions)
+            throws ClassNotFoundException, IOException, IllegalAccessException, InvocationTargetException {
+        Map<String, Method> cucumberClass = getAllCucumberMethods();
+        int i = 0;
+        do {
+            i++;
+            System.out.println(i + "  ************  I do until **************************");
+            runAllStepsInLoop(conditions, cucumberClass);
+            System.out.println("Context.getValue(key) = " + Context.getValue(key));
+        } while (!(Pattern.compile(breakCondition).matcher(Context.getValue(key) == null ? "" : Context.getValue(key)).find() || tries == i));
+    }
+
+    // TODO a deplacer dans le context
+    private Map<String, Method> getAllCucumberMethods() throws ClassNotFoundException, IOException {
+        Map<String, Method> cucumberClass = new HashMap<>();
+        Set<Class<?>> classes = getClasses("noraui.application.steps");
+        for (Class<?> class1 : classes) {
+            Method[] methods = class1.getDeclaredMethods();
+            for (Method method : methods) {
+                Annotation[] annotations = method.getAnnotations();
+                if (annotations.length > 0) {
+                    Annotation stepAnnotation = annotations[annotations.length - 1];
+                    if (stepAnnotation.annotationType().isAnnotationPresent(StepDefAnnotation.class)) {
+                        // System.out.println(" ------>: " + stepAnnotation.toString());
+                        cucumberClass.put(stepAnnotation.toString(), method);
+                    }
+                }
+            }
+        }
+        return cucumberClass;
+    }
+
+    private void runAllStepsInLoop(List<GherkinLoopedStepCondition> conditions, Map<String, Method> cucumberClass) throws IllegalAccessException, InvocationTargetException {
+        for (GherkinLoopedStepCondition condition : conditions) {
+            List<GherkinStepCondition> stepConditions = new ArrayList<>();
+            GherkinStepCondition g = new GherkinStepCondition();
+            g.setActual(condition.getActual());
+            g.setExpected(condition.getExpected());
+            stepConditions.add(g);
+            System.out.println("SGR: " + condition.getStep());
+            for (Entry<String, Method> elem : cucumberClass.entrySet()) {
+                Matcher matcher = Pattern.compile("value=(.*)\\)").matcher(elem.getKey());
+                if (matcher.find()) {
+                    Matcher matcher2 = Pattern.compile(matcher.group(1)).matcher(condition.getStep());
+                    if (matcher2.find()) {
+
+                        Object[] tab;
+                        if (elem.getValue().isAnnotationPresent(Conditioned.class)) {
+                            System.out.println("SGR run with condition  >");
+                            tab = new Object[matcher2.groupCount() + 1];
+                            tab[matcher2.groupCount()] = stepConditions;
+                        } else {
+                            System.out.println("SGR run without condition  >");
+                            tab = new Object[matcher2.groupCount()];
+                        }
+
+                        // System.out.println("groupCount--->" + matcher2.groupCount());
+                        for (int i = 0; i < matcher2.groupCount(); i++) {
+                            Parameter param = elem.getValue().getParameters()[i];
+                            // System.out.println("Param type--->" + param.getType());
+                            if (param.getType() == int.class) {
+                                int ii = Integer.parseInt(matcher2.group(i + 1));
+                                tab[i] = ii;
+                            } else if (param.getType() == boolean.class) {
+                                tab[i] = Boolean.parseBoolean(matcher2.group(i + 1));
+                            } else {
+                                tab[i] = matcher2.group(i + 1);
+                            }
+                        }
+
+                        for (Object object : tab) {
+                            // System.out.println("-*-*-*-*-*-*-*-*--->" + object);
+                        }
+                        // GuiceFactory guiceFactory = new GuiceFactory();
+                        // elem.getValue().invoke(elem.getValue().getDeclaringClass().newInstance(), tab);
+                        elem.getValue().invoke(Context.getNoraUiInjectorSource().getInstance(elem.getValue().getDeclaringClass()), tab);
+                    }
+                }
+            }
+        }
+    }
+
+    private Set<Class<?>> getClasses(String packageName) throws ClassNotFoundException, IOException {
+        return new Reflections(packageName, new SubTypesScanner(false)).getSubTypesOf(Object.class);
     }
 
     /**
@@ -54,7 +178,7 @@ public class CommonSteps extends Step {
      * @param textOrKey
      *            The value
      * @param conditions
-     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinCondition}).
+     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_EMPTY_DATA} message (no screenshot)
@@ -65,7 +189,7 @@ public class CommonSteps extends Step {
     @Time(name = "{textOrKey}")
     @Lorsque("Je vérifie que (.*) '(.*)' n'est pas vide\\?")
     @Given("I check that (.*) '(.*)' is not empty\\?")
-    public void checkNotEmpty(String data, @TimeName("textOrKey") String textOrKey, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
+    public void checkNotEmpty(String data, @TimeName("textOrKey") String textOrKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         if (!"".equals(data)) {
             String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
             if ("".equals(value)) {
@@ -118,13 +242,13 @@ public class CommonSteps extends Step {
 
     /**
      * Save field in memory if all 'expected' parameters equals 'actual' parameters in conditions.
-     * 
+     *
      * @param page
      *            The concerned page of field
      * @param field
      *            Name of the field to save in memory.
      * @param conditions
-     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinCondition}).
+     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
      *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} or {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_RETRIEVE_VALUE}
@@ -135,14 +259,14 @@ public class CommonSteps extends Step {
      */
     @Conditioned
     @And("I save the value of '(.*)-(.*)'\\?")
-    public void saveElementValue(String page, String field, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
+    public void saveElementValue(String page, String field, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         saveElementValue('-' + field, Page.getInstance(page));
     }
 
     /**
      * Save field in memory if all 'expected' parameters equals 'actual' parameters in conditions.
      * The value is saved directly into the Context targetKey.
-     * 
+     *
      * @param page
      *            The concerned page of field
      * @param field
@@ -150,7 +274,7 @@ public class CommonSteps extends Step {
      * @param targetKey
      *            Target key to save retrieved value.
      * @param conditions
-     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinCondition}).
+     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
      * @throws FailureException
      *             if the scenario encounters a functional error (with message and screenshot)
      * @throws TechnicalException
@@ -159,19 +283,19 @@ public class CommonSteps extends Step {
      */
     @Conditioned
     @And("I save the value of '(.*)-(.*)' in '(.*)' context key\\?")
-    public void saveValue(String page, String field, String targetKey, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
+    public void saveValue(String page, String field, String targetKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         saveElementValue('-' + field, targetKey, Page.getInstance(page));
     }
 
     /**
      * Click on html element if all 'expected' parameters equals 'actual' parameters in conditions.
-     * 
+     *
      * @param page
      *            The concerned page of toClick
      * @param toClick
      *            html element.
      * @param conditions
-     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinCondition}).
+     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
      *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK} message (with screenshot, no exception)
@@ -180,20 +304,20 @@ public class CommonSteps extends Step {
      */
     @Conditioned
     @When("I click on '(.*)-(.*)'\\?")
-    public void clickOn(String page, String toClick, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
+    public void clickOn(String page, String toClick, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         loggerStep.debug(page + " clickOn: " + toClick);
         clickOn(Page.getInstance(page).getPageElementByKey('-' + toClick));
     }
 
     /**
      * Click on html element using Javascript if all 'expected' parameters equals 'actual' parameters in conditions.
-     * 
+     *
      * @param page
      *            The concerned page of toClick
      * @param toClick
      *            html element
      * @param conditions
-     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinCondition}).
+     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK} message (with screenshot, with exception)
@@ -202,14 +326,14 @@ public class CommonSteps extends Step {
      */
     @Conditioned
     @When("I click by js on '(.*)-(.*)'\\?")
-    public void clickOnByJs(String page, String toClick, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
+    public void clickOnByJs(String page, String toClick, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         loggerStep.debug(page + " clickOnByJs: " + toClick);
         clickOnByJs(Page.getInstance(page).getPageElementByKey('-' + toClick));
     }
 
     /**
      * Update a html input text with a date.
-     * 
+     *
      * @param page
      *            The concerned page of elementName
      * @param elementName
@@ -219,7 +343,7 @@ public class CommonSteps extends Step {
      * @param dateType
      *            'future', 'future_strict', 'today' or 'any'
      * @param conditions
-     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinCondition}).
+     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
      *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with a message (no screenshot, no exception)
@@ -228,7 +352,7 @@ public class CommonSteps extends Step {
      */
     @Conditioned
     @When("I update date '(.*)-(.*)' with a '(.*)' date '(.*)'\\?")
-    public void updateDate(String page, String elementName, String dateType, String date, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
+    public void updateDate(String page, String elementName, String dateType, String date, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         if (!"".equals(date)) {
             PageElement pageElement = Page.getInstance(page).getPageElementByKey('-' + elementName);
             if (date.matches(Constants.DATE_FORMAT_REG_EXP)) {
@@ -249,7 +373,7 @@ public class CommonSteps extends Step {
      * @param text
      *            Is the new data
      * @param conditions
-     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinCondition}).
+     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
      *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_ERROR_ON_INPUT} message (with screenshot, no exception)
@@ -258,13 +382,13 @@ public class CommonSteps extends Step {
      */
     @Conditioned
     @When("I update select list '(.*)-(.*)' with '(.*)'\\?")
-    public void updateList(String page, String elementName, String text, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
+    public void updateList(String page, String elementName, String text, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         updateList(Page.getInstance(page).getPageElementByKey('-' + elementName), text);
     }
 
     /**
      * Update a html input text with a given text.
-     * 
+     *
      * @param page
      *            The concerned page of elementName
      * @param elementName
@@ -272,7 +396,7 @@ public class CommonSteps extends Step {
      * @param text
      *            Is the new data (text)
      * @param conditions
-     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinCondition}).
+     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
      *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_ERROR_ON_INPUT} message (with screenshot, no exception)
@@ -281,13 +405,13 @@ public class CommonSteps extends Step {
      */
     @Conditioned
     @When("I update text '(.*)-(.*)' with '(.*)'\\?")
-    public void updateText(String page, String elementName, String text, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
+    public void updateText(String page, String elementName, String text, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         updateText(Page.getInstance(page).getPageElementByKey('-' + elementName), text);
     }
 
     /**
      * Update a html input text with a given text and then press ENTER key.
-     * 
+     *
      * @param page
      *            The concerned page of elementName
      * @param elementName
@@ -295,7 +419,7 @@ public class CommonSteps extends Step {
      * @param textOrKey
      *            The updated value. Can be a key from registry of plain text
      * @param conditions
-     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinCondition}).
+     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
      *             if the scenario encounters a technical error
      * @throws FailureException
@@ -303,13 +427,13 @@ public class CommonSteps extends Step {
      */
     @Conditioned
     @When("I update text '(.*)-(.*)' and type ENTER with '(.*)'\\?")
-    public void updateTextAndEnter(String page, String elementName, String textOrKey, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
+    public void updateTextAndEnter(String page, String elementName, String textOrKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         updateText(Page.getInstance(page).getPageElementByKey('-' + elementName), textOrKey, Keys.ENTER);
     }
 
     /**
      * Checks that mandatory field is no empty with conditions.
-     * 
+     *
      * @param page
      *            The concerned page of fieldName
      * @param fieldName
@@ -317,7 +441,7 @@ public class CommonSteps extends Step {
      * @param type
      *            Type of the field ('text', 'select'...)
      * @param conditions
-     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinCondition}).
+     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
      *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with message and with screenshot and with exception if functional error but no screenshot and no exception if technical error.
@@ -326,7 +450,7 @@ public class CommonSteps extends Step {
      */
     @Conditioned
     @Then("I check mandatory field '(.*)-(.*)' of type '(.*)'\\?")
-    public void checkMandatoryField(String page, String fieldName, String type, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
+    public void checkMandatoryField(String page, String fieldName, String type, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         PageElement pageElement = Page.getInstance(page).getPageElementByKey('-' + fieldName);
         if (pageElement != null) {
             switch (type) {
@@ -355,7 +479,7 @@ public class CommonSteps extends Step {
      * @param text
      *            Expected value in input text (value can be null).
      * @param conditions
-     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinCondition}).
+     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
      *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with message and with screenshot and with exception if functional error but no screenshot and no exception if technical error.
@@ -364,17 +488,17 @@ public class CommonSteps extends Step {
      */
     @Conditioned
     @And("I check text '(.*)-(.*)' with '(.*)'\\?")
-    public void checkInputText(String page, String elementName, String text, List<GherkinCondition> conditions) throws FailureException, TechnicalException {
+    public void checkInputText(String page, String elementName, String text, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
         checkInputText(Page.getInstance(page).getPageElementByKey('-' + elementName), text);
     }
 
     /**
      * Checks that a given page displays a html alert.
-     * 
+     *
      * @param page
      *            The concerned page
      * @param conditions
-     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinCondition}).
+     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
      * @throws FailureException
      *             if the scenario encounters a functional error
      * @throws TechnicalException
@@ -383,13 +507,13 @@ public class CommonSteps extends Step {
      */
     @Conditioned
     @Then("I check absence of alert in '(.*)'\\?")
-    public void checkAlert(String page, List<GherkinCondition> conditions) throws FailureException, TechnicalException {
+    public void checkAlert(String page, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
         checkAlert(Page.getInstance(page));
     }
 
     /**
      * Updates the value of a html radio element with conditions.
-     * 
+     *
      * @param page
      *            The concerned page of elementName
      * @param elementName
@@ -397,7 +521,7 @@ public class CommonSteps extends Step {
      * @param input
      *            is the new value
      * @param conditions
-     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinCondition}).
+     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Failure with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_SELECT_RADIO_BUTTON} message (with screenshot)
@@ -406,7 +530,7 @@ public class CommonSteps extends Step {
      */
     @Conditioned
     @And("I update radio list '(.*)-(.*)' with '(.*)'\\?")
-    public void updateRadioList(String page, String elementName, String input, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
+    public void updateRadioList(String page, String elementName, String input, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         updateRadioList(Page.getInstance(page).getPageElementByKey('-' + elementName), input);
     }
 
@@ -434,7 +558,7 @@ public class CommonSteps extends Step {
 
     /**
      * Updates the value of a html checkbox element with conditions.
-     * 
+     *
      * @param page
      *            The concerned page of elementKey
      * @param elementKey
@@ -442,7 +566,7 @@ public class CommonSteps extends Step {
      * @param value
      *            To check or not ?
      * @param conditions
-     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinCondition}).
+     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
      *             if the scenario encounters a technical error
      * @throws FailureException
@@ -450,13 +574,13 @@ public class CommonSteps extends Step {
      */
     @Conditioned
     @Then("I update checkbox '(.*)-(.*)' with '(.*)'\\?")
-    public void selectCheckbox(String page, String elementKey, boolean value, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
+    public void selectCheckbox(String page, String elementKey, boolean value, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         selectCheckbox(Page.getInstance(page).getPageElementByKey('-' + elementKey), value);
     }
 
     /**
      * Updates the value of a html checkbox element with conditions regarding the provided keys/values map.
-     * 
+     *
      * @param page
      *            The concerned page of elementKey
      * @param elementKey
@@ -477,13 +601,13 @@ public class CommonSteps extends Step {
 
     /**
      * Clears a html element with conditions.
-     * 
+     *
      * @param page
      *            The concerned page of elementName
      * @param elementName
      *            The key of the PageElement to clear
      * @param conditions
-     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinCondition}).
+     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
      *             if the scenario encounters a technical error
      * @throws FailureException
@@ -491,7 +615,7 @@ public class CommonSteps extends Step {
      */
     @Conditioned
     @When("I clear text in '(.*)-(.*)'\\?")
-    public void clearText(String page, String elementName, List<GherkinCondition> conditions) throws TechnicalException, FailureException {
+    public void clearText(String page, String elementName, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         clearText(Page.getInstance(page).getPageElementByKey('-' + elementName));
     }
 }

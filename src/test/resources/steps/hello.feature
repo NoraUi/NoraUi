@@ -9,8 +9,8 @@ Feature: hello (Function to validate the environment.)
         |city|<city>|
         |element|<element>|
         
-    Then I wait '1' seconds?  
-    
+    Then I wait '1' seconds.
+         
     Given 'DEMO_HOME' is opened?
     Then The DEMO portal is displayed.
 		
@@ -54,4 +54,9 @@ Feature: hello (Function to validate the environment.)
   Examples:
     #DATA
     |id|author|zip|city|element|date|
+    |1|Jenkins T1|35000|Rennes|smile|16/01/2020|
+    |2|Jenkins T2|75000|Paris|smile||
+    |3|Jenkins T3|56100|Lorient|smile||
+    |4|Jenkins T4|35000|Rennes|smile||
+    |5|Jenkins T5|35000|Rennes|noExistElement||
     #END

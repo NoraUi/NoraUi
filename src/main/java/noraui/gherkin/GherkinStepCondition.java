@@ -1,6 +1,6 @@
 package noraui.gherkin;
 
-public class GherkinCondition {
+public class GherkinStepCondition {
 
     private String key;
     private String expected;

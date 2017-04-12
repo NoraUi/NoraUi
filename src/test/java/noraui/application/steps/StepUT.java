@@ -17,7 +17,7 @@ import noraui.application.page.Page.PageElement;
 import noraui.application.page.demo.DemoPage;
 import noraui.cucumber.interceptor.ConditionedInterceptor;
 import noraui.exception.TechnicalException;
-import noraui.gherkin.GherkinCondition;
+import noraui.gherkin.GherkinStepCondition;
 import noraui.utils.Context;
 import noraui.utils.Messages;
 
@@ -25,8 +25,8 @@ public class StepUT {
 
     private Step step;
     private ConditionedInterceptor ci;
-    private GherkinCondition gherkinCondition;
-    private List<GherkinCondition> conditions;
+    private GherkinStepCondition gherkinCondition;
+    private List<GherkinStepCondition> conditions;
 
     public static final String DO_NOT_MATCH_STRING = "^(?!.*IPADSL|.*C2E|.*LL2048).*$";
     public static final String CONTAINS_STRING = "^(.*Accès L2ETH|.*Accès L2TP).*$";
@@ -35,7 +35,7 @@ public class StepUT {
     public void setUp() {
         step = new Step();
         ci = new ConditionedInterceptor();
-        gherkinCondition = new GherkinCondition();
+        gherkinCondition = new GherkinStepCondition();
         conditions = new ArrayList<>();
     }
 
