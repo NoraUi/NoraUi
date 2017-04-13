@@ -9,8 +9,12 @@ curl -s "https://api.travis-ci.org/jobs/${TRAVIS_JOB_ID}/log.txt?deansi=true" > 
 # check if BUILD FAILURE finded in logs
 nb_failure=$(sed -n ":;s/BUILD FAILURE//p;t" nonaui.log | sed -n '$=')
 if [ "$nb_failure" != "" ]; then
-    echo "******** BUILD FAILURE find $nb_failure time in build"
-    exit 255
+    # patch for run any PR. (in PR case, the commiter do not have any sonar licence).
+    sonar_governance=$(sed -n ":;s/Failed to execute goal org.sonarsource.scanner.maven:sonar-maven-plugin:3.0.1:sonar (default-cli) on project noraui: No license for governance//p;t" nonaui.log | sed -n '$=')
+    if [ "$sonar_governance" == "" ]; then
+        echo "******** BUILD FAILURE find $nb_failure time in build"
+        exit 255
+    fi
 fi
 
 counters=$(sed -n 's:.*<EXPECTED_RESULTS>\(.*\)</EXPECTED_RESULTS>.*:\1:p' nonaui.log | head -n 1)
