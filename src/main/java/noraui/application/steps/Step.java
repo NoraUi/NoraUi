@@ -255,10 +255,7 @@ public class Step implements IStep {
         } catch (Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT, true, pageElement.getPage().getCallBack());
         }
-        if (inputText == null || value == null || !value.equals(inputText.getAttribute(VALUE).trim())) {
-            return false;
-        }
-        return true;
+        return !(inputText == null || value == null || !value.equals(inputText.getAttribute(VALUE).trim()));
     }
 
     /**
