@@ -2,17 +2,14 @@ package noraui.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.ini4j.Ini;
@@ -21,14 +18,8 @@ import org.joda.time.DateTime;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.reflections.Reflections;
-import org.reflections.scanners.SubTypesScanner;
 
-import com.google.inject.Injector;
-
-import cucumber.api.CucumberOptions;
 import cucumber.api.Scenario;
-import cucumber.runtime.java.StepDefAnnotation;
 import noraui.application.Application;
 import noraui.application.steps.Step;
 import noraui.browser.DriverFactory;
@@ -179,11 +170,6 @@ public class Context {
     private DataOutputProvider dataOutputProvider;
 
     /**
-     * Instance of Guice injector. ({@link noraui.cucumber.injector.NoraUiInjectorSource}).
-     */
-    private Injector noraUiInjectorSource;
-
-    /**
      * All java methods mapped by cucumber annotations.
      */
     private Map<String, Method> cucumberMethods;
@@ -220,7 +206,6 @@ public class Context {
         scenarioHasWarning = false;
         exceptionCallbacks = new Callbacks();
         applications = new HashMap<>();
-        cucumberMethods = new HashMap<>();
     }
 
     /**
@@ -255,7 +240,7 @@ public class Context {
     }
 
     public synchronized void initializeRobot(Class clazz) {
-        logger.info("Context > initializeRobot()");
+        logger.info("Context > initializeRobot() with " + clazz.getCanonicalName());
         // set browser: phantom, ie or chrome
         browser = setProperty(BROWSER_KEY, applicationProperties);
 
@@ -285,31 +270,8 @@ public class Context {
         initApplicationDom(clazz.getClassLoader(), selectorsVersion, LOGOGAME_KEY);
         applications.put(LOGOGAME_KEY, new Application(LOGOGAME_HOME, setProperty(LOGOGAME_KEY, applicationProperties) + "/index.html"));
 
-        //////////////////////
-        CucumberOptions co = (CucumberOptions) clazz.getAnnotation(CucumberOptions.class);
-        Set<Class<?>> c = getClasses(co.glue());
-        c.add(BrowserSteps.class);
-
-        for (Class<?> class1 : c) {
-            Method[] methods = class1.getDeclaredMethods();
-            for (Method method : methods) {
-                Annotation[] annotations = method.getAnnotations();
-                if (annotations.length > 0) {
-                    Annotation stepAnnotation = annotations[annotations.length - 1];
-                    if (stepAnnotation.annotationType().isAnnotationPresent(StepDefAnnotation.class)) {
-                        cucumberMethods.put(stepAnnotation.toString(), method);
-                    }
-                }
-            }
-        }
-    }
-
-    private Set<Class<?>> getClasses(String[] packagesName) {
-        Set<Class<?>> result = new HashSet<>();
-        for (String packageName : packagesName) {
-            result.addAll(new Reflections(packageName, new SubTypesScanner(false)).getSubTypesOf(Step.class));
-        }
-        return result;
+        // read and init all cucumber methods
+        cucumberMethods = Step.getAllCucumberMethods(clazz);
     }
 
     /**
@@ -565,14 +527,6 @@ public class Context {
 
     public static String getSelectorsVersion() {
         return getInstance().selectorsVersion;
-    }
-
-    public static Injector getNoraUiInjectorSource() {
-        return getInstance().noraUiInjectorSource;
-    }
-
-    public static void setNoraUiInjectorSource(Injector noraUiInjectorSource) {
-        getInstance().noraUiInjectorSource = noraUiInjectorSource;
     }
 
     public static Map<String, Method> getCucumberMethods() {

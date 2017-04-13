@@ -22,6 +22,7 @@ import cucumber.metrics.annotation.time.TimeName;
 import noraui.application.page.Page;
 import noraui.application.page.Page.PageElement;
 import noraui.cucumber.annotation.Conditioned;
+import noraui.cucumber.injector.NoraUiInjector;
 import noraui.exception.Callbacks;
 import noraui.exception.FailureException;
 import noraui.exception.Result;
@@ -585,7 +586,7 @@ public class CommonSteps extends Step {
                                 tab[i] = matcher2.group(i + 1);
                             }
                         }
-                        elem.getValue().invoke(Context.getNoraUiInjectorSource().getInstance(elem.getValue().getDeclaringClass()), tab);
+                        elem.getValue().invoke(NoraUiInjector.getNoraUiInjectorSource().getInstance(elem.getValue().getDeclaringClass()), tab);
                     }
 
                 }

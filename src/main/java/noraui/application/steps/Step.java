@@ -3,14 +3,19 @@ package noraui.application.steps;
 import static noraui.utils.Constants.ALERT_KEY;
 import static noraui.utils.Constants.VALUE;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.JavascriptExecutor;
@@ -21,10 +26,15 @@ import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
 
+import cucumber.api.CucumberOptions;
+import cucumber.runtime.java.StepDefAnnotation;
 import noraui.application.page.IPage;
 import noraui.application.page.Page;
 import noraui.application.page.Page.PageElement;
+import noraui.browser.steps.BrowserSteps;
 import noraui.exception.FailureException;
 import noraui.exception.Result;
 import noraui.exception.TechnicalException;
@@ -738,4 +748,41 @@ public class Step implements IStep {
         }
         return null;
     }
+
+    /**
+     * get all cucumber methods.
+     *
+     * @param clazz
+     *            class of context (for classLoader)
+     * @return a String with the message of Alert, return null if no alert message.
+     */
+    public static Map<String, Method> getAllCucumberMethods(Class<?> clazz) {
+        Map<String, Method> result = new HashMap<>();
+        CucumberOptions co = clazz.getAnnotation(CucumberOptions.class);
+        Set<Class<?>> c = getClasses(co.glue());
+        c.add(BrowserSteps.class);
+
+        for (Class<?> class1 : c) {
+            Method[] methods = class1.getDeclaredMethods();
+            for (Method method : methods) {
+                Annotation[] annotations = method.getAnnotations();
+                if (annotations.length > 0) {
+                    Annotation stepAnnotation = annotations[annotations.length - 1];
+                    if (stepAnnotation.annotationType().isAnnotationPresent(StepDefAnnotation.class)) {
+                        result.put(stepAnnotation.toString(), method);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    private static Set<Class<?>> getClasses(String[] packagesName) {
+        Set<Class<?>> result = new HashSet<>();
+        for (String packageName : packagesName) {
+            result.addAll(new Reflections(packageName, new SubTypesScanner(false)).getSubTypesOf(Step.class));
+        }
+        return result;
+    }
+
 }
