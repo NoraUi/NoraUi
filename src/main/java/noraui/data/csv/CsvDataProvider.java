@@ -155,15 +155,13 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
     private void writeValue(String column, int line, String value) {
         logger.debug("Writing: " + value + " at line " + line + " in column '" + column + "'");
         int colIndex = columns.indexOf(column);
-        try {
+        try (CSVWriter writer = new CSVWriter(new FileWriter(new File(dataOutPath + scenarioName + "." + CSV_TYPE)), CSV_CHAR_SEPARATOR);) {
             CSVReader reader = openOutputData();
             List<String[]> csvBody = reader.readAll();
             csvBody.get(line)[colIndex] = value;
             reader.close();
-            CSVWriter writer = new CSVWriter(new FileWriter(new File(dataOutPath + scenarioName + "." + CSV_TYPE)), CSV_CHAR_SEPARATOR);
             writer.writeAll(csvBody);
             writer.flush();
-            writer.close();
         } catch (IOException e) {
             logger.error("writeValue in CSV file => column: " + column + " line:" + line + " value:" + value, e);
         }
