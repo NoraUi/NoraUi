@@ -11,13 +11,12 @@ import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 
 import noraui.annotation.Column;
-import noraui.data.excel.ExcelDataProvider;
 import noraui.exception.TechnicalException;
 import noraui.model.Model;
 
 public abstract class CommonDataProvider implements DataProvider {
 
-    protected static final Logger logger = Logger.getLogger(ExcelDataProvider.class);
+    protected static final Logger logger = Logger.getLogger(CommonDataProvider.class);
 
     protected String dataInPath;
     protected String dataOutPath;
