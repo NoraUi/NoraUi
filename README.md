@@ -24,8 +24,8 @@ Does NoraUi not support your language? Please help us with a PR!
 # Contributors
 
 [![GitHub contributors](https://img.shields.io/github/contributors/NoraUi/NoraUi.svg)](https://github.com/NoraUi/NoraUi/graphs/contributors)
-[![GitHub closed pull requests](https://img.shields.io/github/issues-pr-raw/NoraUi/NoraUi.svg)](https://github.com/NoraUi/NoraUi/pulls)
-[![GitHub issues](https://img.shields.io/github/issues-raw/NoraUi/NoraUi.svg)](https://github.com/NoraUi/NoraUi/issues)
+[![GitHub closed pull requests](https://img.shields.io/github/issues-pr/NoraUi/NoraUi.svg)](https://github.com/NoraUi/NoraUi/pulls)
+[![GitHub issues](https://img.shields.io/github/issues/NoraUi/NoraUi.svg)](https://github.com/NoraUi/NoraUi/issues)
 
 # Gitter chat
 [![Join the chat at https://gitter.im/NoraUiChat](https://badges.gitter.im/NoraUiChat/NoraUi.svg)](https://gitter.im/NoraUiChat/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
