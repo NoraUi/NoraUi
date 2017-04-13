@@ -24,9 +24,6 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
     private String connectionUrl;
     private String user;
     private String password;
-    private String hostname;
-    private String port;
-    private String database;
 
     private enum types {
         MYSQL, ORACLE, POSTGRE
@@ -36,19 +33,16 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
         super();
         this.user = user;
         this.password = password;
-        this.hostname = hostname;
-        this.port = port;
-        this.database = database;
         try {
             if (types.MYSQL.toString().equals(type)) {
                 Class.forName("com.mysql.jdbc.Driver");
-                connectionUrl = "jdbc:mysql://" + hostname + ":" + port + "/" + database;
+                this.connectionUrl = "jdbc:mysql://" + hostname + ":" + port + "/" + database;
             } else if (types.ORACLE.toString().equals(type)) {
                 Class.forName("oracle.jdbc.OracleDriver");
-                connectionUrl = "jdbc:oracle:thin:@" + hostname + ":" + port + ":" + database;
+                this.connectionUrl = "jdbc:oracle:thin:@" + hostname + ":" + port + ":" + database;
             } else if (types.POSTGRE.toString().equals(type)) {
                 Class.forName("org.postgresql.Driver");
-                connectionUrl = "jdbc:postgresql://" + hostname + ":" + port + "/" + database;
+                this.connectionUrl = "jdbc:postgresql://" + hostname + ":" + port + "/" + database;
             } else {
                 throw new DatabaseException(String.format(DatabaseException.TECHNICAL_ERROR_MESSAGE_DATABASE_EXCEPTION, type));
             }
@@ -60,32 +54,8 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
         logger.info("dataProvider used is DB (" + type + ")");
     }
 
-    public String getConnectionUrl() {
-        return connectionUrl;
-    }
-
-    public String getUser() {
-        return user;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getHostname() {
-        return hostname;
-    }
-
-    public String getPort() {
-        return port;
-    }
-
-    public String getDatabase() {
-        return database;
-    }
-
     public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(connectionUrl, user, password);
+        return DriverManager.getConnection(this.connectionUrl, this.user, this.password);
     }
 
     /**
