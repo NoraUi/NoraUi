@@ -18,7 +18,7 @@ public abstract class Page implements IPage {
 
     private static ArrayList<Page> instances = new ArrayList<>();
 
-    private static volatile WebDriver webDriver = null;
+    private static volatile WebDriver webDriver = Context.getDriver();
 
     protected Page motherPage = null;
 
@@ -29,7 +29,6 @@ public abstract class Page implements IPage {
     protected Callback callBack;
 
     protected Page() {
-        webDriver = Context.getDriver();
     }
 
     /**
