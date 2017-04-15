@@ -65,7 +65,7 @@ public abstract class Page implements IPage {
 
     /**
      * Finds a Page by its name (not the full qualified name).
-     * 
+     *
      * @param className
      *            The name of the class to find. Full qualified name is not required.
      *            Ex: 'MyPage' or 'mypackageinpages.MyPage'
@@ -84,7 +84,7 @@ public abstract class Page implements IPage {
 
     /**
      * Sets the Page main package used to find pages by their class name.
-     * 
+     *
      * @param packageName
      *            The new Page package name
      */
