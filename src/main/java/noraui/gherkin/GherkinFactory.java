@@ -12,7 +12,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import noraui.exception.TechnicalException;
 import noraui.utils.Constants;
 import noraui.utils.Context;
 
@@ -34,10 +33,8 @@ public class GherkinFactory {
      *            name of input Gherkin file.
      * @param lines
      *            is a table of data (line by line and without headers).
-     * @throws TechnicalException
-     *             if (#DATA\r?\n.*\r?\n)[\\s\\S]*(#END) regex returns no group.
      */
-    public static void injectDataInGherkinExamples(String filename, List<String[]> lines) throws TechnicalException {
+    public static void injectDataInGherkinExamples(String filename, List<String[]> lines) {
         try {
             int indexOfUnderscore = filename.lastIndexOf('_');
             String path = indexOfUnderscore != -1
