@@ -79,6 +79,7 @@
         <sonar.tests>${project.basedir}/src/test/</sonar.tests>
         <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
         <sonar.coverage.exclusions>cucumber/**/*</sonar.coverage.exclusions>
+        <sonar.exclusions>cucumber/**/*.class,cucumber/**/*.java</sonar.exclusions>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
