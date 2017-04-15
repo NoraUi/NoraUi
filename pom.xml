@@ -78,8 +78,7 @@
         <sonar.surefire.reportsPath>${project.testresult.directory}/surefire-reports</sonar.surefire.reportsPath>
         <sonar.tests>${project.basedir}/src/test/</sonar.tests>
         <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
-        <sonar.coverage.exclusions>cucumber/**/*</sonar.coverage.exclusions>
-        <sonar.exclusions>cucumber/**/*.class,cucumber/**/*.java</sonar.exclusions>
+        <sonar.exclusions>**/cucumber/**/*</sonar.exclusions>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
