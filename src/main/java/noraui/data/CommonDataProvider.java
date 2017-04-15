@@ -1,6 +1,5 @@
 package noraui.data;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -111,7 +110,7 @@ public abstract class CommonDataProvider implements DataProvider {
         this.dataOutPath = dataOutPath;
     }
 
-    private Set<Class<?>> getClasses(String packageName) throws ClassNotFoundException, IOException {
+    private Set<Class<?>> getClasses(String packageName) throws ClassNotFoundException {
         return new Reflections(packageName, new SubTypesScanner(false)).getSubTypesOf(Object.class);
     }
 
