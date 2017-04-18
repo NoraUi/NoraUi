@@ -92,8 +92,7 @@ public class ConditionedInterceptor implements MethodInterceptor {
     public boolean checkConditions(List<GherkinStepCondition> conditions) {
         for (GherkinStepCondition gherkinCondition : conditions) {
             logger.debug("checkConditions " + gherkinCondition.getActual() + " in context is " + Context.getValue(gherkinCondition.getActual()));
-            String actual = Context.getValue(gherkinCondition.getActual()) != null ? Context.getValue(gherkinCondition.getActual()) : gherkinCondition.getActual();
-            if (actual == null || !actual.matches("(?i)" + gherkinCondition.getExpected())) {
+            if (!gherkinCondition.checkCondition()) {
                 return false;
             }
         }

@@ -27,7 +27,7 @@ import noraui.exception.Callbacks;
 import noraui.exception.FailureException;
 import noraui.exception.Result;
 import noraui.exception.TechnicalException;
-import noraui.gherkin.GherkinLoopedStepCondition;
+import noraui.gherkin.GherkinConditionedLoopedStep;
 import noraui.gherkin.GherkinStepCondition;
 import noraui.utils.Constants;
 import noraui.utils.Context;
@@ -53,22 +53,22 @@ public class CommonSteps extends Step {
     }
 
     /**
-     * Loop.
+     * Loop on steps execution for a specific number of times.
      *
-     * @param time
-     *            number of run.
-     * @param conditions
-     *            list of steps run in a loop.
+     * @param times
+     *            Number of loops.
+     * @param steps
+     *            List of steps run in a loop.
      * @throws TechnicalException
      *             is thrown if you have a technical error (IllegalAccessException, IllegalArgumentException, InvocationTargetException, ...) in NoraUi.
      *             Exception with {@value noraui.exception.TechnicalException#TECHNICAL_SUBSTEP_ERROR_MESSAGE} message.
      */
     @Then("I do '(.*)' times:")
-    public void loop(int time, List<GherkinLoopedStepCondition> conditions) throws TechnicalException {
+    public void loop(int times, List<GherkinConditionedLoopedStep> steps) throws TechnicalException {
         try {
             Map<String, Method> cucumberClass = Context.getCucumberMethods();
-            for (int i = 0; i < time; i++) {
-                runAllStepsInLoop(conditions, cucumberClass);
+            for (int i = 0; i < times; i++) {
+                runAllStepsInLoop(steps, cucumberClass);
             }
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
             throw new TechnicalException(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE, e.getCause());
@@ -76,7 +76,7 @@ public class CommonSteps extends Step {
     }
 
     /**
-     * Do until.
+     * Do steps execution until a given condition is unverified.
      *
      * @param key
      *            key of 'expected' values ('actual' values)
@@ -90,15 +90,48 @@ public class CommonSteps extends Step {
      *             is thrown if you have a technical error (IllegalAccessException, IllegalArgumentException, InvocationTargetException, ...) in NoraUi.
      *             Exception with {@value noraui.exception.TechnicalException#TECHNICAL_SUBSTEP_ERROR_MESSAGE} message.
      */
-    @Then("I do until '(.*)' respects '(.*)' with '(.*)' max tries:")
-    public void doUntil(String key, String breakCondition, int tries, List<GherkinLoopedStepCondition> conditions) throws TechnicalException {
+    @Then("If '(.*)' matches '(.*)', I do until '(.*)' respects '(.*)' with '(.*)' max tries:")
+    public void doUntil(String test, String condition, String key, String breakCondition, int tries, List<GherkinConditionedLoopedStep> conditions) throws TechnicalException {
+        try {
+            GherkinStepCondition gsc = new GherkinStepCondition("doUntilKey", condition, test);
+            if (gsc.checkCondition()) {
+                Map<String, Method> cucumberClass = Context.getCucumberMethods();
+                int i = 0;
+                do {
+                    i++;
+                    runAllStepsInLoop(conditions, cucumberClass);
+                } while (!(Pattern.compile(breakCondition).matcher(Context.getValue(key) == null ? "" : Context.getValue(key)).find() || tries == i));
+
+            }
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            throw new TechnicalException(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE, e.getCause());
+        }
+    }
+
+    /**
+     * While a given condition is verified, do steps execution
+     *
+     * @param key
+     *            key of 'expected' values ('actual' values)
+     * @param breakCondition
+     *            'expected' values
+     * @param tries
+     *            number of max tries (no infinity loop).
+     * @param conditions
+     *            list of steps run in a loop.
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (IllegalAccessException, IllegalArgumentException, InvocationTargetException, ...) in NoraUi.
+     *             Exception with {@value noraui.exception.TechnicalException#TECHNICAL_SUBSTEP_ERROR_MESSAGE} message.
+     */
+    @Then("While '(.*)' respects '(.*)' I do with '(.*)' max tries:")
+    public void whileDo(String key, String breakCondition, int tries, List<GherkinConditionedLoopedStep> conditions) throws TechnicalException {
         try {
             Map<String, Method> cucumberClass = Context.getCucumberMethods();
             int i = 0;
-            do {
+            while (!(Pattern.compile(breakCondition).matcher(Context.getValue(key) == null ? "" : Context.getValue(key)).find() || tries == i)) {
                 i++;
                 runAllStepsInLoop(conditions, cucumberClass);
-            } while (!(Pattern.compile(breakCondition).matcher(Context.getValue(key) == null ? "" : Context.getValue(key)).find() || tries == i));
+            }
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
             throw new TechnicalException(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE, e.getCause());
         }
@@ -554,13 +587,11 @@ public class CommonSteps extends Step {
         clearText(Page.getInstance(page).getPageElementByKey('-' + elementName));
     }
 
-    private void runAllStepsInLoop(List<GherkinLoopedStepCondition> conditions, Map<String, Method> cucumberClass)
+    private void runAllStepsInLoop(List<GherkinConditionedLoopedStep> conditions, Map<String, Method> cucumberClass)
             throws TechnicalException, InvocationTargetException, IllegalAccessException, IllegalArgumentException {
-        for (GherkinLoopedStepCondition condition : conditions) {
+        for (GherkinConditionedLoopedStep condition : conditions) {
             List<GherkinStepCondition> stepConditions = new ArrayList<>();
-            GherkinStepCondition g = new GherkinStepCondition();
-            g.setActual(condition.getActual());
-            g.setExpected(condition.getExpected());
+            GherkinStepCondition g = new GherkinStepCondition(condition.getKey(), condition.getExpected(), condition.getActual());
             stepConditions.add(g);
             for (Entry<String, Method> elem : cucumberClass.entrySet()) {
                 Matcher matcher = Pattern.compile("value=(.*)\\)").matcher(elem.getKey());

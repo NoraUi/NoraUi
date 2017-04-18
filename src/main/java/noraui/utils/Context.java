@@ -112,6 +112,9 @@ public class Context {
      */
     private int nbWarning;
 
+    /**
+     * Does current Scenario contain warnings ?
+     */
     private boolean scenarioHasWarning;
 
     /**

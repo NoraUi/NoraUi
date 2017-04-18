@@ -750,20 +750,21 @@ public class Step implements IStep {
     }
 
     /**
-     * get all cucumber methods.
+     * Gets all Cucumber methods.
      *
      * @param clazz
-     *            class of context (for classLoader)
-     * @return a String with the message of Alert, return null if no alert message.
+     *            Class which is the main point of the application (Decorated with the annotation {@link cucumber.api.CucumberOptions})
+     * @return a Map of all Cucumber glue code methods of the application. First part of the entry is the Gherkin matching regular expression.
+     *         Second part is the corresponding invokable method.
      */
     public static Map<String, Method> getAllCucumberMethods(Class<?> clazz) {
         Map<String, Method> result = new HashMap<>();
         CucumberOptions co = clazz.getAnnotation(CucumberOptions.class);
-        Set<Class<?>> c = getClasses(co.glue());
-        c.add(BrowserSteps.class);
+        Set<Class<?>> classes = getClasses(co.glue());
+        classes.add(BrowserSteps.class);
 
-        for (Class<?> class1 : c) {
-            Method[] methods = class1.getDeclaredMethods();
+        for (Class<?> c : classes) {
+            Method[] methods = c.getDeclaredMethods();
             for (Method method : methods) {
                 Annotation[] annotations = method.getAnnotations();
                 if (annotations.length > 0) {
