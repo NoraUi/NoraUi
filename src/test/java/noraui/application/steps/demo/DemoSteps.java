@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
@@ -57,7 +58,7 @@ public class DemoSteps extends Step {
      */
     @When("I update text 'DEMO_HOME(.*)' with '(.*)'")
     public void updateText(String elementName, String text) throws TechnicalException, FailureException {
-        clearText(demoPage.getPageElementByKey(elementName));
+        clearText(demoPage.getPageElementByKey(elementName), Keys.ENTER);
         updateText(demoPage.getPageElementByKey(elementName), text);
         checkMandatoryTextField(demoPage.getPageElementByKey(elementName));
         String value = readValueTextField(demoPage.getPageElementByKey(elementName));
