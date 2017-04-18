@@ -13,6 +13,7 @@ public class TechnicalException extends Exception {
     public static final String TECHNICAL_ERROR_MESSAGE_CHECKSUM_IO_EXCEPTION = "NoraUi Security Exception (NoSuchAlgorithmException or IOException)";
     public static final String TECHNICAL_ERROR_MESSAGE_NORAUI_INJECTOR_SOURCE_ALREADY_EXISTS = "noraUiInjectorSource already exists.";
     public static final String TECHNICAL_ERROR_MESSAGE_WEBDRIVER_SET_EXECUTABLE = "Error when Webdriver setExecutable to true";
+    public static final String TECHNICAL_EXPECTED_ACTUAL_SIZE_DIFFERENT = "Wrong conditions definition (expected and actual sizes are different).";
 
     /**
      * Construit un objet <code>TechnicalException</code>.

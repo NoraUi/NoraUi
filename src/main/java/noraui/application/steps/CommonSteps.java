@@ -2,12 +2,10 @@ package noraui.application.steps;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.openqa.selenium.Keys;
@@ -22,7 +20,6 @@ import cucumber.metrics.annotation.time.TimeName;
 import noraui.application.page.Page;
 import noraui.application.page.Page.PageElement;
 import noraui.cucumber.annotation.Conditioned;
-import noraui.cucumber.injector.NoraUiInjector;
 import noraui.exception.Callbacks;
 import noraui.exception.FailureException;
 import noraui.exception.Result;
@@ -587,42 +584,25 @@ public class CommonSteps extends Step {
         clearText(Page.getInstance(page).getPageElementByKey('-' + elementName));
     }
 
-    private void runAllStepsInLoop(List<GherkinConditionedLoopedStep> conditions, Map<String, Method> cucumberClass)
-            throws TechnicalException, InvocationTargetException, IllegalAccessException, IllegalArgumentException {
-        for (GherkinConditionedLoopedStep condition : conditions) {
-            List<GherkinStepCondition> stepConditions = new ArrayList<>();
-            GherkinStepCondition g = new GherkinStepCondition(condition.getKey(), condition.getExpected(), condition.getActual());
-            stepConditions.add(g);
-            for (Entry<String, Method> elem : cucumberClass.entrySet()) {
-                Matcher matcher = Pattern.compile("value=(.*)\\)").matcher(elem.getKey());
-                if (matcher.find()) {
-                    Matcher matcher2 = Pattern.compile(matcher.group(1)).matcher(condition.getStep());
-                    if (matcher2.find()) {
-                        Object[] tab;
-                        if (elem.getValue().isAnnotationPresent(Conditioned.class)) {
-                            tab = new Object[matcher2.groupCount() + 1];
-                            tab[matcher2.groupCount()] = stepConditions;
-                        } else {
-                            tab = new Object[matcher2.groupCount()];
-                        }
-
-                        for (int i = 0; i < matcher2.groupCount(); i++) {
-                            Parameter param = elem.getValue().getParameters()[i];
-                            if (param.getType() == int.class) {
-                                int ii = Integer.parseInt(matcher2.group(i + 1));
-                                tab[i] = ii;
-                            } else if (param.getType() == boolean.class) {
-                                tab[i] = Boolean.parseBoolean(matcher2.group(i + 1));
-                            } else {
-                                tab[i] = matcher2.group(i + 1);
-                            }
-                        }
-                        elem.getValue().invoke(NoraUiInjector.getNoraUiInjectorSource().getInstance(elem.getValue().getDeclaringClass()), tab);
-                    }
-
-                }
-            }
-        }
+    /**
+     * Switches to the given frame.
+     *
+     * @param page
+     *            The concerned page of elementName
+     * @param elementName
+     *            The key of the PageElement representing a frame to switch to.
+     * @param conditions
+     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_SWITCH_FRAME} message (with screenshot, with exception)
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     */
+    @Conditioned
+    @When("I switch to '(.*)' frame[\\.|\\?]")
+    public void switchFrame(String page, String elementName, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+        switchFrame(Page.getInstance(page).getPageElementByKey('-' + elementName));
     }
 
 }

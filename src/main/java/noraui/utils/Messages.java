@@ -52,6 +52,7 @@ public class Messages {
     public static final String FAIL_MESSAGE_EMPTY_MANDATORY_FIELD = "Absence « %s » dans %s.";
     public static final String FAIL_MESSAGE_WRONG_DATE_FORMAT = "Le format de la date %s du champ « %s » n'est pas valide.";
     public static final String FAIL_MESSAGE_UNABLE_TO_SWITCH_WINDOW = "Impossible de passer à la fenêtre « %s ».";
+    public static final String FAIL_MESSAGE_UNABLE_TO_SWITCH_FRAME = "Impossible de passer au contenu « %s » dans %s.";
     public static final String FAIL_MESSAGE_UNABLE_TO_RETRIEVE_VALUE = "Récupération de %s dans %s.";
     public static final String FAIL_MESSAGE_UNABLE_TO_SELECT_RADIO_BUTTON = "Sélection %s.";
     public static final String FAIL_MESSAGE_UNABLE_TO_CLOSE_APP = "Fermeture de l'application %s.";

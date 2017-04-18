@@ -4,18 +4,24 @@ import static noraui.utils.Constants.ALERT_KEY;
 import static noraui.utils.Constants.VALUE;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.text.DateFormat;
 import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.JavascriptExecutor;
@@ -35,9 +41,13 @@ import noraui.application.page.IPage;
 import noraui.application.page.Page;
 import noraui.application.page.Page.PageElement;
 import noraui.browser.steps.BrowserSteps;
+import noraui.cucumber.annotation.Conditioned;
+import noraui.cucumber.injector.NoraUiInjector;
 import noraui.exception.FailureException;
 import noraui.exception.Result;
 import noraui.exception.TechnicalException;
+import noraui.gherkin.GherkinConditionedLoopedStep;
+import noraui.gherkin.GherkinStepCondition;
 import noraui.utils.Constants;
 import noraui.utils.Context;
 import noraui.utils.Messages;
@@ -625,6 +635,27 @@ public class Step implements IStep {
     }
 
     /**
+     * Switches to the given frame.
+     *
+     * @param elementName
+     *            The PageElement representing a frame.
+     * @param args
+     *            list of arguments to format the found selector with
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_SWITCH_FRAME} message (with screenshot, with exception)
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     */
+    protected void switchFrame(PageElement element, Object... args) throws FailureException, TechnicalException {
+        try {
+            Context.waitUntil(ExpectedConditions.frameToBeAvailableAndSwitchToIt(Utilities.getLocator(element, args)));
+        } catch (Exception e) {
+            new Result.Failure<>(element, Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_SWITCH_FRAME, element.getLabel(), element.getPage().getApplication()), true, element.getPage().getCallBack());
+        }
+    }
+
+    /**
      * Displays message (concerned activity and list of authorized activities) at the beginning of method in logs.
      *
      * @param methodName
@@ -726,6 +757,66 @@ public class Step implements IStep {
         String txt = getLastConsoleAlertMessage();
         if (txt != null) {
             new Result.Failure<>(txt, Messages.FAIL_MESSAGE_ALERT_FOUND, true, page.getCallBack());
+        }
+    }
+
+    /**
+     * Runs a bunch of steps for a Gherkin loop.
+     * 
+     * @param loopedSteps
+     *            GherkinConditionedLoopedStep steps to run
+     * @param cucumberClass
+     *            Map of all available method to call by reflexion
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     * @throws InvocationTargetException
+     *             Exception during invocation
+     * @throws IllegalAccessException
+     *             Exception during invocation
+     * @throws IllegalArgumentException
+     *             Exception during invocation
+     */
+    protected void runAllStepsInLoop(List<GherkinConditionedLoopedStep> loopedSteps, Map<String, Method> cucumberClass)
+            throws TechnicalException, InvocationTargetException, IllegalAccessException, IllegalArgumentException {
+        for (GherkinConditionedLoopedStep loopedStep : loopedSteps) {
+            List<GherkinStepCondition> stepConditions = new ArrayList<>();
+            String[] expecteds = loopedStep.getExpected().split(";");
+            String[] actuals = loopedStep.getActual().split(";");
+            if (actuals.length != expecteds.length) {
+                throw new TechnicalException(TechnicalException.TECHNICAL_EXPECTED_ACTUAL_SIZE_DIFFERENT);
+            }
+            for (int i = 0; i < expecteds.length; i++) {
+                stepConditions.add(new GherkinStepCondition(loopedStep.getKey(), expecteds[i], actuals[i]));
+            }
+            for (Entry<String, Method> elem : cucumberClass.entrySet()) {
+                Matcher matcher = Pattern.compile("value=(.*)\\)").matcher(elem.getKey());
+                if (matcher.find()) {
+                    Matcher matcher2 = Pattern.compile(matcher.group(1)).matcher(loopedStep.getStep());
+                    if (matcher2.find()) {
+                        Object[] tab;
+                        if (elem.getValue().isAnnotationPresent(Conditioned.class)) {
+                            tab = new Object[matcher2.groupCount() + 1];
+                            tab[matcher2.groupCount()] = stepConditions;
+                        } else {
+                            tab = new Object[matcher2.groupCount()];
+                        }
+
+                        for (int i = 0; i < matcher2.groupCount(); i++) {
+                            Parameter param = elem.getValue().getParameters()[i];
+                            if (param.getType() == int.class) {
+                                int ii = Integer.parseInt(matcher2.group(i + 1));
+                                tab[i] = ii;
+                            } else if (param.getType() == boolean.class) {
+                                tab[i] = Boolean.parseBoolean(matcher2.group(i + 1));
+                            } else {
+                                tab[i] = matcher2.group(i + 1);
+                            }
+                        }
+                        elem.getValue().invoke(NoraUiInjector.getNoraUiInjectorSource().getInstance(elem.getValue().getDeclaringClass()), tab);
+                    }
+
+                }
+            }
         }
     }
 
