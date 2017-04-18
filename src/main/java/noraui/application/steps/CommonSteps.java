@@ -77,7 +77,7 @@ public class CommonSteps extends Step {
      *
      * @param actual
      *            actual value for global condition.
-     * @param condition
+     * @param expeted
      *            expeted value for global condition.
      * @param key
      *            key of 'expected' values ('actual' values)
