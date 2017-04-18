@@ -637,7 +637,7 @@ public class Step implements IStep {
     /**
      * Switches to the given frame.
      *
-     * @param elementName
+     * @param element
      *            The PageElement representing a frame.
      * @param args
      *            list of arguments to format the found selector with
@@ -762,7 +762,7 @@ public class Step implements IStep {
 
     /**
      * Runs a bunch of steps for a Gherkin loop.
-     * 
+     *
      * @param loopedSteps
      *            GherkinConditionedLoopedStep steps to run
      * @param cucumberClass

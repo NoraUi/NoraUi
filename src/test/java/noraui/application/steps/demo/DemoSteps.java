@@ -1,8 +1,10 @@
 package noraui.application.steps.demo;
 
+import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
@@ -10,9 +12,11 @@ import cucumber.api.java.en.When;
 import noraui.application.page.Page;
 import noraui.application.page.demo.DemoPage;
 import noraui.application.steps.Step;
+import noraui.cucumber.annotation.Conditioned;
 import noraui.exception.FailureException;
 import noraui.exception.Result;
 import noraui.exception.TechnicalException;
+import noraui.gherkin.GherkinStepCondition;
 import noraui.utils.Messages;
 
 public class DemoSteps extends Step {
@@ -54,7 +58,7 @@ public class DemoSteps extends Step {
      */
     @When("I update text 'DEMO_HOME(.*)' with '(.*)'")
     public void updateText(String elementName, String text) throws TechnicalException, FailureException {
-        clearText(demoPage.getPageElementByKey(elementName));
+        clearText(demoPage.getPageElementByKey(elementName), Keys.ENTER);
         updateText(demoPage.getPageElementByKey(elementName), text);
         checkMandatoryTextField(demoPage.getPageElementByKey(elementName));
         String value = readValueTextField(demoPage.getPageElementByKey(elementName));
@@ -81,6 +85,28 @@ public class DemoSteps extends Step {
     public void updateList(String elementName, String text) throws TechnicalException, FailureException {
         updateList(demoPage.getPageElementByKey(elementName), text);
         checkTextSelectedInList(demoPage.getPageElementByKey(elementName), text);
+    }
+
+    /**
+     * Click on html element using Javascript if all 'expected' parameters equals 'actual' parameters in conditions.
+     *
+     * @param page
+     *            The concerned page of toClick
+     * @param toClick
+     *            html element
+     * @param conditions
+     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK} message (with screenshot, with exception)
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     */
+    @Conditioned
+    @When("I click by js on xpath '(.*)' from '(.*)' page[\\.|\\?]")
+    public void clickOnByJs(String xpath, String page, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+        loggerStep.debug("clickOnByJs with xpath " + xpath + " on " + page + " page");
+        clickOnByJs(Page.getInstance(page), xpath);
     }
 
 }

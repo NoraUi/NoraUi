@@ -75,6 +75,10 @@ public class CommonSteps extends Step {
     /**
      * Do steps execution until a given condition is unverified.
      *
+     * @param actual
+     *            actual value for global condition.
+     * @param expeted
+     *            expeted value for global condition.
      * @param key
      *            key of 'expected' values ('actual' values)
      * @param breakCondition
@@ -88,9 +92,9 @@ public class CommonSteps extends Step {
      *             Exception with {@value noraui.exception.TechnicalException#TECHNICAL_SUBSTEP_ERROR_MESSAGE} message.
      */
     @Then("If '(.*)' matches '(.*)', I do until '(.*)' respects '(.*)' with '(.*)' max tries:")
-    public void doUntil(String test, String condition, String key, String breakCondition, int tries, List<GherkinConditionedLoopedStep> conditions) throws TechnicalException {
+    public void doUntil(String actual, String expeted, String key, String breakCondition, int tries, List<GherkinConditionedLoopedStep> conditions) throws TechnicalException {
         try {
-            GherkinStepCondition gsc = new GherkinStepCondition("doUntilKey", condition, test);
+            GherkinStepCondition gsc = new GherkinStepCondition("doUntilKey", expeted, actual);
             if (gsc.checkCondition()) {
                 Map<String, Method> cucumberClass = Context.getCucumberMethods();
                 int i = 0;

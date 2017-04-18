@@ -30,6 +30,7 @@ Feature: hello (Function to validate the environment.)
     Given me a cat, please. Best Regards '<author>'.
 		
     When I update text 'DEMO_HOME-input_text_field' with '<author>'
+    When I update text 'demo.DemoPage-input_text_field' and type ENTER with '<author>'.
     And I check text 'demo.DemoPage-input_text_field' with '<author>'.
     When I update select list 'DEMO_HOME-input_select_field' with '<city>'
     Then I update date 'demo.DemoPage-input_text_field' with a 'future' date '<date>'.
@@ -44,6 +45,9 @@ Feature: hello (Function to validate the environment.)
     Given me a error if '<city>' is Paris.
     
     When I click by js on 'demo.DemoPage-smilejs'.
+    And I check message 'OK' on alert
+    
+    When I click by js on xpath './/*[@name=\'smilejs\' and @title=\'smilejs\']' from 'demo.DemoPage' page.
     And I check message 'OK' on alert
     
     When I click on 'demo.DemoPage-<element>'.

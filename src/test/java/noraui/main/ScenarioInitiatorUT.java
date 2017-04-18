@@ -28,4 +28,11 @@ public class ScenarioInitiatorUT {
         Context.clear();
     }
 
+    @Test
+    public void mainScenarioInitiatorRunnerTest() {
+        Context.getInstance().initializeEnv("demoExcel.properties");
+        ScenarioInitiatorRunner.main(null);
+        Context.clear();
+    }
+
 }

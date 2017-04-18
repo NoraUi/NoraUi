@@ -1,8 +1,12 @@
 package noraui.application.steps;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -17,6 +21,7 @@ import noraui.application.page.Page.PageElement;
 import noraui.application.page.demo.DemoPage;
 import noraui.cucumber.interceptor.ConditionedInterceptor;
 import noraui.exception.TechnicalException;
+import noraui.gherkin.GherkinConditionedLoopedStep;
 import noraui.gherkin.GherkinStepCondition;
 import noraui.utils.Context;
 import noraui.utils.Messages;
@@ -405,6 +410,22 @@ public class StepUT {
         Assert.assertEquals("OK", 6, step.findOptionByIgnoreCaseText("Christophe", select));
         Assert.assertEquals("OK", 6, step.findOptionByIgnoreCaseText(" Christophe", select));
         Assert.assertEquals("OK", 6, step.findOptionByIgnoreCaseText("Christophe ", select));
+    }
+
+    @Test
+    public void testRunAllStepsInLoop() {
+        List<GherkinConditionedLoopedStep> conditions = new ArrayList<>();
+        String expected = ".+;(ETS Backbone VLAN LL2048K\\|ETS Accès L2ETH\\|Accès XDSL ETS\\|Backbone VLAN Virtuelle)";
+        String actual = "VPNtechnique;OSC_ACC-resource_type";
+        Context.saveValue("OSC_ACC-resource_type", "ETS Accès L2ETH");
+        GherkinConditionedLoopedStep gherkinConditionedLoopedStep = new GherkinConditionedLoopedStep("1", "I wait '4' seconds.", expected, actual);
+        conditions.add(gherkinConditionedLoopedStep);
+        Map<String, Method> cucumberClass = new HashMap<>();
+        try {
+            step.runAllStepsInLoop(conditions, cucumberClass);
+        } catch (InvocationTargetException | IllegalAccessException | IllegalArgumentException | TechnicalException e) {
+            Assert.assertFalse("Error", true);
+        }
     }
 
     private WebElement mockOption(String name) {
