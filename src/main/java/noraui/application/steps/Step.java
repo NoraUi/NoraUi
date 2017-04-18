@@ -552,7 +552,7 @@ public class Step implements IStep {
                 }
             }
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_SELECT_RADIO_BUTTON, pageElement.getLabel()), true, pageElement.getPage().getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_SELECT_RADIO_BUTTON, pageElement), true, pageElement.getPage().getCallBack());
         }
     }
 
@@ -651,7 +651,7 @@ public class Step implements IStep {
         try {
             Context.waitUntil(ExpectedConditions.frameToBeAvailableAndSwitchToIt(Utilities.getLocator(element, args)));
         } catch (Exception e) {
-            new Result.Failure<>(element, Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_SWITCH_FRAME, element.getLabel(), element.getPage().getApplication()), true, element.getPage().getCallBack());
+            new Result.Failure<>(element, Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_SWITCH_FRAME, element, element.getPage().getApplication()), true, element.getPage().getCallBack());
         }
     }
 
