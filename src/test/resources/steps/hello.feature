@@ -56,7 +56,7 @@ Feature: hello (Function to validate the environment.)
         |1|I wait '3' seconds.|1|1|
         |2|I wait '4' seconds.|1|2|
     
-    Then I do until 'myOutLoopKey' respects 'Rennes' with '4' max tries:
+    Then If '' matches '', I do until 'myOutLoopKey' respects 'Rennes' with '4' max tries: 
         |key|step|expected|actual|
         |1|I wait '3' seconds.|1|1|
         |2|I wait '4' seconds.|1|2|
