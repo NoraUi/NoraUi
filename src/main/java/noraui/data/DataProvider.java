@@ -9,7 +9,7 @@ public interface DataProvider {
 
     enum type {
         EXCEL, CSV, DB
-    };
+    }
 
     public static final String NAME_OF_RESULT_COLUMN = "Résultat";
 

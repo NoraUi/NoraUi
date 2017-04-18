@@ -19,6 +19,7 @@ import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import noraui.exception.TechnicalException;
 import noraui.utils.Context;
 import noraui.utils.Utilities;
 import noraui.utils.Utilities.OperatingSystem;
@@ -52,9 +53,13 @@ public class DriverFactory {
         // Driver's name is retrieved by system properties
         String driverName = Context.getBrowser();
         driverName = driverName != null ? driverName : DEFAULT_DRIVER;
-        WebDriver driver;
+        WebDriver driver = null;
         if (!drivers.containsKey(driverName)) {
-            driver = generateWebDriver(driverName);
+            try {
+                driver = generateWebDriver(driverName);
+            } catch (TechnicalException e) {
+                logger.error(e.getMessage());
+            }
         } else {
             driver = drivers.get(driverName);
         }
@@ -75,11 +80,15 @@ public class DriverFactory {
      * Generate a phantomJs webdriver.
      *
      * @return a phantomJs webdriver
+     * @throws TechnicalException
+     *             if an error occured when Webdriver setExecutable to true.
      */
-    private WebDriver generatePhantomJsDriver() {
+    private WebDriver generatePhantomJsDriver() throws TechnicalException {
         logger.info("Driver phantomjs");
         String pathWebdriver = DriverFactory.getPath(Driver.PHANTOMJS);
-        new File(pathWebdriver).setExecutable(true);
+        if (!new File(pathWebdriver).setExecutable(true)) {
+            throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE + TechnicalException.TECHNICAL_ERROR_MESSAGE_WEBDRIVER_SET_EXECUTABLE);
+        }
         DesiredCapabilities caps = new DesiredCapabilities();
         caps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, pathWebdriver);
         caps.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
@@ -98,12 +107,16 @@ public class DriverFactory {
      *
      * @deprecated It should not be used in production and it is very slow for developments.
      * @return an ie webdriver
+     * @throws TechnicalException
+     *             if an error occured when Webdriver setExecutable to true.
      */
     @Deprecated
-    private WebDriver generateIEDriver() {
+    private WebDriver generateIEDriver() throws TechnicalException {
         logger.info("Driver ie");
         String pathWebdriver = DriverFactory.getPath(Driver.IE);
-        new File(pathWebdriver).setExecutable(true);
+        if (!new File(pathWebdriver).setExecutable(true)) {
+            throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE + TechnicalException.TECHNICAL_ERROR_MESSAGE_WEBDRIVER_SET_EXECUTABLE);
+        }
         DesiredCapabilities capabilities = DesiredCapabilities.internetExplorer();
         capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
         capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
@@ -117,11 +130,15 @@ public class DriverFactory {
      * Generate a chrome webdriver.
      *
      * @return a chrome webdriver
+     * @throws TechnicalException
+     *             if an error occured when Webdriver setExecutable to true.
      */
-    private WebDriver generateGoogleChromeDriver() {
+    private WebDriver generateGoogleChromeDriver() throws TechnicalException {
         logger.info("Driver chrome");
         String pathWebdriver = DriverFactory.getPath(Driver.CHROME);
-        new File(pathWebdriver).setExecutable(true);
+        if (!new File(pathWebdriver).setExecutable(true)) {
+            throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE + TechnicalException.TECHNICAL_ERROR_MESSAGE_WEBDRIVER_SET_EXECUTABLE);
+        }
         DesiredCapabilities capabilities = DesiredCapabilities.chrome();
         capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
         capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
@@ -140,8 +157,10 @@ public class DriverFactory {
      *
      * @param driverName
      * @return
+     * @throws TechnicalException
+     *             if an error occured when Webdriver setExecutable to true.
      */
-    private WebDriver generateWebDriver(String driverName) {
+    private WebDriver generateWebDriver(String driverName) throws TechnicalException {
         WebDriver driver;
         if ("ie".equals(driverName)) {
             driver = generateIEDriver();

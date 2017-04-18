@@ -11,6 +11,9 @@ public class NoraUiInjector {
      */
     private static volatile Injector noraUiInjectorSource = null;
 
+    private NoraUiInjector() {
+    }
+
     public static Injector getNoraUiInjectorSource() {
         return noraUiInjectorSource;
     }

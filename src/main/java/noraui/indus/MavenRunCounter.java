@@ -34,7 +34,7 @@ public class MavenRunCounter {
         List<Counter> result = new ArrayList<>();
         List<String> files = listFilesForFolder(versionControlSystemsBlacklist, scenarioFolder);
         for (String file : files) {
-            String scenarioName = file.substring(file.lastIndexOf(File.separator) + 1, file.lastIndexOf("."));
+            String scenarioName = file.substring(file.lastIndexOf(File.separator) + 1, file.lastIndexOf('.'));
             if (!blacklist.contains(scenarioName)) {
                 Counter counter = new Counter(scenarioName);
                 int nbStep = 0;

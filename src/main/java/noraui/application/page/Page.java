@@ -12,7 +12,7 @@ import noraui.utils.Context;
 
 public abstract class Page implements IPage {
 
-    private static String pages_package = Page.class.getPackage().getName() + '.';
+    private static String pagesPackage = Page.class.getPackage().getName() + '.';
 
     private static Logger logger = Logger.getLogger(Page.class.getName());
 
@@ -65,7 +65,7 @@ public abstract class Page implements IPage {
 
     /**
      * Finds a Page by its name (not the full qualified name).
-     * 
+     *
      * @param className
      *            The name of the class to find. Full qualified name is not required.
      *            Ex: 'MyPage' or 'mypackageinpages.MyPage'
@@ -76,7 +76,7 @@ public abstract class Page implements IPage {
      */
     public static Page getInstance(String className) throws TechnicalException {
         try {
-            return getInstance(Class.forName(pages_package + className));
+            return getInstance(Class.forName(pagesPackage + className));
         } catch (ClassNotFoundException e) {
             throw new TechnicalException("Unable to retrieve Page with name: " + className, e);
         }
@@ -84,12 +84,12 @@ public abstract class Page implements IPage {
 
     /**
      * Sets the Page main package used to find pages by their class name.
-     * 
+     *
      * @param packageName
      *            The new Page package name
      */
     public static void setPageMainPackage(String packageName) {
-        pages_package = packageName;
+        pagesPackage = packageName;
     }
 
     /**

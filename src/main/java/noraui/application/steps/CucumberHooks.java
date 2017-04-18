@@ -61,18 +61,20 @@ public class CucumberHooks {
         int width = scenario.getSourceTagNames().toString().length() + String.valueOf(Context.getCurrentScenarioData()).length()
                 + String.valueOf(Context.getDataInputProvider().getNbGherkinExample()).length() + String.valueOf(Context.getNbFailure()).length() + String.valueOf(Context.getNbWarning()).length()
                 + String.valueOf(remainingTime).length();
-        for (int i = 0; i < 72 + width; i++) {
+
+        String message = "*   Scénario: %s étape %s sur %s avec %s erreur(s) et %s alerte(s). Il reste %ss   *";
+        for (int i = 0; i < message.length() - 12 + width; i++) {
             star.append("*");
         }
         postStar.append("*");
-        for (int i = 0; i < 70 + width; i++) {
+        for (int i = 0; i < message.length() - 14 + width; i++) {
             postStar.append(" ");
         }
         postStar.append("*");
         logger.info(star.toString());
         logger.info(postStar.toString());
-        logger.info("*   Scenario: " + scenario.getSourceTagNames() + " étape " + Context.getCurrentScenarioData() + " sur " + Context.getDataInputProvider().getNbGherkinExample() + " avec "
-                + Context.getNbFailure() + " erreur(s) et " + Context.getNbWarning() + " alerte(s). Il reste " + remainingTime + "s   *");
+        logger.info(String.format(message, scenario.getSourceTagNames(), Context.getCurrentScenarioData(), Context.getDataInputProvider().getNbGherkinExample(), Context.getNbFailure(),
+                Context.getNbWarning(), remainingTime));
         logger.info(postStar.toString());
         logger.info(star.toString());
     }

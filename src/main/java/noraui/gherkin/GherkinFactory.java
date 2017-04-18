@@ -12,7 +12,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import noraui.exception.TechnicalException;
 import noraui.utils.Constants;
 import noraui.utils.Context;
 
@@ -34,10 +33,8 @@ public class GherkinFactory {
      *            name of input Gherkin file.
      * @param lines
      *            is a table of data (line by line and without headers).
-     * @throws TechnicalException
-     *             if (#DATA\r?\n.*\r?\n)[\\s\\S]*(#END) regex returns no group.
      */
-    public static void injectDataInGherkinExamples(String filename, List<String[]> lines) throws TechnicalException {
+    public static void injectDataInGherkinExamples(String filename, List<String[]> lines) {
         try {
             int indexOfUnderscore = filename.lastIndexOf('_');
             String path = indexOfUnderscore != -1
@@ -46,16 +43,19 @@ public class GherkinFactory {
             Path file = Paths.get(path);
             String fileContent = new String(Files.readAllBytes(file), Charset.forName(Constants.DEFAULT_ENDODING));
 
-            String examples = "    ";
+            StringBuilder examples = new StringBuilder();
+            examples.append("    ");
             for (int j = 0; j < lines.size(); j++) {
-                examples += "|" + (j + 1);
+                examples.append("|");
+                examples.append(j + 1);
                 for (String col : lines.get(j)) {
-                    examples += "|" + col;
+                    examples.append("|");
+                    examples.append(col);
                 }
-                examples += "|\n    ";
+                examples.append("|\n    ");
             }
 
-            fileContent = fileContent.replaceAll("(" + DATA + "\r?\n.*\r?\n)[\\s\\S]*(" + DATA_END + ")", "$1" + examples + "$2");
+            fileContent = fileContent.replaceAll("(" + DATA + "\r?\n.*\r?\n)[\\s\\S]*(" + DATA_END + ")", "$1" + examples.toString() + "$2");
 
             try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path), Charset.forName(Constants.DEFAULT_ENDODING)));) {
                 bw.write(fileContent);

@@ -109,7 +109,7 @@ public class Auth {
             String cookieStr = System.getProperty(SESSION_COOKIE);
             try {
                 if (cookieStr != null && !"".equals(cookieStr)) {
-                    int indexValue = cookieStr.indexOf("=");
+                    int indexValue = cookieStr.indexOf('=');
                     int indexPath = cookieStr.indexOf(",path=");
                     String cookieName = cookieStr.substring(0, indexValue);
                     String cookieValue = cookieStr.substring(indexValue + 1, indexPath);
