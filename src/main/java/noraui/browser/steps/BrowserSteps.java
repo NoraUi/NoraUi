@@ -100,23 +100,19 @@ public class BrowserSteps {
      *
      * @param windowKey
      *            the key of window (popup, ...) Example: OSCAR.
+     * @param conditions
+     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_SWITCH_WINDOW} message (with screenshot, with exception)
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    @Quand("Je passe à la fenêtre '(.*)'")
-    @When("I switch to '(.*)' window")
-    public void switchWindow(String windowKey) throws TechnicalException, FailureException {
-        String handleToSwitch = Context.getWindows().get(windowKey);
-        if (handleToSwitch != null) {
-            Context.getDriver().switchTo().window(handleToSwitch);
-            Context.getDriver().manage().window().maximize();
-            Context.setMainWindow(windowKey);
-        } else {
-            new Result.Failure<>(windowKey, Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_SWITCH_WINDOW, windowKey), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
-        }
+    @Conditioned
+    @Quand("Je passe à la fenêtre '(.*)'[\\.|\\?]")
+    @When("I switch to '(.*)' window[\\.|\\?]")
+    public void switchWindow(String windowKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+        switchWindow(windowKey);
     }
 
     /**
@@ -286,6 +282,26 @@ public class BrowserSteps {
                 Context.getDriver().switchTo().window(windowHandle);
                 Context.getDriver().close();
             }
+        }
+    }
+
+    /**
+     * @param windowKey
+     *            the key of window (popup, ...) Example: OSCAR.
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_SWITCH_WINDOW} message (with screenshot, with exception)
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     */
+    private void switchWindow(String windowKey) throws FailureException, TechnicalException {
+        String handleToSwitch = Context.getWindows().get(windowKey);
+        if (handleToSwitch != null) {
+            Context.getDriver().switchTo().window(handleToSwitch);
+            Context.getDriver().manage().window().maximize();
+            Context.setMainWindow(windowKey);
+        } else {
+            new Result.Failure<>(windowKey, Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_SWITCH_WINDOW, windowKey), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
     }
 

@@ -1,12 +1,9 @@
 package noraui.application.steps;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -414,15 +411,14 @@ public class StepUT {
 
     @Test
     public void testRunAllStepsInLoop() {
-        List<GherkinConditionedLoopedStep> conditions = new ArrayList<>();
+        List<GherkinConditionedLoopedStep> steps = new ArrayList<>();
         String expected = ".+;(ETS Backbone VLAN LL2048K\\|ETS Accès L2ETH\\|Accès XDSL ETS\\|Backbone VLAN Virtuelle)";
         String actual = "VPNtechnique;OSC_ACC-resource_type";
         Context.saveValue("OSC_ACC-resource_type", "ETS Accès L2ETH");
         GherkinConditionedLoopedStep gherkinConditionedLoopedStep = new GherkinConditionedLoopedStep("1", "I wait '4' seconds.", expected, actual);
-        conditions.add(gherkinConditionedLoopedStep);
-        Map<String, Method> cucumberClass = new HashMap<>();
+        steps.add(gherkinConditionedLoopedStep);
         try {
-            step.runAllStepsInLoop(conditions, cucumberClass);
+            step.runAllStepsInLoop(steps);
         } catch (InvocationTargetException | IllegalAccessException | IllegalArgumentException | TechnicalException e) {
             Assert.assertFalse("Error", true);
         }

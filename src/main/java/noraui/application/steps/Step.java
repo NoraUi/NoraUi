@@ -765,8 +765,6 @@ public class Step implements IStep {
      *
      * @param loopedSteps
      *            GherkinConditionedLoopedStep steps to run
-     * @param cucumberClass
-     *            Map of all available method to call by reflexion
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      * @throws InvocationTargetException
@@ -776,8 +774,7 @@ public class Step implements IStep {
      * @throws IllegalArgumentException
      *             Exception during invocation
      */
-    protected void runAllStepsInLoop(List<GherkinConditionedLoopedStep> loopedSteps, Map<String, Method> cucumberClass)
-            throws TechnicalException, InvocationTargetException, IllegalAccessException, IllegalArgumentException {
+    protected void runAllStepsInLoop(List<GherkinConditionedLoopedStep> loopedSteps) throws TechnicalException, InvocationTargetException, IllegalAccessException, IllegalArgumentException {
         for (GherkinConditionedLoopedStep loopedStep : loopedSteps) {
             List<GherkinStepCondition> stepConditions = new ArrayList<>();
             String[] expecteds = loopedStep.getExpected().split(";");
@@ -788,7 +785,7 @@ public class Step implements IStep {
             for (int i = 0; i < expecteds.length; i++) {
                 stepConditions.add(new GherkinStepCondition(loopedStep.getKey(), expecteds[i], actuals[i]));
             }
-            for (Entry<String, Method> elem : cucumberClass.entrySet()) {
+            for (Entry<String, Method> elem : Context.getCucumberMethods().entrySet()) {
                 Matcher matcher = Pattern.compile("value=(.*)\\)").matcher(elem.getKey());
                 if (matcher.find()) {
                     Matcher matcher2 = Pattern.compile(matcher.group(1)).matcher(loopedStep.getStep());
