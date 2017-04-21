@@ -41,7 +41,7 @@ public class DemoPage extends Page {
     public boolean checkPage(Object... elements) {
         try {
             Context.waitUntil(ExpectedConditions.not(ExpectedConditions.titleIs("")));
-            if (!TITLE_PAGE.equals(Page.getDriver().getTitle())) {
+            if (!TITLE_PAGE.equals(getDriver().getTitle())) {
                 logger.error("HTML title is not good");
                 return false;
             }

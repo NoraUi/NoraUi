@@ -154,7 +154,7 @@ public class Utilities {
      * @return the first {@link WebElement} using the given method
      */
     public static WebElement findElement(Page page, String code, Object... args) {
-        return Page.getDriver().findElement(getLocator(page.getApplication(), page.getPageKey() + code, args));
+        return Context.getDriver().findElement(getLocator(page.getApplication(), page.getPageKey() + code, args));
     }
 
     /**
@@ -170,7 +170,7 @@ public class Utilities {
      * @return the first {@link WebElement} using the given method
      */
     public static WebElement findElement(PageElement element, Object... args) {
-        return Page.getDriver().findElement(getLocator(element.getPage().getApplication(), element.getPage().getPageKey() + element.getKey(), args));
+        return Context.getDriver().findElement(getLocator(element.getPage().getApplication(), element.getPage().getPageKey() + element.getKey(), args));
     }
 
     /**

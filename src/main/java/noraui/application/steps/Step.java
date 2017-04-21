@@ -55,12 +55,9 @@ import noraui.utils.Utilities;
 
 public class Step implements IStep {
 
-    private static volatile WebDriver webDriver = null;
-
     protected final Logger loggerStep = Logger.getLogger(Step.class.getClass());
 
     protected Step() {
-        webDriver = Context.getDriver();
     }
 
     /**
@@ -72,10 +69,11 @@ public class Step implements IStep {
     }
 
     /**
-     * @return a WebDriver
+     * {@inheritDoc}
      */
-    public static WebDriver getDriver() {
-        return webDriver;
+    @Override
+    public WebDriver getDriver() {
+        return Context.getDriver();
     }
 
     /**
@@ -116,7 +114,7 @@ public class Step implements IStep {
     protected void clickOnByJs(PageElement toClick, Object... args) throws TechnicalException, FailureException {
         displayMessageAtTheBeginningOfMethod("clickOnByJs: %s in %s", toClick.toString(), toClick.getPage().getApplication());
         try {
-            ((JavascriptExecutor) Step.getDriver())
+            ((JavascriptExecutor) getDriver())
                     .executeScript("document.evaluate(\"" + Utilities.getLocatorValue(toClick, args) + "\", document, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click();");
 
         } catch (Exception e) {
@@ -140,7 +138,7 @@ public class Step implements IStep {
     protected void clickOnByJs(Page page, String xpath) throws TechnicalException, FailureException {
         displayMessageAtTheBeginningOfMethod("clickOnByJs: %s in %s", xpath, page.getApplication());
         try {
-            ((JavascriptExecutor) Step.getDriver()).executeScript("document.evaluate(\"" + xpath + "\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click();");
+            ((JavascriptExecutor) getDriver()).executeScript("document.evaluate(\"" + xpath + "\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click();");
         } catch (Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_EVALUATE_XPATH, xpath, page.getApplication()), true, page.getCallBack());
 
@@ -571,7 +569,7 @@ public class Step implements IStep {
         try {
             String javascript = "var evObj = document.createEvent('MouseEvents');" + "evObj.initMouseEvent(\"mouseover\",true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);"
                     + "arguments[0].dispatchEvent(evObj);";
-            ((JavascriptExecutor) Step.getDriver()).executeScript(javascript, Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(element))));
+            ((JavascriptExecutor) getDriver()).executeScript(javascript, Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(element))));
 
         } catch (Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_PASS_OVER_ELEMENT, element, element.getPage().getApplication()), true,
@@ -811,7 +809,7 @@ public class Step implements IStep {
                         }
                         elem.getValue().invoke(NoraUiInjector.getNoraUiInjectorSource().getInstance(elem.getValue().getDeclaringClass()), tab);
                     }
-
+                    // TODO renvoyer une technical exception si pas de mapping de la step.
                 }
             }
         }
@@ -821,7 +819,7 @@ public class Step implements IStep {
      * @return a String with the message of Alert, return null if no alert message.
      */
     protected String getLastConsoleAlertMessage() {
-        LogEntries logEntries = Step.getDriver().manage().logs().get(LogType.BROWSER);
+        LogEntries logEntries = getDriver().manage().logs().get(LogType.BROWSER);
         List<LogEntry> l = logEntries.getAll();
         for (int i = l.size() - 1; i >= 0; i--) {
             if (l.get(i).getMessage().contains(ALERT_KEY)) {

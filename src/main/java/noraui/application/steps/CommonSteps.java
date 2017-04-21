@@ -103,7 +103,7 @@ public class CommonSteps extends Step {
                 do {
                     i++;
                     runAllStepsInLoop(conditions);
-                } while (!Pattern.compile(breakCondition).matcher(Context.getValue(key) == null ? "" : Context.getValue(key)).find() && tries <= i);
+                } while (!Pattern.compile(breakCondition).matcher(Context.getValue(key) == null ? "" : Context.getValue(key)).find() && i <= tries);
 
             }
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
@@ -135,7 +135,7 @@ public class CommonSteps extends Step {
         try {
             if (new GherkinStepCondition("whileDoKey", expected, actual).checkCondition()) {
                 int i = 0;
-                while (!Pattern.compile(breakCondition).matcher(Context.getValue(key) == null ? "" : Context.getValue(key)).find() && tries <= i) {
+                while (!Pattern.compile(breakCondition).matcher(Context.getValue(key) == null ? "" : Context.getValue(key)).find() && i <= tries) {
                     i++;
                     runAllStepsInLoop(conditions);
                 }

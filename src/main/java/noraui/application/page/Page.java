@@ -18,8 +18,6 @@ public abstract class Page implements IPage {
 
     private static ArrayList<Page> instances = new ArrayList<>();
 
-    private static volatile WebDriver webDriver = null;
-
     protected Page motherPage = null;
 
     protected String pageKey;
@@ -29,7 +27,6 @@ public abstract class Page implements IPage {
     protected Callback callBack;
 
     protected Page() {
-        webDriver = Context.getDriver();
     }
 
     /**
@@ -52,7 +49,6 @@ public abstract class Page implements IPage {
     public static Page getInstance(Class<?> c) throws TechnicalException {
         for (Page page : instances) {
             if (page.getClass() == c) {
-                Page.webDriver = Context.getDriver();
                 return page;
             }
         }
@@ -115,8 +111,12 @@ public abstract class Page implements IPage {
         return null;
     }
 
-    public static WebDriver getDriver() {
-        return webDriver;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebDriver getDriver() {
+        return Context.getDriver();
     }
 
     /**
