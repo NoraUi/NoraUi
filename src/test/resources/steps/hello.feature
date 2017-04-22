@@ -16,16 +16,16 @@ Feature: hello (Function to validate the environment.)
 		
     Given me a hello, please. Best Regards '<author>'.
     Given me a hello, please. Best Regards '<author>'?
-		    |key|expected|actual|
+        |key|expected|actual|
     Given me a hello, please. Best Regards '<author>'?
-		    |key|expected|actual|
-			  |zip|35000|<zip>|
-			  |city|Rennes|<city>|
+        |key|expected|actual|
+        |zip|35000|<zip>|
+        |city|Rennes|<city>|
 			  
     Given me a bye, please. Best Regards '<author>':
     Given me a bye, please. Best Regards '<author>':
-			  |zip|<zip>|
-			  |city|<city>|
+        |zip|<zip>|
+        |city|<city>|
 			  
     Given me a cat, please. Best Regards '<author>'.
 		
@@ -38,7 +38,7 @@ Feature: hello (Function to validate the environment.)
     And I update radio list 'demo.DemoPage-rate' with 'day'.
     Then I update checkboxes and check radio list 'DEMO_HOME-agree' with 'yes':
         |yes|true|
-			  |no|false|
+	    |no|false|
     
     When I click on 'demo.DemoPage-submit'.
 		
@@ -55,7 +55,7 @@ Feature: hello (Function to validate the environment.)
 		
     Given test for 'Annulée'.
     
-    Then I do '2' times:
+    Then If '' matches '', I do '2' times:
         |key|step|expected|actual|
         |1|I wait '3' seconds.|1|1|
         |2|I wait '4' seconds.|1|2|
