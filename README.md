@@ -19,7 +19,7 @@ Does NoraUi not support your language? Please help us with a PR!
 [![Quality Gate](https://sonarqube.com/api/badges/gate?key=com.github.noraui:noraui)](https://sonarqube.com/dashboard/index/com.github.noraui:noraui)
 [![SonarQube Coverage](https://sonarqube.com/api/badges/measure?key=com.github.noraui%3Anoraui&metric=coverage)](https://sonarqube.com/component_measures/metric/coverage/list?id=com.github.noraui:noraui)
 [![SonarQube Bugs](https://sonarqube.com/api/badges/measure?key=com.github.noraui%3Anoraui&metric=bugs)](https://sonarqube.com/component_issues?id=com.github.noraui:noraui)
-[![SonarQube Vulnerabilities](https://sonarqube.com/api/badges/measure?key=com.github.noraui%3Anoraui&metric=vulnerabilities)](https://sonarqube.com/component_issues?id=com.github.noraui:noraui)
+[![SonarQube Vulnerabilities](https://sonarqube.com/api/badges/measure?key=com.github.noraui%3Anoraui&metric=vulnerabilities)](https://sonarqube.com/component_measures/metric/security_rating/list?id=com.github.noraui%3Anoraui)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ee5c5b13365d4de5ba6b1ec4f8b984d2)](https://www.codacy.com/app/noraui/NoraUi?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=NoraUi/NoraUi&amp;utm_campaign=Badge_Grade)
 
 # Contributors
