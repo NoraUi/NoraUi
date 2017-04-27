@@ -8,13 +8,13 @@ public class GherkinStepCondition {
     private String expected;
     private String actual;
 
+    public GherkinStepCondition() {
+    }
+    
     public GherkinStepCondition(String key, String expected, String actual) {
         this.key = key;
         this.expected = expected;
         this.actual = actual;
-    }
-
-    public GherkinStepCondition() {
     }
 
     public String getKey() {
@@ -42,8 +42,8 @@ public class GherkinStepCondition {
     }
 
     public boolean checkCondition() {
-        String actual = Context.getValue(this.actual) != null ? Context.getValue(this.actual) : this.actual;
-        if (actual == null || !actual.matches("(?i)" + this.expected)) {
+        String actual_ = Context.getValue(this.actual) != null ? Context.getValue(this.actual) : this.actual;
+        if (actual_ == null || !actual_.matches("(?i)" + this.expected)) {
             return false;
         }
         return true;
