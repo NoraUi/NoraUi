@@ -42,8 +42,8 @@ public class GherkinStepCondition {
     }
 
     public boolean checkCondition() {
-        String actual_ = Context.getValue(this.actual) != null ? Context.getValue(this.actual) : this.actual;
-        if (actual_ == null || !actual_.matches("(?i)" + this.expected)) {
+        String _actual = Context.getValue(this.actual) != null ? Context.getValue(this.actual) : this.actual;
+        if (_actual == null || !_actual.matches("(?i)" + this.expected)) {
             return false;
         }
         return true;
