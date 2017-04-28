@@ -772,7 +772,7 @@ public class Step implements IStep {
      * @throws IllegalArgumentException
      *             Exception during invocation
      */
-    protected void runAllStepsInLoop(List<GherkinConditionedLoopedStep> loopedSteps) throws TechnicalException, InvocationTargetException, IllegalAccessException, IllegalArgumentException {
+    protected void runAllStepsInLoop(List<GherkinConditionedLoopedStep> loopedSteps) throws TechnicalException, InvocationTargetException, IllegalAccessException {
         for (GherkinConditionedLoopedStep loopedStep : loopedSteps) {
             List<GherkinStepCondition> stepConditions = new ArrayList<>();
             String[] expecteds = loopedStep.getExpected().split(";");
