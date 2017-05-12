@@ -10,7 +10,7 @@ public class GherkinStepCondition {
 
     public GherkinStepCondition() {
     }
-    
+
     public GherkinStepCondition(String key, String expected, String actual) {
         this.key = key;
         this.expected = expected;

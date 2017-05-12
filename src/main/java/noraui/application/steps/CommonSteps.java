@@ -50,7 +50,7 @@ public class CommonSteps extends Step {
 
     /**
      * Loop on steps execution for a specific number of times.
-     * 
+     *
      * @param actual
      *            actual value for global condition.
      * @param expected
@@ -113,7 +113,7 @@ public class CommonSteps extends Step {
 
     /**
      * While a given condition is verified, do steps execution.
-     * 
+     *
      * @param actual
      *            actual value for global condition.
      * @param expected
