@@ -263,7 +263,7 @@ public class Step implements IStep {
         } catch (Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT, true, pageElement.getPage().getCallBack());
         }
-        return !(inputText == null || value == null || !value.equals(inputText.getAttribute(VALUE).trim()));
+        return !(inputText == null || value == null || inputText.getAttribute(VALUE) == null || !value.equals(inputText.getAttribute(VALUE).trim()));
     }
 
     /**
@@ -585,15 +585,17 @@ public class Step implements IStep {
      *            Target page element
      * @param checked
      *            Final checkbox value
+     * @param args
+     *            list of arguments to format the found selector with
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Failure with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_CHECK_ELEMENT} message (with screenshot)
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    protected void selectCheckbox(PageElement element, boolean checked) throws TechnicalException, FailureException {
+    protected void selectCheckbox(PageElement element, boolean checked, Object... args) throws TechnicalException, FailureException {
         try {
-            WebElement webElement = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(element)));
+            WebElement webElement = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(element, args)));
             if (webElement.isSelected() != checked) {
                 webElement.click();
             }
