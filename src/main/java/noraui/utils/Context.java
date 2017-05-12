@@ -209,6 +209,7 @@ public class Context {
         scenarioHasWarning = false;
         exceptionCallbacks = new Callbacks();
         applications = new HashMap<>();
+        cucumberMethods = new HashMap<>();
     }
 
     /**
