@@ -32,6 +32,7 @@ public class StepUT {
 
     public static final String DO_NOT_MATCH_STRING = "^(?!.*IPADSL|.*C2E|.*LL2048).*$";
     public static final String CONTAINS_STRING = "^(.*Accès L2ETH|.*Accès L2TP).*$";
+    public static final String START_STRING = "^\\[\\{\"action\":\"Qualif OSM\".*";
 
     @Before
     public void setUp() {
@@ -275,6 +276,16 @@ public class StepUT {
         gherkinCondition.setActual("-stubKey");
         conditions.add(gherkinCondition);
         Assert.assertFalse(ci.checkConditions(conditions));
+    }
+
+    @Test
+    public void testCheckConditionsStartString() {
+        Context.saveValue("-stubKey",
+                "[{\"action\":\"Qualif OSM\",\"stepToBeProcessed\":\"Migration Flux Clients\",\"actionOfStepToBeProcessed\":\"à annuler\"},{\"action\":\"Editer qualif OSM\",\"stepToBeProcessed\":\"Activation Supervision\",\"actionOfStepToBeProcessed\":\"à annuler\"},{\"action\":\"Editer qualif OSM\",\"stepToBeProcessed\":\"Transfert OT\",\"actionOfStepToBeProcessed\":\"à réaliser\"}]");
+        gherkinCondition.setExpected(START_STRING);
+        gherkinCondition.setActual("-stubKey");
+        conditions.add(gherkinCondition);
+        Assert.assertTrue(ci.checkConditions(conditions));
     }
 
     @Test
