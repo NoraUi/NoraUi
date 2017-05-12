@@ -1,6 +1,5 @@
 package noraui.application.steps;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -430,7 +429,7 @@ public class StepUT {
         steps.add(gherkinConditionedLoopedStep);
         try {
             step.runAllStepsInLoop(steps);
-        } catch (InvocationTargetException | IllegalAccessException | IllegalArgumentException | TechnicalException e) {
+        } catch (TechnicalException e) {
             Assert.assertFalse("Error", true);
         }
     }

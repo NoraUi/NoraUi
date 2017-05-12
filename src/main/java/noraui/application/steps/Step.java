@@ -4,7 +4,6 @@ import static noraui.utils.Constants.ALERT_KEY;
 import static noraui.utils.Constants.VALUE;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.text.DateFormat;
@@ -767,14 +766,8 @@ public class Step implements IStep {
      *            GherkinConditionedLoopedStep steps to run
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
-     * @throws InvocationTargetException
-     *             Exception during invocation
-     * @throws IllegalAccessException
-     *             Exception during invocation
-     * @throws IllegalArgumentException
-     *             Exception during invocation
      */
-    protected void runAllStepsInLoop(List<GherkinConditionedLoopedStep> loopedSteps) throws TechnicalException, InvocationTargetException, IllegalAccessException {
+    protected void runAllStepsInLoop(List<GherkinConditionedLoopedStep> loopedSteps) throws TechnicalException {
         for (GherkinConditionedLoopedStep loopedStep : loopedSteps) {
             List<GherkinStepCondition> stepConditions = new ArrayList<>();
             String[] expecteds = loopedStep.getExpected().split(";");
@@ -809,7 +802,11 @@ public class Step implements IStep {
                                 tab[i] = matcher2.group(i + 1);
                             }
                         }
-                        elem.getValue().invoke(NoraUiInjector.getNoraUiInjectorSource().getInstance(elem.getValue().getDeclaringClass()), tab);
+                        try {
+                            elem.getValue().invoke(NoraUiInjector.getNoraUiInjectorSource().getInstance(elem.getValue().getDeclaringClass()), tab);
+                        } catch (Exception e) {
+                            throw new TechnicalException("\"" + loopedStep.getStep() + "\"", e.getCause());
+                        }
                     }
                     // TODO renvoyer une technical exception si pas de mapping de la step.
                 }

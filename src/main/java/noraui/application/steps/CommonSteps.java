@@ -1,6 +1,5 @@
 package noraui.application.steps;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -71,8 +70,8 @@ public class CommonSteps extends Step {
                     runAllStepsInLoop(steps);
                 }
             }
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            throw new TechnicalException(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE, e.getCause());
+        } catch (TechnicalException e) {
+            throw new TechnicalException(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE + e.getMessage(), e.getCause());
         }
     }
 
@@ -106,8 +105,8 @@ public class CommonSteps extends Step {
                 } while (!Pattern.compile(breakCondition).matcher(Context.getValue(key) == null ? "" : Context.getValue(key)).find() && i <= tries);
 
             }
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            throw new TechnicalException(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE, e.getCause());
+        } catch (TechnicalException e) {
+            throw new TechnicalException(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE + e.getMessage(), e.getCause());
         }
     }
 
@@ -140,8 +139,8 @@ public class CommonSteps extends Step {
                     runAllStepsInLoop(conditions);
                 }
             }
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            throw new TechnicalException(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE, e.getCause());
+        } catch (TechnicalException e) {
+            throw new TechnicalException(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE + e.getMessage(), e.getCause());
         }
     }
 
