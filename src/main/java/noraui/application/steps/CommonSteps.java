@@ -470,6 +470,27 @@ public class CommonSteps extends Step {
     }
 
     /**
+     * Checks if an html element is displayed.
+     *
+     * @param page
+     *            The concerned page of elementName
+     * @param elementName
+     *            The key of the PageElement to check
+     * @param conditions
+     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
+     * @throws TechnicalException
+     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with message and with screenshot and with exception if functional error but no screenshot and no exception if technical error.
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     */
+    @Conditioned
+    @And("I check that '(.*)-(.*)' is displayed[\\.|\\?]")
+    public void checkElementPresence(String page, String elementName, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
+        checkElementPresence(Page.getInstance(page).getPageElementByKey('-' + elementName));
+    }
+
+    /**
      * Checks that a given page displays a html alert.
      *
      * @param page

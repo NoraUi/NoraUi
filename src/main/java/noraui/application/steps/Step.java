@@ -325,6 +325,23 @@ public class Step implements IStep {
     }
 
     /**
+     * Checks if an html element (PageElement) is displayed.
+     *
+     * @param pageElement
+     *            Is target element
+     * @throws FailureException
+     *             if the scenario encounters a functional error. Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} message
+     *             (with screenshot, with exception)
+     */
+    protected void checkElementPresence(PageElement pageElement) throws FailureException {
+        try {
+            Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
+        } catch (Exception e) {
+            new Result.Failure<>(e.getMessage(), Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT, true, pageElement.getPage().getCallBack());
+        }
+    }
+
+    /**
      * Update a html select with a text value.
      *
      * @param pageElement
