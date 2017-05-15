@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
 import org.openqa.selenium.Keys;
 
 import cucumber.api.java.en.And;
@@ -19,6 +18,7 @@ import cucumber.metrics.annotation.time.TimeName;
 import noraui.application.page.Page;
 import noraui.application.page.Page.PageElement;
 import noraui.cucumber.annotation.Conditioned;
+import noraui.exception.AssertError;
 import noraui.exception.Callbacks;
 import noraui.exception.FailureException;
 import noraui.exception.Result;
@@ -30,8 +30,6 @@ import noraui.utils.Context;
 import noraui.utils.Messages;
 
 public class CommonSteps extends Step {
-
-    protected final Logger logger = Logger.getLogger(CommonSteps.class.getClass());
 
     /**
      * Waits a time in second.
@@ -71,7 +69,7 @@ public class CommonSteps extends Step {
                 }
             }
         } catch (TechnicalException e) {
-            logger.error(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE + e.getMessage());
+            throw new AssertError(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE + e.getMessage());
         }
     }
 
@@ -102,7 +100,7 @@ public class CommonSteps extends Step {
                 } while (!Pattern.compile(breakCondition).matcher(Context.getValue(key) == null ? "" : Context.getValue(key)).find() && i <= tries);
             }
         } catch (TechnicalException e) {
-            logger.error(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE + e.getMessage());
+            throw new AssertError(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE + e.getMessage());
         }
     }
 
@@ -133,7 +131,7 @@ public class CommonSteps extends Step {
                 }
             }
         } catch (TechnicalException e) {
-            logger.error(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE + e.getMessage());
+            throw new AssertError(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE + e.getMessage());
         }
     }
 
