@@ -18,6 +18,7 @@ import cucumber.metrics.annotation.time.TimeName;
 import noraui.application.page.Page;
 import noraui.application.page.Page.PageElement;
 import noraui.cucumber.annotation.Conditioned;
+import noraui.exception.AssertError;
 import noraui.exception.Callbacks;
 import noraui.exception.FailureException;
 import noraui.exception.Result;
@@ -58,12 +59,9 @@ public class CommonSteps extends Step {
      *            Number of loops.
      * @param steps
      *            List of steps run in a loop.
-     * @throws TechnicalException
-     *             is thrown if you have a technical error (IllegalAccessException, IllegalArgumentException, InvocationTargetException, ...) in NoraUi.
-     *             Exception with {@value noraui.exception.TechnicalException#TECHNICAL_SUBSTEP_ERROR_MESSAGE} message.
      */
     @Then("If '(.*)' matches '(.*)', I do '(.*)' times:")
-    public void loop(String actual, String expected, int times, List<GherkinConditionedLoopedStep> steps) throws TechnicalException {
+    public void loop(String actual, String expected, int times, List<GherkinConditionedLoopedStep> steps) {
         try {
             if (new GherkinStepCondition("loopKey", expected, actual).checkCondition()) {
                 for (int i = 0; i < times; i++) {
@@ -71,7 +69,7 @@ public class CommonSteps extends Step {
                 }
             }
         } catch (TechnicalException e) {
-            throw new TechnicalException(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE + e.getMessage(), e.getCause());
+            throw new AssertError(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE + e.getMessage());
         }
     }
 
@@ -90,12 +88,9 @@ public class CommonSteps extends Step {
      *            number of max tries (no infinity loop).
      * @param conditions
      *            list of steps run in a loop.
-     * @throws TechnicalException
-     *             is thrown if you have a technical error (IllegalAccessException, IllegalArgumentException, InvocationTargetException, ...) in NoraUi.
-     *             Exception with {@value noraui.exception.TechnicalException#TECHNICAL_SUBSTEP_ERROR_MESSAGE} message.
      */
     @Then("If '(.*)' matches '(.*)', I do until '(.*)' respects '(.*)' with '(.*)' max tries:")
-    public void doUntil(String actual, String expected, String key, String breakCondition, int tries, List<GherkinConditionedLoopedStep> conditions) throws TechnicalException {
+    public void doUntil(String actual, String expected, String key, String breakCondition, int tries, List<GherkinConditionedLoopedStep> conditions) {
         try {
             if (new GherkinStepCondition("doUntilKey", expected, actual).checkCondition()) {
                 int i = 0;
@@ -103,10 +98,9 @@ public class CommonSteps extends Step {
                     i++;
                     runAllStepsInLoop(conditions);
                 } while (!Pattern.compile(breakCondition).matcher(Context.getValue(key) == null ? "" : Context.getValue(key)).find() && i <= tries);
-
             }
         } catch (TechnicalException e) {
-            throw new TechnicalException(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE + e.getMessage(), e.getCause());
+            throw new AssertError(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE + e.getMessage());
         }
     }
 
@@ -125,12 +119,9 @@ public class CommonSteps extends Step {
      *            number of max tries (no infinity loop).
      * @param conditions
      *            list of steps run in a loop.
-     * @throws TechnicalException
-     *             is thrown if you have a technical error (IllegalAccessException, IllegalArgumentException, InvocationTargetException, ...) in NoraUi.
-     *             Exception with {@value noraui.exception.TechnicalException#TECHNICAL_SUBSTEP_ERROR_MESSAGE} message.
      */
     @Then("If '(.*)' matches '(.*)', While '(.*)' respects '(.*)' I do with '(.*)' max tries:")
-    public void whileDo(String actual, String expected, String key, String breakCondition, int tries, List<GherkinConditionedLoopedStep> conditions) throws TechnicalException {
+    public void whileDo(String actual, String expected, String key, String breakCondition, int tries, List<GherkinConditionedLoopedStep> conditions) {
         try {
             if (new GherkinStepCondition("whileDoKey", expected, actual).checkCondition()) {
                 int i = 0;
@@ -140,7 +131,7 @@ public class CommonSteps extends Step {
                 }
             }
         } catch (TechnicalException e) {
-            throw new TechnicalException(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE + e.getMessage(), e.getCause());
+            throw new AssertError(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE + e.getMessage());
         }
     }
 
