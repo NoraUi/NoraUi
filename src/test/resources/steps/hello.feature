@@ -29,16 +29,20 @@ Feature: hello (Function to validate the environment.)
 			  
     Given me a cat, please. Best Regards '<author>'.
 		
-    When I update text 'DEMO_HOME-input_text_field' with '<author>'
+    When I clear text in 'demo.DemoPage-input_text_field'.
+    When I update text 'demo.DemoPage-input_text_field' with '<author>'.
     When I update text 'demo.DemoPage-input_text_field' and type ENTER with '<author>'.
+    And I check mandatory field 'demo.DemoPage-input_text_field' of type 'text'.
     And I check text 'demo.DemoPage-input_text_field' with '<author>'.
-    When I update select list 'DEMO_HOME-input_select_field' with '<city>'
+    When I update select list 'demo.DemoPage-input_select_field' with '<city>'.
     Then I update date 'demo.DemoPage-input_text_field' with a 'future' date '<date>'.
     
     And I update radio list 'demo.DemoPage-rate' with 'day'.
     Then I update checkboxes and check radio list 'DEMO_HOME-agree' with 'yes':
         |yes|true|
-	    |no|false|
+	      |no|false|
+    
+    And I save the value of 'demo.DemoPage-input_text_field'.
     
     When I click on 'demo.DemoPage-submit'.
 		
@@ -64,7 +68,7 @@ Feature: hello (Function to validate the environment.)
         |key|step|expected|actual|
         |1|I wait '3' seconds.|1|1|
         |2|I wait '4' seconds.|1|2|
-        |3|I update select list 'DEMO_HOME-input_select_field' with '<city>'|||
+        |3|I update select list 'demo.DemoPage-input_select_field' with '<city>'|||
         |4|I save the value of 'demo.DemoPage-input_select_field' in 'myOutLoopKey' context key.|||
     
   Examples:
