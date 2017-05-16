@@ -55,6 +55,7 @@ public class HelloByeSteps extends Step {
         logger.info("Hello " + name + "!");
     }
 
+    @Lorsque("moi un chat, s'il vous plaît, meilleures salutations '(.*)'.")
     @Given("me a cat, please. Best Regards '(.*)'.")
     public void hello(String name) {
         logger.info("Take my cat " + name + "!");
@@ -71,6 +72,7 @@ public class HelloByeSteps extends Step {
         logger.info("Bye " + name + "!");
     }
 
+    @Lorsque("moi une erreur si '(.*)' est Paris.")
     @Given("me a error if '(.*)' is Paris.")
     public void error(String city) throws FailureException {
         if ("Paris".equals(city)) {
@@ -93,7 +95,8 @@ public class HelloByeSteps extends Step {
         }
     }
 
-    @Given("test for '(.*)'.")
+    @Lorsque("test pour '(.*)'")
+    @Given("test for '(.*)'")
     public void testforCancel(String word) {
         logger.info("testforCancel: " + word);
     }

@@ -8,6 +8,9 @@ import org.openqa.selenium.JavascriptExecutor;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import cucumber.api.java.fr.Alors;
+import cucumber.api.java.fr.Et;
+import cucumber.api.java.fr.Quand;
 import noraui.application.page.Page;
 import noraui.application.page.demo.DemoPage;
 import noraui.application.steps.Step;
@@ -27,6 +30,7 @@ public class DemoSteps extends Step {
         this.demoPage = (DemoPage) Page.getInstance(DemoPage.class);
     }
 
+    @Alors("Je met à jour les checkboxes et vérifie la liste radio 'DEMO_HOME(.*)' avec '(.*)':")
     @Then("I update checkboxes and check radio list 'DEMO_HOME(.*)' with '(.*)':")
     public void selectCheckbox(String elementKey, String valueKey, Map<String, Boolean> values) throws TechnicalException, FailureException {
         selectCheckbox(demoPage.getPageElementByKey(elementKey), true);
@@ -34,6 +38,7 @@ public class DemoSteps extends Step {
         checkRadioList(demoPage.getPageElementByKey(elementKey), valueKey);
     }
 
+    @Et("Je vérifie le message '(.*)' sur l'alerte")
     @And("I check message '(.*)' on alert")
     public void check(String message) throws TechnicalException, FailureException {
         ((JavascriptExecutor) getDriver()).executeScript("console.log('test');");
@@ -59,6 +64,7 @@ public class DemoSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
+    @Quand("Je clique via js sur xpath '(.*)' de '(.*)' page[\\.|\\?]")
     @When("I click by js on xpath '(.*)' from '(.*)' page[\\.|\\?]")
     public void clickOnByJs(String xpath, String page, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         loggerStep.debug("clickOnByJs with xpath " + xpath + " on " + page + " page");

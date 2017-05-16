@@ -57,7 +57,7 @@ Feature: hello (Function to validate the environment.)
     When I click on 'demo.DemoPage-<element>'.
     And I check message 'OK' on alert
 		
-    Given test for 'Annulée'.
+    Given test for 'Annulée'
     
     Then If '' matches '', I do '2' times:
         |key|step|expected|actual|
