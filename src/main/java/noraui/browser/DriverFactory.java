@@ -11,6 +11,7 @@ import org.openqa.selenium.Proxy;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
@@ -35,6 +36,7 @@ public class DriverFactory {
     public static final String PHANTOM = "phantom";
     public static final String IE = "ie";
     public static final String CHROME = "chrome";
+    public static final String HTMLUNIT = "htmlunit";
     public static final String DEFAULT_DRIVER = PHANTOM;
 
     /** Selenium drivers. **/
@@ -103,7 +105,7 @@ public class DriverFactory {
     }
 
     /**
-     * Generate an ie webdriver.
+     * Generate an ie webdriver. Unable to use it with a proxy. Causes a crash.
      *
      * @deprecated It should not be used in production and it is very slow for developments.
      * @return an ie webdriver
@@ -118,10 +120,14 @@ public class DriverFactory {
             throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE + TechnicalException.TECHNICAL_ERROR_MESSAGE_WEBDRIVER_SET_EXECUTABLE);
         }
         DesiredCapabilities capabilities = DesiredCapabilities.internetExplorer();
-        capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
-        capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
+        capabilities.setCapability(InternetExplorerDriver.IE_ENSURE_CLEAN_SESSION, true);
+        capabilities.setCapability("ignoreZoomSetting", true);
         capabilities.setCapability("requireWindowFocus", true);
-        capabilities.setCapability(CapabilityType.PROXY, Context.getProxy());
+        capabilities.setCapability("unexpectedAlertBehaviour", "accept");
+        capabilities.setCapability("ignoreProtectedModeSettings", true);
+        capabilities.setCapability("disable-popup-blocking", true);
+        capabilities.setJavascriptEnabled(true);
+
         System.setProperty(Driver.IE.getDriverName(), pathWebdriver);
         return new InternetExplorerDriver(capabilities);
     }
@@ -153,6 +159,28 @@ public class DriverFactory {
     }
 
     /**
+     * Generate a htmlunit webdriver.
+     *
+     * @return a htmlunit webdriver
+     * @throws TechnicalException
+     *             if an error occured when Webdriver setExecutable to true.
+     */
+    private WebDriver generateHtmlUnitDriver() throws TechnicalException {
+        logger.info("Driver htmlunit");
+        DesiredCapabilities capabilities = DesiredCapabilities.htmlUnit();
+        capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
+        capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
+        capabilities.setCapability("requireWindowFocus", true);
+        capabilities.setJavascriptEnabled(true);
+        if (!Context.getProxy().isEmpty()) {
+            Proxy proxy = new Proxy();
+            proxy.setHttpProxy(Context.getProxy());
+            capabilities.setCapability(CapabilityType.PROXY, proxy);
+        }
+        return new HtmlUnitDriver(capabilities);
+    }
+
+    /**
      * Generate selenium webdriver. By default a phantomJS driver is generate
      *
      * @param driverName
@@ -162,10 +190,12 @@ public class DriverFactory {
      */
     private WebDriver generateWebDriver(String driverName) throws TechnicalException {
         WebDriver driver;
-        if ("ie".equals(driverName)) {
+        if (IE.equals(driverName)) {
             driver = generateIEDriver();
-        } else if ("chrome".equals(driverName)) {
+        } else if (CHROME.equals(driverName)) {
             driver = generateGoogleChromeDriver();
+        } else if (HTMLUNIT.equals(driverName)) {
+            driver = generateHtmlUnitDriver();
         } else {
             driver = generatePhantomJsDriver();
         }

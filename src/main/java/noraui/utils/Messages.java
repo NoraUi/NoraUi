@@ -36,6 +36,7 @@ public class Messages {
     public static final String FAIL_MESSAGE_LIST = "Erreur sur la donnée liste.";
     public static final String FAIL_MESSAGE_TEXT = "Erreur sur la donnée texte.";
     public static final String FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT = "Élément non trouvé sur la page.";
+    public static final String FAIL_MESSAGE_ELEMENT_STILL_VISIBLE = "Élément toujours présent sur la page.";
     public static final String FAIL_MESSAGE_UNABLE_TO_OPEN_A_NEW_WINDOW = "lors de l'ouverture d'une nouvelle fenêtre.";
 
     /**

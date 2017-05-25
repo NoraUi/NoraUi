@@ -329,15 +329,25 @@ public class Step implements IStep {
      *
      * @param pageElement
      *            Is target element
+     * @param present
+     *            Is target element supposed to be present
      * @throws FailureException
      *             if the scenario encounters a functional error. Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} message
      *             (with screenshot, with exception)
      */
-    protected void checkElementPresence(PageElement pageElement) throws FailureException {
-        try {
-            Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
-        } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT, true, pageElement.getPage().getCallBack());
+    protected void checkElementPresence(PageElement pageElement, boolean present) throws FailureException {
+        if (present) {
+            try {
+                Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
+            } catch (Exception e) {
+                new Result.Failure<>(e.getMessage(), Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT, true, pageElement.getPage().getCallBack());
+            }
+        } else {
+            try {
+                Context.waitUntil(ExpectedConditions.not(ExpectedConditions.presenceOfAllElementsLocatedBy(Utilities.getLocator(pageElement))));
+            } catch (Exception e) {
+                new Result.Failure<>(e.getMessage(), Messages.FAIL_MESSAGE_ELEMENT_STILL_VISIBLE, true, pageElement.getPage().getCallBack());
+            }
         }
     }
 
