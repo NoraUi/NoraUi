@@ -12,7 +12,9 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import cucumber.api.java.fr.Et;
 import cucumber.api.java.fr.Lorsque;
+import cucumber.api.java.fr.Quand;
 import cucumber.metrics.annotation.time.Time;
 import cucumber.metrics.annotation.time.TimeName;
 import noraui.application.page.Page;
@@ -42,7 +44,7 @@ public class CommonSteps extends Step {
      *             Exception for the sleep
      */
     @Conditioned
-    @Lorsque("Puis j'attends '(.*)' secondes[\\.|\\?]")
+    @Lorsque("J'attends '(.*)' secondes[\\.|\\?]")
     @Then("I wait '(.*)' seconds[\\.|\\?]")
     public void wait(int time, List<GherkinStepCondition> conditions) throws InterruptedException {
         Thread.sleep((long) time * 1000);
@@ -60,6 +62,7 @@ public class CommonSteps extends Step {
      * @param steps
      *            List of steps run in a loop.
      */
+    @Lorsque("Si '(.*)' matche '(.*)', je fais '(.*)' fois:")
     @Then("If '(.*)' matches '(.*)', I do '(.*)' times:")
     public void loop(String actual, String expected, int times, List<GherkinConditionedLoopedStep> steps) {
         try {
@@ -89,6 +92,7 @@ public class CommonSteps extends Step {
      * @param conditions
      *            list of steps run in a loop.
      */
+    @Lorsque("Si '(.*)' matche '(.*)', je fais jusqu'à '(.*)' respecte '(.*)' avec '(.*)' essais maxi:")
     @Then("If '(.*)' matches '(.*)', I do until '(.*)' respects '(.*)' with '(.*)' max tries:")
     public void doUntil(String actual, String expected, String key, String breakCondition, int tries, List<GherkinConditionedLoopedStep> conditions) {
         try {
@@ -120,6 +124,7 @@ public class CommonSteps extends Step {
      * @param conditions
      *            list of steps run in a loop.
      */
+    @Lorsque("Si '(.*)' matche '(.*)', Tant que '(.*)' respecte '(.*)' je fais avec '(.*)' essais maxi:")
     @Then("If '(.*)' matches '(.*)', While '(.*)' respects '(.*)' I do with '(.*)' max tries:")
     public void whileDo(String actual, String expected, String key, String breakCondition, int tries, List<GherkinConditionedLoopedStep> conditions) {
         try {
@@ -224,6 +229,7 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
+    @Et("Je sauvegarde la valeur de '(.*)-(.*)'[\\.|\\?]")
     @And("I save the value of '(.*)-(.*)'[\\.|\\?]")
     public void saveElementValue(String page, String field, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         saveElementValue('-' + field, Page.getInstance(page));
@@ -248,6 +254,7 @@ public class CommonSteps extends Step {
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} or {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_RETRIEVE_VALUE}
      */
     @Conditioned
+    @Et("Je sauvegarde la valeur de '(.*)' dans la clé '(.*)' du contexte[\\.|\\?]")
     @And("I save the value of '(.*)-(.*)' in '(.*)' context key[\\.|\\?]")
     public void saveValue(String page, String field, String targetKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         saveElementValue('-' + field, targetKey, Page.getInstance(page));
@@ -269,6 +276,7 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
+    @Lorsque("Je clique sur '(.*)-(.*)'[\\.|\\?]")
     @When("I click on '(.*)-(.*)'[\\.|\\?]")
     public void clickOn(String page, String toClick, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         loggerStep.debug(page + " clickOn: " + toClick);
@@ -291,6 +299,7 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
+    @Quand("Je clique via js sur '(.*)-(.*)'[\\.|\\?]")
     @When("I click by js on '(.*)-(.*)'[\\.|\\?]")
     public void clickOnByJs(String page, String toClick, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         loggerStep.debug(page + " clickOnByJs: " + toClick);
@@ -317,6 +326,7 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
+    @Quand("Je met à jour la date '(.*)-(.*)' avec une '(.*)' date '(.*)'[\\.|\\?]")
     @When("I update date '(.*)-(.*)' with a '(.*)' date '(.*)'[\\.|\\?]")
     public void updateDate(String page, String elementName, String dateType, String date, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         if (!"".equals(date)) {
@@ -347,6 +357,7 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
+    @Quand("Je met à jour la liste déroulante '(.*)-(.*)' avec '(.*)'[\\.|\\?]")
     @When("I update select list '(.*)-(.*)' with '(.*)'[\\.|\\?]")
     public void updateList(String page, String elementName, String text, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         updateList(Page.getInstance(page).getPageElementByKey('-' + elementName), text);
@@ -370,6 +381,7 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
+    @Quand("Je met à jour le texte '(.*)-(.*)' avec '(.*)'[\\.|\\?]")
     @When("I update text '(.*)-(.*)' with '(.*)'[\\.|\\?]")
     public void updateText(String page, String elementName, String text, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         updateText(Page.getInstance(page).getPageElementByKey('-' + elementName), text);
@@ -392,6 +404,7 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
+    @Quand("Je met à jour le texte '(.*)-(.*)' et entre ENTRER avec '(.*)'[\\.|\\?]")
     @When("I update text '(.*)-(.*)' and type ENTER with '(.*)'[\\.|\\?]")
     public void updateTextAndEnter(String page, String elementName, String textOrKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         updateText(Page.getInstance(page).getPageElementByKey('-' + elementName), textOrKey, Keys.ENTER);
@@ -415,6 +428,7 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
+    @Lorsque("Je vérifie le champ obligatoire '(.*)-(.*)' de type '(.*)'[\\.|\\?]")
     @Then("I check mandatory field '(.*)-(.*)' of type '(.*)'[\\.|\\?]")
     public void checkMandatoryField(String page, String fieldName, String type, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         PageElement pageElement = Page.getInstance(page).getPageElementByKey('-' + fieldName);
@@ -453,6 +467,7 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
+    @Et("Je vérifie le texte '(.*)-(.*)' avec '(.*)'[\\.|\\?]")
     @And("I check text '(.*)-(.*)' with '(.*)'[\\.|\\?]")
     public void checkInputText(String page, String elementName, String text, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
         if (!checkInputText(Page.getInstance(page).getPageElementByKey('-' + elementName), text)) {
@@ -539,6 +554,7 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
+    @Et("Je met à jour la liste radio '(.*)-(.*)' avec '(.*)'[\\.|\\?]")
     @And("I update radio list '(.*)-(.*)' with '(.*)'[\\.|\\?]")
     public void updateRadioList(String page, String elementName, String input, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         updateRadioList(Page.getInstance(page).getPageElementByKey('-' + elementName), input);
@@ -624,6 +640,7 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
+    @Quand("Je clarifie le texte dans '(.*)-(.*)'[\\.|\\?]")
     @When("I clear text in '(.*)-(.*)'[\\.|\\?]")
     public void clearText(String page, String elementName, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         clearText(Page.getInstance(page).getPageElementByKey('-' + elementName));

@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import cucumber.api.java.fr.Alors;
+import cucumber.api.java.fr.Et;
+import cucumber.api.java.fr.Quand;
 import noraui.application.page.Page;
 import noraui.application.page.demo.DemoPage;
 import noraui.application.steps.Step;
@@ -28,6 +30,7 @@ public class DemoSteps extends Step {
         this.demoPage = (DemoPage) Page.getInstance(DemoPage.class);
     }
 
+    @Alors("Je met à jour les checkboxes et vérifie la liste radio 'DEMO_HOME(.*)' avec '(.*)':")
     @Then("I update checkboxes and check radio list 'DEMO_HOME(.*)' with '(.*)':")
     public void selectCheckbox(String elementKey, String valueKey, Map<String, Boolean> values) throws TechnicalException, FailureException {
         selectCheckbox(demoPage.getPageElementByKey(elementKey), true);
@@ -35,6 +38,7 @@ public class DemoSteps extends Step {
         checkRadioList(demoPage.getPageElementByKey(elementKey), valueKey);
     }
 
+    @Et("Je vérifie le message '(.*)' sur l'alerte")
     @And("I check message '(.*)' on alert")
     public void check(String message) throws TechnicalException, FailureException {
         ((JavascriptExecutor) getDriver()).executeScript("console.log('test');");
@@ -42,49 +46,6 @@ public class DemoSteps extends Step {
         if (msg == null || !msg.equals(message)) {
             new Result.Failure<>(message, Messages.format(Messages.FAIL_MESSAGE_NOT_FOUND_ON_ALERT, message), false, demoPage.getCallBack());
         }
-    }
-
-    /**
-     * Update a html input text with a text in a DEMO page.
-     *
-     * @param elementName
-     *            Is target element
-     * @param text
-     *            Is the new data (text)
-     * @throws TechnicalException
-     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
-     *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_ERROR_ON_INPUT} message (with screenshot, no exception)
-     * @throws FailureException
-     */
-    @When("I update text 'DEMO_HOME(.*)' with '(.*)'")
-    public void updateText(String elementName, String text) throws TechnicalException, FailureException {
-        clearText(demoPage.getPageElementByKey(elementName), Keys.ENTER);
-        updateText(demoPage.getPageElementByKey(elementName), text);
-        checkMandatoryTextField(demoPage.getPageElementByKey(elementName));
-        String value = readValueTextField(demoPage.getPageElementByKey(elementName));
-        if (!text.equals(value)) {
-            new Result.Failure<>(value, Messages.format(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE, demoPage.getPageElementByKey(elementName), text, demoPage.getApplication()), true,
-                    demoPage.getCallBack());
-        }
-        saveElementValue(elementName, demoPage);
-    }
-
-    /**
-     * Update a html select input text with a text data (if exist in html "option" list).
-     *
-     * @param elementName
-     *            Is target element
-     * @param text
-     *            Is the new data
-     * @throws TechnicalException
-     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
-     *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_ERROR_ON_INPUT} message (with screenshot, no exception)
-     * @throws FailureException
-     */
-    @When("I update select list 'DEMO_HOME(.*)' with '(.*)'")
-    public void updateList(String elementName, String text) throws TechnicalException, FailureException {
-        updateList(demoPage.getPageElementByKey(elementName), text);
-        checkTextSelectedInList(demoPage.getPageElementByKey(elementName), text);
     }
 
     /**
@@ -103,6 +64,7 @@ public class DemoSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
+    @Quand("Je clique via js sur xpath '(.*)' de '(.*)' page[\\.|\\?]")
     @When("I click by js on xpath '(.*)' from '(.*)' page[\\.|\\?]")
     public void clickOnByJs(String xpath, String page, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         loggerStep.debug("clickOnByJs with xpath " + xpath + " on " + page + " page");
