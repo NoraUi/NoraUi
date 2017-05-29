@@ -97,6 +97,11 @@ public class Logo extends DemoModel implements Comparable<Logo> {
         return this.brand.compareTo(other.brand);
     }
 
+    @Override
+    public String toString() {
+        return "{wid:" + wid + ", brand:\"" + brand + "\", score:\"" + score + "\"}";
+    }
+
     public Integer getWid() {
         return wid;
     }
@@ -111,6 +116,14 @@ public class Logo extends DemoModel implements Comparable<Logo> {
 
     public void setBrand(String brand) {
         this.brand = brand;
+    }
+
+    public String getScore() {
+        return score;
+    }
+
+    public void setScore(String score) {
+        this.score = score;
     }
 
 }

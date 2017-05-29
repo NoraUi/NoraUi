@@ -5,9 +5,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import cucumber.api.java.en.And;
+import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.fr.Alors;
 import cucumber.api.java.fr.Et;
+import cucumber.api.java.fr.Lorsque;
 import cucumber.metrics.annotation.time.Time;
 import cucumber.metrics.annotation.time.TimeValue;
 import noraui.application.model.logogame.Logo;
@@ -15,6 +17,8 @@ import noraui.application.model.logogame.Logos;
 import noraui.application.page.Page;
 import noraui.application.page.logogame.LogoGamePage;
 import noraui.application.steps.Step;
+import noraui.application.work.logogame.ProhibitedBrands;
+import noraui.exception.Callbacks;
 import noraui.exception.FailureException;
 import noraui.exception.Result;
 import noraui.exception.TechnicalException;
@@ -71,6 +75,29 @@ public class LogoGameSteps extends Step {
         checkText(logoGamePage.alertMessage, "There are no more logos available");
     }
 
+    /**
+     * A check that all brands is not prohibited, because any minors can not play with alcohol and tobacco brands.
+     *
+     * @param jsonLogos
+     *            Serialized Json representation of all logos (all brands)
+     * @throws TechnicalException
+     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     */
+    @Lorsque("Je vérifie que toutes les marques '(.*)' ne sont pas interdites")
+    @Given("I check that all brands '(.*)' is not prohibited")
+    public void checkThatAllBrandsIsNotProhibited(String jsonLogos) throws TechnicalException, FailureException {
+        Logos logos = new Logos();
+        logos.deserialize(jsonLogos);
+        for (int i = 0; i < logos.size(); i++) {
+            if (ProhibitedBrands.getAlcool().contains(logos.get(i).getBrand()) || ProhibitedBrands.getTabaco().contains(logos.get(i).getBrand())) {
+                new Result.Failure<>(logos.get(i).getBrand(), Messages.format("Brand « %s » is prohibited.", logos.get(i).getBrand()), false, logos.get(i).getWid(),
+                        Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+            }
+        }
+    }
+
     @Alors("Je joue avec mon fichier d'entrée '(.*)'")
     @Then("I play with my input file '(.*)'")
     public void playWithMyInputFile(String jsonLogos) throws TechnicalException {
@@ -85,8 +112,7 @@ public class LogoGameSteps extends Step {
                     updateText(logoGamePage.brandElement, logo.getBrand(), null, logo.getBrand(), logo.getBrand());
                 }
             } catch (Exception e) {
-                Context.getDataOutputProvider().writeFailedResult(Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData()).getIndexes().get(logo.getWid()),
-                        Messages.FAIL_MESSAGE_DEFAULT + "Brand does not exist.");
+                new Result.Warning<>(logo.getBrand(), Messages.format("Brand « %s » does not exist.", logo.getBrand()), true, logo.getWid());
             }
         }
     }
@@ -108,8 +134,7 @@ public class LogoGameSteps extends Step {
             WebElement message = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(logoGamePage.scoreMessage)));
             try {
                 Context.getCurrentScenario().write("score is:\n" + message.getText());
-                Context.getDataOutputProvider().writeDataResult("score", Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData()).getIndexes().get(0),
-                        message.getText());
+                Context.getDataOutputProvider().writeDataResult("score", Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData()).getIndexes().get(0), message.getText());
             } catch (TechnicalException e) {
                 logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE + e.getMessage(), e);
             }
