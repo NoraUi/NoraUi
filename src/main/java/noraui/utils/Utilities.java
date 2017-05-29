@@ -345,6 +345,8 @@ public class Utilities {
      *
      * @param locator
      *            used to find the element
+     * @param nb
+     *            is exactly number of responses
      * @return the list of WebElements once they are located
      */
     public static ExpectedCondition<List<WebElement>> presenceOfNbElementsLocatedBy(final By locator, final int nb) {
