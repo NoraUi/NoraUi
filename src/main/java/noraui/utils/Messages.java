@@ -11,14 +11,16 @@ public class Messages {
      * Success message
      */
     public static final String SUCCESS_MESSAGE = "Succès";
+    public static final String PARTIAL_SUCCESS_MESSAGE = "Succès sur cet élément";
     public static final String SUCCESS_MESSAGE_BY_DEFAULT = "Initialisation à Succès par défaut";
 
     /**
-     * Default error message
+     * Default error/warning message
      */
     public static final String FAIL_MESSAGE_DEFAULT = "Échec : ";
     public static final String WARNING_MESSAGE_DEFAULT = "Alerte : ";
     public static final String SUCCESS_MESSAGE_WITH_RESERVE = "Succès avec réserves : ";
+    public static final String NOT_RUN_MESSAGE = "Élément non utilisé par le robot suite à une erreur précédente.";
 
     /**
      * Errors of Gherkin and Cucumber.
