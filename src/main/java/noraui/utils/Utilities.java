@@ -358,4 +358,32 @@ public class Utilities {
             }
         };
     }
+
+    /**
+     * An expectation for checking that nb elements present on the web page that match the locator
+     * are visible. Visibility means that the elements are not only displayed but also have a height
+     * and width that is greater than 0.
+     *
+     * @param locator
+     *            used to find the element
+     * @param nb
+     *            is exactly number of responses
+     * @return the list of WebElements once they are located
+     */
+    public static ExpectedCondition<List<WebElement>> visibilityOfNbElementsLocatedBy(final By locator, final int nb) {
+        return new ExpectedCondition<List<WebElement>>() {
+            @Override
+            public List<WebElement> apply(WebDriver driver) {
+                int nbElementIsDisplayed = 0;
+                List<WebElement> elements = driver.findElements(locator);
+                for (WebElement element : elements) {
+                    if (element.isDisplayed()) {
+                        nbElementIsDisplayed++;
+                    }
+                }
+                return nbElementIsDisplayed == nb ? elements : null;
+            }
+        };
+    }
+
 }
