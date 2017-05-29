@@ -321,9 +321,7 @@ public class Utilities {
     }
 
     public static ExpectedCondition<WebElement> atLeastOneOfTheseElementsIsPresent(final By... locators) {
-
         return new ExpectedCondition<WebElement>() {
-
             @Override
             public WebElement apply(@Nullable WebDriver driver) {
                 WebElement element = null;
@@ -338,6 +336,23 @@ public class Utilities {
                     }
                 }
                 return element;
+            }
+        };
+    }
+
+    /**
+     * An expectation for checking that there is at least one element present on a web page.
+     *
+     * @param locator
+     *            used to find the element
+     * @return the list of WebElements once they are located
+     */
+    public static ExpectedCondition<List<WebElement>> presenceOfNbElementsLocatedBy(final By locator, final int nb) {
+        return new ExpectedCondition<List<WebElement>>() {
+            @Override
+            public List<WebElement> apply(WebDriver driver) {
+                List<WebElement> elements = driver.findElements(locator);
+                return elements.size() == nb ? elements : null;
             }
         };
     }
