@@ -11,7 +11,7 @@ Feature: hello (Function to validate the environment.)
         
     Then I wait '1' seconds.
          
-    Given 'DEMO_HOME' is opened?
+    Given 'DEMO_HOME' is opened.
     Then The DEMO portal is displayed.
 		
     Given me a hello, please. Best Regards '<author>'.
@@ -70,6 +70,8 @@ Feature: hello (Function to validate the environment.)
         |2|I wait '4' seconds.|1|2|
         |3|I update select list 'demo.DemoPage-input_select_field' with '<city>'|||
         |4|I save the value of 'demo.DemoPage-input_select_field' in 'myOutLoopKey' context key.|||
+
+    And I go back to 'DEMO_HOME'        
     
   Examples:
     #DATA

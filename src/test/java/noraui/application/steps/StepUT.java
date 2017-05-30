@@ -1,16 +1,11 @@
 package noraui.application.steps;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Select;
 
 import noraui.application.page.Page;
 import noraui.application.page.Page.PageElement;
@@ -356,70 +351,6 @@ public class StepUT {
     }
 
     @Test
-    public void testFindOptionByIgnoreCaseText() {
-        final WebElement peterOption = mockOption("Peter");
-        final WebElement stephaneOption = mockOption("Stephane");
-        final WebElement noelOption = mockOption("Noël");
-        final WebElement katyOption = mockOption("Céline");
-        final WebElement bradOption = mockOption("Brad ");
-        final WebElement pierreOption = mockOption(" Pierre");
-        final WebElement christopheOption = mockOption("christophe");
-        final List<WebElement> options = Arrays.asList(peterOption, stephaneOption, noelOption, katyOption, bradOption, pierreOption, christopheOption);
-
-        final WebElement element = Mockito.mock(WebElement.class);
-        Mockito.when(element.getTagName()).thenReturn("select");
-        Mockito.when(element.findElements(By.tagName("option"))).thenReturn(options);
-        Select select = new Select(element);
-
-        Assert.assertEquals("KO", -1, step.findOptionByIgnoreCaseText("fake", select));
-
-        Assert.assertEquals("OK", 0, step.findOptionByIgnoreCaseText("Peter", select));
-        Assert.assertEquals("OK", 0, step.findOptionByIgnoreCaseText(" Peter", select));
-        Assert.assertEquals("OK", 0, step.findOptionByIgnoreCaseText("Peter ", select));
-        Assert.assertEquals("OK", 0, step.findOptionByIgnoreCaseText("peter", select));
-        Assert.assertEquals("OK", 0, step.findOptionByIgnoreCaseText(" peter", select));
-        Assert.assertEquals("OK", 0, step.findOptionByIgnoreCaseText("peter ", select));
-
-        Assert.assertEquals("OK", 1, step.findOptionByIgnoreCaseText("Stephane", select));
-        Assert.assertEquals("OK", 1, step.findOptionByIgnoreCaseText(" Stephane", select));
-        Assert.assertEquals("OK", 1, step.findOptionByIgnoreCaseText("Stephane ", select));
-        Assert.assertEquals("OK", 1, step.findOptionByIgnoreCaseText(" Stephane ", select));
-        Assert.assertEquals("OK", 1, step.findOptionByIgnoreCaseText("Stéphane", select));
-        Assert.assertEquals("OK", 1, step.findOptionByIgnoreCaseText(" Stéphane", select));
-        Assert.assertEquals("OK", 1, step.findOptionByIgnoreCaseText("Stéphane ", select));
-        Assert.assertEquals("OK", 1, step.findOptionByIgnoreCaseText(" Stéphane ", select));
-
-        Assert.assertEquals("OK", 2, step.findOptionByIgnoreCaseText("Noël", select));
-        Assert.assertEquals("OK", 2, step.findOptionByIgnoreCaseText("Noel", select));
-
-        Assert.assertEquals("OK", 3, step.findOptionByIgnoreCaseText("Celine", select));
-        Assert.assertEquals("OK", 3, step.findOptionByIgnoreCaseText(" Celine", select));
-        Assert.assertEquals("OK", 3, step.findOptionByIgnoreCaseText("Celine ", select));
-        Assert.assertEquals("OK", 3, step.findOptionByIgnoreCaseText(" Celine ", select));
-        Assert.assertEquals("OK", 3, step.findOptionByIgnoreCaseText("Céline", select));
-        Assert.assertEquals("OK", 3, step.findOptionByIgnoreCaseText(" Céline", select));
-        Assert.assertEquals("OK", 3, step.findOptionByIgnoreCaseText("Céline ", select));
-        Assert.assertEquals("OK", 3, step.findOptionByIgnoreCaseText(" Céline ", select));
-
-        Assert.assertEquals("OK", 4, step.findOptionByIgnoreCaseText("Brad", select));
-        Assert.assertEquals("OK", 4, step.findOptionByIgnoreCaseText(" Brad", select));
-        Assert.assertEquals("OK", 4, step.findOptionByIgnoreCaseText("Brad ", select));
-        Assert.assertEquals("OK", 4, step.findOptionByIgnoreCaseText(" Brad ", select));
-
-        Assert.assertEquals("OK", 5, step.findOptionByIgnoreCaseText("Pierre", select));
-        Assert.assertEquals("OK", 5, step.findOptionByIgnoreCaseText(" Pierre", select));
-        Assert.assertEquals("OK", 5, step.findOptionByIgnoreCaseText("Pierre ", select));
-        Assert.assertEquals("OK", 5, step.findOptionByIgnoreCaseText(" Pierre ", select));
-
-        Assert.assertEquals("OK", 6, step.findOptionByIgnoreCaseText("christophe", select));
-        Assert.assertEquals("OK", 6, step.findOptionByIgnoreCaseText(" christophe", select));
-        Assert.assertEquals("OK", 6, step.findOptionByIgnoreCaseText("christophe ", select));
-        Assert.assertEquals("OK", 6, step.findOptionByIgnoreCaseText("Christophe", select));
-        Assert.assertEquals("OK", 6, step.findOptionByIgnoreCaseText(" Christophe", select));
-        Assert.assertEquals("OK", 6, step.findOptionByIgnoreCaseText("Christophe ", select));
-    }
-
-    @Test
     public void testRunAllStepsInLoop() {
         List<GherkinConditionedLoopedStep> steps = new ArrayList<>();
         String expected = ".+;(ETS Backbone VLAN LL2048K\\|ETS Accès L2ETH\\|Accès XDSL ETS\\|Backbone VLAN Virtuelle)";
@@ -432,12 +363,6 @@ public class StepUT {
         } catch (TechnicalException e) {
             Assert.assertFalse("Error", true);
         }
-    }
-
-    private WebElement mockOption(String name) {
-        final WebElement option = Mockito.mock(WebElement.class, name);
-        Mockito.when(option.getText()).thenReturn(name);
-        return option;
     }
 
 }

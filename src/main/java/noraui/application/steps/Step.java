@@ -7,7 +7,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.text.DateFormat;
-import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,6 +49,7 @@ import noraui.gherkin.GherkinStepCondition;
 import noraui.utils.Constants;
 import noraui.utils.Context;
 import noraui.utils.Messages;
+import noraui.utils.NameUtilities;
 import noraui.utils.Utilities;
 
 public class Step implements IStep {
@@ -750,25 +750,13 @@ public class Step implements IStep {
     private void setDropDownValue(PageElement element, String text) throws TechnicalException, FailureException {
         WebElement select = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(element)));
         Select dropDown = new Select(select);
-        int index = findOptionByIgnoreCaseText(text, dropDown);
+        int index = NameUtilities.findOptionByIgnoreCaseText(text, dropDown);
         if (index != -1) {
             dropDown.selectByIndex(index);
         } else {
             new Result.Failure<>(text, Messages.format(Messages.FAIL_MESSAGE_VALUE_NOT_AVAILABLE_IN_THE_LIST, element, element.getPage().getApplication()), false, element.getPage().getCallBack());
         }
 
-    }
-
-    protected int findOptionByIgnoreCaseText(String text, Select dropDown) {
-        int index = 0;
-        for (WebElement option : dropDown.getOptions()) {
-            if (Normalizer.normalize(option.getText(), Normalizer.Form.NFD).replaceAll("[\\p{InCombiningDiacriticalMarks}]", "").trim()
-                    .equalsIgnoreCase(Normalizer.normalize(text, Normalizer.Form.NFD).replaceAll("[\\p{InCombiningDiacriticalMarks}]", "").trim())) {
-                return index;
-            }
-            index++;
-        }
-        return -1;
     }
 
     /**

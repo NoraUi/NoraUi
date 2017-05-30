@@ -33,24 +33,17 @@ Does NoraUi not support your language? Please help us with a PR!
 
 # How use
 
+Stable:
+
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.noraui/noraui/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.noraui/noraui)
 
-Stable
+SNAPSHOT:
 
 ```xml
 <dependency>
     <groupId>com.github.noraui</groupId>
     <artifactId>noraui</artifactId>
-    <version>2.4.0</version>
-</dependency>
-```
-SNAPSHOT
-
-```xml
-<dependency>
-    <groupId>com.github.noraui</groupId>
-    <artifactId>noraui</artifactId>
-    <version>2.5.0-SNAPSHOT</version>
+    <version>2.5.1-SNAPSHOT</version>
 </dependency>
 ```
 

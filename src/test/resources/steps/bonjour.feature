@@ -71,7 +71,9 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
         |2|J'attends '4' seconds.|1|2|
         |3|Je met à jour la liste déroulante 'demo.DemoPage-input_select_field' avec '<city>'|||
         |4|Je sauvegarde la valeur de 'demo.DemoPage-input_select_field' dans la clé 'myOutLoopKey' du contexte.|||
-        
+
+    Et Je retourne vers 'DEMO_HOME'
+    
   Exemples:
     #DATA
     |id|author|zip|city|element|date|
