@@ -34,9 +34,11 @@ public class ScenarioInitiator {
             logger.warn("Usage: ScenarioInitiator main must be launched with 1 parameters ==> \"ScenarioName\"\nUsing tags instead");
             String tags = System.getProperty("cucumber.options");
             if (tags != null && tags.contains("--tags")) {
-                tags = tags.replace("--tags @", "").replace("@", "");
+                tags = tags.replace("--tags @", "").replace("@", "").split(" ")[0];
                 for (String s : tags.split(",")) {
-                    processInjection(s);
+                    if (!s.startsWith("~")) {
+                        processInjection(s);
+                    }
                 }
             } else {
                 logger.error("Unable to get tags to process injection");
