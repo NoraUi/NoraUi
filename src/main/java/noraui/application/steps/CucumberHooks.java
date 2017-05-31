@@ -1,5 +1,7 @@
 package noraui.application.steps;
 
+import java.util.Collection;
+
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Seconds;
@@ -21,9 +23,11 @@ public class CucumberHooks {
     @Before()
     public static void setUpScenario(Scenario scenario) throws TechnicalException {
         logger.debug("setUpScenario " + scenario.getName() + " scenario.");
+
         if (Context.getCurrentScenarioData() == 0) {
             // Retrieve Excel filename to read
-            String scenarioName = System.getProperty("excelfilename") != null ? System.getProperty("excelfilename") : ((String) scenario.getSourceTagNames().toArray()[0]).replaceAll("@", "");
+            String scenarioName = System.getProperty("excelfilename") != null ? System.getProperty("excelfilename") : getFirstNonEnvironmentTag(scenario.getSourceTagNames());
+
             Context.setScenarioName(scenarioName);
 
             Context.getDataInputProvider().prepare(Context.getScenarioName());
@@ -38,6 +42,7 @@ public class CucumberHooks {
 
         Context.setCurrentScenario(scenario);
         new Result.Success<>(Context.getScenarioName(), Messages.SUCCESS_MESSAGE_BY_DEFAULT);
+
     }
 
     @After()
@@ -84,6 +89,15 @@ public class CucumberHooks {
         Seconds pastTime = Seconds.secondsBetween(Context.getStartCurrentScenario(), now);
         int totalTimecalculated = pastTime.getSeconds() * Context.getDataInputProvider().getNbGherkinExample() / Context.getCurrentScenarioData();
         return totalTimecalculated - pastTime.getSeconds();
+    }
+
+    private static String getFirstNonEnvironmentTag(Collection<String> collection) {
+        for (String tag : collection) {
+            if (!tag.startsWith("@~")) {
+                return tag.replaceAll("@", "");
+            }
+        }
+        return null;
     }
 
 }
