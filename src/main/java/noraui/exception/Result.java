@@ -107,7 +107,7 @@ public abstract class Result {
                     if (i < this.wid) {
                         Context.getDataOutputProvider().writeWarningResult(line, Messages.PARTIAL_SUCCESS_MESSAGE);
                     } else if (i == this.wid) {
-                        Context.getDataOutputProvider().writeFailedResult(line, Messages.FAIL_MESSAGE_DEFAULT + message);
+                        Context.getDataOutputProvider().writeFailedResult(line, Messages.FAIL_MESSAGE_DEFAULT + this.message);
                     } else if (i > this.wid) {
                         Context.getDataOutputProvider().writeWarningResult(line, Messages.NOT_RUN_MESSAGE);
                     }
@@ -128,9 +128,9 @@ public abstract class Result {
                 callback.call();
             }
             if (Context.isStackTraceDisplayed()) {
-                Assert.fail(message + " [" + failure() + "]");
+                Assert.fail(Messages.FAIL_MESSAGE_DEFAULT + this.message + " [" + failure() + "]");
             } else {
-                throw new AssertError(message + " [" + failure() + "]");
+                throw new AssertError(Messages.FAIL_MESSAGE_DEFAULT + this.message + " [" + failure() + "]");
             }
         }
     }
