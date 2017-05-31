@@ -32,8 +32,8 @@ fi
 
 if [ "$TRAVIS_BRANCH" = 'master' ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ]; then
      echo "******** Starting gpg"
-     #openssl aes-256-cbc -K $encrypted_SOME_key -iv $encrypted_SOME_iv -in cd/signingkey.asc.enc -out cd/signingkey.asc -d
-     #gpg --fast-import cd/signingkey.asc
+     openssl aes-256-cbc -K $GPG_KEY -iv $GPG_KEY -in test/signingkey.asc.enc -out test/signingkey.asc -d
+     #gpg --fast-import test/signingkey.asc
 fi
 
 if [ "$TRAVIS_BRANCH" = 'master' ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ]; then
