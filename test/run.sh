@@ -30,8 +30,10 @@ else
     exit 255
 fi
 
-echo "******** Starting deploy"
-#mvn clean deploy -Pdeploy --settings test/mvnsettings.xml
+if [ "$TRAVIS_BRANCH" = 'master' ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ]; then
+    echo "******** Starting deploy"
+    #mvn clean deploy -Pdeploy --settings test/mvnsettings.xml
+fi
 
 echo ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
 echo ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
