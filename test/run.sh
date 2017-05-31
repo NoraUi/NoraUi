@@ -31,7 +31,7 @@ else
 fi
 
 echo "******** Starting deploy"
-#mvn clean deploy -Pdeploy
+#mvn clean deploy -Pdeploy --settings test/mvnsettings.xml
 
 echo ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
 echo ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
