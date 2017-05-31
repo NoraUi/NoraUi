@@ -76,7 +76,7 @@ public class LogoGameSteps extends Step {
     }
 
     /**
-     * A check that all brands is not prohibited, because any minors can not play with alcohol and tobacco brands.
+     * A check that all brands are not prohibited, because any minors can not play with alcohol and tobacco brands.
      *
      * @param jsonLogos
      *            Serialized Json representation of all logos (all brands)
@@ -86,7 +86,7 @@ public class LogoGameSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Lorsque("Je vérifie que toutes les marques '(.*)' ne sont pas interdites")
-    @Given("I check that all brands '(.*)' is not prohibited")
+    @Given("I check that all brands '(.*)' are not prohibited")
     public void checkThatAllBrandsIsNotProhibited(String jsonLogos) throws TechnicalException, FailureException {
         Logos logos = new Logos();
         logos.deserialize(jsonLogos);
