@@ -36,7 +36,8 @@ if [ "$TRAVIS_BRANCH" = 'master' ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ]; the
      #openssl aes-256-cbc -K $encrypted_a4391f72a6ef_key -iv $encrypted_a4391f72a6ef_iv -in test/codesigning.asc.enc -out test/codesigning.asc -d
      echo "******** Starting gpg import"
      gpg --list-keys
-     gpg --import test/codesigning.asc
+     gpg --verbose --version
+     gpg --import test/codesigning.asc --bash
 fi
 
 if [ "$TRAVIS_BRANCH" = 'master' ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ]; then
