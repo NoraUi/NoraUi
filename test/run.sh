@@ -35,7 +35,7 @@ if [ "$TRAVIS_BRANCH" = 'master' ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ]; the
      #echo "******** Starting decrypt codesigning.asc.enc"
      #openssl aes-256-cbc -K $encrypted_a4391f72a6ef_key -iv $encrypted_a4391f72a6ef_iv -in test/codesigning.asc.enc -out test/codesigning.asc -d
      echo "******** Starting gpg import"
-     gpg --fast-import test/codesigning.asc --batch
+     gpg2 --fast-import test/codesigning.asc --batch
 fi
 
 if [ "$TRAVIS_BRANCH" = 'master' ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ]; then
