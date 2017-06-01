@@ -25,7 +25,9 @@ before_install:
 script:
 - test/run.sh
 
-after_success: test/after_success.sh
+after_success: 
+- openssl aes-256-cbc -K $encrypted_a4391f72a6ef_key -iv $encrypted_a4391f72a6ef_iv -in test/codesigning.asc.enc -out test/codesigning.asc -d
+- test/after_success.sh
 
 cache:
   directories:
