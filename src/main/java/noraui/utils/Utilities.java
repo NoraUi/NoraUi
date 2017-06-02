@@ -239,7 +239,7 @@ public class Utilities {
 
     public enum OperatingSystem {
 
-        WINDOWS("windows", "windows", ".exe"), LINUX("linux", "linux", "");
+        WINDOWS("windows", "windows", ".exe"), LINUX("linux", "linux", ""), MAC("mac", "mac", "");
 
         private String operatingSystemName;
         private String operatingSystemDir;
