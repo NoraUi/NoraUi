@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 cd $(dirname $0)
 cd ..
 mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package javadoc:javadoc sonar:sonar -Dsonar.host.url=https://sonarqube.com -Dsonar.organization=noraui -Dsonar.login=$SONAR_TOKEN -Dcucumber.options="--tags @hello,@bonjour,@blog,@playToLogoGame,@jouerAuJeuDesLogos" -PscenarioInitiator,javadoc,unit-tests -Dmaven.test.failure.ignore=true
@@ -28,18 +29,6 @@ else
     echo "******** All counter is FAIL"
     echo "$counters found $nb_counters times"
     exit 255
-fi
-
-if [ "$TRAVIS_BRANCH" = 'master' ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ]; then
-     #echo "******** Starting decrypt codesigning.asc.enc"
-     #openssl aes-256-cbc -K $encrypted_a4391f72a6ef_key -iv $encrypted_a4391f72a6ef_iv -in test/codesigning.asc.enc -out test/codesigning.asc -d
-     echo "******** Starting gpg import"
-     gpg --fast-import test/codesigning.asc
-fi
-
-if [ "$TRAVIS_BRANCH" = 'master' ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ]; then
-    echo "******** Starting deploy"
-    mvn clean deploy -Pdeploy --settings test/mvnsettings.xml
 fi
 
 echo ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
