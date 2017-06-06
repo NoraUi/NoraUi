@@ -10,7 +10,7 @@ public class NameUtilities {
 
     public static boolean comparingNames(String name, String otherName) {
         for (String word : getNormalizeName(name).split(" ")) {
-            if (!StringUtils.containsIgnoreCase(getNormalizeName(name).trim(), word)) {
+            if (!StringUtils.containsIgnoreCase(getNormalizeName(otherName).trim(), word)) {
                 return false;
             }
         }
