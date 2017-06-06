@@ -9,9 +9,8 @@ import org.openqa.selenium.support.ui.Select;
 public class NameUtilities {
 
     public static boolean comparingNames(String name, String otherName) {
-        for (String word : Normalizer.normalize(name, Normalizer.Form.NFD).replaceAll("'", " ").replaceAll("-", " ").replaceAll("[\\p{InCombiningDiacriticalMarks}]", "").trim().split(" ")) {
-            if (!StringUtils.containsIgnoreCase(
-                    Normalizer.normalize(otherName, Normalizer.Form.NFD).replaceAll("'", " ").replaceAll("-", " ").replaceAll("[\\p{InCombiningDiacriticalMarks}]", "").trim(), word)) {
+        for (String word : getNormalizeName(name).split(" ")) {
+            if (!StringUtils.containsIgnoreCase(getNormalizeName(name).trim(), word)) {
                 return false;
             }
         }
@@ -27,5 +26,9 @@ public class NameUtilities {
             index++;
         }
         return -1;
+    }
+
+    public static String getNormalizeName(String name) {
+        return Normalizer.normalize(name, Normalizer.Form.NFD).replaceAll("'", " ").replaceAll("-", " ").replaceAll("[\\p{InCombiningDiacriticalMarks}]", "").trim();
     }
 }
