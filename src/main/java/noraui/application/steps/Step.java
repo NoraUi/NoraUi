@@ -389,12 +389,12 @@ public class Step implements IStep {
      *             if the scenario encounters a functional error
      */
     protected boolean checkTextSelectedInList(PageElement pageElement, String text) throws FailureException {
-        WebElement select = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(pageElement)));
-        if (select != null) {
+        try {
+            WebElement select = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(pageElement)));
             Select dropDown = new Select(select);
             return text.equalsIgnoreCase(dropDown.getFirstSelectedOption().getText());
-        } else {
-            new Result.Failure<>(select, Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT, true, pageElement.getPage().getCallBack());
+        } catch (Exception e) {
+            new Result.Failure<>(text, Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT, true, pageElement.getPage().getCallBack());
             return false;
         }
     }
