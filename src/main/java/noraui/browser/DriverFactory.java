@@ -162,10 +162,8 @@ public class DriverFactory {
      * Generate a htmlunit webdriver.
      *
      * @return a htmlunit webdriver
-     * @throws TechnicalException
-     *             if an error occured when Webdriver setExecutable to true.
      */
-    private WebDriver generateHtmlUnitDriver() throws TechnicalException {
+    private WebDriver generateHtmlUnitDriver() {
         logger.info("Driver htmlunit");
         DesiredCapabilities capabilities = DesiredCapabilities.htmlUnit();
         capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
