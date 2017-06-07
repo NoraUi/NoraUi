@@ -110,7 +110,7 @@ public abstract class CommonDataProvider implements DataProvider {
         this.dataOutPath = dataOutPath;
     }
 
-    private Set<Class<?>> getClasses(String packageName) throws ClassNotFoundException {
+    private Set<Class<?>> getClasses(String packageName) {
         return new Reflections(packageName, new SubTypesScanner(false)).getSubTypesOf(Object.class);
     }
 
