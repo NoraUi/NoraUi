@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
@@ -30,6 +31,7 @@ import noraui.gherkin.GherkinStepCondition;
 import noraui.utils.Constants;
 import noraui.utils.Context;
 import noraui.utils.Messages;
+import noraui.utils.Utilities;
 
 public class CommonSteps extends Step {
 
@@ -233,6 +235,46 @@ public class CommonSteps extends Step {
     @And("I save the value of '(.*)-(.*)'[\\.|\\?]")
     public void saveElementValue(String page, String field, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         saveElementValue('-' + field, Page.getInstance(page));
+    }
+
+    /**
+     * Save field in data output provider if all 'expected' parameters equals 'actual' parameters in conditions.
+     * The value is saved directly into the data output provider (Excel, CSV, ...).
+     *
+     * @param page
+     *            The concerned page of field
+     * @param field
+     *            Name of the field to save in data output provider.
+     * @param targetColumn
+     *            Target column (in data output provider) to save retrieved value.
+     * @param conditions
+     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
+     * @throws FailureException
+     *             if the scenario encounters a functional error (with message and screenshot)
+     * @throws TechnicalException
+     *             is thrown if the scenario encounters a technical error (format, configuration, data, ...) in NoraUi.
+     *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} or {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_RETRIEVE_VALUE}
+     */
+    @Conditioned
+    @Et("Je sauvegarde la valeur de '(.*)' dans la colonne '(.*)' du fournisseur de données en sortie[\\.|\\?]")
+    @And("I save the value of '(.*)-(.*)' in '(.*)' column of data output provider[\\.|\\?]")
+    public void saveValueInDataOutputProvider(String page, String field, String targetColumn, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+        String value = "";
+        try {
+            value = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + field)))).getText();
+            if (value == null) {
+                value = "";
+            }
+        } catch (Exception e) {
+            new Result.Failure<>(e.getMessage(), Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT, true, Page.getInstance(page).getCallBack());
+        }
+        for (Integer line : Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData()).getIndexes()) {
+            try {
+                Context.getDataOutputProvider().writeDataResult(targetColumn, line, value);
+            } catch (TechnicalException e) {
+                new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_WRITE_MESSAGE_IN_RESULT_FILE, targetColumn), true, Page.getInstance(page).getCallBack());
+            }
+        }
     }
 
     /**
