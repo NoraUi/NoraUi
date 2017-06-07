@@ -107,12 +107,10 @@ public class DriverFactory {
     /**
      * Generate an ie webdriver. Unable to use it with a proxy. Causes a crash.
      *
-     * @deprecated It should not be used in production and it is very slow for developments.
      * @return an ie webdriver
      * @throws TechnicalException
      *             if an error occured when Webdriver setExecutable to true.
      */
-    @Deprecated
     private WebDriver generateIEDriver() throws TechnicalException {
         logger.info("Driver ie");
         String pathWebdriver = DriverFactory.getPath(Driver.IE);
