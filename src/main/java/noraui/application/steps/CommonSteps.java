@@ -256,7 +256,7 @@ public class CommonSteps extends Step {
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} or {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_RETRIEVE_VALUE}
      */
     @Conditioned
-    @Et("Je sauvegarde la valeur de '(.*)' dans la colonne '(.*)' du fournisseur de données en sortie[\\.|\\?]")
+    @Et("Je sauvegarde la valeur de '(.*)-(.*)' dans la colonne '(.*)' du fournisseur de données en sortie[\\.|\\?]")
     @And("I save the value of '(.*)-(.*)' in '(.*)' column of data output provider[\\.|\\?]")
     public void saveValueInDataOutputProvider(String page, String field, String targetColumn, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         String value = "";
