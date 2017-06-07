@@ -80,7 +80,7 @@
         <sonar.surefire.reportsPath>${project.testresult.directory}/surefire-reports</sonar.surefire.reportsPath>
         <sonar.tests>${project.basedir}/src/test/</sonar.tests>
         <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
-        <sonar.exclusions>**/cucumber/**/*,**/*Exception.*</sonar.exclusions>
+        <sonar.exclusions>**/cucumber/**/*,**/*Exception.*,**/annotation/**/*,**/application/model/**/*</sonar.exclusions>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
