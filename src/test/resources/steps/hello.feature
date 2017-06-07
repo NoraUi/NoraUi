@@ -71,9 +71,11 @@ Feature: hello (Function to validate the environment.)
         |3|I update select list 'demo.DemoPage-input_select_field' with '<city>'|||
         |4|I save the value of 'demo.DemoPage-input_select_field' in 'myOutLoopKey' context key.|||
 
+    And I save the value of 'demo.DemoPage-big_title' in 'title' column of data output provider.
+
     And I go back to 'DEMO_HOME'        
     
   Examples:
     #DATA
-    |id|author|zip|city|element|date|
+    |id|author|zip|city|element|title|date|
     #END

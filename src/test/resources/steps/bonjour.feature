@@ -72,6 +72,8 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
         |3|Je met à jour la liste déroulante 'demo.DemoPage-input_select_field' avec '<city>'|||
         |4|Je sauvegarde la valeur de 'demo.DemoPage-input_select_field' dans la clé 'myOutLoopKey' du contexte.|||
 
+    Et Je sauvegarde la valeur de 'demo.DemoPage-big_title' dans la colonne 'title' du fournisseur de données en sortie.
+    
     Et Je retourne vers 'DEMO_HOME'
     
   Exemples:
