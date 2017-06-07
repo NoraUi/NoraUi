@@ -8,6 +8,9 @@ import org.openqa.selenium.support.ui.Select;
 
 public class NameUtilities {
 
+    private NameUtilities() {
+    }
+
     public static boolean comparingNames(String name, String otherName) {
         for (String word : getNormalizeName(name).split(" ")) {
             if (!StringUtils.containsIgnoreCase(getNormalizeName(otherName).trim(), word)) {
