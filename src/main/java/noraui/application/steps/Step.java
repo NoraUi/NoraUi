@@ -98,7 +98,7 @@ public class Step implements IStep {
     }
 
     /**
-     * Click on html element by Javascript.
+     * Click on html element by Javascript. (#issue on IE11: XPathResult is not defined).
      *
      * @param toClick
      *            html element
@@ -122,7 +122,7 @@ public class Step implements IStep {
     }
 
     /**
-     * Click on html element by Javascript.
+     * Click on html element by Javascript. (#issue on IE11: XPathResult is not defined).
      *
      * @param page
      *            page target application

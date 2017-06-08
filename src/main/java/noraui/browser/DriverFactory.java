@@ -119,10 +119,10 @@ public class DriverFactory {
         }
         DesiredCapabilities capabilities = DesiredCapabilities.internetExplorer();
         capabilities.setCapability(InternetExplorerDriver.IE_ENSURE_CLEAN_SESSION, true);
-        capabilities.setCapability("ignoreZoomSetting", true);
-        capabilities.setCapability("requireWindowFocus", true);
-        capabilities.setCapability("unexpectedAlertBehaviour", "accept");
-        capabilities.setCapability("ignoreProtectedModeSettings", true);
+        capabilities.setCapability(InternetExplorerDriver.IGNORE_ZOOM_SETTING, true);
+        capabilities.setCapability(InternetExplorerDriver.REQUIRE_WINDOW_FOCUS, true);
+        capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
+        capabilities.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
         capabilities.setCapability("disable-popup-blocking", true);
         capabilities.setJavascriptEnabled(true);
 
@@ -146,7 +146,6 @@ public class DriverFactory {
         DesiredCapabilities capabilities = DesiredCapabilities.chrome();
         capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
         capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
-        capabilities.setCapability("requireWindowFocus", true);
         if (!Context.getProxy().isEmpty()) {
             Proxy proxy = new Proxy();
             proxy.setHttpProxy(Context.getProxy());
@@ -166,7 +165,6 @@ public class DriverFactory {
         DesiredCapabilities capabilities = DesiredCapabilities.htmlUnit();
         capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
         capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
-        capabilities.setCapability("requireWindowFocus", true);
         capabilities.setJavascriptEnabled(true);
         if (!Context.getProxy().isEmpty()) {
             Proxy proxy = new Proxy();
