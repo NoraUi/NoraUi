@@ -268,6 +268,7 @@ public class CommonSteps extends Step {
         } catch (Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT, true, Page.getInstance(page).getCallBack());
         }
+        Context.getCurrentScenario().write(Messages.format("Value of %s is: %s\n", field, value));
         for (Integer line : Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData()).getIndexes()) {
             try {
                 Context.getDataOutputProvider().writeDataResult(targetColumn, line, value);
