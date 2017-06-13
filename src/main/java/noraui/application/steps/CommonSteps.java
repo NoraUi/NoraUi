@@ -475,21 +475,18 @@ public class CommonSteps extends Step {
     @Then("I check mandatory field '(.*)-(.*)' of type '(.*)'[\\.|\\?]")
     public void checkMandatoryField(String page, String fieldName, String type, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         PageElement pageElement = Page.getInstance(page).getPageElementByKey('-' + fieldName);
-        if (pageElement != null) {
-            switch (type) {
-                case "text":
-                    if (!checkMandatoryTextField(pageElement)) {
-                        new Result.Failure<>(pageElement, Messages.format(Messages.FAIL_MESSAGE_EMPTY_MANDATORY_FIELD, pageElement, pageElement.getPage().getApplication()), true,
-                                pageElement.getPage().getCallBack());
-                    }
-                    break;
-                default:
-                    new Result.Failure<>(type, Messages.format(Messages.SCENARIO_ERROR_MESSAGE_TYPE_NOT_IMPLEMENTED, type, "checkMandatoryField"), false, pageElement.getPage().getCallBack());
-                    break;
-            }
-        } else {
-            new Result.Failure<>(fieldName, Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT, true, Page.getInstance(page).getCallBack());
+        switch (type) {
+            case "text":
+                if (!checkMandatoryTextField(pageElement)) {
+                    new Result.Failure<>(pageElement, Messages.format(Messages.FAIL_MESSAGE_EMPTY_MANDATORY_FIELD, pageElement, pageElement.getPage().getApplication()), true,
+                            pageElement.getPage().getCallBack());
+                }
+                break;
+            default:
+                new Result.Failure<>(type, Messages.format(Messages.SCENARIO_ERROR_MESSAGE_TYPE_NOT_IMPLEMENTED, type, "checkMandatoryField"), false, pageElement.getPage().getCallBack());
+                break;
         }
+
     }
 
     /**
