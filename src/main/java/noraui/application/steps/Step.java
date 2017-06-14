@@ -329,6 +329,33 @@ public class Step implements IStep {
      *
      * @param pageElement
      *            Is target element
+     * @param displayed
+     *            Is target element supposed to be displayed
+     * @throws FailureException
+     *             if the scenario encounters a functional error. Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} message
+     *             (with screenshot, with exception)
+     */
+    protected void checkElementVisible(PageElement pageElement, boolean displayed) throws FailureException {
+        if (displayed) {
+            try {
+                Context.waitUntil(ExpectedConditions.visibilityOfElementLocated(Utilities.getLocator(pageElement)));
+            } catch (Exception e) {
+                new Result.Failure<>(e.getMessage(), Messages.FAIL_MESSAGE_ELEMENT_STILL_VISIBLE, true, pageElement.getPage().getCallBack());
+            }
+        } else {
+            try {
+                Context.waitUntil(ExpectedConditions.not(ExpectedConditions.visibilityOfElementLocated(Utilities.getLocator(pageElement))));
+            } catch (Exception e) {
+                new Result.Failure<>(e.getMessage(), Messages.FAIL_MESSAGE_ELEMENT_STILL_VISIBLE, true, pageElement.getPage().getCallBack());
+            }
+        }
+    }
+
+    /**
+     * Checks if an html element (PageElement) is displayed.
+     *
+     * @param pageElement
+     *            Is target element
      * @param present
      *            Is target element supposed to be present
      * @throws FailureException

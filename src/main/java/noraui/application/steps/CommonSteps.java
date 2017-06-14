@@ -516,7 +516,7 @@ public class CommonSteps extends Step {
     }
 
     /**
-     * Checks if an html element is displayed.
+     * Checks if an html element is visible.
      *
      * @param page
      *            The concerned page of elementName
@@ -531,13 +531,58 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @And("I check that '(.*)-(.*)' is displayed[\\.|\\?]")
+    @Et("Je vérifie que '(.*)-(.*)' est visible[\\.|\\?]")
+    @And("I check that '(.*)-(.*)' is visible[\\.|\\?]")
+    public void checkElementVisible(String page, String elementName, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
+        checkElementVisible(Page.getInstance(page).getPageElementByKey('-' + elementName), true);
+    }
+
+    /**
+     * Checks if an html element is not visible.
+     *
+     * @param page
+     *            The concerned page of elementName
+     * @param elementName
+     *            The key of the PageElement to check
+     * @param conditions
+     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
+     * @throws TechnicalException
+     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with message and with screenshot and with exception if functional error but no screenshot and no exception if technical error.
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     */
+    @Conditioned
+    @Et("Je vérifie que '(.*)-(.*)' n'est pas visible[\\.|\\?]")
+    @And("I check that '(.*)-(.*)' is not visible[\\.|\\?]")
+    public void checkElementNotDisplayed(String page, String elementName, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
+        checkElementVisible(Page.getInstance(page).getPageElementByKey('-' + elementName), false);
+    }
+
+    /**
+     * Checks if an html element is present.
+     *
+     * @param page
+     *            The concerned page of elementName
+     * @param elementName
+     *            The key of the PageElement to check
+     * @param conditions
+     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
+     * @throws TechnicalException
+     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with message and with screenshot and with exception if functional error but no screenshot and no exception if technical error.
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     */
+    @Conditioned
+    @Et("Je vérifie que '(.*)-(.*)' est présent[\\.|\\?]")
+    @And("I check that '(.*)-(.*)' is present[\\.|\\?]")
     public void checkElementPresent(String page, String elementName, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
         checkElementPresence(Page.getInstance(page).getPageElementByKey('-' + elementName), true);
     }
 
     /**
-     * Checks if an html element is not displayed.
+     * Checks if an html element is not present.
      *
      * @param page
      *            The concerned page of elementName
@@ -552,7 +597,8 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @And("I check that '(.*)-(.*)' is not displayed[\\.|\\?]")
+    @Et("Je vérifie que '(.*)-(.*)' n'est pas présent[\\.|\\?]")
+    @And("I check that '(.*)-(.*)' is not present[\\.|\\?]")
     public void checkElementNotPresent(String page, String elementName, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
         checkElementPresence(Page.getInstance(page).getPageElementByKey('-' + elementName), false);
     }
