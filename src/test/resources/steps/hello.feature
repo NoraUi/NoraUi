@@ -3,6 +3,7 @@ Feature: hello (Function to validate the environment.)
 
 	Scenario Outline: Function to validate the environment.
     Given I check that author '<author>' is not empty.
+    Given I check that city '<city>' is not empty.
     
     Given I check mandatory fields:
         |author|<author>|
@@ -66,15 +67,27 @@ Feature: hello (Function to validate the environment.)
     
     Then If '' matches '', I do until 'myOutLoopKey' respects 'Rennes' with '4' max tries: 
         |key|step|expected|actual|
-        |1|I wait '3' seconds.|1|1|
-        |2|I wait '4' seconds.|1|2|
+        |1|I wait '3' seconds?|1|1|
+        |2|I wait '4' seconds?|1|2|
         |3|I update select list 'demo.DemoPage-input_select_field' with '<city>'|||
         |4|I save the value of 'demo.DemoPage-input_select_field' in 'myOutLoopKey' context key.|||
+        
+    Then If '<author>' matches '.+', I do until 'demo.DemoPage-big_title' respects 'This is a demo for NORAUI.*' with '3' max tries:
+        |key|step|expected|actual|
+        |1|I wait '1' seconds?|||
+        |2|I wait '1' seconds?|(Rennes\|Paris\|New York)|<city>|  
 
     And I save the value of 'demo.DemoPage-big_title' in 'title' column of data output provider.
 
+    And I check that 'demo.DemoPage-big_title' is present.
+    And I check that 'demo.DemoPage-noExistElement' is not present.
+
+    And I check that 'demo.DemoPage-big_title' is visible.
+    And I check that 'demo.DemoPage-visibility_hidden_title' is not visible.
+    And I check that 'demo.DemoPage-display_none_title' is not visible.
+
     And I go back to 'DEMO_HOME'        
-    
+
   Examples:
     #DATA
     |id|author|zip|city|element|title|date|

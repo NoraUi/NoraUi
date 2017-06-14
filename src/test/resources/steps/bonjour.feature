@@ -3,7 +3,8 @@
 Fonctionnalité: bonjour (Fonction pour valider l environnement.) 
 
   Plan du Scénario: Function to validate the environment.
-    Lorsque Je vérifie que (.*) '(.*)' n'est pas vide.
+    Lorsque Je vérifie que author '<author>' n'est pas vide.
+    Lorsque Je vérifie que city '<city>' n'est pas vide.
     
     Lorsque Je vérifie les champs obligatoires:
         |author|<author>|
@@ -72,10 +73,22 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
         |3|Je met à jour la liste déroulante 'demo.DemoPage-input_select_field' avec '<city>'|||
         |4|Je sauvegarde la valeur de 'demo.DemoPage-input_select_field' dans la clé 'myOutLoopKey' du contexte.|||
 
+    Lorsque Si '<author>' matche '.+', je fais jusqu'à 'demo.DemoPage-big_title' respecte 'This is a demo for NORAUI.*' avec '3' essais maxi:
+        |key|step|expected|actual|
+        |1|I wait '1' seconds?|||
+        |2|I wait '1' seconds?|(Rennes\|Paris\|New York)|<city>| 
+
     Et Je sauvegarde la valeur de 'demo.DemoPage-big_title' dans la colonne 'title' du fournisseur de données en sortie.
-    
+
+    Et Je vérifie que 'demo.DemoPage-big_title' est présent.
+    Et Je vérifie que 'demo.DemoPage-noExistElement' n'est pas présent.
+
+    Et Je vérifie que 'demo.DemoPage-big_title' est visible.
+    Et Je vérifie que 'demo.DemoPage-visibility_hidden_title' n'est pas visible.
+    Et Je vérifie que 'demo.DemoPage-display_none_title' n'est pas visible.
+
     Et Je retourne vers 'DEMO_HOME'
-    
+
   Exemples:
     #DATA
     |id|author|zip|city|element|date|

@@ -3,14 +3,16 @@ CREATE TABLE hello (
     zip text,
     city text,
     element text,
-	title text,
-    date text
+	date text,
+	title text
 );
-INSERT INTO hello VALUES ('Jenkins T1', '35000', 'Rennes', 'smile', '', '16/01/2020');
-INSERT INTO hello VALUES ('Jenkins T2', '75000', 'Paris', 'smile', '', '16/01/2020');
-INSERT INTO hello VALUES ('Jenkins T3', '56100', 'Lorient', 'smile', '', '16/01/2020');
-INSERT INTO hello VALUES ('Jenkins T4', '35000', 'Rennes', 'smile', '', '16/01/2020');
-INSERT INTO hello VALUES ('Jenkins T5', '35000', 'Rennes', 'noExistElement', '', '16/01/2020');
+INSERT INTO hello VALUES ('Jenkins T1', '35000', 'Rennes', 'smile', '16/01/2020', '');
+INSERT INTO hello VALUES ('Jenkins T2', '75000', 'Paris', 'smile', '', '');
+INSERT INTO hello VALUES ('Jenkins T3', '56100', 'Lorient', 'smile', '', '');
+INSERT INTO hello VALUES ('Jenkins T4', '35000', 'Rennes', 'smile', '', '');
+INSERT INTO hello VALUES ('Jenkins T5', '35000', 'Rennes', 'noExistElement', '', '');
+INSERT INTO hello VALUES ('Jenkins T6', '35000', '', 'smile', '', '');
+INSERT INTO hello VALUES ('Jenkins T7', '35000', 'Rennes', '', '', '');
 
 CREATE TABLE Loginlogout (
     login text,
