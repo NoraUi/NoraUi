@@ -6,9 +6,9 @@ UNION
 UNION
 (select t.author as "author", t.zip as "zip", t.city as "city", t.element as "element", t.date as "date", t.title as "", '' as Résultat from hello t where t.city <> 'Paris' AND t.city <> 'Lorient' AND t.element <> 'noExistElement')
 UNION
-(select t.author as "author", t.zip as "zip", t.city as "city", t.element as "element", t.date as "date", t.title as "", '2' as Résultat from hello t where t.city = '')
+(select t.author as "author", t.zip as "zip", t.city as "city", t.element as "element", t.date as "date", t.title as "", '2' as Résultat from hello t where t.city = '' and t.element <> '')
 UNION
-(select t.author as "author", t.zip as "zip", t.city as "city", t.element as "element", t.date as "date", t.title as "", '3' as Résultat from hello t where t.element = '')
+(select t.author as "author", t.zip as "zip", t.city as "city", t.element as "element", t.date as "date", t.title as "", '3' as Résultat from hello t where t.city = '' and t.element = '')
 UNION
 (select t.author as "author", t.zip as "zip", t.city as "city", t.element as "element", t.date as "date", t.title as "", '44' as Résultat from hello t where t.zip = '')
 ORDER BY "author"
