@@ -311,7 +311,7 @@ public class Step implements IStep {
     protected void checkText(PageElement pageElement, String value) throws TechnicalException, FailureException {
         WebElement inputText = null;
         if (value == null) {
-            throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE + "value ne peut être null.");
+            throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE + "value can not be null null.");
         }
         try {
             inputText = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
