@@ -25,9 +25,7 @@ public class ScenarioInitiator {
         logger.info("Working Directory = " + System.getProperty("user.dir"));
         logger.info("ScenarioInitiator.start:");
         if (args != null && args.length == 1 && !"@TOSPECIFY".equals(args[0])) {
-            for (String a : args) {
-                logger.info("# " + a);
-            }
+            logger.info("# " + args[0]);
             String scenarioName = args[0];
             processInjection(scenarioName);
         } else {
