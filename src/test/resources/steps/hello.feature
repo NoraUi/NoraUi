@@ -75,7 +75,12 @@ Feature: hello (Function to validate the environment.)
     Then If '<author>' matches '.+', I do until 'demo.DemoPage-big_title' respects 'This is a demo for NORAUI.*' with '3' max tries:
         |key|step|expected|actual|
         |1|I wait '1' seconds?|||
-        |2|I wait '1' seconds?|(Rennes\|Paris\|New York)|<city>|  
+        |2|I wait '1' seconds?|(Rennes\|Paris\|New York)|<city>|
+        
+    Then If '<author>' matches '.+', While 'demo.DemoPage-big_title' respects 'This is a demo for NORAUI.*' I do with '3' max tries:    
+        |key|step|expected|actual|
+        |1|I wait '1' seconds?|||
+        |2|I wait '1' seconds?|(Rennes\|Paris\|New York)|<city>|
 
     And I save the value of 'demo.DemoPage-big_title' in 'title' column of data output provider.
 
@@ -85,6 +90,26 @@ Feature: hello (Function to validate the environment.)
     And I check that 'demo.DemoPage-big_title' is visible.
     And I check that 'demo.DemoPage-visibility_hidden_title' is not visible.
     And I check that 'demo.DemoPage-display_none_title' is not visible.
+
+    When I clear text in 'demo.DemoPage-input_text_field'.
+    When I update text 'demo.DemoPage-input_text_field' and type ENTER with '<zip>'.
+    And I check mandatory field 'demo.DemoPage-input_text_field' of type 'text'.
+    
+    And I update radio list 'demo.DemoPage-rate' with '<author>' from these values:
+      |Jenkins T1|week-end|
+      |Jenkins T2|night|
+      |Default|day|
+    
+    Then I update checkbox 'demo.DemoPage-iagree' with 'true'.
+    Then I update checkbox 'demo.DemoPage-iagree' with 'true'?
+        |key|expected|actual|
+        |wid|.+|<author>|
+    Then I update checkbox 'demo.DemoPage-iagree' with 'yes' from these values:
+        |yes|true|
+        |Default|false|
+    Then I update checkbox 'demo.DemoPage-iagree' with '<author>' from these values:
+        |Jenkins T1|true|
+        |Default|false|    
 
     And I go back to 'DEMO_HOME'        
 

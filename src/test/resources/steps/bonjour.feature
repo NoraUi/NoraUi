@@ -76,7 +76,12 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
     Lorsque Si '<author>' matche '.+', je fais jusqu'à 'demo.DemoPage-big_title' respecte 'This is a demo for NORAUI.*' avec '3' essais maxi:
         |key|step|expected|actual|
         |1|I wait '1' seconds?|||
-        |2|I wait '1' seconds?|(Rennes\|Paris\|New York)|<city>| 
+        |2|I wait '1' seconds?|(Rennes\|Paris\|New York)|<city>|
+        
+    Lorsque Si '<author>' matche '.+', Tant que 'demo.DemoPage-big_title' respecte 'This is a demo for NORAUI.*' je fais avec '3' essais maxi:
+        |key|step|expected|actual|
+        |1|I wait '1' seconds?|||
+        |2|I wait '1' seconds?|(Rennes\|Paris\|New York)|<city>|        
 
     Et Je sauvegarde la valeur de 'demo.DemoPage-big_title' dans la colonne 'title' du fournisseur de données en sortie.
 
@@ -86,6 +91,26 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
     Et Je vérifie que 'demo.DemoPage-big_title' est visible.
     Et Je vérifie que 'demo.DemoPage-visibility_hidden_title' n'est pas visible.
     Et Je vérifie que 'demo.DemoPage-display_none_title' n'est pas visible.
+
+    Quand Je clarifie le texte dans 'demo.DemoPage-input_text_field'.
+    Quand Je met à jour le texte 'demo.DemoPage-input_text_field' et entre ENTRER avec '<zip>'.
+    Et Je vérifie le champ obligatoire 'demo.DemoPage-input_text_field' de type 'text'.
+
+    Et Je met à jour la liste radio 'demo.DemoPage-rate' avec '<author>' à partir de ces valeurs:
+      |Jenkins T1|week-end|
+      |Jenkins T2|night|
+      |Default|day|
+      
+    Lorsque Je met à jour la case à cocher 'demo.DemoPage-iagree' avec 'true'.
+    Lorsque Je met à jour la case à cocher 'demo.DemoPage-iagree' avec 'true'?
+        |key|expected|actual|
+        |wid|.+|<author>|
+    Lorsque Je met à jour la case à cocher 'demo.DemoPage-iagree' avec 'yes' à partir de ces valeurs:
+        |yes|true|
+        |Default|false|
+    Lorsque Je met à jour la case à cocher 'demo.DemoPage-iagree' avec '<author>' à partir de ces valeurs:
+        |Jenkins T1|true|
+        |Default|false| 
 
     Et Je retourne vers 'DEMO_HOME'
 

@@ -13,6 +13,7 @@ INSERT INTO hello VALUES ('Jenkins T4', '35000', 'Rennes', 'smile', '', '');
 INSERT INTO hello VALUES ('Jenkins T5', '35000', 'Rennes', 'noExistElement', '', '');
 INSERT INTO hello VALUES ('Jenkins T6', '35000', '', 'smile', '', '');
 INSERT INTO hello VALUES ('Jenkins T7', '35000', 'Rennes', '', '', '');
+INSERT INTO hello VALUES ('Jenkins T8', '', 'Rennes', '', 'smile', '');
 
 CREATE TABLE Loginlogout (
     login text,

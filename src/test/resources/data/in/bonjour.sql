@@ -9,4 +9,6 @@ UNION
 (select t.author as "author", t.zip as "zip", t.city as "city", t.element as "element", t.date as "date", t.title as "", '2' as Résultat from hello t where t.city = '')
 UNION
 (select t.author as "author", t.zip as "zip", t.city as "city", t.element as "element", t.date as "date", t.title as "", '3' as Résultat from hello t where t.element = '')
+UNION
+(select t.author as "author", t.zip as "zip", t.city as "city", t.element as "element", t.date as "date", t.title as "", '44' as Résultat from hello t where t.zip = '')
 ORDER BY "author"

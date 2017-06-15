@@ -195,7 +195,7 @@ public class Step implements IStep {
                         pageElement.getPage().getCallBack());
             }
         } else {
-            loggerStep.debug("Empty data provided. No need to update text.");
+            loggerStep.debug("Empty data provided. No need to update text. If you want clear data, you need use: \"I clear text in ...\"");
         }
     }
 

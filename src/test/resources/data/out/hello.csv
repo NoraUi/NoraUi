@@ -1,8 +1,9 @@
 ﻿author;zip;city;element;date;title;Résultat;
 Jenkins T1;35000;Rennes;smile;16/01/2020;;;
-Jenkins T2;75000;Paris;smile;;;24;
-Jenkins T3;56100;Lorient;smile;;;18;
+Jenkins T2;75000;Paris;smile;;;;
+Jenkins T3;56100;Lorient;smile;;;;
 Jenkins T4;35000;Rennes;smile;;;;
-Jenkins T5;35000;Rennes;noExistElement;;;29;
-Jenkins T6;35000;;smile;;;2;
-Jenkins T7;35000;Rennes;;;;3;
+Jenkins T5;35000;Rennes;noExistElement;;;;
+Jenkins T6;35000;;smile;;;;
+Jenkins T7;35000;Rennes;;;;;
+Jenkins T8;;Rennes;;smile;;;

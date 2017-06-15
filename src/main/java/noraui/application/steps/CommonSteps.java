@@ -319,7 +319,7 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Lorsque("Je clique sur '(.*)-(.*)'[\\.|\\?]")
+    @Quand("Je clique sur '(.*)-(.*)'[\\.|\\?]")
     @When("I click on '(.*)-(.*)'[\\.|\\?]")
     public void clickOn(String page, String toClick, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         loggerStep.debug(page + " clickOn: " + toClick);
@@ -617,6 +617,7 @@ public class CommonSteps extends Step {
      *             Exception with message and with screenshot and with exception if functional error but no screenshot and no exception if technical error.
      */
     @Conditioned
+    @Lorsque("Je vérifie l'absence d'alerte dans '(.*)'[\\.|\\?]")
     @Then("I check absence of alert in '(.*)'[\\.|\\?]")
     public void checkAlert(String page, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
         checkAlert(Page.getInstance(page));
@@ -663,6 +664,7 @@ public class CommonSteps extends Step {
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
+    @Et("Je met à jour la liste radio '(.*)-(.*)' avec '(.*)' à partir de ces valeurs:")
     @And("I update radio list '(.*)-(.*)' with '(.*)' from these values:")
     public void updateRadioList(String page, String elementName, String input, Map<String, String> printedValues) throws TechnicalException, FailureException {
         updateRadioList(Page.getInstance(page).getPageElementByKey('-' + elementName), input, printedValues);
@@ -685,6 +687,7 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
+    @Lorsque("Je met à jour la case à cocher '(.*)-(.*)' avec '(.*)'[\\.|\\?]")
     @Then("I update checkbox '(.*)-(.*)' with '(.*)'[\\.|\\?]")
     public void selectCheckbox(String page, String elementKey, boolean value, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         selectCheckbox(Page.getInstance(page).getPageElementByKey('-' + elementKey), value);
@@ -706,6 +709,7 @@ public class CommonSteps extends Step {
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
+    @Lorsque("Je met à jour la case à cocher '(.*)-(.*)' avec '(.*)' à partir de ces valeurs:")
     @Then("I update checkbox '(.*)-(.*)' with '(.*)' from these values:")
     public void selectCheckbox(String page, String elementKey, String value, Map<String, Boolean> values) throws TechnicalException, FailureException {
         selectCheckbox(Page.getInstance(page).getPageElementByKey('-' + elementKey), value, values);
@@ -748,6 +752,7 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
+    @Quand("Je passe au cadre '(.*)'[\\.|\\?]")
     @When("I switch to '(.*)' frame[\\.|\\?]")
     public void switchFrame(String page, String elementName, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         switchFrame(Page.getInstance(page).getPageElementByKey('-' + elementName));
