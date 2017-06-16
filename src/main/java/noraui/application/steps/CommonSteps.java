@@ -383,7 +383,6 @@ public class CommonSteps extends Step {
             } catch (Exception e) {
                 new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_SWITCH_WINDOW, windowKey), true, Page.getInstance(page).getCallBack());
             }
-            System.out.println("SGR");
             if (!Page.getInstance(windowKey).checkPage()) {
                 new Result.Failure<>(windowKey, Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_SWITCH_WINDOW, windowKey), true, Page.getInstance(page).getCallBack());
             }
