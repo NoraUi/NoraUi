@@ -36,6 +36,8 @@ public class BrowserSteps {
 
     /**
      * Open new window with conditions.
+     * Note: after this action, you need use "Given '.....' is opened."
+     * {@link noraui.browser.steps.BrowserSteps#openUrlIfDifferent(String, List) openUrlIfDifferent}
      *
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
