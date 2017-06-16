@@ -10,18 +10,18 @@ import noraui.exception.Callbacks;
 import noraui.utils.Context;
 import noraui.utils.Utilities;
 
-public class PopupDemoPage extends Page {
+public class Popup1DemoPage extends Page {
 
-    private static Logger logger = Logger.getLogger(PopupDemoPage.class.getName());
+    private static Logger logger = Logger.getLogger(Popup1DemoPage.class.getName());
 
     public final PageElement bigTitle = new PageElement("-big_title", "This is a popup demo for NORAUI (Non-Regression Automation for User Interfaces).");
 
     private static final String TITLE_PAGE = "NoraUi Demo Popup";
 
-    public PopupDemoPage() {
+    public Popup1DemoPage() {
         super();
         this.application = DEMO_KEY;
-        this.pageKey = "DEMO_POP";
+        this.pageKey = "DEMO_POP1";
         this.callBack = Context.getCallBack(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_DEMO_HOME);
     }
 

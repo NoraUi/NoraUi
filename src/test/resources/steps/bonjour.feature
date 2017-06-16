@@ -113,12 +113,17 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
         |Jenkins T1|true|
         |Default|false| 
 
-    Quand Je clique sur 'demo.DemoPage-open_popup_button' et passe sur 'demo.PopupDemoPage' de type fenêtre.
+    Quand Je clique sur 'demo.DemoPage-open_popup_button1' et passe sur 'demo.Popup1DemoPage' de type fenêtre.
     Lorsque Je ferme la fenêtre actuelle et passe à la fenêtre 'demo'.
-
-    Quand J'ouvre une nouvelle fenêtre.
-    Quand J'ouvre une nouvelle fenêtre.
+    
+    Quand Je clique sur 'demo.DemoPage-open_popup_button1' et passe sur 'demo.Popup1DemoPage' de type fenêtre.
+    Quand Je passe à la fenêtre 'demo'.
+    Quand Je clique sur 'demo.DemoPage-open_popup_button2' et passe sur 'demo.Popup2DemoPage' de type fenêtre.
+    Quand Je passe à la fenêtre 'demo'.
+    Quand Je clique sur 'demo.DemoPage-open_popup_button3' et passe sur 'demo.Popup3DemoPage' de type fenêtre.
+    Quand J'ouvre une nouvelle fenêtre. 
     Lorsque I close all windows except 'demo'.
+    Quand Je passe à la fenêtre 'demo'.
 
     Et Je retourne vers 'DEMO_HOME'
 

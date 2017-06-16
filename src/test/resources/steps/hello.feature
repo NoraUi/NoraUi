@@ -112,13 +112,18 @@ Feature: hello (Function to validate the environment.)
         |Jenkins T1|true|
         |Default|false|    
 
-    When I click on 'demo.DemoPage-open_popup_button' and switch to 'demo.PopupDemoPage' window. 
+    When I click on 'demo.DemoPage-open_popup_button1' and switch to 'demo.Popup1DemoPage' window. 
     Then I close current window and switch to 'demo' window.
-      
-    When I open a new window.
+
+    When I click on 'demo.DemoPage-open_popup_button1' and switch to 'demo.Popup1DemoPage' window.
+    When I switch to 'demo' window.
+    When I click on 'demo.DemoPage-open_popup_button2' and switch to 'demo.Popup2DemoPage' window.
+    When I switch to 'demo' window.
+    When I click on 'demo.DemoPage-open_popup_button3' and switch to 'demo.Popup3DemoPage' window.
     When I open a new window.
     Then I close all windows except 'demo'.
-    
+    When I switch to 'demo' window.
+
     And I go back to 'DEMO_HOME'        
 
   Examples:
