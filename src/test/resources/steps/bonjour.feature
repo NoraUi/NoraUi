@@ -113,17 +113,12 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
         |Jenkins T1|true|
         |Default|false| 
 
+    Quand Je clique sur 'demo.DemoPage-open_popup_button' et passe sur 'demo.PopupDemoPage' de type fenêtre.
+    Lorsque Je ferme la fenêtre actuelle et passe à la fenêtre 'demo'.
+
     Et Je retourne vers 'DEMO_HOME'
 
   Exemples:
     #DATA
     |id|author|zip|city|element|element2|date|
-    |1|Jenkins T1|35000|Rennes|smile|smile|16/01/2020||
-    |2|Jenkins T2|75000|Paris|smile|smile|||
-    |3|Jenkins T3|56100|Lorient|smile|smile|||
-    |4|Jenkins T4|35000|Rennes|smile|smile|||
-    |5|Jenkins T5|35000|Rennes|noExistElement|noExistElement|||
-    |6|Jenkins T6|35000||smile|smile|||
-    |7|Jenkins T7|35000|Rennes|||||
-    |8|Jenkins T8||Rennes|smile|smile|||
     #END

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.openqa.selenium.Keys;
@@ -20,6 +21,7 @@ import cucumber.metrics.annotation.time.Time;
 import cucumber.metrics.annotation.time.TimeName;
 import noraui.application.page.Page;
 import noraui.application.page.Page.PageElement;
+import noraui.browser.WindowManager;
 import noraui.cucumber.annotation.Conditioned;
 import noraui.exception.AssertError;
 import noraui.exception.Callbacks;
@@ -347,6 +349,46 @@ public class CommonSteps extends Step {
     public void clickOnByJs(String page, String toClick, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         loggerStep.debug(page + " clickOnByJs: " + toClick);
         clickOnByJs(Page.getInstance(page).getPageElementByKey('-' + toClick));
+    }
+
+    /**
+     * Opens technical VPN lists
+     *
+     * @param conditions
+     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     */
+    @Conditioned
+    @Quand("Je clique sur '(.*)-(.*)' et passe sur '(.*)' de type fenêtre[\\.|\\?]")
+    @When("I click on '(.*)-(.*)' and switch to '(.*)' window[\\.|\\?]")
+    public void clickOnAndSwitchWindow(String page, String toClick, String windowKey, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
+        String wKey = Page.getInstance(page).getApplication() + Page.getInstance(windowKey).getPageKey();
+        String handleToSwitch = Context.getWindows().get(wKey);
+        if (handleToSwitch != null) {
+            Context.getDriver().switchTo().window(handleToSwitch);
+            Context.getDriver().manage().window().maximize();
+            Context.setMainWindow(windowKey);
+        } else {
+            try {
+                Set<String> initialWindows = getDriver().getWindowHandles();
+                clickOn(Page.getInstance(page).getPageElementByKey('-' + toClick));
+                String newWindowHandle = Context.waitUntil(WindowManager.newWindowOpens(initialWindows));
+                Context.addWindow(wKey, newWindowHandle);
+                getDriver().switchTo().window(newWindowHandle);
+                Context.getDriver().manage().window().maximize();
+                Context.setMainWindow(newWindowHandle);
+            } catch (Exception e) {
+                new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_SWITCH_WINDOW, windowKey), true, Page.getInstance(page).getCallBack());
+            }
+            System.out.println("SGR");
+            if (!Page.getInstance(windowKey).checkPage()) {
+                new Result.Failure<>(windowKey, Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_SWITCH_WINDOW, windowKey), true, Page.getInstance(page).getCallBack());
+            }
+        }
+
     }
 
     /**
