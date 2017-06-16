@@ -12,8 +12,4 @@ public class GherkinConditionedLoopedStep extends GherkinStepCondition {
         return step;
     }
 
-    public void setStep(String step) {
-        this.step = step;
-    }
-
 }
