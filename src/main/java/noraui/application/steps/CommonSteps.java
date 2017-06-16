@@ -352,8 +352,14 @@ public class CommonSteps extends Step {
     }
 
     /**
-     * Opens technical VPN lists
-     *
+     * Click on html element and switch window when the scenario contain more one windows (one more application for example), if all 'expected' parameters equals 'actual' parameters in conditions.
+     * 
+     * @param page
+     *            The concerned page of toClick
+     * @param toClick
+     *            html element
+     * @param windowKey
+     *            the key of window (popup, ...) Example: 'demo.Popup1DemoPage'.
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
      * @throws FailureException
