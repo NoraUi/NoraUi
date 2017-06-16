@@ -116,6 +116,10 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
     Quand Je clique sur 'demo.DemoPage-open_popup_button' et passe sur 'demo.PopupDemoPage' de type fenêtre.
     Lorsque Je ferme la fenêtre actuelle et passe à la fenêtre 'demo'.
 
+    Quand J'ouvre une nouvelle fenêtre.
+    Quand J'ouvre une nouvelle fenêtre.
+    Lorsque I close all windows except 'demo'.
+
     Et Je retourne vers 'DEMO_HOME'
 
   Exemples:

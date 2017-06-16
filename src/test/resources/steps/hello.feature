@@ -114,6 +114,10 @@ Feature: hello (Function to validate the environment.)
 
     When I click on 'demo.DemoPage-open_popup_button' and switch to 'demo.PopupDemoPage' window. 
     Then I close current window and switch to 'demo' window.
+      
+    When I open a new window.
+    When I open a new window.
+    Then I close all windows except 'demo'.
     
     And I go back to 'DEMO_HOME'        
 
