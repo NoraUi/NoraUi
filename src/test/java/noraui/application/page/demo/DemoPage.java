@@ -23,6 +23,7 @@ public class DemoPage extends Page {
     public final PageElement smile = new PageElement("-smile", "link a html balise with onclick (smile)");
     public final PageElement noExistElement = new PageElement("-noExistElement", "no exist element");
     public final PageElement message = new PageElement("-message", "message");
+    public final PageElement xpathContainPercentChar = new PageElement("-xpathContainPercentChar");
 
     private static final String TITLE_PAGE = "NoraUi Demo";
 

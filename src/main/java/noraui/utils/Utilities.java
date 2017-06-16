@@ -26,12 +26,22 @@ import noraui.application.page.Page.PageElement;
 import noraui.browser.DriverFactory;
 
 public class Utilities {
+
     /**
      * Specific logger
      */
     private static final Logger logger = Logger.getLogger(Utilities.class);
 
-    public static String getLocatorValue(String applicationKey, String code, Object... args) {
+    /**
+     * @param applicationKey
+     *            is key of application
+     * @param code
+     *            is key of selector (CAUTION: if you use any % char. {@link String#format(String, Object...)})
+     * @param args
+     *            is list of args ({@link String#format(String, Object...)})
+     * @return the selector
+     */
+    public static String getSelectorValue(String applicationKey, String code, Object... args) {
         String selector = "";
         logger.debug("getLocator with this application key : " + applicationKey);
         logger.debug("getLocator with this locator file : " + Context.iniFiles.get(applicationKey));
@@ -45,8 +55,15 @@ public class Utilities {
         return selector;
     }
 
+    /**
+     * @param element
+     *            is a PageElement
+     * @param args
+     *            is list of args ({@link String#format(String, Object...)})
+     * @return the selector
+     */
     public static String getLocatorValue(PageElement element, Object... args) {
-        return getLocatorValue(element.getPage().getApplication(), element.getPage().getPageKey() + element.getKey(), args);
+        return getSelectorValue(element.getPage().getApplication(), element.getPage().getPageKey() + element.getKey(), args);
     }
 
     /**
