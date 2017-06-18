@@ -22,16 +22,8 @@ public class DataIndex {
         return dataLine;
     }
 
-    public void setDataLine(int dataLine) {
-        this.dataLine = dataLine;
-    }
-
     public List<Integer> getIndexes() {
         return indexes;
-    }
-
-    public void setIndexes(List<Integer> indexes) {
-        this.indexes = indexes;
     }
 
 }
