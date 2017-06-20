@@ -2,7 +2,9 @@ package noraui.data.rest;
 
 import java.util.List;
 
-// @XmlRootElement
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class DataModel {
 
     private List<String> columns;
