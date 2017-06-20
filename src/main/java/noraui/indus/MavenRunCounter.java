@@ -204,9 +204,8 @@ public class MavenRunCounter {
             } else {
                 countWithoutModel(nbStep, result, indexData);
             }
-
         } catch (Exception te) {
-            logger.error(te);
+            logger.error("countNbCasFailuresAndSkipped: " + te);
         }
         return result;
     }

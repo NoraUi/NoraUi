@@ -25,12 +25,13 @@ public class Counter {
 
             Context.getInstance().initializeEnv("demo" + args[0] + ".properties");
 
-            if (args[0].contains("Db")) {
+            if (args[0].contains("Db") || args[0].contains("RestJson")) {
                 scenarioBlacklist.add("blog");
                 scenarioBlacklist.add("bonjour");
                 scenarioBlacklist.add("jouerAuJeuDesLogos");
                 scenarioBlacklist.add("playToLogoGame");
             }
+
             MavenRunCounter mavenRunCounter = new MavenRunCounter();
             List<MavenRunCounter.Counter> counters = mavenRunCounter.count(versionControlSystemsBlacklist, scenarioBlacklist, manager, new File(Context.getResourcesPath() + "/steps"));
             mavenRunCounter.print(counters);
