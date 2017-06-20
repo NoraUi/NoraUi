@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import noraui.data.CommonDataProvider;
@@ -20,6 +21,8 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
 
     private String norauiWebServicesApi;
 
+    private RestTemplate restTemplate;
+
     private enum types {
         JSON, XML
     }
@@ -30,6 +33,8 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
         if (!types.JSON.toString().equals(type) && !types.XML.toString().equals(type)) {
             throw new WebServicesException(String.format(WebServicesException.TECHNICAL_ERROR_MESSAGE_UNKNOWN_WEB_SERVICES_TYPE, type));
         }
+        restTemplate = new RestTemplate();
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
     }
 
     /**
@@ -52,7 +57,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
     @Override
     public int getNbLines() {
         final String uri = this.norauiWebServicesApi + scenarioName + "/nbLines";
-        return new RestTemplate().getForObject(uri, Integer.class) + 1;
+        return restTemplate.getForObject(uri, Integer.class) + 1;
 
     }
 
@@ -98,8 +103,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
     @Override
     public String readValue(String column, int line) {
         final String uri = this.norauiWebServicesApi + scenarioName + "/column/" + (columns.indexOf(column) + 1) + "/line/" + line;
-        String r = new RestTemplate().getForObject(uri, String.class);
-        ResponseEntity<String> entity = new RestTemplate().getForEntity(uri, String.class);
+        ResponseEntity<String> entity = restTemplate.getForEntity(uri, String.class);
         if (HttpStatus.NO_CONTENT.equals(entity.getStatusCode())) {
             return "";
         }
@@ -113,7 +117,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
     public String[] readLine(int line, boolean readResult) {
         logger.debug("readLine at line " + line);
         final String uri = this.norauiWebServicesApi + scenarioName + "/line/" + line;
-        Row row = new RestTemplate().getForObject(uri, DataModel.class).getRows().get(0);
+        Row row = restTemplate.getForObject(uri, DataModel.class).getRows().get(0);
         List<String> l = row.getColumns();
         String[] response = l.toArray(new String[l.size() + 1]);
         response[l.size()] = String.valueOf(row.getErrorStepIndex());
@@ -122,7 +126,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
 
     private void initColumns() throws EmptyDataFileContentException {
         final String uri = this.norauiWebServicesApi + scenarioName + "/columns";
-        columns = new RestTemplate().getForObject(uri, DataModel.class).getColumns();
+        columns = restTemplate.getForObject(uri, DataModel.class).getColumns();
         columns.add(NAME_OF_RESULT_COLUMN);
         if (columns.size() < 2) {
             throw new EmptyDataFileContentException("Input data file is empty or only result column is provided.");
@@ -132,8 +136,8 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
     private void writeValue(String column, int line, String value) {
         logger.debug("Writing: " + value + " at line " + line + " in column '" + column + "'");
         int colIndex = columns.indexOf(column);
-        final String uri = this.norauiWebServicesApi + scenarioName + "column/" + colIndex + "/line/" + line;
-        DataModel dataModel = new RestTemplate().patchForObject(uri, value, DataModel.class);
+        final String uri = this.norauiWebServicesApi + scenarioName + "/column/" + colIndex + "/line/" + line;
+        DataModel dataModel = restTemplate.patchForObject(uri, value, DataModel.class);
         if (NAME_OF_RESULT_COLUMN.equals(column)) {
             if (value.equals(dataModel.getRows().get(line - 1).getResult())) {
                 logger.error("writeValue in REST Web services => column: " + column + " line:" + line + " value:" + value);

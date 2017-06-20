@@ -24,6 +24,12 @@ public class Row {
         this.errorStepIndex = errorStepIndex;
     }
 
+    public Row(List<String> rows, int errorStepIndex, String result) {
+        this.columns = rows;
+        this.errorStepIndex = errorStepIndex;
+        this.result = result;
+    }
+
     public List<String> getColumns() {
         return columns;
     }
