@@ -38,6 +38,7 @@ import cucumber.runtime.java.StepDefAnnotation;
 import noraui.application.page.IPage;
 import noraui.application.page.Page;
 import noraui.application.page.Page.PageElement;
+import noraui.browser.DriverFactory;
 import noraui.browser.steps.BrowserSteps;
 import noraui.cucumber.annotation.Conditioned;
 import noraui.cucumber.injector.NoraUiInjector;
@@ -186,8 +187,13 @@ public class Step implements IStep {
                 String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
                 WebElement element = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(pageElement, args)));
                 element.clear();
-                element.sendKeys(value);
-                if (keysToSend != null) {
+                if (DriverFactory.IE.equals(Context.getBrowser())) {
+                	 String javascript = "arguments[0].value='" + textOrKey + "';";
+                	((JavascriptExecutor) getDriver()).executeScript(javascript, element);
+                } else {
+                	element.sendKeys(value);
+                }
+            	if (keysToSend != null) {
                     element.sendKeys(keysToSend);
                 }
             } catch (Exception e) {
