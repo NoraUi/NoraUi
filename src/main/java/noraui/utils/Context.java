@@ -34,6 +34,7 @@ import noraui.data.csv.CsvDataProvider;
 import noraui.data.db.DBDataProvider;
 import noraui.data.excel.InputExcelDataProvider;
 import noraui.data.excel.OutputExcelDataProvider;
+import noraui.data.rest.RestDataProvider;
 import noraui.exception.Callbacks;
 import noraui.exception.Callbacks.Callback;
 import noraui.exception.TechnicalException;
@@ -136,6 +137,11 @@ public class Context {
      * Single global instance of WebDriverWait
      */
     private WebDriverWait webDriverWait;
+
+    /**
+     * Single global custom instance of WebDriverWait
+     */
+    private WebDriverWait webDriverCustomWait;
 
     /**
      * browser: phantom, ie or chrome.
@@ -286,6 +292,7 @@ public class Context {
         instance.windowManager.clear();
         instance.scenarioRegistry.clear();
         instance.webDriverWait = null;
+        instance.webDriverCustomWait = null;
         instance.scenarioName = null;
     }
 
@@ -424,6 +431,11 @@ public class Context {
             getInstance().webDriverWait = new WebDriverWait(getDriver(), getTimeout());
         }
         return getInstance().webDriverWait.until(condition);
+    }
+
+    public static <T> T waitUntil(ExpectedCondition<T> condition, int time) {
+        getInstance().webDriverCustomWait = new WebDriverWait(getDriver(), time);
+        return getInstance().webDriverCustomWait.until(condition);
     }
 
     public static DataInputProvider getDataInputProvider() {
@@ -631,6 +643,9 @@ public class Context {
                 dataInputProvider = new DBDataProvider(setProperty("dataProvider.db.type", propertyFile), setProperty("dataProvider.db.user", propertyFile),
                         setProperty("dataProvider.db.password", propertyFile), setProperty("dataProvider.db.hostname", propertyFile), setProperty("dataProvider.db.port", propertyFile),
                         setProperty("dataProvider.db.name", propertyFile));
+            } else if (DataProvider.type.REST.toString().equals(dataIn)) {
+                dataInputProvider = new RestDataProvider(setProperty("dataProvider.rest.type", propertyFile), setProperty("dataProvider.rest.hostname", propertyFile),
+                        setProperty("dataProvider.rest.port", propertyFile));
             } else {
                 dataInputProvider = new InputExcelDataProvider();
             }
@@ -641,6 +656,13 @@ public class Context {
                     dataOutputProvider = (CsvDataProvider) dataInputProvider;
                 } else {
                     dataOutputProvider = new CsvDataProvider();
+                }
+            } else if (DataProvider.type.REST.toString().equals(dataOut)) {
+                if (dataInputProvider instanceof RestDataProvider) {
+                    dataOutputProvider = (RestDataProvider) dataInputProvider;
+                } else {
+                    dataOutputProvider = new RestDataProvider(setProperty("dataProvider.rest.type", propertyFile), setProperty("dataProvider.rest.hostname", propertyFile),
+                            setProperty("dataProvider.rest.port", propertyFile));
                 }
             } else {
                 dataOutputProvider = new OutputExcelDataProvider();
