@@ -3,16 +3,18 @@
 #
 # take noraui-datas-webservices from Maven Central and Start Web Services (REST)
 wget -U "Any User Agent" https://oss.sonatype.org/service/local/repositories/snapshots/content/com/github/noraui/noraui-datas-webservices/1.0.0-SNAPSHOT/noraui-datas-webservices-1.0.0-20170622.195832-1.jar
-ls -l
+
 java -jar noraui-datas-webservices-1.0.0-20170622.195832-1.jar &
 PID=$!
 sleep 30
-curl -s --header "Accept: application/json" http://localhost:8084/noraui/api/hello/columns > target/actual_hello_columns.json
-curl -s --header "Accept: application/xml" http://localhost:8084/noraui/api/hello/columns > target/actual_hello_columns.xml
+curl -s --header "Accept: application/json" http://localhost:8084/noraui/api/hello/columns > actual_hello_columns.json
+curl -s --header "Accept: application/xml" http://localhost:8084/noraui/api/hello/columns > actual_hello_columns.xml
 
-echo "Let's look at the actual results: `cat target/actual_hello_columns.json`"
-echo "And compare it to: `cat ../test/expected_hello_columns.json`"
-if diff -w ../test/expected_hello_columns.json target/actual_hello_columns.json
+ls -l
+
+echo "Let's look at the actual results: `cat actual_hello_columns.json`"
+echo "And compare it to: `cat test/expected_hello_columns.json`"
+if diff -w test/expected_hello_columns.json actual_hello_columns.json
     then
         echo SUCCESS
         let ret=0
@@ -22,9 +24,9 @@ if diff -w ../test/expected_hello_columns.json target/actual_hello_columns.json
         exit $ret
 fi
 
-echo "Let's look at the actual results: `cat target/actual_hello_columns.xml`"
+echo "Let's look at the actual results: `cat actual_hello_columns.xml`"
 echo "And compare it to: `cat test/expected_hello_columns.xml`"
-if diff -w test/expected_hello_columns.xml target/actual_hello_columns.xml
+if diff -w test/expected_hello_columns.xml actual_hello_columns.xml
     then
         echo SUCCESS
         let ret=0
@@ -34,10 +36,6 @@ if diff -w test/expected_hello_columns.xml target/actual_hello_columns.xml
         exit $ret
 fi
 echo "******** noraui-datas-webservices STARTED"
-
-#
-# clean tmp files
-rm -rf target
 
 #
 #
