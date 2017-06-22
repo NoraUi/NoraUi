@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import cucumber.api.java.en.And;
@@ -52,6 +53,50 @@ public class CommonSteps extends Step {
     @Then("I wait '(.*)' seconds[\\.|\\?]")
     public void wait(int time, List<GherkinStepCondition> conditions) throws InterruptedException {
         Thread.sleep((long) time * 1000);
+    }
+
+    /**
+     * Wait invisibility of element with timeout of x seconds.
+     *
+     * @param page
+     *            The concerned page of field
+     * @param element
+     *            is key of PageElement concerned
+     * @param time
+     *            is custom timeout
+     * @param conditions
+     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
+     * @throws TechnicalException
+     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     */
+    @Conditioned
+    @Lorsque("J'attends l'invisibilité de '(.*)-(.*)' avec un timeout de '(.*)' secondes[\\.|\\?]")
+    @Then("I wait invisibility of '(.*)-(.*)' with timeout of '(.*)' seconds[\\.|\\?]")
+    public void waitInvisibilityOf(String page, String element, int time, List<GherkinStepCondition> conditions) throws TechnicalException {
+        WebElement we = Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + element));
+        Context.waitUntil(ExpectedConditions.invisibilityOf(we), time);
+    }
+
+    /**
+     * Wait staleness of element with timeout of x seconds.
+     *
+     * @param page
+     *            The concerned page of field
+     * @param element
+     *            is key of PageElement concerned
+     * @param time
+     *            is custom timeout
+     * @param conditions
+     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
+     * @throws TechnicalException
+     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     */
+    @Conditioned
+    @Lorsque("J'attends la diparition de '(.*)-(.*)' avec un timeout de '(.*)' secondes[\\.|\\?]")
+    @Then("I wait staleness of '(.*)-(.*)' with timeout of '(.*)' seconds[\\.|\\?]")
+    public void waitStalenessOf(String page, String element, int time, List<GherkinStepCondition> conditions) throws TechnicalException {
+        WebElement we = Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + element));
+        Context.waitUntil(ExpectedConditions.stalenessOf(we), time);
     }
 
     /**
@@ -353,7 +398,7 @@ public class CommonSteps extends Step {
 
     /**
      * Click on html element and switch window when the scenario contain more one windows (one more application for example), if all 'expected' parameters equals 'actual' parameters in conditions.
-     * 
+     *
      * @param page
      *            The concerned page of toClick
      * @param toClick
