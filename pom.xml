@@ -528,7 +528,7 @@
                                  <phase>compile</phase>
                                  <goals>
                                      <goal>java</goal>
-                                 </goals> -->
+                                 </goals>
                                  <configuration>
                                      <mainClass>noraui.indus.Counter</mainClass>
                                      <arguments>
