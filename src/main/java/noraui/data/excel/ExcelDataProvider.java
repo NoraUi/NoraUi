@@ -232,7 +232,7 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
      */
     private String validExtension(String dataPath) throws TechnicalException {
         Set<String> extensions = new HashSet<>();
-        for (File file : new File(dataInPath).listFiles()) {
+        for (File file : new File(dataPath).listFiles()) {
             if (FilenameUtils.getBaseName(file.getName()).equals(scenarioName) && FilenameUtils.getExtension(file.getName()).startsWith("xls")) {
                 extensions.add(FilenameUtils.getExtension(file.getName()));
             }
