@@ -661,6 +661,8 @@ public class Context {
                 } else {
                     dataOutputProvider = new CsvDataProvider();
                 }
+            } else if (DataProvider.type.DB.toString().equals(dataOut)) {
+                // TODO DBDataProvider not implemented for outputDataProvider
             } else if (DataProvider.type.REST.toString().equals(dataOut)) {
                 if (dataInputProvider instanceof RestDataProvider) {
                     dataOutputProvider = (RestDataProvider) dataInputProvider;
@@ -676,7 +678,7 @@ public class Context {
                 }
             }
         } catch (Exception e) {
-            logger.error(e);
+            logger.error("plugDataProvider: " + e);
         }
     }
 }
