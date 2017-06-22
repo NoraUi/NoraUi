@@ -631,27 +631,31 @@ public class Context {
         }
     }
 
-    private void plugDataProvider(Properties propertyFile) {
+    private void plugDataProvider(Properties applicationProperties) {
         try {
-            String dataIn = setProperty("dataProvider.in.type", propertyFile);
-            String dataOut = setProperty("dataProvider.out.type", propertyFile);
+            String dataIn = setProperty("dataProvider.in.type", applicationProperties);
+            String dataOut = setProperty("dataProvider.out.type", applicationProperties);
 
             // plug input provider
-            if (DataProvider.type.CSV.toString().equals(dataIn)) {
+            if (DataProvider.type.EXCEL.toString().equals(dataIn)) {
+                dataInputProvider = new InputExcelDataProvider();
+            } else if (DataProvider.type.CSV.toString().equals(dataIn)) {
                 dataInputProvider = new CsvDataProvider();
             } else if (DataProvider.type.DB.toString().equals(dataIn)) {
-                dataInputProvider = new DBDataProvider(setProperty("dataProvider.db.type", propertyFile), setProperty("dataProvider.db.user", propertyFile),
-                        setProperty("dataProvider.db.password", propertyFile), setProperty("dataProvider.db.hostname", propertyFile), setProperty("dataProvider.db.port", propertyFile),
-                        setProperty("dataProvider.db.name", propertyFile));
+                dataInputProvider = new DBDataProvider(setProperty("dataProvider.db.type", applicationProperties), setProperty("dataProvider.db.user", applicationProperties),
+                        setProperty("dataProvider.db.password", applicationProperties), setProperty("dataProvider.db.hostname", applicationProperties),
+                        setProperty("dataProvider.db.port", applicationProperties), setProperty("dataProvider.db.name", applicationProperties));
             } else if (DataProvider.type.REST.toString().equals(dataIn)) {
-                dataInputProvider = new RestDataProvider(setProperty("dataProvider.rest.type", propertyFile), setProperty("dataProvider.rest.hostname", propertyFile),
-                        setProperty("dataProvider.rest.port", propertyFile));
+                dataInputProvider = new RestDataProvider(setProperty("dataProvider.rest.type", applicationProperties), setProperty("dataProvider.rest.hostname", applicationProperties),
+                        setProperty("dataProvider.rest.port", applicationProperties));
             } else {
-                dataInputProvider = new InputExcelDataProvider();
+                dataInputProvider = (DataInputProvider) Class.forName(dataIn).getConstructor().newInstance();
             }
 
             // plug output provider
-            if (DataProvider.type.CSV.toString().equals(dataOut)) {
+            if (DataProvider.type.EXCEL.toString().equals(dataOut)) {
+                dataOutputProvider = new OutputExcelDataProvider();
+            } else if (DataProvider.type.CSV.toString().equals(dataOut)) {
                 if (dataInputProvider instanceof CsvDataProvider) {
                     dataOutputProvider = (CsvDataProvider) dataInputProvider;
                 } else {
@@ -661,11 +665,15 @@ public class Context {
                 if (dataInputProvider instanceof RestDataProvider) {
                     dataOutputProvider = (RestDataProvider) dataInputProvider;
                 } else {
-                    dataOutputProvider = new RestDataProvider(setProperty("dataProvider.rest.type", propertyFile), setProperty("dataProvider.rest.hostname", propertyFile),
-                            setProperty("dataProvider.rest.port", propertyFile));
+                    dataOutputProvider = new RestDataProvider(setProperty("dataProvider.rest.type", applicationProperties), setProperty("dataProvider.rest.hostname", applicationProperties),
+                            setProperty("dataProvider.rest.port", applicationProperties));
                 }
             } else {
-                dataOutputProvider = new OutputExcelDataProvider();
+                if (Class.forName(dataOut).isInstance(dataInputProvider)) {
+                    dataOutputProvider = (DataOutputProvider) dataInputProvider;
+                } else {
+                    dataOutputProvider = (DataOutputProvider) Class.forName(dataOut).getConstructor().newInstance();
+                }
             }
         } catch (Exception e) {
             logger.error(e);
