@@ -4,7 +4,7 @@
 # take noraui-datas-webservices from Maven Central and Start Web Services (REST)
 wget -U "Any User Agent" https://oss.sonatype.org/service/local/repositories/snapshots/content/com/github/noraui/noraui-datas-webservices/1.0.0-SNAPSHOT/noraui-datas-webservices-1.0.0-20170622.195832-1.jar
 ls -l
-java -jar noraui-datas-webservices-1.0.0-SNAPSHOT.jar &
+java -jar noraui-datas-webservices-1.0.0-20170622.195832-1.jar &
 PID=$!
 sleep 30
 curl -s --header "Accept: application/json" http://localhost:8084/noraui/api/hello/columns > actual_hello_columns.json
