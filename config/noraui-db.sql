@@ -3,9 +3,9 @@ CREATE TABLE hello (
     zip text,
     city text,
     element text,
-	element2 text,
-	date text,
-	title text
+    element2 text,
+    date text,
+    title text
 );
 INSERT INTO hello VALUES ('Jenkins T1', '35000', 'Rennes', 'smile', 'smile', '16/01/2020', '');
 INSERT INTO hello VALUES ('Jenkins T2', '75000', 'Paris', 'smile', 'smile', '', '');
