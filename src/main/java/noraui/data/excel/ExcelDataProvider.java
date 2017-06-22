@@ -1,13 +1,17 @@
 package noraui.data.excel;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
@@ -32,9 +36,8 @@ import noraui.utils.Messages;
 
 public abstract class ExcelDataProvider extends CommonDataProvider implements DataInputProvider, DataOutputProvider {
 
-    public static final String EXCEL_TYPE = "xlsx";
-
     private Workbook workbook;
+    private String dataOutExtension;
 
     private CellStyle styleSuccess;
     private CellStyle styleFailed;
@@ -156,10 +159,15 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      */
     protected void openInputData() throws TechnicalException {
-        try (FileInputStream fileIn = new FileInputStream(dataInPath + scenarioName + "." + EXCEL_TYPE);) {
+        String dataInExtension = validExtension(dataInPath);
+        try (FileInputStream fileIn = new FileInputStream(dataInPath + scenarioName + "." + dataInExtension);) {
             // Check extension
-            switch (EXCEL_TYPE) {
+            switch (dataInExtension) {
                 case "xlsx":
+                    workbook = new XSSFWorkbook(fileIn);
+                    XSSFFormulaEvaluator.evaluateAllFormulaCells((XSSFWorkbook) workbook);
+                    break;
+                case "xlsm":
                     workbook = new XSSFWorkbook(fileIn);
                     XSSFFormulaEvaluator.evaluateAllFormulaCells((XSSFWorkbook) workbook);
                     break;
@@ -167,8 +175,6 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
                     workbook = new HSSFWorkbook(fileIn);
                     HSSFFormulaEvaluator.evaluateAllFormulaCells(workbook);
                     break;
-                default:
-                    logger.error("Wrong data file type input: " + EXCEL_TYPE);
             }
         } catch (IOException e) {
             logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION, e);
@@ -181,16 +187,18 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      */
     void openOutputData() throws TechnicalException {
-        try (FileInputStream fileOut = new FileInputStream(dataOutPath + scenarioName + "." + EXCEL_TYPE);) {
-            switch (EXCEL_TYPE) {
+        this.dataOutExtension = validExtension(dataOutPath);
+        try (FileInputStream fileOut = new FileInputStream(dataOutPath + scenarioName + "." + this.dataOutExtension);) {
+            switch (this.dataOutExtension) {
                 case "xlsx":
+                    workbook = new XSSFWorkbook(fileOut);
+                    break;
+                case "xlsm":
                     workbook = new XSSFWorkbook(fileOut);
                     break;
                 case "xls":
                     workbook = new HSSFWorkbook(fileOut);
                     break;
-                default:
-                    logger.error("Wrong data file type input: " + EXCEL_TYPE);
             }
         } catch (IOException e) {
             logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION, e);
@@ -211,6 +219,28 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
         Font fontWarning = workbook.createFont();
         fontWarning.setColor(HSSFColor.ORANGE.index);
         styleWarning.setFont(fontWarning);
+    }
+
+    /**
+     * Valid Excel extension: xls, xlsx, or xlsm.
+     *
+     * @param dataPath
+     *            path of all files from input/output folder
+     * @return unique extension if right
+     * @throws TechnicalException
+     *             If you are using Excel as a dataProvider, you must choose one of the following formats: xls, xlsx, or xlsm.
+     */
+    private String validExtension(String dataPath) throws TechnicalException {
+        Set<String> extensions = new HashSet<>();
+        for (File file : new File(dataInPath).listFiles()) {
+            if (FilenameUtils.getBaseName(file.getName()).equals(scenarioName) && FilenameUtils.getExtension(file.getName()).startsWith("xls")) {
+                extensions.add(FilenameUtils.getExtension(file.getName()));
+            }
+        }
+        if (extensions.size() != 1) {
+            throw new TechnicalException(TechnicalException.TECHNICAL_EXPECTED_EXCEL_EXTENTION_ERROR);
+        }
+        return extensions.iterator().next();
     }
 
     /**
@@ -300,7 +330,7 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
     }
 
     private void saveOpenExcelFile() {
-        try (FileOutputStream fileOut = new FileOutputStream(dataOutPath + scenarioName + "." + EXCEL_TYPE);) {
+        try (FileOutputStream fileOut = new FileOutputStream(dataOutPath + scenarioName + "." + this.dataOutExtension);) {
             workbook.write(fileOut);
         } catch (IOException e) {
             logger.error("ERROR in saveOpenExcelFile: " + e);
