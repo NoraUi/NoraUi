@@ -26,7 +26,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
 
     public CsvDataProvider() {
         super();
-        logger.info("dataProvider used is CSV");
+        logger.info("Data provider used is CSV");
     }
 
     /**

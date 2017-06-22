@@ -28,7 +28,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
     }
 
     public RestDataProvider(String type, String host, String port) throws WebServicesException {
-        logger.info("dataProvider used is REST");
+        logger.info("Data provider used is REST");
         this.norauiWebServicesApi = host + ":" + port + NORAUI_API;
         if (!types.JSON.toString().equals(type) && !types.XML.toString().equals(type)) {
             throw new WebServicesException(String.format(WebServicesException.TECHNICAL_ERROR_MESSAGE_UNKNOWN_WEB_SERVICES_TYPE, type));

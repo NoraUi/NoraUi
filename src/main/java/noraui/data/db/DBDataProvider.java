@@ -34,6 +34,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
 
     public DBDataProvider(String type, String user, String password, String hostname, String port, String database) throws TechnicalException {
         super();
+        logger.info("Data provider use is DB " + type);
         this.user = user;
         this.password = password;
         this.hostname = hostname;
