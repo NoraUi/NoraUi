@@ -19,7 +19,7 @@ public class DemoPage extends Page {
     public final PageElement rateRadio = new PageElement("-rate", "Input radio rate");
     public final PageElement agreeCheckbox = new PageElement("-agree", "Input checkbox agree");
     public final PageElement submit = new PageElement("-submit", "Submit button");
-    public final PageElement smilejs = new PageElement("-smilejs", "link a html balise with onclick by js (smile)");
+    public final PageElement smilejs = new PageElement("-smilejs", "link a html balise with onclick by js (smilejs)");
     public final PageElement smile = new PageElement("-smile", "link a html balise with onclick (smile)");
     public final PageElement noExistElement = new PageElement("-noExistElement", "no exist element");
     public final PageElement message = new PageElement("-message", "message");

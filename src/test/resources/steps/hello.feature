@@ -50,14 +50,18 @@ Feature: hello (Function to validate the environment.)
 		
     Given me a error if '<city>' is Paris.
     
+    And I check text 'demo.DemoPage-input_current_date' with '0'.
     When I click by js on 'demo.DemoPage-smilejs'.
     And I check message 'OK' on alert
+    And I check text 'demo.DemoPage-input_current_date' with '1'.
     
     When I click by js on xpath './/*[@name=\'smilejs\' and @title=\'smilejs\']' from 'demo.DemoPage' page.
     And I check message 'OK' on alert
+    And I check text 'demo.DemoPage-input_current_date' with '2'.
     
     When I click on 'demo.DemoPage-<element>'.
     And I check message 'OK' on alert
+    And I check text 'demo.DemoPage-input_current_date' with '3'.
 		
     Given test for 'Annulée'
     
@@ -123,10 +127,14 @@ Feature: hello (Function to validate the environment.)
     When I open a new window.
     Then I close all windows except 'demo'.
     When I switch to 'demo' window.
+    
+    When I clear text in 'demo.DemoPage-input_text_field'.
+    When I update text 'demo.DemoPage-input_text_field' with '01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789'.
+    And I check text 'demo.DemoPage-input_text_field' with '01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789'.
 
     And I go back to 'DEMO_HOME'        
 
   Examples:
     #DATA
-    |id|author|zip|city|element|element2|title|date|
+    |id|author|zip|city|element|element2|date|title|
     #END

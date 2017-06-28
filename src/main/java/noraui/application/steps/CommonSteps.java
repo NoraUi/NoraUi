@@ -22,6 +22,7 @@ import cucumber.metrics.annotation.time.Time;
 import cucumber.metrics.annotation.time.TimeName;
 import noraui.application.page.Page;
 import noraui.application.page.Page.PageElement;
+import noraui.browser.DriverFactory;
 import noraui.browser.WindowManager;
 import noraui.cucumber.annotation.Conditioned;
 import noraui.exception.AssertError;
@@ -196,7 +197,7 @@ public class CommonSteps extends Step {
      * @param data
      *            Name of the value to check
      * @param textOrKey
-     *            The value
+     *            Is the new data (text or text in context (after a save))
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
@@ -397,6 +398,29 @@ public class CommonSteps extends Step {
     }
 
     /**
+     * Click on html element using Javascript if all 'expected' parameters equals 'actual' parameters in conditions.
+     *
+     * @param xpath
+     *            xpath of html element
+     * @param page
+     *            The concerned page of toClick
+     * @param conditions
+     *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK} message (with screenshot, with exception)
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     */
+    @Conditioned
+    @Quand("Je clique via js sur xpath '(.*)' de '(.*)' page[\\.|\\?]")
+    @When("I click by js on xpath '(.*)' from '(.*)' page[\\.|\\?]")
+    public void clickOnXpathByJs(String xpath, String page, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+        loggerStep.debug("clickOnByJs with xpath " + xpath + " on " + page + " page");
+        clickOnByJs(Page.getInstance(page), xpath);
+    }
+
+    /**
      * Click on html element and switch window when the scenario contain more one windows (one more application for example), if all 'expected' parameters equals 'actual' parameters in conditions.
      *
      * @param page
@@ -448,8 +472,8 @@ public class CommonSteps extends Step {
      *            The concerned page of elementName
      * @param elementName
      *            is target element
-     * @param date
-     *            is the new date
+     * @param dateOrKey
+     *            Is the new date (date or date in context (after a save))
      * @param dateType
      *            'future', 'future_strict', 'today' or 'any'
      * @param conditions
@@ -463,7 +487,8 @@ public class CommonSteps extends Step {
     @Conditioned
     @Quand("Je met à jour la date '(.*)-(.*)' avec une '(.*)' date '(.*)'[\\.|\\?]")
     @When("I update date '(.*)-(.*)' with a '(.*)' date '(.*)'[\\.|\\?]")
-    public void updateDate(String page, String elementName, String dateType, String date, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+    public void updateDate(String page, String elementName, String dateType, String dateOrKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+        String date = Context.getValue(dateOrKey) != null ? Context.getValue(dateOrKey) : dateOrKey;
         if (!"".equals(date)) {
             PageElement pageElement = Page.getInstance(page).getPageElementByKey('-' + elementName);
             if (date.matches(Constants.DATE_FORMAT_REG_EXP)) {
@@ -481,8 +506,8 @@ public class CommonSteps extends Step {
      *            The concerned page of elementName
      * @param elementName
      *            Is target element
-     * @param text
-     *            Is the new data
+     * @param textOrKey
+     *            Is the new data (text or text in context (after a save))
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
@@ -494,8 +519,8 @@ public class CommonSteps extends Step {
     @Conditioned
     @Quand("Je met à jour la liste déroulante '(.*)-(.*)' avec '(.*)'[\\.|\\?]")
     @When("I update select list '(.*)-(.*)' with '(.*)'[\\.|\\?]")
-    public void updateList(String page, String elementName, String text, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
-        updateList(Page.getInstance(page).getPageElementByKey('-' + elementName), text);
+    public void updateList(String page, String elementName, String textOrKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+        updateList(Page.getInstance(page).getPageElementByKey('-' + elementName), textOrKey);
     }
 
     /**
@@ -505,8 +530,8 @@ public class CommonSteps extends Step {
      *            The concerned page of elementName
      * @param elementName
      *            Is target element
-     * @param text
-     *            Is the new data (text)
+     * @param textOrKey
+     *            Is the new data (text or text in context (after a save))
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
@@ -518,8 +543,8 @@ public class CommonSteps extends Step {
     @Conditioned
     @Quand("Je met à jour le texte '(.*)-(.*)' avec '(.*)'[\\.|\\?]")
     @When("I update text '(.*)-(.*)' with '(.*)'[\\.|\\?]")
-    public void updateText(String page, String elementName, String text, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
-        updateText(Page.getInstance(page).getPageElementByKey('-' + elementName), text);
+    public void updateText(String page, String elementName, String textOrKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+        updateText(Page.getInstance(page).getPageElementByKey('-' + elementName), textOrKey);
     }
 
     /**
@@ -530,7 +555,7 @@ public class CommonSteps extends Step {
      * @param elementName
      *            The key of the PageElement to update
      * @param textOrKey
-     *            The updated value. Can be a key from registry of plain text
+     *            Is the new data (text or text in context (after a save))
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
@@ -588,8 +613,8 @@ public class CommonSteps extends Step {
      *            The concerned page of elementName
      * @param elementName
      *            The key of the PageElement to check
-     * @param text
-     *            Expected value in input text (value can be null).
+     * @param textOrKey
+     *            Is the new data (text or text in context (after a save))
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
@@ -601,9 +626,9 @@ public class CommonSteps extends Step {
     @Conditioned
     @Et("Je vérifie le texte '(.*)-(.*)' avec '(.*)'[\\.|\\?]")
     @And("I check text '(.*)-(.*)' with '(.*)'[\\.|\\?]")
-    public void checkInputText(String page, String elementName, String text, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
-        if (!checkInputText(Page.getInstance(page).getPageElementByKey('-' + elementName), text)) {
-            checkText(Page.getInstance(page).getPageElementByKey('-' + elementName), text);
+    public void checkInputText(String page, String elementName, String textOrKey, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
+        if (!checkInputText(Page.getInstance(page).getPageElementByKey('-' + elementName), textOrKey)) {
+            checkText(Page.getInstance(page).getPageElementByKey('-' + elementName), textOrKey);
         }
     }
 
@@ -697,6 +722,7 @@ public class CommonSteps extends Step {
 
     /**
      * Checks that a given page displays a html alert.
+     * This check do not work with IE: https://github.com/SeleniumHQ/selenium/issues/468
      *
      * @param page
      *            The concerned page
@@ -716,14 +742,40 @@ public class CommonSteps extends Step {
     }
 
     /**
+     * Checks that a given page displays a html alert with a message.
+     * CAUTION: This check do not work with IE: https://github.com/SeleniumHQ/selenium/issues/468
+     *
+     * @param messageOrKey
+     *            Is message (message or message in context (after a save)) displayed on html alert
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     * @throws TechnicalException
+     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with message and with screenshot and with exception if functional error but no screenshot and no exception if technical error.
+     */
+    @Et("Je vérifie le message '(.*)' sur l'alerte")
+    @And("I check message '(.*)' on alert")
+    public void check(String messageOrKey) throws TechnicalException, FailureException {
+        if (!DriverFactory.IE.equals(Context.getBrowser())) {
+            String message = Context.getValue(messageOrKey) != null ? Context.getValue(messageOrKey) : messageOrKey;
+            String msg = getLastConsoleAlertMessage();
+            if (msg == null || !msg.equals(message)) {
+                new Result.Failure<>(msg, Messages.format(Messages.FAIL_MESSAGE_NOT_FOUND_ON_ALERT, message), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+            }
+        } else {
+            Context.getCurrentScenario().write("SKIPPED for Internet Explorer browser.");
+        }
+    }
+
+    /**
      * Updates the value of a html radio element with conditions.
      *
      * @param page
      *            The concerned page of elementName
      * @param elementName
      *            is target element
-     * @param input
-     *            is the new value
+     * @param valueOrKey
+     *            Is the value (value or value in context (after a save)) use for selection
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
@@ -735,8 +787,8 @@ public class CommonSteps extends Step {
     @Conditioned
     @Et("Je met à jour la liste radio '(.*)-(.*)' avec '(.*)'[\\.|\\?]")
     @And("I update radio list '(.*)-(.*)' with '(.*)'[\\.|\\?]")
-    public void updateRadioList(String page, String elementName, String input, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
-        updateRadioList(Page.getInstance(page).getPageElementByKey('-' + elementName), input);
+    public void updateRadioList(String page, String elementName, String valueOrKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+        updateRadioList(Page.getInstance(page).getPageElementByKey('-' + elementName), valueOrKey);
     }
 
     /**
@@ -746,8 +798,8 @@ public class CommonSteps extends Step {
      *            The concerned page of elementName
      * @param elementName
      *            is target element
-     * @param input
-     *            is the new value
+     * @param valueKeyOrKey
+     *            Is valueKey (valueKey or input in context (after a save))
      * @param printedValues
      *            is the display value
      * @throws TechnicalException
@@ -758,8 +810,8 @@ public class CommonSteps extends Step {
      */
     @Et("Je met à jour la liste radio '(.*)-(.*)' avec '(.*)' à partir de ces valeurs:")
     @And("I update radio list '(.*)-(.*)' with '(.*)' from these values:")
-    public void updateRadioList(String page, String elementName, String input, Map<String, String> printedValues) throws TechnicalException, FailureException {
-        updateRadioList(Page.getInstance(page).getPageElementByKey('-' + elementName), input, printedValues);
+    public void updateRadioList(String page, String elementName, String valueKeyOrKey, Map<String, String> printedValues) throws TechnicalException, FailureException {
+        updateRadioList(Page.getInstance(page).getPageElementByKey('-' + elementName), valueKeyOrKey, printedValues);
     }
 
     /**

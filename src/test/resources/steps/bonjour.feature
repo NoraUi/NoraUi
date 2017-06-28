@@ -51,14 +51,18 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
     
     Lorsque moi une erreur si '<city>' est Paris.
     
+    Et Je vérifie le texte 'demo.DemoPage-input_current_date' avec '0'.
     Quand Je clique via js sur 'demo.DemoPage-smilejs'.
     Et Je vérifie le message 'OK' sur l'alerte
+    Et Je vérifie le texte 'demo.DemoPage-input_current_date' avec '1'.
     
     Quand Je clique via js sur xpath './/*[@name=\'smilejs\' and @title=\'smilejs\']' de 'demo.DemoPage' page.
     Et Je vérifie le message 'OK' sur l'alerte
+    Et Je vérifie le texte 'demo.DemoPage-input_current_date' avec '2'.
     
     Quand Je clique sur 'demo.DemoPage-<element>'.
     Et Je vérifie le message 'OK' sur l'alerte
+    Et Je vérifie le texte 'demo.DemoPage-input_current_date' avec '3'.
     
     Lorsque test pour 'Annulée'
     
@@ -124,6 +128,10 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
     Quand J'ouvre une nouvelle fenêtre. 
     Lorsque I close all windows except 'demo'.
     Quand Je passe à la fenêtre 'demo'.
+
+    Quand Je clarifie le texte dans 'demo.DemoPage-input_text_field'.
+    Quand Je met à jour le texte 'demo.DemoPage-input_text_field' avec '01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789'.
+    Et Je vérifie le texte 'demo.DemoPage-input_text_field' avec '01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789'.
 
     Et Je retourne vers 'DEMO_HOME'
 

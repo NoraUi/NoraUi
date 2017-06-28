@@ -3,6 +3,12 @@ package noraui.application.steps;
 import static noraui.utils.Constants.ALERT_KEY;
 import static noraui.utils.Constants.VALUE;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.KeyEvent;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -22,6 +28,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -38,6 +45,7 @@ import cucumber.runtime.java.StepDefAnnotation;
 import noraui.application.page.IPage;
 import noraui.application.page.Page;
 import noraui.application.page.Page.PageElement;
+import noraui.browser.DriverFactory;
 import noraui.browser.steps.BrowserSteps;
 import noraui.cucumber.annotation.Conditioned;
 import noraui.cucumber.injector.NoraUiInjector;
@@ -98,7 +106,7 @@ public class Step implements IStep {
     }
 
     /**
-     * Click on html element by Javascript. (#issue on IE11: XPathResult is not defined).
+     * Click on html element by Javascript.
      *
      * @param toClick
      *            html element
@@ -113,16 +121,16 @@ public class Step implements IStep {
     protected void clickOnByJs(PageElement toClick, Object... args) throws TechnicalException, FailureException {
         displayMessageAtTheBeginningOfMethod("clickOnByJs: %s in %s", toClick.toString(), toClick.getPage().getApplication());
         try {
+            Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(toClick, args)));
             ((JavascriptExecutor) getDriver())
                     .executeScript("document.evaluate(\"" + Utilities.getLocatorValue(toClick, args) + "\", document, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click();");
-
         } catch (Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK, toClick, toClick.getPage().getApplication()), true, toClick.getPage().getCallBack());
         }
     }
 
     /**
-     * Click on html element by Javascript. (#issue on IE11: XPathResult is not defined).
+     * Click on html element by Javascript.
      *
      * @param page
      *            page target application
@@ -137,10 +145,10 @@ public class Step implements IStep {
     protected void clickOnByJs(Page page, String xpath) throws TechnicalException, FailureException {
         displayMessageAtTheBeginningOfMethod("clickOnByJs: %s in %s", xpath, page.getApplication());
         try {
+            Context.waitUntil(ExpectedConditions.elementToBeClickable(By.xpath(xpath.replaceAll("\\\\'", "'"))));
             ((JavascriptExecutor) getDriver()).executeScript("document.evaluate(\"" + xpath + "\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click();");
         } catch (Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_EVALUATE_XPATH, xpath, page.getApplication()), true, page.getCallBack());
-
         }
     }
 
@@ -150,7 +158,7 @@ public class Step implements IStep {
      * @param pageElement
      *            Is target element
      * @param textOrKey
-     *            Is the new data (text)
+     *            Is the new data (text or text in context (after a save))
      * @param args
      *            list of arguments to format the found selector with
      * @throws TechnicalException
@@ -169,7 +177,7 @@ public class Step implements IStep {
      * @param pageElement
      *            Is target element
      * @param textOrKey
-     *            Is the new data (text)
+     *            Is the new data (text or text in context (after a save))
      * @param keysToSend
      *            character to send to the element after {@link org.openqa.selenium.WebElement#sendKeys(CharSequence...) sendKeys} with textOrKey
      * @param args
@@ -181,12 +189,12 @@ public class Step implements IStep {
      *             if the scenario encounters a functional error
      */
     protected void updateText(PageElement pageElement, String textOrKey, CharSequence keysToSend, Object... args) throws TechnicalException, FailureException {
-        if (textOrKey != null && !"".equals(textOrKey)) {
+        String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
+        if (!"".equals(value)) {
             try {
-                String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
                 WebElement element = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(pageElement, args)));
                 element.clear();
-                element.sendKeys(value);
+                sendKeysInOneGoByCopyPaste(value);
                 if (keysToSend != null) {
                     element.sendKeys(keysToSend);
                 }
@@ -197,6 +205,18 @@ public class Step implements IStep {
         } else {
             loggerStep.debug("Empty data provided. No need to update text. If you want clear data, you need use: \"I clear text in ...\"");
         }
+    }
+
+    private void sendKeysInOneGoByCopyPaste(String value) throws AWTException {
+        StringSelection stringSelection = new StringSelection(value);
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(stringSelection, stringSelection);
+
+        Robot robot = new Robot();
+        robot.keyPress(KeyEvent.VK_CONTROL);
+        robot.keyPress(KeyEvent.VK_V);
+        robot.keyRelease(KeyEvent.VK_V);
+        robot.keyRelease(KeyEvent.VK_CONTROL);
     }
 
     /**
@@ -249,14 +269,15 @@ public class Step implements IStep {
      *
      * @param pageElement
      *            Is target element
-     * @param value
-     *            Is expected value in input text (value can be null).
+     * @param textOrKey
+     *            Is the new data (text or text in context (after a save))
      * @return true or false
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    protected boolean checkInputText(PageElement pageElement, String value) throws FailureException {
+    protected boolean checkInputText(PageElement pageElement, String textOrKey) throws FailureException {
         WebElement inputText = null;
+        String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
         try {
             inputText = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
         } catch (Exception e) {
@@ -298,8 +319,8 @@ public class Step implements IStep {
      *
      * @param pageElement
      *            Is target element
-     * @param value
-     *            Is expected value in input text (value can be null).
+     * @param textOrKey
+     *            Is the new data (text or text in context (after a save))
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_WRONG_EXPECTED_VALUE} message (with screenshot, with exception) or with
@@ -308,11 +329,9 @@ public class Step implements IStep {
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    protected void checkText(PageElement pageElement, String value) throws TechnicalException, FailureException {
+    protected void checkText(PageElement pageElement, String textOrKey) throws TechnicalException, FailureException {
         WebElement inputText = null;
-        if (value == null) {
-            throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE + "value can not be null null.");
-        }
+        String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
         try {
             inputText = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
         } catch (Exception e) {
@@ -383,8 +402,8 @@ public class Step implements IStep {
      *
      * @param pageElement
      *            Is target element
-     * @param text
-     *            Is the new data (text)
+     * @param textOrKey
+     *            Is the new data (text or text in context (after a save))
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_ERROR_ON_INPUT} message (with screenshot, no exception)
@@ -393,14 +412,12 @@ public class Step implements IStep {
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    protected void updateList(PageElement pageElement, String text) throws TechnicalException, FailureException {
-        if (!"".equals(text)) {
-            try {
-                setDropDownValue(pageElement, text);
-            } catch (Exception e) {
-                new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_ERROR_ON_INPUT, pageElement, pageElement.getPage().getApplication()), true,
-                        pageElement.getPage().getCallBack());
-            }
+    protected void updateList(PageElement pageElement, String textOrKey) throws TechnicalException, FailureException {
+        String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
+        try {
+            setDropDownValue(pageElement, value);
+        } catch (Exception e) {
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_ERROR_ON_INPUT, pageElement, pageElement.getPage().getApplication()), true, pageElement.getPage().getCallBack());
         }
     }
 
@@ -526,7 +543,7 @@ public class Step implements IStep {
      *
      * @param pageElement
      *            Is concerned element
-     * @param valueKey
+     * @param valueKeyOrKey
      *            key printedValues
      * @param printedValues
      *            contain all possible value (order by key)
@@ -536,7 +553,8 @@ public class Step implements IStep {
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    protected void updateRadioList(PageElement pageElement, String valueKey, Map<String, String> printedValues) throws TechnicalException, FailureException {
+    protected void updateRadioList(PageElement pageElement, String valueKeyOrKey, Map<String, String> printedValues) throws TechnicalException, FailureException {
+        String valueKey = Context.getValue(valueKeyOrKey) != null ? Context.getValue(valueKeyOrKey) : valueKeyOrKey;
         try {
             List<WebElement> radioButtons = Context.waitUntil(ExpectedConditions.presenceOfAllElementsLocatedBy(Utilities.getLocator(pageElement)));
             String radioToSelect = printedValues.get(valueKey);
@@ -584,18 +602,18 @@ public class Step implements IStep {
      *
      * @param pageElement
      *            Is concerned element
-     * @param value
-     *            is the value use for selection
+     * @param valueOrKey
+     *            Is the value (value or value in context (after a save)) use for selection
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Failure with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_SELECT_RADIO_BUTTON} message (with screenshot)
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    protected void updateRadioList(PageElement pageElement, String value) throws TechnicalException, FailureException {
+    protected void updateRadioList(PageElement pageElement, String valueOrKey) throws TechnicalException, FailureException {
+        String value = Context.getValue(valueOrKey) != null ? Context.getValue(valueOrKey) : valueOrKey;
         try {
             List<WebElement> radioButtons = Context.waitUntil(ExpectedConditions.presenceOfAllElementsLocatedBy(Utilities.getLocator(pageElement)));
-
             for (WebElement button : radioButtons) {
                 if (button.getAttribute(VALUE).contains(value)) {
                     button.click();
@@ -662,8 +680,8 @@ public class Step implements IStep {
      *
      * @param element
      *            Target page element
-     * @param valueKey
-     *            Key to match in values map
+     * @param valueKeyOrKey
+     *            is valueKey (valueKey or key in context (after a save)) to match in values map
      * @param values
      *            Values map
      * @throws TechnicalException
@@ -672,7 +690,8 @@ public class Step implements IStep {
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    protected void selectCheckbox(PageElement element, String valueKey, Map<String, Boolean> values) throws TechnicalException, FailureException {
+    protected void selectCheckbox(PageElement element, String valueKeyOrKey, Map<String, Boolean> values) throws TechnicalException, FailureException {
+        String valueKey = Context.getValue(valueKeyOrKey) != null ? Context.getValue(valueKeyOrKey) : valueKeyOrKey;
         try {
             WebElement webElement = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(element)));
             Boolean checkboxValue = values.get(valueKey);
@@ -788,6 +807,7 @@ public class Step implements IStep {
 
     /**
      * Checks that a given page displays a html alert.
+     * CAUTION: This check do not work with IE: https://github.com/SeleniumHQ/selenium/issues/468
      *
      * @param page
      *            A Page
@@ -795,9 +815,13 @@ public class Step implements IStep {
      *             if the scenario encounters a functional error
      */
     protected void checkAlert(Page page) throws FailureException {
-        String txt = getLastConsoleAlertMessage();
-        if (txt != null) {
-            new Result.Failure<>(txt, Messages.FAIL_MESSAGE_ALERT_FOUND, true, page.getCallBack());
+        if (!DriverFactory.IE.equals(Context.getBrowser())) {
+            String txt = getLastConsoleAlertMessage();
+            if (txt != null) {
+                new Result.Failure<>(txt, Messages.FAIL_MESSAGE_ALERT_FOUND, true, page.getCallBack());
+            }
+        } else {
+            Context.getCurrentScenario().write("SKIPPED for Internet Explorer browser.");
         }
     }
 
@@ -857,14 +881,18 @@ public class Step implements IStep {
     }
 
     /**
+     * CAUTION: This check do not work with IE: https://github.com/SeleniumHQ/selenium/issues/468
+     *
      * @return a String with the message of Alert, return null if no alert message.
      */
     protected String getLastConsoleAlertMessage() {
+        String msg;
         LogEntries logEntries = getDriver().manage().logs().get(LogType.BROWSER);
         List<LogEntry> l = logEntries.getAll();
         for (int i = l.size() - 1; i >= 0; i--) {
             if (l.get(i).getMessage().contains(ALERT_KEY)) {
-                return l.get(i).getMessage().replace(ALERT_KEY, "").replace(" (:)", "");
+                msg = l.get(i).getMessage();
+                return msg.substring(msg.indexOf("\"") + 1, msg.length() - 1).replace(ALERT_KEY, "");
             }
         }
         return null;
