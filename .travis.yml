@@ -23,7 +23,7 @@ before_install:
 - mysql --user=travis noraui < config/noraui-db.sql > output.tab
 
 before_script:
-- "export DISPLAY=:0.0"
+- "export DISPLAY=:99.0"
   
 script:
 - test/run.sh
