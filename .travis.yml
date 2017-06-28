@@ -22,6 +22,9 @@ before_install:
 - mysql -e 'CREATE DATABASE noraui;'
 - mysql --user=travis noraui < config/noraui-db.sql > output.tab
 
+before_script:
+- "export DISPLAY=:0.0"
+  
 script:
 - test/run.sh
 
