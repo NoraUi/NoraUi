@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+apt-get install libxtst6:i386
+
 #
 # take noraui-datas-webservices from Maven Central and Start Web Services (REST)
 wget -U "Any User Agent" https://oss.sonatype.org/service/local/repositories/snapshots/content/com/github/noraui/noraui-datas-webservices/1.0.0-SNAPSHOT/noraui-datas-webservices-1.0.0-20170622.195832-1.jar
