@@ -286,9 +286,9 @@ public class StepUT {
     public void testFormatMessage() {
         try {
             DemoPage demoPage = (DemoPage) Page.getInstance(DemoPage.class);
-            PageElement pageElement = demoPage.getPageElementByKey("-input_text_field");
+            PageElement pageElement = demoPage.getPageElementByKey("-input_select_field");
             String a = Messages.format("Message %s in %s.", pageElement, demoPage.getApplication());
-            Assert.assertEquals("", "Message Input Text field in demo.", a);
+            Assert.assertEquals("", "Message Input Select field in demo.", a);
         } catch (TechnicalException e) {
             Assert.assertFalse("Error", true);
         }
