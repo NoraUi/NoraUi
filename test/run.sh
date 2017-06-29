@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+apt-get install libxtst6:i386
+
 #
 # take noraui-datas-webservices from Maven Central and Start Web Services (REST)
 wget -U "Any User Agent" https://oss.sonatype.org/service/local/repositories/snapshots/content/com/github/noraui/noraui-datas-webservices/1.0.0-SNAPSHOT/noraui-datas-webservices-1.0.0-20170622.195832-1.jar
@@ -42,7 +44,7 @@ echo "******** noraui-datas-webservices STARTED"
 # start NoraUi part =>
 cd $(dirname $0)
 cd ..
-mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package javadoc:javadoc sonar:sonar -Dsonar.host.url=https://sonarqube.com -Dsonar.organization=noraui -Dsonar.login=$SONAR_TOKEN -Dcucumber.options="--tags @hello,@bonjour,@blog,@playToLogoGame,@jouerAuJeuDesLogos" -PscenarioInitiator,javadoc,unit-tests -Dmaven.test.failure.ignore=true
+mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package javadoc:javadoc sonar:sonar -Dsonar.host.url=https://sonarqube.com -Dsonar.organization=noraui -Dsonar.login=$SONAR_TOKEN -Dcucumber.options="--tags @hello,@bonjour,@blog,@playToLogoGame,@jouerAuJeuDesLogos" -PscenarioInitiator,javadoc,unit-tests -Dmaven.test.failure.ignore=true -Djava.awt.headless=false
 
 #
 # kill Web Services (REST)
