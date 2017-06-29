@@ -76,6 +76,7 @@ else
     echo "$counters found $nb_counters times"
     pwd
     ls -l
+    cat target/reports/html/index.html
     exit 255
 fi
 
