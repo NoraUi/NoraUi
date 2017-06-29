@@ -21,11 +21,6 @@ before_install:
 - psql -U travis -d noraui -a -f config/noraui-db.sql
 - mysql -e 'CREATE DATABASE noraui;'
 - mysql --user=travis noraui < config/noraui-db.sql > output.tab
-
-before_script:
-- "export DISPLAY=:99.0"
-- "sh -e /etc/init.d/xvfb start"
-- sleep 3
   
 script:
 - test/run.sh
