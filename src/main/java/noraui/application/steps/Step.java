@@ -879,7 +879,7 @@ public class Step implements IStep {
         for (int i = l.size() - 1; i >= 0; i--) {
             if (l.get(i).getMessage().contains(ALERT_KEY)) {
                 msg = l.get(i).getMessage();
-                return msg.substring(msg.indexOf("\"") + 1, msg.length() - 1).replace(ALERT_KEY, "");
+                return msg.substring(msg.indexOf("\"") + 1, msg.length()).replace(ALERT_KEY, "").replace(" (:)", "");
             }
         }
         return null;
