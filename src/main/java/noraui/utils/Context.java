@@ -270,9 +270,9 @@ public class Context {
         displayStackTrace = "true".equals(setProperty(DISPLAY_STACK_TRACE, applicationProperties));
 
         // init driver callbacks
-        exceptionCallbacks.put("RESTART_WEB_DRIVER", STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, RESTART_WEB_DRIVER_METHOD_NAME);
-        exceptionCallbacks.put("GO_TO_DEMO_HOME", STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, DEMO_HOME);
-        exceptionCallbacks.put("GO_TO_LOGOGAME_HOME", STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, LOGOGAME_HOME);
+        exceptionCallbacks.put(Callbacks.RESTART_WEB_DRIVER, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, RESTART_WEB_DRIVER_METHOD_NAME);
+        exceptionCallbacks.put(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_DEMO_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, DEMO_HOME);
+        exceptionCallbacks.put(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_LOGOGAME_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, LOGOGAME_HOME);
 
         // init applications
         initApplicationDom(clazz.getClassLoader(), selectorsVersion, DEMO_KEY);
@@ -550,6 +550,10 @@ public class Context {
     }
 
     public static Callback getCallBack(String key) {
+        System.out.println("SGR 00: " + key + " size: " + getInstance().exceptionCallbacks.size());
+        for (Entry<String, Callback> element : getInstance().exceptionCallbacks.entrySet()) {
+            System.out.println("   - " + element.getKey());
+        }
         return getInstance().exceptionCallbacks.get(key);
     }
 

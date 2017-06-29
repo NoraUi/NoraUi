@@ -27,7 +27,7 @@ public class Callbacks extends HashMap<String, Callback> {
 
     public Callbacks() {
         super();
-        put("RESTART_WEB_DRIVER", Context.STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, "restartWebDriver");
+        put(RESTART_WEB_DRIVER, Context.STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, "restartWebDriver");
     }
 
     public void put(String key, String strClass, String strMethod, Object... parameters) {
