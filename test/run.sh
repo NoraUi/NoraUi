@@ -74,6 +74,8 @@ if [ "$nb_counters" == "3" ]; then
 else
     echo "******** All counter is FAIL"
     echo "$counters found $nb_counters times"
+    pwd
+    ls -l
     exit 255
 fi
 
