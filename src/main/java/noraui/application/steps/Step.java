@@ -30,6 +30,7 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.logging.LogEntries;
@@ -192,12 +193,25 @@ public class Step implements IStep {
         String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
         if (!"".equals(value)) {
             try {
+
                 WebElement element = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(pageElement, args)));
                 element.clear();
-                sendKeysInOneGoByCopyPaste(value);
-                if (keysToSend != null) {
-                    element.sendKeys(keysToSend);
-                }
+
+                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                StringSelection str = new StringSelection(value);
+                clipboard.setContents(str, null);
+
+                element.click();
+                element.sendKeys(Keys.chord(Keys.CONTROL, "v"), "");
+
+                // sendKeysInOneGoByCopyPaste(value);
+                // Actions builder = new Actions(getDriver());
+                // builder.sendKeys(element, value);
+                // if (keysToSend != null) {
+                // // element.sendKeys(keysToSend);
+                // builder.sendKeys(element, keysToSend);
+                // }
+                // builder.perform();
             } catch (Exception e) {
                 new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_ERROR_ON_INPUT, pageElement, pageElement.getPage().getApplication()), true,
                         pageElement.getPage().getCallBack());
