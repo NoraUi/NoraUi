@@ -550,10 +550,6 @@ public class Context {
     }
 
     public static Callback getCallBack(String key) {
-        System.out.println("SGR 00: " + key + " size: " + getInstance().exceptionCallbacks.size());
-        for (Entry<String, Callback> element : getInstance().exceptionCallbacks.entrySet()) {
-            System.out.println("   - " + element.getKey());
-        }
         return getInstance().exceptionCallbacks.get(key);
     }
 
