@@ -125,7 +125,13 @@ public class DriverFactory {
         capabilities.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
         capabilities.setCapability("disable-popup-blocking", true);
         capabilities.setJavascriptEnabled(true);
-
+        if (!Context.getProxy().isEmpty()) {
+            Proxy proxy = new Proxy();
+            proxy.setHttpProxy(Context.getProxy());
+            proxy.setSslProxy(Context.getProxy());
+            proxy.setNoProxy(Context.getProxy());
+            capabilities.setCapability(CapabilityType.PROXY, proxy);
+        }
         System.setProperty(Driver.IE.getDriverName(), pathWebdriver);
         return new InternetExplorerDriver(capabilities);
     }
@@ -152,6 +158,8 @@ public class DriverFactory {
         if (!Context.getProxy().isEmpty()) {
             Proxy proxy = new Proxy();
             proxy.setHttpProxy(Context.getProxy());
+            proxy.setSslProxy(Context.getProxy());
+            proxy.setNoProxy(Context.getProxy());
             capabilities.setCapability(CapabilityType.PROXY, proxy);
         }
         System.setProperty(Driver.CHROME.getDriverName(), pathWebdriver);
@@ -172,6 +180,8 @@ public class DriverFactory {
         if (!Context.getProxy().isEmpty()) {
             Proxy proxy = new Proxy();
             proxy.setHttpProxy(Context.getProxy());
+            proxy.setSslProxy(Context.getProxy());
+            proxy.setNoProxy(Context.getProxy());
             capabilities.setCapability(CapabilityType.PROXY, proxy);
         }
         return new HtmlUnitDriver(capabilities);

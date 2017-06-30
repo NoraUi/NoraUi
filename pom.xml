@@ -49,7 +49,7 @@
         <jenkinsresourcespath>src/test/resources</jenkinsresourcespath>
         <excelfilename>@TOSPECIFY</excelfilename>
         <cucumber.version>1.2.5</cucumber.version>
-        <selenium.version>3.0.1</selenium.version>
+        <selenium.version>3.4.0</selenium.version>
         <phantomjsdriver.version>1.4.3</phantomjsdriver.version>
         <htmlunit.version>2.26</htmlunit.version>
         <htmlunitdriver.version>2.26</htmlunitdriver.version>
@@ -148,17 +148,6 @@
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-chrome-driver</artifactId>
-            <version>${selenium.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.google.guava</groupId>
-                    <artifactId>guava</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-ie-driver</artifactId>
             <version>${selenium.version}</version>
         </dependency>
@@ -176,6 +165,19 @@
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>htmlunit-driver</artifactId>
             <version>${htmlunitdriver.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.code.gson</groupId>
+                    <artifactId>gson</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- Gson -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.1</version>
         </dependency>
 
         <!-- Framework of tests -->
@@ -523,26 +525,26 @@
                                     </systemProperties>
                                 </configuration>
                             </execution>
-                             <execution>
-                                 <id>CounterRestJson-execution</id>
-                                 <phase>compile</phase>
-                                 <goals>
-                                     <goal>java</goal>
-                                 </goals>
-                                 <configuration>
-                                     <mainClass>noraui.indus.Counter</mainClass>
-                                     <arguments>
-                                         <argument>RestJson</argument>
-                                     </arguments>
-                                     <cleanupDaemonThreads>false</cleanupDaemonThreads>
-                                     <systemProperties>
-                                         <systemProperty>
-                                             <key>resourcespath</key>
-                                             <value>${jenkinsresourcespath}</value>
-                                         </systemProperty>
-                                     </systemProperties>
-                                 </configuration>
-                             </execution>
+                            <execution>
+                                <id>CounterRestJson-execution</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>java</goal>
+                                </goals>
+                                <configuration>
+                                    <mainClass>noraui.indus.Counter</mainClass>
+                                    <arguments>
+                                        <argument>RestJson</argument>
+                                    </arguments>
+                                    <cleanupDaemonThreads>false</cleanupDaemonThreads>
+                                    <systemProperties>
+                                        <systemProperty>
+                                            <key>resourcespath</key>
+                                            <value>${jenkinsresourcespath}</value>
+                                        </systemProperty>
+                                    </systemProperties>
+                                </configuration>
+                            </execution>
                             <!-- <execution> -->
                             <!-- <id>CounterDbOracle-execution</id> -->
                             <!-- <phase>compile</phase> -->
