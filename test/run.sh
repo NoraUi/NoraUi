@@ -2,6 +2,9 @@
 
 #
 # take noraui-datas-webservices from Maven Central and Start Web Services (REST)
+curl -s https://oss.sonatype.org/service/local/repositories/snapshots/content/com/github/noraui/noraui-datas-webservices/1.0.0-SNAPSHOT/maven-metadata.xml > maven-metadata.xml
+norauiDatasWebServicesVersion=$(sed -n 's:.*</extension><value>\(.*\)</value>.*:\1:p' nonaui.log | head -n 1)
+echo "******** last version of noraui-datas-webservices is $norauiDatasWebServicesVersion"
 wget -U "Any User Agent" https://oss.sonatype.org/service/local/repositories/snapshots/content/com/github/noraui/noraui-datas-webservices/1.0.0-SNAPSHOT/noraui-datas-webservices-1.0.0-20170705.103534-25.jar
 
 java -jar noraui-datas-webservices-1.0.0-20170705.103534-25.jar &
