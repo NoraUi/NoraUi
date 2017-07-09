@@ -17,7 +17,7 @@ public class Runner {
      */
     @BeforeClass
     public static void setUpClass() {
-        Context.getInstance().initializeEnv("demoGherkin.properties");
+        Context.getInstance().initializeEnv("demoExcel.properties");
         Context.getInstance().initializeRobot(Runner.class);
     }
 
