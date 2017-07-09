@@ -8,7 +8,7 @@ public class OutputExcelDataProvider extends ExcelDataProvider {
 
     public OutputExcelDataProvider() {
         super();
-        logger.info("Output data provider use is EXCEL");
+        logger.info("Output data provider used is EXCEL");
     }
 
     /**

@@ -250,8 +250,12 @@ public class Utilities {
      *            is instance of {link cucumber.api.Scenario}
      */
     public static void takeScreenshot(Scenario scenario) {
-        final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
-        scenario.embed(screenshot, "image/png");
+        if (!DriverFactory.HTMLUNIT.equals(Context.getBrowser())) {
+            final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
+            scenario.embed(screenshot, "image/png");
+        } else {
+            logger.warn("Screenshot wanted to be taken but current web driver (" + Context.getBrowser() + ") does not support it.");
+        }
     }
 
     public enum OperatingSystem {

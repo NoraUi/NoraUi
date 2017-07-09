@@ -744,6 +744,7 @@ public class CommonSteps extends Step {
     /**
      * Checks that a given page displays a html alert with a message.
      * CAUTION: This check do not work with IE: https://github.com/SeleniumHQ/selenium/issues/468
+     * CAUTION: This feature is not supported by HtmlUnit web driver
      *
      * @param messageOrKey
      *            Is message (message or message in context (after a save)) displayed on html alert
@@ -755,15 +756,15 @@ public class CommonSteps extends Step {
      */
     @Et("Je vérifie le message '(.*)' sur l'alerte")
     @And("I check message '(.*)' on alert")
-    public void check(String messageOrKey) throws TechnicalException, FailureException {
-        if (!DriverFactory.IE.equals(Context.getBrowser())) {
+    public void checkAlertInLogs(String messageOrKey) throws TechnicalException, FailureException {
+        if (!DriverFactory.IE.equals(Context.getBrowser()) && !DriverFactory.HTMLUNIT.equals(Context.getBrowser())) {
             String message = Context.getValue(messageOrKey) != null ? Context.getValue(messageOrKey) : messageOrKey;
             String msg = getLastConsoleAlertMessage();
             if (msg == null || !msg.equals(message)) {
                 new Result.Failure<>(msg, Messages.format(Messages.FAIL_MESSAGE_NOT_FOUND_ON_ALERT, message), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
             }
         } else {
-            Context.getCurrentScenario().write("SKIPPED for Internet Explorer browser.");
+            Context.getCurrentScenario().write("SKIPPED for " + Context.getBrowser() + " web driver.");
         }
     }
 

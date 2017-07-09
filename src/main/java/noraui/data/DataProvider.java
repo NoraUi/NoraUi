@@ -8,7 +8,7 @@ import noraui.model.Model;
 public interface DataProvider {
 
     enum type {
-        EXCEL, CSV, DB, REST
+        EXCEL, CSV, DB, REST, GHERKIN, CONSOLE
     }
 
     public static final String NAME_OF_RESULT_COLUMN = "Résultat";

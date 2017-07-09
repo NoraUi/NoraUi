@@ -869,6 +869,7 @@ public class Step implements IStep {
 
     /**
      * CAUTION: This check do not work with IE: https://github.com/SeleniumHQ/selenium/issues/468
+     * CAUTION: This feature is not supported by HtmlUnit web driver
      *
      * @return a String with the message of Alert, return null if no alert message.
      */

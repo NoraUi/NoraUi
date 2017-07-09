@@ -30,10 +30,12 @@ import noraui.data.DataInputProvider;
 import noraui.data.DataOutputProvider;
 import noraui.data.DataProvider;
 import noraui.data.DataUtils;
+import noraui.data.console.OutputConsoleDataProvider;
 import noraui.data.csv.CsvDataProvider;
 import noraui.data.db.DBDataProvider;
 import noraui.data.excel.InputExcelDataProvider;
 import noraui.data.excel.OutputExcelDataProvider;
+import noraui.data.gherkin.InputGherkinDataProvider;
 import noraui.data.rest.RestDataProvider;
 import noraui.exception.Callbacks;
 import noraui.exception.Callbacks.Callback;
@@ -648,6 +650,8 @@ public class Context {
             } else if (DataProvider.type.REST.toString().equals(dataIn)) {
                 dataInputProvider = new RestDataProvider(setProperty("dataProvider.rest.type", applicationProperties), setProperty("dataProvider.rest.hostname", applicationProperties),
                         setProperty("dataProvider.rest.port", applicationProperties));
+            } else if (DataProvider.type.GHERKIN.toString().equals(dataIn)) {
+                dataInputProvider = new InputGherkinDataProvider();
             } else {
                 dataInputProvider = (DataInputProvider) Class.forName(dataIn).getConstructor().newInstance();
             }
@@ -670,6 +674,8 @@ public class Context {
                     dataOutputProvider = new RestDataProvider(setProperty("dataProvider.rest.type", applicationProperties), setProperty("dataProvider.rest.hostname", applicationProperties),
                             setProperty("dataProvider.rest.port", applicationProperties));
                 }
+            } else if (DataProvider.type.CONSOLE.toString().equals(dataOut)) {
+                dataOutputProvider = new OutputConsoleDataProvider();
             } else {
                 if (Class.forName(dataOut).isInstance(dataInputProvider)) {
                     dataOutputProvider = (DataOutputProvider) dataInputProvider;
