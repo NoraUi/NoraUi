@@ -48,7 +48,7 @@
         <cucumber.options>--tags @TOSPECIFY</cucumber.options>
         <jenkinsresourcespath>src/test/resources</jenkinsresourcespath>
         <excelfilename>@TOSPECIFY</excelfilename>
-        <cucumber.version>2.0.0-SNAPSHOT</cucumber.version>
+        <cucumber.version>2.0.0</cucumber.version>
         <selenium.version>3.4.0</selenium.version>
         <phantomjsdriver.version>1.4.3</phantomjsdriver.version>
         <htmlunit.version>2.26</htmlunit.version>
