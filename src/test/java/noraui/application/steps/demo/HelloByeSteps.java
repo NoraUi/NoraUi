@@ -6,6 +6,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
+import com.google.inject.Inject;
+
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.fr.Alors;
@@ -31,12 +33,8 @@ public class HelloByeSteps extends Step {
 
     private static Logger logger = Logger.getLogger(HelloByeSteps.class.getName());
 
+    @Inject
     private DemoPage demoPage;
-
-    public HelloByeSteps() throws TechnicalException {
-        super();
-        this.demoPage = (DemoPage) Page.getInstance(DemoPage.class);
-    }
 
     @Alors("Le portail DEMO est affiché.")
     @Then("The DEMO portal is displayed.")

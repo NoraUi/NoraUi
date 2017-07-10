@@ -4,6 +4,8 @@ import java.util.Map;
 
 import org.openqa.selenium.JavascriptExecutor;
 
+import com.google.inject.Inject;
+
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -17,12 +19,8 @@ import noraui.utils.Messages;
 
 public class DemoSteps extends Step {
 
+    @Inject
     private DemoPage demoPage;
-
-    public DemoSteps() throws TechnicalException {
-        super();
-        this.demoPage = (DemoPage) Page.getInstance(DemoPage.class);
-    }
 
     @Then("I update checkboxes and check radio list 'DEMO_HOME(.*)' with '(.*)':")
     public void selectCheckbox(String elementKey, String valueKey, Map<String, Boolean> values) throws TechnicalException, FailureException {
