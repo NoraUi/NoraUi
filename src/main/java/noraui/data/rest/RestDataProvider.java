@@ -17,7 +17,7 @@ import noraui.utils.Messages;
 
 public class RestDataProvider extends CommonDataProvider implements DataInputProvider, DataOutputProvider {
 
-    String NORAUI_API = "/noraui/api/";
+    private static final String NORAUI_API = "/noraui/api/";
 
     private String norauiWebServicesApi;
 
