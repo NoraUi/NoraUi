@@ -62,7 +62,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
      */
     @Override
     public void writeFailedResult(int line, String value) {
-        logger.debug("writeFailedResult => line:" + line + " value:" + value);
+        logger.debug(String.format("WriteFailedResult => line:%d value:%s", line, value));
         writeValue(NAME_OF_RESULT_COLUMN, line, value);
     }
 
@@ -71,7 +71,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
      */
     @Override
     public void writeSuccessResult(int line) {
-        logger.debug(String .format("Write Success result => line:%d", line));
+        logger.debug(String.format("Write Success result => line:%d", line));
         writeValue(NAME_OF_RESULT_COLUMN, line, Messages.SUCCESS_MESSAGE);
     }
 
@@ -80,7 +80,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
      */
     @Override
     public void writeWarningResult(int line, String value) throws TechnicalException {
-        logger.debug(String .format("writeWarningResult => line:%d value:%s", line, value));
+        logger.debug(String.format("writeWarningResult => line:%d value:%s", line, value));
         writeValue(NAME_OF_RESULT_COLUMN, line, value);
     }
 
@@ -89,7 +89,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
      */
     @Override
     public void writeDataResult(String column, int line, String value) {
-        logger.debug(String .format("writeDataResult => column:%s line:%d value:%s", column, line, value));
+        logger.debug(String.format("writeDataResult => column:%s line:%d value:%s", column, line, value));
         writeValue(column, line, value);
     }
 
