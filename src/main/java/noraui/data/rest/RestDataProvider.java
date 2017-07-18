@@ -66,7 +66,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
      */
     @Override
     public void writeFailedResult(int line, String value) {
-        logger.debug("writeFailedResult => line:" + line + " value:" + value);
+        logger.debug(String.format("writeFailedResult => line:" + line + " value:" + value));
         writeValue(NAME_OF_RESULT_COLUMN, line, value);
     }
 
@@ -75,7 +75,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
      */
     @Override
     public void writeSuccessResult(int line) {
-        logger.debug("writeSuccessResult => line:" + line);
+        logger.debug(String.format("Write Success result => line:" + line));
         writeValue(NAME_OF_RESULT_COLUMN, line, Messages.SUCCESS_MESSAGE);
     }
 
@@ -84,7 +84,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
      */
     @Override
     public void writeWarningResult(int line, String value) throws TechnicalException {
-        logger.debug("writeWarningResult => line:" + line + " value:" + value);
+        logger.debug(String.format("Write Warning result => line:%d value:%s", line, value));
         writeValue(NAME_OF_RESULT_COLUMN, line, value);
     }
 
@@ -93,7 +93,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
      */
     @Override
     public void writeDataResult(String column, int line, String value) {
-        logger.debug("writeDataResult => column: " + column + " line:" + line + " value:" + value);
+        logger.debug(String.format("Write Data result => column:%s line:%d value:%s", column, line, value));
         writeValue(column, line, value);
     }
 
