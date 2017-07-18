@@ -66,7 +66,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
      */
     @Override
     public void writeFailedResult(int line, String value) {
-        logger.debug(String.format("writeFailedResult => line:" + line + " value:" + value));
+        logger.debug(String.format("Write Failed result => line:%d value:%s", line, value));
         writeValue(NAME_OF_RESULT_COLUMN, line, value);
     }
 
@@ -75,7 +75,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
      */
     @Override
     public void writeSuccessResult(int line) {
-        logger.debug(String.format("Write Success result => line:" + line));
+        logger.debug(String.format("Write Success result => line:%d", line));
         writeValue(NAME_OF_RESULT_COLUMN, line, Messages.SUCCESS_MESSAGE);
     }
 
