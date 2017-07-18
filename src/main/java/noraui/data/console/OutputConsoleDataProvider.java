@@ -39,7 +39,7 @@ public class OutputConsoleDataProvider extends CommonDataProvider implements Dat
 
     @Override
     public void writeDataResult(String column, int line, String value) throws TechnicalException {
-        logger.info(String.format("----- DATA RESULT at line %d > [%d] = %s -----", line, column, value));
+        logger.info(String.format("----- DATA RESULT at line %d > [%s] = %s -----", line, column, value));
     }
 
 }
