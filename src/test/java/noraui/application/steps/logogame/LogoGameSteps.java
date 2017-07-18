@@ -92,7 +92,7 @@ public class LogoGameSteps extends Step {
         logos.deserialize(jsonLogos);
         for (int i = 0; i < logos.size(); i++) {
             if (ProhibitedBrands.getAlcool().contains(logos.get(i).getBrand()) || ProhibitedBrands.getTabaco().contains(logos.get(i).getBrand())) {
-                new Result.Failure<>(logos.get(i).getBrand(), Messages.format("Brand « %s » is prohibited.", logos.get(i).getBrand()), false, logos.get(i).getWid(),
+                new Result.Failure<>(logos.get(i).getBrand(), Messages.format("Brand « %s » is prohibited.", logos.get(i).getBrand()), false, logos.get(i).getNid(),
                         Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
             }
         }
@@ -105,14 +105,14 @@ public class LogoGameSteps extends Step {
         logos.deserialize(jsonLogos);
         for (int i = 0; i < logos.size(); i++) {
             Logo logo = logos.get(i);
-            logo.setWid(i);
+            logo.setNid(i);
             try {
                 WebElement element = getDriver().findElement(Utilities.getLocator(logoGamePage.brandElement, logo.getBrand(), logo.getBrand()));
                 if (element != null) {
                     updateText(logoGamePage.brandElement, logo.getBrand(), null, logo.getBrand(), logo.getBrand());
                 }
             } catch (Exception e) {
-                new Result.Warning<>(logo.getBrand(), Messages.format("Brand « %s » does not exist.", logo.getBrand()), true, logo.getWid());
+                new Result.Warning<>(logo.getBrand(), Messages.format("Brand « %s » does not exist.", logo.getBrand()), true, logo.getNid());
             }
         }
     }

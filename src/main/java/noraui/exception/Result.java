@@ -11,11 +11,12 @@ import noraui.utils.Messages;
 import noraui.utils.Utilities;
 
 public abstract class Result {
+
     public static final int CONTINUE_SCENARIO = 0;
     public static final int BREAK_SCENARIO = 1;
 
     protected String message;
-    protected int wid;
+    protected int nid;
     protected boolean takeScreenshot;
     protected Callback callback;
 
@@ -26,6 +27,14 @@ public abstract class Result {
         private final O object;
         private static final Logger logger = Logger.getLogger(Success.class.getName());
 
+        /**
+         * @param object
+         *            bonus information.
+         * @param message
+         *            success message.
+         * @throws TechnicalException
+         *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+         */
         public Success(O object, String message) throws TechnicalException {
             this.object = object;
             this.message = message;
@@ -45,10 +54,22 @@ public abstract class Result {
         private final O object;
         private static final Logger logger = Logger.getLogger(Warning.class.getName());
 
-        public Warning(O object, String message, boolean takeScreenshot, int wid) throws TechnicalException {
+        /**
+         * @param object
+         *            bonus information.
+         * @param message
+         *            warning message.
+         * @param takeScreenshot
+         *            (true or false).
+         * @param nid
+         *            nora-ui technical id (0 or more).
+         * @throws TechnicalException
+         *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+         */
+        public Warning(O object, String message, boolean takeScreenshot, int nid) throws TechnicalException {
             this.object = object;
             try {
-                Context.getDataOutputProvider().writeWarningResult(Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData()).getIndexes().get(wid),
+                Context.getDataOutputProvider().writeWarningResult(Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData()).getIndexes().get(nid),
                         Messages.WARNING_MESSAGE_DEFAULT + message);
             } catch (TechnicalException e) {
                 logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE + e.getMessage(), e);
@@ -75,20 +96,46 @@ public abstract class Result {
         private final O error;
         private static final Logger logger = Logger.getLogger(Failure.class.getName());
 
-        public Failure(O error, String message, boolean takeScreenshot, int wid, Callback callback) throws FailureException {
+        /**
+         * @param error
+         *            bonus information.
+         * @param message
+         *            failure message.
+         * @param takeScreenshot
+         *            (true or false).
+         * @param nid
+         *            nora-ui technical id (1 or more).
+         * @param callback
+         *            is noraui.exception.Callbacks.Callback of page.
+         * @throws FailureException
+         *             if the scenario encounters a functional error.
+         */
+        public Failure(O error, String message, boolean takeScreenshot, int nid, Callback callback) throws FailureException {
             this.error = error;
             this.message = message;
-            this.wid = wid;
+            this.nid = nid;
             this.takeScreenshot = takeScreenshot;
             this.callback = callback;
 
             throw new FailureException(this);
         }
 
+        /**
+         * @param error
+         *            bonus information.
+         * @param message
+         *            failure message.
+         * @param takeScreenshot
+         *            (true or false).
+         * @param callback
+         *            is noraui.exception.Callbacks.Callback of page.
+         * @throws FailureException
+         *             if the scenario encounters a functional error.
+         */
         public Failure(O error, String message, boolean takeScreenshot, Callback callback) throws FailureException {
             this.error = error;
             this.message = message;
-            this.wid = 1;
+            this.nid = 1;
             this.takeScreenshot = takeScreenshot;
             this.callback = callback;
 
@@ -104,11 +151,11 @@ public abstract class Result {
             for (int i = 1; i <= Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData()).getIndexes().size(); i++) {
                 Integer line = Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData()).getIndexes().get(i - 1);
                 try {
-                    if (i < this.wid) {
+                    if (i < this.nid) {
                         Context.getDataOutputProvider().writeWarningResult(line, Messages.PARTIAL_SUCCESS_MESSAGE);
-                    } else if (i == this.wid) {
+                    } else if (i == this.nid) {
                         Context.getDataOutputProvider().writeFailedResult(line, Messages.FAIL_MESSAGE_DEFAULT + this.message);
-                    } else if (i > this.wid) {
+                    } else if (i > this.nid) {
                         Context.getDataOutputProvider().writeWarningResult(line, Messages.NOT_RUN_MESSAGE);
                     }
                 } catch (TechnicalException e) {

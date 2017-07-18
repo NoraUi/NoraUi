@@ -42,7 +42,7 @@ public class Logos extends DemosModel<Logo> implements ModelList {
 
         List<Logo> list = gson.fromJson(jsonString, listType);
         for (int i = 0; i < list.size(); i++) {
-            list.get(i).setWid(i + 1);
+            list.get(i).setNid(i + 1);
         }
         this.addAll(list);
     }
@@ -74,7 +74,7 @@ public class Logos extends DemosModel<Logo> implements ModelList {
     public List<Integer> getIds() {
         List<Integer> result = new ArrayList<>();
         for (Logo article : this) {
-            result.add(article.getWid());
+            result.add(article.getNid());
         }
         return result;
     }
