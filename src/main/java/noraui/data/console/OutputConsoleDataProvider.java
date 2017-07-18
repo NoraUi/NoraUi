@@ -23,23 +23,23 @@ public class OutputConsoleDataProvider extends CommonDataProvider implements Dat
 
     @Override
     public void writeFailedResult(int line, String value) throws TechnicalException {
-        logger.error("----- FAILED at line " + line + " > " + value + " -----");
+        logger.error(String.format("----- FAILED at line %d >  %s -----", line,  value));
     }
 
     @Override
     public void writeWarningResult(int line, String value) throws TechnicalException {
-        logger.warn("----- WARNING at line " + line + " > " + value + " -----");
+        logger.warn(String.format("----- WARNING at line %d > %s -----", line,  value));
     }
 
     @Override
     public void writeSuccessResult(int line) throws TechnicalException {
-        logger.info("----- SUCCESS at line " + line + " -----");
+        logger.info(String.format("----- SUCCESS at line %d -----",line));
 
     }
 
     @Override
     public void writeDataResult(String column, int line, String value) throws TechnicalException {
-        logger.info("----- DATA RESULT at line " + line + " > [" + column + "] = " + value + " -----");
+        logger.info(String.format("----- DATA RESULT at line %d > [%d] = %s -----", line, column, value));
     }
 
 }
