@@ -1,5 +1,8 @@
 package noraui.utils;
 
+import static noraui.utils.Constants.DATA_IN;
+import static noraui.utils.Constants.DATA_OUT;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
@@ -246,8 +249,8 @@ public class Context {
         plugDataProvider(applicationProperties);
 
         // Paths configuration
-        getDataInputProvider().setDataInPath(resourcesPath + "/data/in/");
-        getDataOutputProvider().setDataOutPath(resourcesPath + "/data/out/");
+        getDataInputProvider().setDataInPath(resourcesPath + DATA_IN);
+        getDataOutputProvider().setDataOutPath(resourcesPath + DATA_OUT);
 
     }
 

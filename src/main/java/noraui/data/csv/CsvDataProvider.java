@@ -33,7 +33,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
      * {@inheritDoc}
      */
     @Override
-    public void prepare(String scenario) throws TechnicalException {
+    public void prepare(String scenario) {
         scenarioName = scenario;
         try {
             initColumns();

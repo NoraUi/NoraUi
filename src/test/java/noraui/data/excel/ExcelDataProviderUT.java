@@ -10,7 +10,7 @@ import noraui.data.excel.ExcelDataProvider;
 import noraui.data.excel.InputExcelDataProvider;
 import noraui.data.excel.OutputExcelDataProvider;
 
-public class ExcelFactoryUT {
+public class ExcelDataProviderUT {
 
     @Test
     public void testInputConstructorIsPublic() throws Exception {
