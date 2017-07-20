@@ -89,7 +89,7 @@ public class MavenRunCounter {
         counter.setSkipped(nb.getSkipped());
     }
 
-    public void print(List<Counter> counters) {
+    public void print(List<Counter> counters, String type) {
         int run = 0;
         int failures = 0;
         int skipped = 0;
@@ -101,7 +101,7 @@ public class MavenRunCounter {
             logger.info("Scenario: " + counter.getScenarioName() + " => NbStep: " + counter.getNbStep() + " and Nb Cas: " + counter.getNbCas() + " -->  runs: " + counter.getRun() + ", failures: "
                     + counter.getFailures() + ", errors: 0 and skips: " + counter.getSkipped());
         }
-        logger.info("<EXPECTED_RESULTS>Tests run: " + run + ", Failures: " + failures + ", Errors: 0, Skipped: " + skipped + "</EXPECTED_RESULTS>");
+        logger.info("[" + type + "] > <EXPECTED_RESULTS>Tests run: " + run + ", Failures: " + failures + ", Errors: 0, Skipped: " + skipped + "</EXPECTED_RESULTS>");
     }
 
     public static List<String> listFilesForFolder(final List<String> versionControlSystemsBlacklist, final File folder) {

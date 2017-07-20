@@ -66,7 +66,7 @@ if [ "$nb_failure" != "" ]; then
     fi
 fi
 
-counters=$(sed -n 's:.*<EXPECTED_RESULTS>\(.*\)</EXPECTED_RESULTS>.*:\1:p' nonaui.log | head -n 1)
+counters=$(sed -n 's:.*[Excel] > <EXPECTED_RESULTS>\(.*\)</EXPECTED_RESULTS>.*:\1:p' nonaui.log | head -n 1)
 nb_counters=$(sed -n ":;s/$counters//p;t" nonaui.log | sed -n '$=')
 # 3 = 1 (real) + 2 counters (Excel and CSV)
 if [ "$nb_counters" == "3" ]; then

@@ -34,7 +34,7 @@ public class Counter {
 
             MavenRunCounter mavenRunCounter = new MavenRunCounter();
             List<MavenRunCounter.Counter> counters = mavenRunCounter.count(versionControlSystemsBlacklist, scenarioBlacklist, manager, new File(Context.getResourcesPath() + "/steps"));
-            mavenRunCounter.print(counters);
+            mavenRunCounter.print(counters, args[0]);
             Context.clear();
         } else {
             logger.warn("Usage: Counter main must be launched with 1 parameters ==> \"Counter\" <type_of_counter>");
