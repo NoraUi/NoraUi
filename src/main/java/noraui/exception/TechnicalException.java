@@ -15,6 +15,7 @@ public class TechnicalException extends Exception {
     public static final String TECHNICAL_ERROR_MESSAGE_WEBDRIVER_SET_EXECUTABLE = "Error when Webdriver setExecutable to true";
     public static final String TECHNICAL_EXPECTED_ACTUAL_SIZE_DIFFERENT = "Wrong conditions definition (expected and actual sizes are different).";
     public static final String TECHNICAL_EXPECTED_EXCEL_EXTENTION_ERROR = "If you are using Excel as a dataProvider, you must choose one of the following formats: xls, xlsx, or xlsm.";
+    public static final String TECHNICAL_EXPECTED_AT_LEAST_AN_ID_COLUMN_IN_EXAMPLES = "Your examples must contain at least an |<id>| as their first column. Ex: |1|somedata|otherdata|...";
 
     /**
      * Construit un objet <code>TechnicalException</code>.

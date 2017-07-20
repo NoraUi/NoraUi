@@ -41,6 +41,7 @@ import noraui.exception.Callbacks;
 import noraui.exception.Callbacks.Callback;
 import noraui.exception.TechnicalException;
 import noraui.gherkin.ScenarioRegistry;
+import noraui.main.ScenarioInitiator;
 import noraui.model.Model;
 import noraui.model.ModelList;
 
@@ -235,6 +236,9 @@ public class Context {
     public synchronized void initializeEnv(String propertiesFile) {
         logger.info("Context > initializeEnv()");
 
+        // init scenarios paths
+        initializeScenarioProperties(ScenarioInitiator.class.getClassLoader());
+
         iniFiles = new HashMap<>();
         applicationProperties = initPropertiesFile(Thread.currentThread().getContextClassLoader(), propertiesFile);
 
@@ -248,7 +252,6 @@ public class Context {
         // Paths configuration
         getDataInputProvider().setDataInPath(resourcesPath + "/data/in/");
         getDataOutputProvider().setDataOutPath(resourcesPath + "/data/out/");
-
     }
 
     public synchronized void initializeRobot(Class clazz) {

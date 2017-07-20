@@ -20,8 +20,6 @@ public class ScenarioInitiator {
     private static final Logger logger = Logger.getLogger(ScenarioInitiator.class);
 
     public void start(String[] args) {
-
-        Context.initializeScenarioProperties(ScenarioInitiator.class.getClassLoader());
         logger.info("Working Directory = " + System.getProperty("user.dir"));
         logger.info("ScenarioInitiator.start:");
         if (args != null && args.length == 1 && !"@TOSPECIFY".equals(args[0])) {

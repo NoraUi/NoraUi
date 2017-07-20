@@ -1,5 +1,7 @@
 package noraui.data.gherkin;
 
+import java.util.Arrays;
+
 import noraui.data.CommonDataProvider;
 import noraui.data.DataInputProvider;
 import noraui.exception.TechnicalException;
@@ -7,13 +9,13 @@ import noraui.gherkin.GherkinFactory;
 import noraui.model.Model;
 
 /**
- * This DataInputProvider can be used if you want to provide Gherkin example by your own.
- * Scenario initiator inserts will be skipped.
- * 
+ * This DataInputProvider can be used if you want to provide Gherkin example by
+ * your own. Scenario initiator inserts will be skipped.
+ *
  * @author nhallouin
  */
 public class InputGherkinDataProvider extends CommonDataProvider implements DataInputProvider {
-    private int nbLines = 0;
+    private String[] examples = new String[] {};
 
     public InputGherkinDataProvider() {
         logger.info("Input data provider used is GHERKIN");
@@ -24,7 +26,8 @@ public class InputGherkinDataProvider extends CommonDataProvider implements Data
      */
     @Override
     public void prepare(String scenario) throws TechnicalException {
-        this.nbLines = GherkinFactory.getNumberOfGherkinExamples(scenario);
+        examples = GherkinFactory.getExamples(scenario);
+
     }
 
     /**
@@ -32,7 +35,16 @@ public class InputGherkinDataProvider extends CommonDataProvider implements Data
      */
     @Override
     public int getNbLines() throws TechnicalException {
-        return nbLines;
+        return examples.length;
+    }
+
+    /**
+     * Gets prepared Gherkin examples.
+     *
+     * @return an array of examples
+     */
+    public String[] getExamples() {
+        return examples;
     }
 
     /**
@@ -40,7 +52,20 @@ public class InputGherkinDataProvider extends CommonDataProvider implements Data
      */
     @Override
     public String readValue(String column, int line) throws TechnicalException {
-        return null;
+        if (examples.length > 0) {
+            String[] columns = examples[0].split("\\|", -1);
+            for (int i = 1; i < columns.length - 1; i++) {
+                if (columns[i].equals(column)) {
+                    String[] lineContent = readLine(line, true);
+                    if (null != lineContent && lineContent.length > i) {
+                        return lineContent[i];
+                    } else {
+                        return "";
+                    }
+                }
+            }
+        }
+        return "";
     }
 
     /**
@@ -48,6 +73,13 @@ public class InputGherkinDataProvider extends CommonDataProvider implements Data
      */
     @Override
     public String[] readLine(int line, boolean readResult) throws TechnicalException {
+        if (examples.length > 0 && examples.length > line) {
+            String[] lineContent = examples[line].split("\\|", -1);
+            if (lineContent.length < 3) {
+                throw new TechnicalException(TechnicalException.TECHNICAL_EXPECTED_AT_LEAST_AN_ID_COLUMN_IN_EXAMPLES);
+            }
+            return Arrays.copyOfRange(lineContent, 2, (readResult) ? lineContent.length + 1 : lineContent.length);
+        }
         return null;
     }
 

@@ -486,7 +486,7 @@
                         <version>${exec-maven-plugin.version}</version>
                         <executions>
                             <execution>
-                                <id>Counter-execution</id>
+                                <id>CounterExcel-execution</id>
                                 <phase>compile</phase>
                                 <goals>
                                     <goal>java</goal>
@@ -496,7 +496,6 @@
                                     <arguments>
                                         <argument>Excel</argument>
                                     </arguments>
-                                    <cleanupDaemonThreads>false</cleanupDaemonThreads>
                                     <systemProperties>
                                         <systemProperty>
                                             <key>resourcespath</key>
@@ -516,7 +515,6 @@
                                     <arguments>
                                         <argument>Csv</argument>
                                     </arguments>
-                                    <cleanupDaemonThreads>false</cleanupDaemonThreads>
                                     <systemProperties>
                                         <systemProperty>
                                             <key>resourcespath</key>
@@ -536,7 +534,25 @@
                                     <arguments>
                                         <argument>RestJson</argument>
                                     </arguments>
-                                    <cleanupDaemonThreads>false</cleanupDaemonThreads>
+                                    <systemProperties>
+                                        <systemProperty>
+                                            <key>resourcespath</key>
+                                            <value>${jenkinsresourcespath}</value>
+                                        </systemProperty>
+                                    </systemProperties>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>CounterGherkin-execution</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>java</goal>
+                                </goals>
+                                <configuration>
+                                    <mainClass>noraui.indus.Counter</mainClass>
+                                    <arguments>
+                                        <argument>Gherkin</argument>
+                                    </arguments>
                                     <systemProperties>
                                         <systemProperty>
                                             <key>resourcespath</key>

@@ -30,7 +30,6 @@ public class MavenRunCounter {
     public static final String Z_MANAGER = "zManager";
 
     public List<Counter> count(List<String> versionControlSystemsBlacklist, List<String> blacklist, List<String> manager, File scenarioFolder) {
-
         List<Counter> result = new ArrayList<>();
         List<String> files = listFilesForFolder(versionControlSystemsBlacklist, scenarioFolder);
         for (String file : files) {

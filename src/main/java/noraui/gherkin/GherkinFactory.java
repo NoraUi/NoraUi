@@ -8,6 +8,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -65,6 +66,10 @@ public class GherkinFactory {
     }
 
     public static int getNumberOfGherkinExamples(String filename) {
+        return getExamples(filename).length;
+    }
+
+    public static String[] getExamples(String filename) {
         try {
             Path filePath = getFeaturePath(filename);
             String fileContent = new String(Files.readAllBytes(filePath), Charset.forName(Constants.DEFAULT_ENDODING));
@@ -74,13 +79,14 @@ public class GherkinFactory {
             if (matcher.find() && matcher.groupCount() == 1) {
                 lines = matcher.group(0);
             }
-            // Return number of lines - #DATA - #END
-            return lines.split("\\n").length - 2;
+            String[] examples = lines.split("\\n");
+            // Return lines - #DATA - #END
+            return (examples.length > 2) ? Arrays.copyOfRange(examples, 1, examples.length - 1) : new String[] {};
 
         } catch (IOException e) {
             logger.error(e);
         }
-        return 0;
+        return new String[] {};
     }
 
     private static Path getFeaturePath(String filename) {
