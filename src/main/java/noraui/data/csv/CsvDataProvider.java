@@ -156,7 +156,6 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
     private void writeValue(String column, int line, String value) {
         logger.debug("Writing: " + value + " at line " + line + " in column '" + column + "'");
         int colIndex = columns.indexOf(column);
-
         CSVReader reader;
         try {
             reader = openOutputData();
@@ -169,12 +168,9 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
             } catch (IOException e) {
                 logger.error("writeValue in CSV file => column: " + column + " line:" + line + " value:" + value, e);
             }
-        } catch (FileNotFoundException e1) {
-
         } catch (IOException e1) {
-
+            logger.error("writeValue in CSV file => column: " + column + " line:" + line + " value:" + value, e1);
         }
-
     }
 
     private CSVReader openInputData() throws FileNotFoundException {

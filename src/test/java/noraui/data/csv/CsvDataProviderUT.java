@@ -1,15 +1,18 @@
 package noraui.data.csv;
 
-import static noraui.data.DataProvider.NAME_OF_RESULT_COLUMN;
 import static noraui.utils.Constants.DATA_IN;
 import static noraui.utils.Constants.DATA_OUT;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 
 import org.junit.Assert;
 import org.junit.Test;
 
+import au.com.bytecode.opencsv.CSVReader;
 import noraui.exception.TechnicalException;
 import noraui.utils.Messages;
 
@@ -23,7 +26,7 @@ public class CsvDataProviderUT {
     }
 
     @Test
-    public void test() throws TechnicalException {
+    public void testWriteXxxxxResult() throws TechnicalException, IOException {
         CsvDataProvider csvDataProvider = new CsvDataProvider();
         csvDataProvider.setDataInPath("src/test/resources" + DATA_IN);
         csvDataProvider.setDataOutPath("src/test/resources" + DATA_OUT);
@@ -33,12 +36,18 @@ public class CsvDataProviderUT {
         Assert.assertEquals(9, csvDataProvider.getNbLines());
 
         csvDataProvider.writeFailedResult(1, "UT Failed Message");
-        Assert.assertEquals("UT Failed Message", csvDataProvider.readValue(NAME_OF_RESULT_COLUMN, 1));
+        CSVReader reader = new CSVReader(new FileReader(new File("src/test/resources" + DATA_OUT + "hello.csv")), ';');
+        Assert.assertEquals("UT Failed Message", reader.readAll().get(1)[7]);
+        reader.close();
 
+        reader = new CSVReader(new FileReader(new File("src/test/resources" + DATA_OUT + "hello.csv")), ';');
         csvDataProvider.writeSuccessResult(2);
-        Assert.assertEquals(Messages.SUCCESS_MESSAGE, csvDataProvider.readValue(NAME_OF_RESULT_COLUMN, 2));
+        Assert.assertEquals(Messages.SUCCESS_MESSAGE, reader.readAll().get(2)[7]);
+        reader.close();
 
+        reader = new CSVReader(new FileReader(new File("src/test/resources" + DATA_OUT + "hello.csv")), ';');
         csvDataProvider.writeWarningResult(3, "UT Warning Message");
-        Assert.assertEquals("UT Warning Message", csvDataProvider.readValue(NAME_OF_RESULT_COLUMN, 3));
+        Assert.assertEquals("UT Warning Message", reader.readAll().get(3)[7]);
+        reader.close();
     }
 }
