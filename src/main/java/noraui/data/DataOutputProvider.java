@@ -8,7 +8,7 @@ public interface DataOutputProvider extends DataProvider {
      * Writes a fail message in the output file.
      *
      * @param line
-     *            the line to write the message on
+     *            the line to write the message on (0 is header, 1 and more are datas).
      * @param value
      *            the value to write
      * @throws TechnicalException
@@ -20,7 +20,7 @@ public interface DataOutputProvider extends DataProvider {
      * Writes a warning message in the output file.
      *
      * @param line
-     *            the line to write the message on
+     *            the line to write the message on (0 is header, 1 and more are datas).
      * @param value
      *            the value to write
      * @throws TechnicalException
@@ -44,7 +44,7 @@ public interface DataOutputProvider extends DataProvider {
      * @param column
      *            the column to write the message on
      * @param line
-     *            the line to write the message on
+     *            the line to write the message on (0 is header, 1 and more are datas).
      * @param value
      *            the value to write
      * @throws TechnicalException

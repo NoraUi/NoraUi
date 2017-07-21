@@ -144,6 +144,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
                 columns.add(header);
             }
         }
+        reader.close();
         if (columns.size() < 2) {
             throw new EmptyDataFileContentException("Input data file is empty or only result column is provided.");
         }
@@ -155,16 +156,25 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
     private void writeValue(String column, int line, String value) {
         logger.debug("Writing: " + value + " at line " + line + " in column '" + column + "'");
         int colIndex = columns.indexOf(column);
-        try (CSVWriter writer = new CSVWriter(new FileWriter(new File(dataOutPath + scenarioName + "." + CSV_TYPE)), CSV_CHAR_SEPARATOR);) {
-            CSVReader reader = openOutputData();
+
+        CSVReader reader;
+        try {
+            reader = openOutputData();
             List<String[]> csvBody = reader.readAll();
             csvBody.get(line)[colIndex] = value;
             reader.close();
-            writer.writeAll(csvBody);
-            writer.flush();
-        } catch (IOException e) {
-            logger.error("writeValue in CSV file => column: " + column + " line:" + line + " value:" + value, e);
+            try (CSVWriter writer = new CSVWriter(new FileWriter(new File(dataOutPath + scenarioName + "." + CSV_TYPE)), CSV_CHAR_SEPARATOR);) {
+                writer.writeAll(csvBody);
+                writer.flush();
+            } catch (IOException e) {
+                logger.error("writeValue in CSV file => column: " + column + " line:" + line + " value:" + value, e);
+            }
+        } catch (FileNotFoundException e1) {
+
+        } catch (IOException e1) {
+
         }
+
     }
 
     private CSVReader openInputData() throws FileNotFoundException {
