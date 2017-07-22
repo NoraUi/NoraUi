@@ -49,5 +49,10 @@ public class CsvDataProviderUT {
         csvDataProvider.writeWarningResult(3, "UT Warning Message");
         Assert.assertEquals("UT Warning Message", reader.readAll().get(3)[7]);
         reader.close();
+
+        reader = new CSVReader(new FileReader(new File("src/test/resources" + DATA_OUT + "hello.csv")), ';');
+        csvDataProvider.writeDataResult("title", 4, "UT title");
+        Assert.assertEquals("UT title", reader.readAll().get(4)[6]);
+        reader.close();
     }
 }
