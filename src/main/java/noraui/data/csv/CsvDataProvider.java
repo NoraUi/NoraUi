@@ -162,14 +162,18 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
             List<String[]> csvBody = reader.readAll();
             csvBody.get(line)[colIndex] = value;
             reader.close();
-            try (CSVWriter writer = new CSVWriter(new FileWriter(new File(dataOutPath + scenarioName + "." + CSV_TYPE)), CSV_CHAR_SEPARATOR);) {
-                writer.writeAll(csvBody);
-                writer.flush();
-            } catch (IOException e) {
-                logger.error("writeValue in CSV file => column: " + column + " line:" + line + " value:" + value, e);
-            }
+            writeValue(column, line, value, csvBody);
         } catch (IOException e1) {
             logger.error("writeValue in CSV file => column: " + column + " line:" + line + " value:" + value, e1);
+        }
+    }
+
+    private void writeValue(String column, int line, String value, List<String[]> csvBody) {
+        try (CSVWriter writer = new CSVWriter(new FileWriter(new File(dataOutPath + scenarioName + "." + CSV_TYPE)), CSV_CHAR_SEPARATOR);) {
+            writer.writeAll(csvBody);
+            writer.flush();
+        } catch (IOException e) {
+            logger.error("writeValue in CSV file => column: " + column + " line:" + line + " value:" + value, e);
         }
     }
 
