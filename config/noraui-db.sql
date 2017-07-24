@@ -25,7 +25,7 @@ INSERT INTO Loginlogout VALUES ('user', 'user');
 INSERT INTO Loginlogout VALUES ('user', 'user');
 INSERT INTO Loginlogout VALUES ('user', 'user');
 
-CREATE TABLE Blog (
+CREATE TABLE blog (
     Blog text,
     Titre text,
     Texte text,
@@ -33,8 +33,8 @@ CREATE TABLE Blog (
     Note text
 );
 
-INSERT INTO Blog VALUES ('Blog 1', 'Article 1', 'text 1', 'Peter', '7');
-INSERT INTO Blog VALUES ('Blog 1', 'Article 2', 'text 2', 'Peter', '10');
-INSERT INTO Blog VALUES ('Blog 2', 'Article 3', 'text 3', 'Peter', '8');
-INSERT INTO Blog VALUES ('Blog 2', 'Article 4', 'text 4', 'anonymous', '2');
-INSERT INTO Blog VALUES ('Blog 1', 'Article 5', 'text 5', 'Peter', '9');
+INSERT INTO blog VALUES ('Blog 1', 'Article 1', 'text 1', 'Peter', '7');
+INSERT INTO blog VALUES ('Blog 1', 'Article 2', 'text 2', 'Peter', '10');
+INSERT INTO blog VALUES ('Blog 2', 'Article 3', 'text 3', 'Peter', '8');
+INSERT INTO blog VALUES ('Blog 2', 'Article 4', 'text 4', 'anonymous', '2');
+INSERT INTO blog VALUES ('Blog 1', 'Article 5', 'text 5', 'Peter', '9');
