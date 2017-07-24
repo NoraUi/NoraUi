@@ -23,10 +23,22 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
 
     private RestTemplate restTemplate;
 
-    private enum types {
+    public enum types {
         JSON, XML
     }
 
+    /**
+     * Constructor of REST DataProvider.
+     *
+     * @param type
+     *            (JSON or XML).
+     * @param host
+     *            is host of REST Web Services.
+     * @param port
+     *            is port of REST Web Services.
+     * @throws WebServicesException
+     *             if technical Exception occurred but for a Web Services.
+     */
     public RestDataProvider(String type, String host, String port) throws WebServicesException {
         logger.info("Data provider used is REST");
         this.norauiWebServicesApi = host + ":" + port + NORAUI_API;
