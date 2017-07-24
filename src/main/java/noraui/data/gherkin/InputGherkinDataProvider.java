@@ -1,10 +1,14 @@
 package noraui.data.gherkin;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import noraui.data.CommonDataProvider;
 import noraui.data.DataInputProvider;
+import noraui.data.DataProvider;
 import noraui.exception.TechnicalException;
+import noraui.exception.data.EmptyDataFileContentException;
+import noraui.exception.data.WrongDataFileFormatException;
 import noraui.gherkin.GherkinFactory;
 import noraui.model.Model;
 
@@ -27,7 +31,12 @@ public class InputGherkinDataProvider extends CommonDataProvider implements Data
     @Override
     public void prepare(String scenario) throws TechnicalException {
         examples = GherkinFactory.getExamples(scenario);
-
+        try {
+            initColumns();
+        } catch (EmptyDataFileContentException | WrongDataFileFormatException e) {
+            logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION, e);
+            System.exit(-1);
+        }
     }
 
     /**
@@ -53,17 +62,14 @@ public class InputGherkinDataProvider extends CommonDataProvider implements Data
     @Override
     public String readValue(String column, int line) throws TechnicalException {
         if (examples.length > 0) {
-            String[] columns = examples[0].split("\\|", -1);
-            for (int i = 1; i < columns.length - 1; i++) {
-                if (columns[i].equals(column)) {
-                    String[] lineContent = readLine(line, true);
-                    if (null != lineContent && lineContent.length > i) {
-                        return lineContent[i];
-                    } else {
-                        return "";
-                    }
-                }
+            String[] lineContent = readLine(line, true);
+            int i = columns.indexOf(column) + 1;
+            if (i > 0 && null != lineContent && lineContent.length > i) {
+                return lineContent[i];
+            } else {
+                return "";
             }
+
         }
         return "";
     }
@@ -89,5 +95,24 @@ public class InputGherkinDataProvider extends CommonDataProvider implements Data
     @Override
     public Class<Model> getModel(String modelPackages) throws TechnicalException {
         return null;
+    }
+
+    private void initColumns() throws EmptyDataFileContentException, WrongDataFileFormatException {
+        columns = new ArrayList<String>();
+        if (examples.length > 1) {
+            String[] cols = examples[0].split("\\|", -1);
+            for (int i = 1; i < cols.length - 1; i++) {
+                columns.add(cols[i]);
+            }
+        } else {
+            throw new EmptyDataFileContentException("Input data file is empty or only result column is provided.");
+        }
+        if (columns.size() < 2) {
+            throw new EmptyDataFileContentException("Input data file is empty or only result column is provided.");
+        }
+        resultColumnName = columns.get(columns.size() - 1);
+        if (!isResultColumnNameAuthorized(resultColumnName)) {
+            resultColumnName = DataProvider.AUTHORIZED_NAMES_FOR_RESULT_COLUMN.get(0);
+        }
     }
 }

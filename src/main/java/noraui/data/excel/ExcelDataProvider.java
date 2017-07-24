@@ -28,6 +28,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import noraui.data.CommonDataProvider;
 import noraui.data.DataInputProvider;
 import noraui.data.DataOutputProvider;
+import noraui.data.DataProvider;
 import noraui.exception.TechnicalException;
 import noraui.exception.data.EmptyDataFileContentException;
 import noraui.exception.data.WrongDataFileFormatException;
@@ -66,7 +67,7 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
     @Override
     public void writeFailedResult(int line, String value) throws TechnicalException {
         logger.debug("writeFailedResult => line:" + line + " value:" + value);
-        writeValue(NAME_OF_RESULT_COLUMN, line, value, styleFailed);
+        writeValue(resultColumnName, line, value, styleFailed);
     }
 
     /**
@@ -75,13 +76,13 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
     @Override
     public void writeSuccessResult(int line) throws TechnicalException {
         logger.debug("writeSuccessResult => line:" + line);
-        writeValue(NAME_OF_RESULT_COLUMN, line, Messages.SUCCESS_MESSAGE, styleSuccess);
+        writeValue(resultColumnName, line, Messages.SUCCESS_MESSAGE, styleSuccess);
     }
 
     @Override
     public void writeWarningResult(int line, String value) throws TechnicalException {
         logger.debug("writeWarningResult => line:" + line);
-        writeValue(NAME_OF_RESULT_COLUMN, line, value, styleWarning);
+        writeValue(resultColumnName, line, value, styleWarning);
     }
 
     /**
@@ -149,8 +150,9 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
         if (columns.size() < 2) {
             throw new EmptyDataFileContentException("Input data file is empty or only result column is provided.");
         }
-        if (!columns.get(columns.size() - 1).equals(NAME_OF_RESULT_COLUMN)) {
-            throw new WrongDataFileFormatException("The last column of the data file must be '" + NAME_OF_RESULT_COLUMN + "'.");
+        resultColumnName = columns.get(columns.size() - 1);
+        if (!isResultColumnNameAuthorized(resultColumnName)) {
+            throw new WrongDataFileFormatException("The last column of the data file must belong to '" + DataProvider.AUTHORIZED_NAMES_FOR_RESULT_COLUMN + "'.");
         }
     }
 

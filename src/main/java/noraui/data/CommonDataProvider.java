@@ -22,6 +22,7 @@ public abstract class CommonDataProvider implements DataProvider {
     protected List<DataIndex> indexData;
     protected String scenarioName;
     protected List<String> columns;
+    protected String resultColumnName;
 
     /**
      * {@inheritDoc}
@@ -108,6 +109,23 @@ public abstract class CommonDataProvider implements DataProvider {
     @Override
     public void setDataOutPath(String dataOutPath) {
         this.dataOutPath = dataOutPath;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+
+    @Override
+    public String getResultColumnName() {
+        return resultColumnName;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isResultColumnNameAuthorized(String name) {
+        return DataProvider.AUTHORIZED_NAMES_FOR_RESULT_COLUMN.contains(name);
     }
 
     private Set<Class<?>> getClasses(String packageName) {

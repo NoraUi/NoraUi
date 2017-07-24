@@ -15,7 +15,6 @@ import java.util.Map.Entry;
 import org.apache.log4j.Logger;
 
 import noraui.data.DataIndex;
-import noraui.data.DataProvider;
 import noraui.data.DataUtils;
 import noraui.exception.TechnicalException;
 import noraui.model.Model;
@@ -216,7 +215,7 @@ public class MavenRunCounter {
             List<Integer> index = new ArrayList<>();
             index.add(i);
             indexData.add(new DataIndex(i, index));
-            String resultColumn = Context.getDataInputProvider().readValue(DataProvider.NAME_OF_RESULT_COLUMN, i);
+            String resultColumn = Context.getDataInputProvider().readValue(Context.getDataInputProvider().getResultColumnName(), i);
             if (!"".equals(resultColumn)) {
                 failures += 2;
                 skipped += nbStep - (int) Double.parseDouble(resultColumn);
@@ -240,7 +239,7 @@ public class MavenRunCounter {
                 indexData.add(new DataIndex(dataIndex, e.getValue().getIds()));
                 for (int i = 0; i < e.getValue().getIds().size(); i++) {
                     Integer wid = e.getValue().getIds().get(i);
-                    String resultColumn = Context.getDataInputProvider().readValue(DataProvider.NAME_OF_RESULT_COLUMN, wid);
+                    String resultColumn = Context.getDataInputProvider().readValue(Context.getDataInputProvider().getResultColumnName(), wid);
                     if (!"".equals(resultColumn)) {
                         failures += 2;
                         skipped += nbStep - (int) Double.parseDouble(resultColumn);

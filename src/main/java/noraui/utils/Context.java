@@ -25,6 +25,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import cucumber.api.Scenario;
 import noraui.application.Application;
 import noraui.application.steps.Step;
+import noraui.browser.Auth;
 import noraui.browser.DriverFactory;
 import noraui.browser.WindowManager;
 import noraui.browser.steps.BrowserSteps;
@@ -62,6 +63,7 @@ public class Context {
     public static final String GO_TO_URL_METHOD_NAME = "goToUrl";
     public static final String RESTART_WEB_DRIVER_METHOD_NAME = "restartWebDriver";
     public static final String PROXY_KEY = "proxy";
+    public static final String AUTH_TYPE = "authentication";
     public static final String DISPLAY_STACK_TRACE = "display.stacktrace";
     public static final String TIMEOUT_KEY = "timeout";
     public static final String BROWSER_KEY = "browser";
@@ -273,6 +275,9 @@ public class Context {
 
         // proxy configuration
         proxy = setProperty(PROXY_KEY, applicationProperties);
+
+        // authentication mode configuration
+        Auth.setAuthenticationType(setProperty(AUTH_TYPE, applicationProperties));
 
         // stacktrace configuration
         displayStackTrace = "true".equals(setProperty(DISPLAY_STACK_TRACE, applicationProperties));
@@ -570,7 +575,7 @@ public class Context {
             for (Map.Entry<String, Application> application : getInstance().applications.entrySet()) {
                 for (Map.Entry<String, String> urlPage : application.getValue().getUrlPages().entrySet()) {
                     if (pageKey.equals(urlPage.getKey())) {
-                        return urlPage.getValue();
+                        return Auth.usingAuthentication(urlPage.getValue());
                     }
                 }
             }

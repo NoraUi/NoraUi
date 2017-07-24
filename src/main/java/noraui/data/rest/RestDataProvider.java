@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import noraui.data.CommonDataProvider;
 import noraui.data.DataInputProvider;
 import noraui.data.DataOutputProvider;
+import noraui.data.DataProvider;
 import noraui.exception.TechnicalException;
 import noraui.exception.data.EmptyDataFileContentException;
 import noraui.exception.data.WebServicesException;
@@ -67,7 +68,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
     @Override
     public void writeFailedResult(int line, String value) {
         logger.debug(String.format("Write Failed result => line:%d value:%s", line, value));
-        writeValue(NAME_OF_RESULT_COLUMN, line, value);
+        writeValue(resultColumnName, line, value);
     }
 
     /**
@@ -76,7 +77,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
     @Override
     public void writeSuccessResult(int line) {
         logger.debug(String.format("Write Success result => line:%d", line));
-        writeValue(NAME_OF_RESULT_COLUMN, line, Messages.SUCCESS_MESSAGE);
+        writeValue(resultColumnName, line, Messages.SUCCESS_MESSAGE);
     }
 
     /**
@@ -85,7 +86,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
     @Override
     public void writeWarningResult(int line, String value) throws TechnicalException {
         logger.debug(String.format("Write Warning result => line:%d value:%s", line, value));
-        writeValue(NAME_OF_RESULT_COLUMN, line, value);
+        writeValue(resultColumnName, line, value);
     }
 
     /**
@@ -127,7 +128,8 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
     private void initColumns() throws EmptyDataFileContentException {
         final String uri = this.norauiWebServicesApi + scenarioName + "/columns";
         columns = restTemplate.getForObject(uri, DataModel.class).getColumns();
-        columns.add(NAME_OF_RESULT_COLUMN);
+        resultColumnName = DataProvider.AUTHORIZED_NAMES_FOR_RESULT_COLUMN.get(0);
+        columns.add(resultColumnName);
         if (columns.size() < 2) {
             throw new EmptyDataFileContentException("Input data file is empty or only result column is provided.");
         }
@@ -138,7 +140,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
         int colIndex = columns.indexOf(column);
         final String uri = this.norauiWebServicesApi + scenarioName + "/column/" + colIndex + "/line/" + line;
         DataModel dataModel = restTemplate.patchForObject(uri, value, DataModel.class);
-        if (NAME_OF_RESULT_COLUMN.equals(column)) {
+        if (resultColumnName.equals(column)) {
             if (value.equals(dataModel.getRows().get(line - 1).getResult())) {
                 logger.error("writeValue in REST Web services => column: " + column + " line:" + line + " value:" + value);
             }
