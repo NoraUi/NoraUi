@@ -26,6 +26,7 @@ INSERT INTO Loginlogout VALUES ('user', 'user');
 INSERT INTO Loginlogout VALUES ('user', 'user');
 
 CREATE TABLE Blog (
+    Blog text,
     Titre text,
     Texte text,
     Auteur text,
