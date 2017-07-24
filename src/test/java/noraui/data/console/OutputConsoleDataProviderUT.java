@@ -1,6 +1,5 @@
 package noraui.data.console;
 
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ public class OutputConsoleDataProviderUT {
     }
 
     @Test
-    public void testWriteXxxxxResult() throws TechnicalException, IOException {
+    public void testWriteXxxxxResult() throws TechnicalException {
         OutputConsoleDataProvider outputConsoleDataProvider = new OutputConsoleDataProvider();
         outputConsoleDataProvider.prepare("hello");
         Assert.assertTrue(true);

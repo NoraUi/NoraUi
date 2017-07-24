@@ -25,6 +25,9 @@ before_install:
 script:
 - test/run.sh
 
+dist:
+- precise
+
 after_success: 
 - test/after_success.sh
 
