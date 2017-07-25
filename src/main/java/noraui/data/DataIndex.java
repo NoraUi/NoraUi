@@ -8,6 +8,7 @@ public class DataIndex {
     private int dataLine;
     private List<Integer> indexes;
 
+    @Deprecated
     public DataIndex() {
         this.dataLine = 0;
         this.indexes = new ArrayList<>();
