@@ -18,6 +18,7 @@ import noraui.data.DataInputProvider;
 import noraui.exception.TechnicalException;
 import noraui.exception.data.DatabaseException;
 import noraui.utils.Constants;
+import noraui.utils.Messages;
 
 public class DBDataProvider extends CommonDataProvider implements DataInputProvider {
 
@@ -44,11 +45,11 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
                 Class.forName("org.postgresql.Driver");
                 this.connectionUrl = "jdbc:postgresql://" + hostname + ":" + port + "/" + database;
             } else {
-                throw new DatabaseException(String.format(DatabaseException.TECHNICAL_ERROR_MESSAGE_DATABASE_EXCEPTION, type));
+                throw new DatabaseException(String.format(Messages.getMessage(DatabaseException.TECHNICAL_ERROR_MESSAGE_UNKNOWN_DATABASE_TYPE), type));
             }
         } catch (Exception e) {
-            logger.error(DatabaseException.TECHNICAL_ERROR_MESSAGE_DATABASE_EXCEPTION, e);
-            throw new TechnicalException(DatabaseException.TECHNICAL_ERROR_MESSAGE_DATABASE_EXCEPTION, e);
+            logger.error(Messages.getMessage(DatabaseException.TECHNICAL_ERROR_MESSAGE_DATABASE_EXCEPTION), e);
+            throw new TechnicalException(Messages.getMessage(DatabaseException.TECHNICAL_ERROR_MESSAGE_DATABASE_EXCEPTION), e);
         }
         logger.info("dataProvider used is DB (" + type + ")");
     }

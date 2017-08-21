@@ -1,11 +1,14 @@
 package noraui.utils;
 
+import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import noraui.exception.TechnicalException;
 
 public class Messages {
+
+    private static ResourceBundle messages = null;
 
     /**
      * Success message
@@ -93,6 +96,13 @@ public class Messages {
         } else {
             throw new TechnicalException("Technical problem in the code Messages.formatMessage(String templateMessage, String... args) in NoraUi.");
         }
+    }
+
+    public static String getMessage(String key) {
+        if (messages == null) {
+            messages = ResourceBundle.getBundle("i18n/messages", Context.getLocale());
+        }
+        return messages.getString(key);
     }
 
     /**

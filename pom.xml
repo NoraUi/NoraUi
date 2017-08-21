@@ -5,7 +5,7 @@
 
     <groupId>com.github.noraui</groupId>
     <artifactId>noraui</artifactId>
-    <version>2.6.1-SNAPSHOT</version>
+    <version>2.6.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>NORAUI</name>
@@ -32,7 +32,7 @@
             <name>Stéphane GRILLON</name>
         </developer>
         <developer>
-            <id>ArKniiD</id>
+            <id>nhallouin</id>
             <name>Nicolas HALLOUIN</name>
         </developer>
     </developers>

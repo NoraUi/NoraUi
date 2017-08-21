@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -18,6 +19,7 @@ import org.apache.log4j.Logger;
 import org.ini4j.Ini;
 import org.ini4j.InvalidFileFormatException;
 import org.joda.time.DateTime;
+import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -62,7 +64,10 @@ public class Context {
     public static final String STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME = BrowserSteps.class.getCanonicalName();
     public static final String GO_TO_URL_METHOD_NAME = "goToUrl";
     public static final String RESTART_WEB_DRIVER_METHOD_NAME = "restartWebDriver";
-    public static final String PROXY_KEY = "proxy";
+    public static final String HTTP_PROXY = "http_proxy";
+    public static final String HTTPS_PROXY = "https_proxy";
+    public static final String NO_PROXY = "no_proxy";
+    public static final String LOCALE = "locale";
     public static final String AUTH_TYPE = "authentication";
     public static final String DISPLAY_STACK_TRACE = "display.stacktrace";
     public static final String TIMEOUT_KEY = "timeout";
@@ -82,7 +87,7 @@ public class Context {
     public static final String LOGOGAME_KEY = "logogame";
     public static final String LOGOGAME_HOME = "LOGOGAME_HOME";
 
-    private static final String NOT_SET_LABEL = " NOT set!";
+    private static final String NOT_SET_LABEL = " undefined!";
     private static Properties scenariosProperties = null;
     private static Properties webdriversProperties = null;
 
@@ -164,7 +169,12 @@ public class Context {
     /**
      * Proxy
      */
-    private String proxy = "";
+    private Proxy proxy;
+
+    /**
+     * Current locale
+     */
+    private Locale currentLocale;
 
     /**
      * List of model packages in case of using Models for input data
@@ -257,6 +267,9 @@ public class Context {
         // Paths configuration
         getDataInputProvider().setDataInPath(resourcesPath + DATA_IN);
         getDataOutputProvider().setDataOutPath(resourcesPath + DATA_OUT);
+
+        // init locale
+        initializeLocale();
     }
 
     public synchronized void initializeRobot(Class clazz) {
@@ -273,8 +286,26 @@ public class Context {
         // set version of selectors used to deliver several versions
         selectorsVersion = setProperty(SELECTORS_VERSION, applicationProperties);
 
-        // proxy configuration
-        proxy = setProperty(PROXY_KEY, applicationProperties);
+        // proxies configuration
+        proxy = new Proxy();
+        proxy.setAutodetect(true);
+        String httpProxy = setProperty(HTTP_PROXY, applicationProperties);
+        if (httpProxy != null && !"".equals(httpProxy)) {
+            proxy.setAutodetect(false);
+            proxy.setHttpProxy(httpProxy);
+        }
+
+        String httpsProxy = setProperty(HTTPS_PROXY, applicationProperties);
+        if (httpsProxy != null && !"".equals(httpsProxy)) {
+            proxy.setAutodetect(false);
+            proxy.setSslProxy(httpsProxy);
+        }
+
+        String noProxy = setProperty(NO_PROXY, applicationProperties);
+        if (noProxy != null && !"".equals(noProxy)) {
+            proxy.setAutodetect(false);
+            proxy.setNoProxy(noProxy);
+        }
 
         // authentication mode configuration
         Auth.setAuthenticationType(setProperty(AUTH_TYPE, applicationProperties));
@@ -494,8 +525,6 @@ public class Context {
         String p = propertyFile.getProperty(key);
         if (p == null) {
             logger.error(key + NOT_SET_LABEL);
-        } else {
-            logger.info(key + " = " + p);
         }
         return p;
     }
@@ -542,8 +571,12 @@ public class Context {
         return getInstance().timeout;
     }
 
-    public static String getProxy() {
+    public static Proxy getProxy() {
         return getInstance().proxy;
+    }
+
+    public static Locale getLocale() {
+        return getInstance().currentLocale;
     }
 
     public static boolean isStackTraceDisplayed() {
@@ -642,6 +675,21 @@ public class Context {
             logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE + te.getMessage(), te);
             throw new TechnicalException("Technical problem during injectWithModel: " + te.getMessage(), te);
         }
+    }
+
+    private void initializeLocale() {
+        String locale = setProperty(LOCALE, applicationProperties);
+        if (locale != null && !"".equals(locale)) {
+            String[] localeParts = locale.split("_");
+            if (localeParts.length == 2) {
+                currentLocale = new Locale(localeParts[0], localeParts[1]);
+            } else {
+                currentLocale = new Locale(localeParts[0]);
+            }
+        } else {
+            currentLocale = Locale.getDefault();
+        }
+        logger.info("Current locale used: " + currentLocale);
     }
 
     private void plugDataProvider(Properties applicationProperties) {

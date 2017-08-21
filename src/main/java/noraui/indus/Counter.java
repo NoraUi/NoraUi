@@ -26,7 +26,7 @@ public class Counter {
             Context.getInstance().initializeEnv("demo" + args[0] + ".properties");
 
             if (args[0].contains("Db") || args[0].contains("RestJson") || args[0].contains("Gherkin")) {
-                // scenarioBlacklist.add("blog");
+                scenarioBlacklist.add("blog");
                 scenarioBlacklist.add("bonjour");
                 scenarioBlacklist.add("jouerAuJeuDesLogos");
                 scenarioBlacklist.add("playToLogoGame");
