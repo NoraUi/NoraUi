@@ -448,7 +448,7 @@ public class Context {
             try {
                 initDataId(scenarioName);
             } catch (TechnicalException te) {
-                logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE + te.getMessage(), te);
+                logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + te.getMessage(), te);
             }
         }
         getInstance().scenarioName = scenarioName;
@@ -672,8 +672,7 @@ public class Context {
             }
             Context.getDataInputProvider().setIndexData(indexData);
         } catch (Exception te) {
-            logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE + te.getMessage(), te);
-            throw new TechnicalException("Technical problem during injectWithModel: " + te.getMessage(), te);
+            throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + te.getMessage(), te);
         }
     }
 

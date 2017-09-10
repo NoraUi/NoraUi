@@ -73,7 +73,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
     @Override
     public void writeSuccessResult(int line) {
         logger.debug(String.format("Write Success result => line:%d", line));
-        writeValue(resultColumnName, line, Messages.SUCCESS_MESSAGE);
+        writeValue(resultColumnName, line, Messages.getMessage(Messages.SUCCESS_MESSAGE));
     }
 
     /**
@@ -104,7 +104,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
             CSVReader reader = openInputData();
             return reader.readAll().get(line)[colIndex];
         } catch (IOException e) {
-            throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE + e.getMessage(), e);
+            throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), e);
         }
     }
 

@@ -89,7 +89,7 @@ public class DriverFactory {
         logger.info("Driver phantomjs");
         String pathWebdriver = DriverFactory.getPath(Driver.PHANTOMJS);
         if (!new File(pathWebdriver).setExecutable(true)) {
-            throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE + TechnicalException.TECHNICAL_ERROR_MESSAGE_WEBDRIVER_SET_EXECUTABLE);
+            throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE_WEBDRIVER_SET_EXECUTABLE);
         }
         DesiredCapabilities caps = new DesiredCapabilities();
         caps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, pathWebdriver);
@@ -115,7 +115,7 @@ public class DriverFactory {
         logger.info("Driver ie");
         String pathWebdriver = DriverFactory.getPath(Driver.IE);
         if (!new File(pathWebdriver).setExecutable(true)) {
-            throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE + TechnicalException.TECHNICAL_ERROR_MESSAGE_WEBDRIVER_SET_EXECUTABLE);
+            throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE_WEBDRIVER_SET_EXECUTABLE);
         }
         DesiredCapabilities capabilities = DesiredCapabilities.internetExplorer();
         capabilities.setCapability(InternetExplorerDriver.IE_ENSURE_CLEAN_SESSION, true);
@@ -143,7 +143,7 @@ public class DriverFactory {
         logger.info("Driver chrome");
         String pathWebdriver = DriverFactory.getPath(Driver.CHROME);
         if (!new File(pathWebdriver).setExecutable(true)) {
-            throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE + TechnicalException.TECHNICAL_ERROR_MESSAGE_WEBDRIVER_SET_EXECUTABLE);
+            throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE_WEBDRIVER_SET_EXECUTABLE);
         }
         DesiredCapabilities capabilities = DesiredCapabilities.chrome();
         capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);

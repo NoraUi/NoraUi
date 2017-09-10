@@ -20,6 +20,7 @@ public class CucumberHooks {
 
     private static final Logger logger = Logger.getLogger(CucumberHooks.class);
     private static final String PROGRESS_MESSAGE = "PROGRESS_MESSAGE";
+    private static final String SUCCESS_MESSAGE_BY_DEFAULT = "SUCCESS_MESSAGE_BY_DEFAULT";
 
     @Before()
     public static void setUpScenario(Scenario scenario) throws TechnicalException {
@@ -42,7 +43,7 @@ public class CucumberHooks {
         Context.saveValue(Constants.IS_CONNECTED_REGISTRY_KEY, String.valueOf(Auth.isConnected()));
 
         Context.setCurrentScenario(scenario);
-        new Result.Success<>(Context.getScenarioName(), Messages.SUCCESS_MESSAGE_BY_DEFAULT);
+        new Result.Success<>(Context.getScenarioName(), Messages.getMessage(SUCCESS_MESSAGE_BY_DEFAULT));
 
     }
 

@@ -22,6 +22,7 @@ import noraui.utils.Messages;
 
 public class DBDataProvider extends CommonDataProvider implements DataInputProvider {
 
+    private static final String DATABASE_ERROR_FORBIDDEN_WORDS_IN_QUERY = "DATABASE_ERROR_FORBIDDEN_WORDS_IN_QUERY";
     private String connectionUrl;
     private String user;
     private String password;
@@ -67,7 +68,6 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
         try {
             initColumns();
         } catch (DatabaseException e) {
-            logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE + e.getMessage(), e);
             throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION, e);
         }
     }
@@ -86,7 +86,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
             sqlRequest = new String(Files.readAllBytes(file), Charset.forName(Constants.DEFAULT_ENDODING));
             sqlSanitized4readOnly(sqlRequest);
         } catch (IOException e) {
-            throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE + e.getMessage(), e);
+            throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), e);
         }
         try (Connection connection = getConnection();
                 Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -112,7 +112,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
             sqlRequest = new String(Files.readAllBytes(file), Charset.forName(Constants.DEFAULT_ENDODING));
             sqlSanitized4readOnly(sqlRequest);
         } catch (IOException e) {
-            throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE + e.getMessage(), e);
+            throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), e);
         }
         try (Connection connection = getConnection(); PreparedStatement statement = connection.prepareStatement(sqlRequest); ResultSet rs = statement.executeQuery();) {
             if (line < 1) {
@@ -141,7 +141,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
             sqlRequest = new String(Files.readAllBytes(file), Charset.forName(Constants.DEFAULT_ENDODING));
             sqlSanitized4readOnly(sqlRequest);
         } catch (IOException e) {
-            throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE + e.getMessage(), e);
+            throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), e);
         }
         try (Connection connection = getConnection(); PreparedStatement statement = connection.prepareStatement(sqlRequest); ResultSet rs = statement.executeQuery();) {
             String[] ret = readResult ? new String[columns.size()] : new String[columns.size() - 1];
@@ -171,7 +171,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
             sqlRequest = new String(Files.readAllBytes(file), Charset.forName(Constants.DEFAULT_ENDODING));
             sqlSanitized4readOnly(sqlRequest);
         } catch (IOException e) {
-            throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE + e.getMessage(), e);
+            throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), e);
         }
         try (Connection connection = getConnection(); PreparedStatement statement = connection.prepareStatement(sqlRequest); ResultSet rs = statement.executeQuery();) {
             if (rs.getMetaData().getColumnCount() < 1) {
@@ -189,7 +189,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
         String[] forbiddenWords = { "DROP", "DELETE", "TRUNCATE", "UPDATE" };
         for (String forbiddenWord : forbiddenWords) {
             if (sqlInput.toUpperCase().contains(forbiddenWord)) {
-                throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE + "Your sql file contains a forbidden word for queries. (Read only autorized): " + sqlInput);
+                throw new TechnicalException(Messages.format(Messages.getMessage(DATABASE_ERROR_FORBIDDEN_WORDS_IN_QUERY), sqlInput));
             }
         }
     }

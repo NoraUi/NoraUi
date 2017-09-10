@@ -42,7 +42,7 @@ public class CsvDataProviderUT {
 
         reader = new CSVReader(new FileReader(new File("src/test/resources" + DATA_OUT + "hello.csv")), ';');
         csvDataProvider.writeSuccessResult(2);
-        Assert.assertEquals(Messages.SUCCESS_MESSAGE, reader.readAll().get(2)[7]);
+        Assert.assertEquals(Messages.getMessage(Messages.SUCCESS_MESSAGE), reader.readAll().get(2)[7]);
         reader.close();
 
         reader = new CSVReader(new FileReader(new File("src/test/resources" + DATA_OUT + "hello.csv")), ';');

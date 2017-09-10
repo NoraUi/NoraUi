@@ -95,7 +95,8 @@ public class Step implements IStep {
         try {
             Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(toClick, args))).click();
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK, toClick, toClick.getPage().getApplication()), true, toClick.getPage().getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK), toClick, toClick.getPage().getApplication()), true,
+                    toClick.getPage().getCallBack());
         }
     }
 
@@ -119,7 +120,8 @@ public class Step implements IStep {
             ((JavascriptExecutor) getDriver())
                     .executeScript("document.evaluate(\"" + Utilities.getLocatorValue(toClick, args) + "\", document, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click();");
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK, toClick, toClick.getPage().getApplication()), true, toClick.getPage().getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK), toClick, toClick.getPage().getApplication()), true,
+                    toClick.getPage().getCallBack());
         }
     }
 
@@ -142,7 +144,7 @@ public class Step implements IStep {
             Context.waitUntil(ExpectedConditions.elementToBeClickable(By.xpath(xpath.replaceAll("\\\\'", "'"))));
             ((JavascriptExecutor) getDriver()).executeScript("document.evaluate(\"" + xpath + "\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click();");
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_EVALUATE_XPATH, xpath, page.getApplication()), true, page.getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_EVALUATE_XPATH), xpath, page.getApplication()), true, page.getCallBack());
         }
     }
 
@@ -198,7 +200,7 @@ public class Step implements IStep {
                     element.sendKeys(keysToSend);
                 }
             } catch (Exception e) {
-                new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_ERROR_ON_INPUT, pageElement, pageElement.getPage().getApplication()), true,
+                new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_ERROR_ON_INPUT), pageElement, pageElement.getPage().getApplication()), true,
                         pageElement.getPage().getCallBack());
             }
         } else {
@@ -246,7 +248,7 @@ public class Step implements IStep {
                 element.sendKeys(keysToSend);
             }
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_ERROR_CLEAR_ON_INPUT, pageElement, pageElement.getPage().getApplication()), true,
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_ERROR_CLEAR_ON_INPUT), pageElement, pageElement.getPage().getApplication()), true,
                     pageElement.getPage().getCallBack());
         }
     }
@@ -268,7 +270,7 @@ public class Step implements IStep {
         try {
             inputText = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT, true, pageElement.getPage().getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
         }
         return !(inputText == null || value == null || inputText.getAttribute(VALUE) == null || !value.equals(inputText.getAttribute(VALUE).trim()));
     }
@@ -287,7 +289,7 @@ public class Step implements IStep {
         try {
             inputText = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
         } catch (Exception e) {
-            new Result.Failure<>(pageElement, Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT, true, pageElement.getPage().getCallBack());
+            new Result.Failure<>(pageElement, Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
         }
         return !(inputText == null || "".equals(inputText.getAttribute(VALUE).trim()));
     }
@@ -296,7 +298,7 @@ public class Step implements IStep {
         try {
             return Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement))).getAttribute(VALUE);
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT, true, pageElement.getPage().getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
         }
         return null;
     }
@@ -322,11 +324,12 @@ public class Step implements IStep {
         try {
             inputText = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT, true, pageElement.getPage().getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
         }
         if (inputText == null || !value.equals(inputText.getText())) {
             new Result.Failure<>(inputText == null ? null : inputText.getText(),
-                    Messages.format(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE, pageElement, value, pageElement.getPage().getApplication()), true, pageElement.getPage().getCallBack());
+                    Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE), pageElement, value, pageElement.getPage().getApplication()), true,
+                    pageElement.getPage().getCallBack());
         }
     }
 
@@ -346,13 +349,13 @@ public class Step implements IStep {
             try {
                 Context.waitUntil(ExpectedConditions.visibilityOfElementLocated(Utilities.getLocator(pageElement)));
             } catch (Exception e) {
-                new Result.Failure<>(e.getMessage(), Messages.FAIL_MESSAGE_ELEMENT_STILL_VISIBLE, true, pageElement.getPage().getCallBack());
+                new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_ELEMENT_STILL_VISIBLE), true, pageElement.getPage().getCallBack());
             }
         } else {
             try {
                 Context.waitUntil(ExpectedConditions.not(ExpectedConditions.visibilityOfElementLocated(Utilities.getLocator(pageElement))));
             } catch (Exception e) {
-                new Result.Failure<>(e.getMessage(), Messages.FAIL_MESSAGE_ELEMENT_STILL_VISIBLE, true, pageElement.getPage().getCallBack());
+                new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_ELEMENT_STILL_VISIBLE), true, pageElement.getPage().getCallBack());
             }
         }
     }
@@ -373,13 +376,13 @@ public class Step implements IStep {
             try {
                 Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
             } catch (Exception e) {
-                new Result.Failure<>(e.getMessage(), Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT, true, pageElement.getPage().getCallBack());
+                new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
             }
         } else {
             try {
                 Context.waitUntil(ExpectedConditions.not(ExpectedConditions.presenceOfAllElementsLocatedBy(Utilities.getLocator(pageElement))));
             } catch (Exception e) {
-                new Result.Failure<>(e.getMessage(), Messages.FAIL_MESSAGE_ELEMENT_STILL_VISIBLE, true, pageElement.getPage().getCallBack());
+                new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_ELEMENT_STILL_VISIBLE), true, pageElement.getPage().getCallBack());
             }
         }
     }
@@ -404,7 +407,8 @@ public class Step implements IStep {
         try {
             setDropDownValue(pageElement, value);
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_ERROR_ON_INPUT, pageElement, pageElement.getPage().getApplication()), true, pageElement.getPage().getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_ERROR_ON_INPUT), pageElement, pageElement.getPage().getApplication()), true,
+                    pageElement.getPage().getCallBack());
         }
     }
 
@@ -425,7 +429,7 @@ public class Step implements IStep {
             Select dropDown = new Select(select);
             return text.equalsIgnoreCase(dropDown.getFirstSelectedOption().getText());
         } catch (Exception e) {
-            new Result.Failure<>(text, Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT, true, pageElement.getPage().getCallBack());
+            new Result.Failure<>(text, Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
             return false;
         }
     }
@@ -463,10 +467,11 @@ public class Step implements IStep {
                 loggerStep.debug("update Date with a date after today: " + date);
                 updateText(pageElement, date);
             } else {
-                new Result.Failure<>(date, Messages.format(Messages.FAIL_MESSAGE_UNEXPECTED_DATE, "supérieure ou égale à la date du jour"), true, pageElement.getPage().getCallBack());
+                new Result.Failure<>(date, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNEXPECTED_DATE), Messages.getMessage(Messages.DATE_GREATER_THAN_TODAY)), true,
+                        pageElement.getPage().getCallBack());
             }
         } catch (ParseException e) {
-            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_WRONG_DATE_FORMAT, pageElement, date), false, pageElement.getPage().getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_DATE_FORMAT), pageElement, date), false, pageElement.getPage().getCallBack());
         }
 
     }
@@ -515,13 +520,14 @@ public class Step implements IStep {
             WebElement elem = Utilities.findElement(page, field);
             txt = elem.getAttribute(VALUE) != null ? elem.getAttribute(VALUE) : elem.getText();
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT, true, page.getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, page.getCallBack());
         }
         try {
             Context.saveValue(targetKey, txt);
             Context.getCurrentScenario().write("SAVE " + targetKey + "=" + txt);
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_RETRIEVE_VALUE, page.getPageElementByKey(field), page.getApplication()), true, page.getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_RETRIEVE_VALUE), page.getPageElementByKey(field), page.getApplication()), true,
+                    page.getCallBack());
         }
     }
 
@@ -555,7 +561,7 @@ public class Step implements IStep {
                 }
             }
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_SELECT_RADIO_BUTTON, pageElement), true, pageElement.getPage().getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_SELECT_RADIO_BUTTON), pageElement), true, pageElement.getPage().getCallBack());
         }
     }
 
@@ -579,7 +585,7 @@ public class Step implements IStep {
                 }
             }
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT, true, pageElement.getPage().getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
         }
         return false;
     }
@@ -608,7 +614,7 @@ public class Step implements IStep {
                 }
             }
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_SELECT_RADIO_BUTTON, pageElement), true, pageElement.getPage().getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_SELECT_RADIO_BUTTON), pageElement), true, pageElement.getPage().getCallBack());
         }
     }
 
@@ -630,7 +636,7 @@ public class Step implements IStep {
             ((JavascriptExecutor) getDriver()).executeScript(javascript, Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(element))));
 
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_PASS_OVER_ELEMENT, element, element.getPage().getApplication()), true,
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_PASS_OVER_ELEMENT), element, element.getPage().getApplication()), true,
                     element.getPage().getCallBack());
         }
 
@@ -658,7 +664,8 @@ public class Step implements IStep {
                 webElement.click();
             }
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_CHECK_ELEMENT, element, element.getPage().getApplication()), true, element.getPage().getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_CHECK_ELEMENT), element, element.getPage().getApplication()), true,
+                    element.getPage().getCallBack());
         }
     }
 
@@ -689,7 +696,8 @@ public class Step implements IStep {
                 webElement.click();
             }
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_CHECK_ELEMENT, element, element.getPage().getApplication()), true, element.getPage().getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_CHECK_ELEMENT), element, element.getPage().getApplication()), true,
+                    element.getPage().getCallBack());
         }
     }
 
@@ -710,7 +718,8 @@ public class Step implements IStep {
         try {
             Context.waitUntil(ExpectedConditions.frameToBeAvailableAndSwitchToIt(Utilities.getLocator(element, args)));
         } catch (Exception e) {
-            new Result.Failure<>(element, Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_SWITCH_FRAME, element, element.getPage().getApplication()), true, element.getPage().getCallBack());
+            new Result.Failure<>(element, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_SWITCH_FRAME), element, element.getPage().getApplication()), true,
+                    element.getPage().getCallBack());
         }
     }
 
@@ -775,7 +784,6 @@ public class Step implements IStep {
         try {
             loggerStep.debug(Messages.format(message, element, application));
         } catch (Exception te) {
-            loggerStep.error(TechnicalException.TECHNICAL_ERROR_MESSAGE + te.getMessage(), te);
             throw new TechnicalException("Technical problem in the code Messages.formatMessage(String templateMessage, String... args) in NoraUi.", te);
         }
     }
@@ -787,7 +795,8 @@ public class Step implements IStep {
         if (index != -1) {
             dropDown.selectByIndex(index);
         } else {
-            new Result.Failure<>(text, Messages.format(Messages.FAIL_MESSAGE_VALUE_NOT_AVAILABLE_IN_THE_LIST, element, element.getPage().getApplication()), false, element.getPage().getCallBack());
+            new Result.Failure<>(text, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_VALUE_NOT_AVAILABLE_IN_THE_LIST), element, element.getPage().getApplication()), false,
+                    element.getPage().getCallBack());
         }
 
     }
@@ -805,7 +814,7 @@ public class Step implements IStep {
         if (!DriverFactory.IE.equals(Context.getBrowser())) {
             String txt = getLastConsoleAlertMessage();
             if (txt != null) {
-                new Result.Failure<>(txt, Messages.FAIL_MESSAGE_ALERT_FOUND, true, page.getCallBack());
+                new Result.Failure<>(txt, Messages.getMessage(Messages.FAIL_MESSAGE_ALERT_FOUND), true, page.getCallBack());
             }
         } else {
             Context.getCurrentScenario().write("SKIPPED for Internet Explorer browser.");

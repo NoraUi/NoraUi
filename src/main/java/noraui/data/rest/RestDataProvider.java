@@ -89,7 +89,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
     @Override
     public void writeSuccessResult(int line) {
         logger.debug(String.format("Write Success result => line:%d", line));
-        writeValue(resultColumnName, line, Messages.SUCCESS_MESSAGE);
+        writeValue(resultColumnName, line, Messages.getMessage(Messages.SUCCESS_MESSAGE));
     }
 
     /**

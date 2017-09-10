@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
 import org.openqa.selenium.JavascriptExecutor;
 
 import cucumber.api.java.en.And;
@@ -32,8 +31,6 @@ import noraui.utils.Messages;
 
 public class BrowserSteps {
 
-    private static final Logger logger = Logger.getLogger(BrowserSteps.class);
-
     /**
      * Open new window with conditions.
      * Note: after this action, you need use "Given '.....' is opened."
@@ -55,7 +52,7 @@ public class BrowserSteps {
             String newWindowHandle = Context.waitUntil(WindowManager.newWindowOpens(initialWindows));
             Context.getDriver().switchTo().window(newWindowHandle);
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.FAIL_MESSAGE_UNABLE_TO_OPEN_A_NEW_WINDOW, true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+            new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_OPEN_A_NEW_WINDOW), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
     }
 
@@ -195,7 +192,7 @@ public class BrowserSteps {
             }
             switchWindow(key);
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_CLOSE_APP, mainWindow), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_CLOSE_APP), mainWindow), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
     }
 
@@ -235,7 +232,8 @@ public class BrowserSteps {
                 goToUrl(Context.getApplication(key).getHomeKey(), true);
             }
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_CLOSE_APP, openedWindows), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_CLOSE_APP), openedWindows), true,
+                    Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
     }
 
@@ -249,14 +247,12 @@ public class BrowserSteps {
                 }
                 ((JavascriptExecutor) Context.getDriver()).executeScript("window.alert = function(msg){console.log('" + ALERT_KEY + "' + msg);};");
             } else {
-                logger.error("Unable to open page: " + pageKey);
-                throw new TechnicalException(String.format(Messages.FAIL_MESSAGE_UNABLE_TO_OPEN_PAGE, pageKey));
+                throw new TechnicalException(String.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_OPEN_PAGE), pageKey));
             }
         } catch (Exception e) {
-            logger.error("Error in goToUrl:", e);
             int indexOfUnderscore = pageKey.indexOf('_');
             String appName = indexOfUnderscore != -1 ? pageKey.substring(0, indexOfUnderscore) : pageKey;
-            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_OPEN_PAGE, appName), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_OPEN_PAGE), appName), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
     }
 
@@ -303,7 +299,7 @@ public class BrowserSteps {
             Context.getDriver().manage().window().maximize();
             Context.setMainWindow(windowKey);
         } else {
-            new Result.Failure<>(windowKey, Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_SWITCH_WINDOW, windowKey), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+            new Result.Failure<>(windowKey, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_SWITCH_WINDOW), windowKey), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
     }
 

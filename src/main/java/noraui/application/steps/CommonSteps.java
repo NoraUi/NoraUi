@@ -214,7 +214,7 @@ public class CommonSteps extends Step {
         if (!"".equals(data)) {
             String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
             if ("".equals(value)) {
-                new Result.Failure<>(textOrKey, Messages.format(Messages.FAIL_MESSAGE_EMPTY_DATA, data), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+                new Result.Failure<>(textOrKey, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_EMPTY_DATA), data), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
             }
         }
     }
@@ -243,7 +243,7 @@ public class CommonSteps extends Step {
             StringBuilder errorMessage = new StringBuilder();
             int index = errorMessage.length();
             for (int j = 0; j < errors.size(); j++) {
-                errorMessage.append(Messages.format(Messages.FAIL_MESSAGE_EMPTY_DATA, errors.get(j)));
+                errorMessage.append(Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_EMPTY_DATA), errors.get(j)));
                 if (j == 0) {
                     errorMessage.setCharAt(index, Character.toUpperCase(errorMessage.charAt(index)));
                 } else {
@@ -314,14 +314,15 @@ public class CommonSteps extends Step {
                 value = "";
             }
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT, true, Page.getInstance(page).getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, Page.getInstance(page).getCallBack());
         }
         Context.getCurrentScenario().write(Messages.format("Value of %s is: %s\n", field, value));
         for (Integer line : Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData()).getIndexes()) {
             try {
                 Context.getDataOutputProvider().writeDataResult(targetColumn, line, value);
             } catch (TechnicalException e) {
-                new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_WRITE_MESSAGE_IN_RESULT_FILE, targetColumn), true, Page.getInstance(page).getCallBack());
+                new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_WRITE_MESSAGE_IN_RESULT_FILE), targetColumn), true,
+                        Page.getInstance(page).getCallBack());
             }
         }
     }
@@ -456,10 +457,10 @@ public class CommonSteps extends Step {
                 Context.getDriver().manage().window().maximize();
                 Context.setMainWindow(newWindowHandle);
             } catch (Exception e) {
-                new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_SWITCH_WINDOW, windowKey), true, Page.getInstance(page).getCallBack());
+                new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_SWITCH_WINDOW), windowKey), true, Page.getInstance(page).getCallBack());
             }
             if (!Page.getInstance(windowKey).checkPage()) {
-                new Result.Failure<>(windowKey, Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_SWITCH_WINDOW, windowKey), true, Page.getInstance(page).getCallBack());
+                new Result.Failure<>(windowKey, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_SWITCH_WINDOW), windowKey), true, Page.getInstance(page).getCallBack());
             }
         }
 
@@ -494,7 +495,7 @@ public class CommonSteps extends Step {
             if (date.matches(Constants.DATE_FORMAT_REG_EXP)) {
                 updateDateValidated(pageElement, dateType, date);
             } else {
-                new Result.Failure<>(date, Messages.format(Messages.FAIL_MESSAGE_WRONG_DATE_FORMAT, date, elementName), false, pageElement.getPage().getCallBack());
+                new Result.Failure<>(date, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_DATE_FORMAT), date, elementName), false, pageElement.getPage().getCallBack());
             }
         }
     }
@@ -595,12 +596,13 @@ public class CommonSteps extends Step {
         switch (type) {
             case "text":
                 if (!checkMandatoryTextField(pageElement)) {
-                    new Result.Failure<>(pageElement, Messages.format(Messages.FAIL_MESSAGE_EMPTY_MANDATORY_FIELD, pageElement, pageElement.getPage().getApplication()), true,
+                    new Result.Failure<>(pageElement, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_EMPTY_MANDATORY_FIELD), pageElement, pageElement.getPage().getApplication()), true,
                             pageElement.getPage().getCallBack());
                 }
                 break;
             default:
-                new Result.Failure<>(type, Messages.format(Messages.SCENARIO_ERROR_MESSAGE_TYPE_NOT_IMPLEMENTED, type, "checkMandatoryField"), false, pageElement.getPage().getCallBack());
+                new Result.Failure<>(type, Messages.format(Messages.getMessage(Messages.SCENARIO_ERROR_MESSAGE_TYPE_NOT_IMPLEMENTED), type, "checkMandatoryField"), false,
+                        pageElement.getPage().getCallBack());
                 break;
         }
 
@@ -761,7 +763,7 @@ public class CommonSteps extends Step {
             String message = Context.getValue(messageOrKey) != null ? Context.getValue(messageOrKey) : messageOrKey;
             String msg = getLastConsoleAlertMessage();
             if (msg == null || !msg.equals(message)) {
-                new Result.Failure<>(msg, Messages.format(Messages.FAIL_MESSAGE_NOT_FOUND_ON_ALERT, message), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+                new Result.Failure<>(msg, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_NOT_FOUND_ON_ALERT), message), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
             }
         } else {
             Context.getCurrentScenario().write("SKIPPED for " + Context.getBrowser() + " web driver.");

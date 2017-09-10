@@ -87,8 +87,8 @@ public class ScenarioInitiator {
                 logger.error(Messages.getMessage(SCENARIO_INITIATOR_ERROR_EMPTY_FILE));
             }
         } catch (Exception te) {
-            logger.error("Technical problem during injectWithModel: " + te.getMessage());
-            throw new TechnicalException("Technical problem during injectWithModel: " + te.getMessage(), te);
+            logger.error("Technical problem during injectWithModel(): " + te.getMessage());
+            throw new TechnicalException("Technical problem during injectWithModel(): " + te.getMessage(), te);
         }
     }
 
