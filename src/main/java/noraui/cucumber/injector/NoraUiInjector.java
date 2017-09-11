@@ -3,6 +3,7 @@ package noraui.cucumber.injector;
 import com.google.inject.Injector;
 
 import noraui.exception.TechnicalException;
+import noraui.utils.Messages;
 
 public class NoraUiInjector {
 
@@ -22,7 +23,7 @@ public class NoraUiInjector {
         if (noraUiInjectorSource == null) {
             noraUiInjectorSource = injector;
         } else {
-            throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE + TechnicalException.TECHNICAL_ERROR_MESSAGE_NORAUI_INJECTOR_SOURCE_ALREADY_EXISTS);
+            throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + TechnicalException.TECHNICAL_ERROR_MESSAGE_NORAUI_INJECTOR_SOURCE_ALREADY_EXISTS);
         }
     }
 

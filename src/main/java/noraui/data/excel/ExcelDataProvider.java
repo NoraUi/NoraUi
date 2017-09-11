@@ -76,7 +76,7 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
     @Override
     public void writeSuccessResult(int line) throws TechnicalException {
         logger.debug("writeSuccessResult => line:" + line);
-        writeValue(resultColumnName, line, Messages.SUCCESS_MESSAGE, styleSuccess);
+        writeValue(resultColumnName, line, Messages.getMessage(Messages.SUCCESS_MESSAGE), styleSuccess);
     }
 
     @Override

@@ -48,7 +48,7 @@ public class MavenRunCounter {
                             if (sCurrentLine.startsWith("Given") || sCurrentLine.startsWith("Then") || sCurrentLine.startsWith("When") || sCurrentLine.startsWith("And")
                                     || sCurrentLine.startsWith("But") || sCurrentLine.startsWith("Alors") || sCurrentLine.startsWith("Et") || sCurrentLine.startsWith("Lorsqu")
                                     || sCurrentLine.startsWith("Mais") || sCurrentLine.startsWith("Quand") || sCurrentLine.startsWith("Soit")) {
-                                logger.error(Messages.SCENARIO_ERROR_MESSAGE_ILLEGAL_TAB_FORMAT + " : " + sCurrentLine);
+                                logger.error(Messages.getMessage(Messages.SCENARIO_ERROR_MESSAGE_ILLEGAL_TAB_FORMAT) + " : " + sCurrentLine);
                             }
                         }
                     }

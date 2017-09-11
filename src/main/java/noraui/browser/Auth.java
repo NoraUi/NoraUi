@@ -9,8 +9,11 @@ import org.openqa.selenium.JavascriptExecutor;
 
 import noraui.exception.TechnicalException;
 import noraui.utils.Context;
+import noraui.utils.Messages;
 
 public class Auth {
+
+    private static final String WRONG_URI_SYNTAX = "WRONG_URI_SYNTAX";
 
     private static final Logger logger = Logger.getLogger(Auth.class);
 
@@ -139,7 +142,7 @@ public class Auth {
                     logger.debug("New cookie created: " + cookieName + "=" + cookieValue + " on domain " + cookieDomain + cookiePath);
                 }
             } catch (URISyntaxException e) {
-                throw new TechnicalException("Wrong URI syntax (URISyntaxException)", e);
+                throw new TechnicalException(Messages.getMessage(WRONG_URI_SYNTAX), e);
             }
         }
         return getInstance().authCookie;

@@ -20,6 +20,8 @@ public abstract class Result {
     protected boolean takeScreenshot;
     protected Callback callback;
 
+    private static final String PARTIAL_SUCCESS_MESSAGE = "PARTIAL_SUCCESS_MESSAGE";
+
     private Result() {
     }
 
@@ -70,9 +72,9 @@ public abstract class Result {
             this.object = object;
             try {
                 Context.getDataOutputProvider().writeWarningResult(Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData()).getIndexes().get(nid),
-                        Messages.WARNING_MESSAGE_DEFAULT + message);
+                        Messages.getMessage(Messages.WARNING_MESSAGE_DEFAULT) + message);
             } catch (TechnicalException e) {
-                logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE + e.getMessage(), e);
+                logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), e);
             }
             if (!Context.scenarioHasWarning()) {
                 Context.addWarning();
@@ -152,14 +154,14 @@ public abstract class Result {
                 Integer line = Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData()).getIndexes().get(i - 1);
                 try {
                     if (i < this.nid) {
-                        Context.getDataOutputProvider().writeWarningResult(line, Messages.PARTIAL_SUCCESS_MESSAGE);
+                        Context.getDataOutputProvider().writeWarningResult(line, Messages.getMessage(PARTIAL_SUCCESS_MESSAGE));
                     } else if (i == this.nid) {
-                        Context.getDataOutputProvider().writeFailedResult(line, Messages.FAIL_MESSAGE_DEFAULT + this.message);
+                        Context.getDataOutputProvider().writeFailedResult(line, Messages.getMessage(Messages.FAIL_MESSAGE_DEFAULT) + this.message);
                     } else if (i > this.nid) {
-                        Context.getDataOutputProvider().writeWarningResult(line, Messages.NOT_RUN_MESSAGE);
+                        Context.getDataOutputProvider().writeWarningResult(line, Messages.getMessage(Messages.NOT_RUN_MESSAGE));
                     }
                 } catch (TechnicalException e) {
-                    logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE + e.getMessage(), e);
+                    logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), e);
                 }
             }
             Context.addFailure();

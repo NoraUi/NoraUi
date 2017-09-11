@@ -14,20 +14,23 @@ import noraui.gherkin.GherkinFactory;
 import noraui.model.Model;
 import noraui.model.ModelList;
 import noraui.utils.Context;
+import noraui.utils.Messages;
 
 public class ScenarioInitiator {
 
     private static final Logger logger = Logger.getLogger(ScenarioInitiator.class);
+    private static final String SCENARIO_INITIATOR_ERROR_UNABLE_TO_GET_TAGS = "SCENARIO_INITIATOR_ERROR_UNABLE_TO_GET_TAGS";
+    private static final String SCENARIO_INITIATOR_ERROR_EMPTY_FILE = "SCENARIO_INITIATOR_ERROR_EMPTY_FILE";
 
     public void start(String[] args) {
-        logger.info("Working Directory = " + System.getProperty("user.dir"));
-        logger.info("ScenarioInitiator.start:");
+        logger.info("Working Directory is '" + System.getProperty("user.dir") + "'");
+        logger.info("ScenarioInitiator > start()");
         if (args != null && args.length == 1 && !"@TOSPECIFY".equals(args[0])) {
             logger.info("# " + args[0]);
             String scenarioName = args[0];
             processInjection(scenarioName);
         } else {
-            logger.warn("Usage: ScenarioInitiator main must be launched with 1 parameters ==> \"ScenarioName\"\nUsing tags instead");
+            logger.warn("Usage: ScenarioInitiator.main(String <ScenarioName>). Provided Cucumber tags will be used instead...");
             String tags = System.getProperty("cucumber.options");
             if (tags != null && tags.contains("--tags")) {
                 tags = tags.replace("--tags @", "").replace("@", "").split(" ")[0];
@@ -37,7 +40,7 @@ public class ScenarioInitiator {
                     }
                 }
             } else {
-                logger.error("Unable to get tags to process injection");
+                logger.error(Messages.getMessage(SCENARIO_INITIATOR_ERROR_UNABLE_TO_GET_TAGS));
             }
         }
 
@@ -81,11 +84,11 @@ public class ScenarioInitiator {
                 }
                 GherkinFactory.injectDataInGherkinExamples(scenarioName, examples);
             } else {
-                logger.error("Data file is empty. No injection has been done !");
+                logger.error(Messages.getMessage(SCENARIO_INITIATOR_ERROR_EMPTY_FILE));
             }
         } catch (Exception te) {
-            logger.error("Technical problem during injectWithModel: " + te.getMessage());
-            throw new TechnicalException("Technical problem during injectWithModel: " + te.getMessage(), te);
+            logger.error("Technical problem during injectWithModel(): " + te.getMessage());
+            throw new TechnicalException("Technical problem during injectWithModel(): " + te.getMessage(), te);
         }
     }
 
