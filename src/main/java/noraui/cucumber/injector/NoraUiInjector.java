@@ -23,7 +23,8 @@ public class NoraUiInjector {
         if (noraUiInjectorSource == null) {
             noraUiInjectorSource = injector;
         } else {
-            throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + TechnicalException.TECHNICAL_ERROR_MESSAGE_NORAUI_INJECTOR_SOURCE_ALREADY_EXISTS);
+            throw new TechnicalException(
+                    Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_NORAUI_INJECTOR_SOURCE_ALREADY_EXISTS));
         }
     }
 

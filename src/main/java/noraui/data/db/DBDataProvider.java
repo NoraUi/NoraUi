@@ -22,6 +22,7 @@ import noraui.utils.Messages;
 
 public class DBDataProvider extends CommonDataProvider implements DataInputProvider {
 
+    private static final String DB_DATA_PROVIDER_USED = "DB_DATA_PROVIDER_USED";
     private static final String DATABASE_ERROR_FORBIDDEN_WORDS_IN_QUERY = "DATABASE_ERROR_FORBIDDEN_WORDS_IN_QUERY";
     private String connectionUrl;
     private String user;
@@ -52,7 +53,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
             logger.error(Messages.getMessage(DatabaseException.TECHNICAL_ERROR_MESSAGE_DATABASE_EXCEPTION), e);
             throw new TechnicalException(Messages.getMessage(DatabaseException.TECHNICAL_ERROR_MESSAGE_DATABASE_EXCEPTION), e);
         }
-        logger.info("dataProvider used is DB (" + type + ")");
+        logger.info(String.format(Messages.getMessage(DB_DATA_PROVIDER_USED), type));
     }
 
     public Connection getConnection() throws SQLException {
@@ -68,7 +69,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
         try {
             initColumns();
         } catch (DatabaseException e) {
-            throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION, e);
+            throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION), e);
         }
     }
 

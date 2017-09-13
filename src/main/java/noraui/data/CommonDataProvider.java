@@ -12,6 +12,7 @@ import org.reflections.scanners.SubTypesScanner;
 import noraui.annotation.Column;
 import noraui.exception.TechnicalException;
 import noraui.model.Model;
+import noraui.utils.Messages;
 
 public abstract class CommonDataProvider implements DataProvider {
 
@@ -87,8 +88,7 @@ public abstract class CommonDataProvider implements DataProvider {
                 }
                 return null;
             } catch (Exception e) {
-                logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION, e);
-                throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION, e);
+                throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION), e);
             }
         } else {
             return null;

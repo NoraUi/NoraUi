@@ -148,11 +148,12 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
             columns.add(cell.getStringCellValue());
         }
         if (columns.size() < 2) {
-            throw new EmptyDataFileContentException("Input data file is empty or only result column is provided.");
+            throw new EmptyDataFileContentException(Messages.getMessage(EmptyDataFileContentException.EMPTY_DATA_FILE_CONTENT_ERROR_MESSAGE));
         }
         resultColumnName = columns.get(columns.size() - 1);
         if (!isResultColumnNameAuthorized(resultColumnName)) {
-            throw new WrongDataFileFormatException("The last column of the data file must belong to '" + DataProvider.AUTHORIZED_NAMES_FOR_RESULT_COLUMN + "'.");
+            throw new WrongDataFileFormatException(
+                    String.format(Messages.getMessage(WrongDataFileFormatException.WRONG_RESULT_COLUMN_NAME_ERROR_MESSAGE), DataProvider.AUTHORIZED_NAMES_FOR_RESULT_COLUMN));
         }
     }
 
@@ -179,8 +180,7 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
                     break;
             }
         } catch (IOException e) {
-            logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION, e);
-            throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION, e);
+            throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION), e);
         }
     }
 
@@ -203,8 +203,7 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
                     break;
             }
         } catch (IOException e) {
-            logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION, e);
-            throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION, e);
+            throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION), e);
         }
 
         styleSuccess = workbook.createCellStyle();
@@ -240,7 +239,7 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
             }
         }
         if (extensions.size() != 1) {
-            throw new TechnicalException(TechnicalException.TECHNICAL_EXPECTED_EXCEL_EXTENTION_ERROR);
+            throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_EXPECTED_EXCEL_EXTENTION_ERROR));
         }
         return extensions.iterator().next();
     }

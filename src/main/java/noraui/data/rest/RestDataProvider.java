@@ -59,7 +59,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
         try {
             initColumns();
         } catch (EmptyDataFileContentException e) {
-            logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION, e);
+            logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION), e);
             System.exit(-1);
         }
     }
@@ -143,7 +143,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
         resultColumnName = DataProvider.AUTHORIZED_NAMES_FOR_RESULT_COLUMN.get(0);
         columns.add(resultColumnName);
         if (columns.size() < 2) {
-            throw new EmptyDataFileContentException("Input data file is empty or only result column is provided.");
+            throw new EmptyDataFileContentException(Messages.getMessage(EmptyDataFileContentException.EMPTY_DATA_FILE_CONTENT_ERROR_MESSAGE));
         }
     }
 

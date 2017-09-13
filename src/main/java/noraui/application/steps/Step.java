@@ -835,7 +835,7 @@ public class Step implements IStep {
             String[] expecteds = loopedStep.getExpected().split(";");
             String[] actuals = loopedStep.getActual().split(";");
             if (actuals.length != expecteds.length) {
-                throw new TechnicalException(TechnicalException.TECHNICAL_EXPECTED_ACTUAL_SIZE_DIFFERENT);
+                throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_EXPECTED_ACTUAL_SIZE_DIFFERENT));
             }
             for (int i = 0; i < expecteds.length; i++) {
                 stepConditions.add(new GherkinStepCondition(loopedStep.getKey(), expecteds[i], actuals[i]));

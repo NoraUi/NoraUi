@@ -3,6 +3,7 @@ package noraui.data.excel;
 import noraui.exception.TechnicalException;
 import noraui.exception.data.EmptyDataFileContentException;
 import noraui.exception.data.WrongDataFileFormatException;
+import noraui.utils.Messages;
 
 public class OutputExcelDataProvider extends ExcelDataProvider {
 
@@ -21,7 +22,7 @@ public class OutputExcelDataProvider extends ExcelDataProvider {
             openOutputData();
             initColumns();
         } catch (EmptyDataFileContentException | WrongDataFileFormatException e) {
-            logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION, e);
+            logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION), e);
             System.exit(-1);
         }
     }

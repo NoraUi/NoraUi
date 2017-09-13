@@ -11,6 +11,7 @@ import noraui.exception.data.EmptyDataFileContentException;
 import noraui.exception.data.WrongDataFileFormatException;
 import noraui.gherkin.GherkinFactory;
 import noraui.model.Model;
+import noraui.utils.Messages;
 
 /**
  * This DataInputProvider can be used if you want to provide Gherkin example by
@@ -34,7 +35,7 @@ public class InputGherkinDataProvider extends CommonDataProvider implements Data
         try {
             initColumns();
         } catch (EmptyDataFileContentException | WrongDataFileFormatException e) {
-            logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION, e);
+            logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION), e);
             System.exit(-1);
         }
     }
@@ -82,7 +83,7 @@ public class InputGherkinDataProvider extends CommonDataProvider implements Data
         if (examples.length > 0 && examples.length > line) {
             String[] lineContent = examples[line].split("\\|", -1);
             if (lineContent.length < 3) {
-                throw new TechnicalException(TechnicalException.TECHNICAL_EXPECTED_AT_LEAST_AN_ID_COLUMN_IN_EXAMPLES);
+                throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_EXPECTED_AT_LEAST_AN_ID_COLUMN_IN_EXAMPLES));
             }
             return Arrays.copyOfRange(lineContent, 2, (readResult) ? lineContent.length + 1 : lineContent.length);
         }
@@ -105,10 +106,10 @@ public class InputGherkinDataProvider extends CommonDataProvider implements Data
                 columns.add(cols[i]);
             }
         } else {
-            throw new EmptyDataFileContentException("Input data file is empty or only result column is provided.");
+            throw new EmptyDataFileContentException(Messages.getMessage(EmptyDataFileContentException.EMPTY_DATA_FILE_CONTENT_ERROR_MESSAGE));
         }
         if (columns.size() < 2) {
-            throw new EmptyDataFileContentException("Input data file is empty or only result column is provided.");
+            throw new EmptyDataFileContentException(Messages.getMessage(EmptyDataFileContentException.EMPTY_DATA_FILE_CONTENT_ERROR_MESSAGE));
         }
         resultColumnName = columns.get(columns.size() - 1);
         if (!isResultColumnNameAuthorized(resultColumnName)) {
