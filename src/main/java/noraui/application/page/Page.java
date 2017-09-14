@@ -50,7 +50,7 @@ public abstract class Page implements IPage {
      *             if InstantiationException or IllegalAccessException in getInstance() of Page.
      */
     public static Page getInstance(Class<?> c) throws TechnicalException {
-        for (Page page : instances) {
+        for (final Page page : instances) {
             if (page.getClass() == c) {
                 return page;
             }
@@ -76,7 +76,7 @@ public abstract class Page implements IPage {
     public static Page getInstance(String className) throws TechnicalException {
         try {
             return getInstance(Class.forName(pagesPackage + className));
-        } catch (ClassNotFoundException e) {
+        } catch (final ClassNotFoundException e) {
             throw new TechnicalException(Messages.format(Messages.getMessage(PAGE_UNABLE_TO_RETRIEVE), className), e);
         }
     }
@@ -97,7 +97,7 @@ public abstract class Page implements IPage {
     @Override
     public PageElement getPageElementByKey(String key) {
         PageElement p;
-        for (Field f : getClass().getDeclaredFields()) {
+        for (final Field f : getClass().getDeclaredFields()) {
             if (f.getType() == PageElement.class) {
                 try {
                     p = (PageElement) f.get(this);

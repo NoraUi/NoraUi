@@ -13,19 +13,20 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import noraui.exception.TechnicalException;
+import noraui.utils.Messages;
 
 public class OutputConsoleDataProviderUT {
 
     @Test
     public void testConstructorIsPublic() throws Exception {
-        Constructor<OutputConsoleDataProvider> constructor = OutputConsoleDataProvider.class.getDeclaredConstructor();
+        final Constructor<OutputConsoleDataProvider> constructor = OutputConsoleDataProvider.class.getDeclaredConstructor();
         Assert.assertTrue(Modifier.isPublic(constructor.getModifiers()));
         constructor.setAccessible(true);
     }
 
     @Test
     public void testWriteXxxxxResult() throws TechnicalException {
-        OutputConsoleDataProvider outputConsoleDataProvider = new OutputConsoleDataProvider();
+        final OutputConsoleDataProvider outputConsoleDataProvider = new OutputConsoleDataProvider();
         outputConsoleDataProvider.prepare("hello");
         Assert.assertTrue(true);
 
@@ -35,22 +36,22 @@ public class OutputConsoleDataProviderUT {
         outputConsoleDataProvider.writeFailedResult(1, "UT Failed Message");
         List<LoggingEvent> log = appender.getLog();
         Assert.assertEquals(log.get(0).getLevel(), Level.ERROR);
-        Assert.assertTrue(log.get(0).getMessage().toString().endsWith("----- FAILED at line 1 >  UT Failed Message -----"));
+        Assert.assertTrue(log.get(0).getMessage().toString().endsWith(String.format(Messages.getMessage("OUTPUT_CONSOLE_DATA_PROVIDER_FAILED_AT_LINE"), 1, "UT Failed Message")));
 
         outputConsoleDataProvider.writeSuccessResult(2);
         log = appender.getLog();
         Assert.assertEquals(log.get(1).getLevel(), Level.INFO);
-        Assert.assertTrue(log.get(1).getMessage().toString().endsWith("----- SUCCESS at line 2 -----"));
+        Assert.assertTrue(log.get(1).getMessage().toString().endsWith(String.format(Messages.getMessage("OUTPUT_CONSOLE_DATA_PROVIDER_SUCCESS_AT_LINE"), 2)));
 
         outputConsoleDataProvider.writeWarningResult(3, "UT Warning Message");
         log = appender.getLog();
         Assert.assertEquals(log.get(2).getLevel(), Level.WARN);
-        Assert.assertTrue(log.get(2).getMessage().toString().endsWith("----- WARNING at line 3 > UT Warning Message -----"));
+        Assert.assertTrue(log.get(2).getMessage().toString().endsWith(String.format(Messages.getMessage("OUTPUT_CONSOLE_DATA_PROVIDER_WARNING_AT_LINE"), 3, "UT Warning Message")));
 
         outputConsoleDataProvider.writeDataResult("title", 4, "UT title");
         log = appender.getLog();
         Assert.assertEquals(log.get(3).getLevel(), Level.INFO);
-        Assert.assertTrue(log.get(3).getMessage().toString().endsWith("----- DATA RESULT at line 4 > [title] = UT title -----"));
+        Assert.assertTrue(log.get(3).getMessage().toString().endsWith(String.format(Messages.getMessage("OUTPUT_CONSOLE_DATA_PROVIDER_RESULT_AT_LINE"), 4, "title", "UT title")));
     }
 }
 

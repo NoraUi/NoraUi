@@ -122,7 +122,7 @@ public class CommonSteps extends Step {
                 }
             }
         } catch (TechnicalException e) {
-            throw new AssertError(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE + e.getMessage());
+            throw new AssertError(Messages.getMessage(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE) + e.getMessage());
         }
     }
 
@@ -154,7 +154,7 @@ public class CommonSteps extends Step {
                 } while (!Pattern.compile(breakCondition).matcher(Context.getValue(key) == null ? "" : Context.getValue(key)).find() && i <= tries);
             }
         } catch (TechnicalException e) {
-            throw new AssertError(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE + e.getMessage());
+            throw new AssertError(Messages.getMessage(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE) + e.getMessage());
         }
     }
 
@@ -186,7 +186,7 @@ public class CommonSteps extends Step {
                 }
             }
         } catch (TechnicalException e) {
-            throw new AssertError(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE + e.getMessage());
+            throw new AssertError(Messages.getMessage(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE) + e.getMessage());
         }
     }
 

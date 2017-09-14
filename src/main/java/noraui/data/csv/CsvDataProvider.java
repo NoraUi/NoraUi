@@ -24,10 +24,12 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
     public static final String CSV_TYPE = "csv";
     public static final char CSV_CHAR_SEPARATOR = ';';
     public static final String CSV_SEPARATOR = String.valueOf(CSV_CHAR_SEPARATOR);
+    private static final String CSV_DATA_PROVIDER_USED = "CSV_DATA_PROVIDER_USED";
+    private static final String CSV_DATA_PROVIDER_WRITING_IN_CSV_ERROR_MESSAGE = "CSV_DATA_PROVIDER_WRITING_IN_CSV_ERROR_MESSAGE";
 
     public CsvDataProvider() {
         super();
-        logger.info("Data provider used is CSV");
+        logger.info(Messages.getMessage(CSV_DATA_PROVIDER_USED));
     }
 
     /**
@@ -39,7 +41,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
         try {
             initColumns();
         } catch (IOException | EmptyDataFileContentException | WrongDataFileFormatException e) {
-            logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION, e);
+            logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION), e);
             System.exit(-1);
         }
     }
@@ -147,11 +149,12 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
         }
         reader.close();
         if (columns.size() < 2) {
-            throw new EmptyDataFileContentException("Input data file is empty or only result column is provided.");
+            throw new EmptyDataFileContentException(Messages.getMessage(EmptyDataFileContentException.EMPTY_DATA_FILE_CONTENT_ERROR_MESSAGE));
         }
         resultColumnName = columns.get(columns.size() - 1);
         if (!isResultColumnNameAuthorized(resultColumnName)) {
-            throw new WrongDataFileFormatException("The last column of the data file must belong to '" + DataProvider.AUTHORIZED_NAMES_FOR_RESULT_COLUMN + "'.");
+            throw new WrongDataFileFormatException(
+                    String.format(Messages.getMessage(WrongDataFileFormatException.WRONG_RESULT_COLUMN_NAME_ERROR_MESSAGE), DataProvider.AUTHORIZED_NAMES_FOR_RESULT_COLUMN));
         }
     }
 
@@ -166,7 +169,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
             reader.close();
             writeValue(column, line, value, csvBody);
         } catch (IOException e1) {
-            logger.error("writeValue in CSV file => column: " + column + " line:" + line + " value:" + value, e1);
+            logger.error(String.format(Messages.getMessage(CSV_DATA_PROVIDER_WRITING_IN_CSV_ERROR_MESSAGE), column, line, value), e1);
         }
     }
 
@@ -175,7 +178,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
             writer.writeAll(csvBody);
             writer.flush();
         } catch (IOException e) {
-            logger.error("writeValue in CSV file => column: " + column + " line:" + line + " value:" + value, e);
+            logger.error(String.format(Messages.getMessage(CSV_DATA_PROVIDER_WRITING_IN_CSV_ERROR_MESSAGE), column, line, value), e);
         }
     }
 

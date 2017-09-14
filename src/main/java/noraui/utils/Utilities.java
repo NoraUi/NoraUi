@@ -32,6 +32,8 @@ public class Utilities {
      */
     private static final Logger logger = Logger.getLogger(Utilities.class);
 
+    private static final String UTILITIES_ERROR_TAKING_SCREENSHOT = "UTILITIES_ERROR_TAKING_SCREENSHOT";
+
     /**
      * @param applicationKey
      *            is key of application
@@ -45,11 +47,11 @@ public class Utilities {
         String selector = "";
         logger.debug("getLocator with this application key : " + applicationKey);
         logger.debug("getLocator with this locator file : " + Context.iniFiles.get(applicationKey));
-        Ini ini = Context.iniFiles.get(applicationKey);
+        final Ini ini = Context.iniFiles.get(applicationKey);
 
-        Map<String, String> section = ini.get(code);
+        final Map<String, String> section = ini.get(code);
         if (section != null) {
-            Entry<String, String> entry = section.entrySet().iterator().next();
+            final Entry<String, String> entry = section.entrySet().iterator().next();
             selector = String.format(entry.getValue(), args);
         }
         return selector;
@@ -81,12 +83,12 @@ public class Utilities {
         By locator = null;
         logger.debug("getLocator with this application key : " + applicationKey);
         logger.debug("getLocator with this locator file : " + Context.iniFiles.get(applicationKey));
-        Ini ini = Context.iniFiles.get(applicationKey);
+        final Ini ini = Context.iniFiles.get(applicationKey);
 
-        Map<String, String> section = ini.get(code);
+        final Map<String, String> section = ini.get(code);
         if (section != null) {
-            Entry<String, String> entry = section.entrySet().iterator().next();
-            String selector = String.format(entry.getValue(), args);
+            final Entry<String, String> entry = section.entrySet().iterator().next();
+            final String selector = String.format(entry.getValue(), args);
             if ("css".equals(entry.getKey())) {
                 locator = By.cssSelector(selector);
             } else if ("link".equals(entry.getKey())) {
@@ -215,12 +217,12 @@ public class Utilities {
      */
     public static WebElement isElementPresentAndGetFirstOne(By element) {
 
-        WebDriver webDriver = Context.getDriver();
+        final WebDriver webDriver = Context.getDriver();
 
         webDriver.manage().timeouts().implicitlyWait(DriverFactory.IMPLICIT_WAIT * 2, TimeUnit.MICROSECONDS);
 
-        List<WebElement> foundElements = webDriver.findElements(element);
-        boolean exists = !foundElements.isEmpty();
+        final List<WebElement> foundElements = webDriver.findElements(element);
+        final boolean exists = !foundElements.isEmpty();
 
         webDriver.manage().timeouts().implicitlyWait(DriverFactory.IMPLICIT_WAIT, TimeUnit.MICROSECONDS);
 
@@ -254,7 +256,7 @@ public class Utilities {
             final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
             scenario.embed(screenshot, "image/png");
         } else {
-            logger.warn("Screenshot wanted to be taken but current web driver (" + Context.getBrowser() + ") does not support it.");
+            logger.warn(String.format(Messages.getMessage(UTILITIES_ERROR_TAKING_SCREENSHOT), Context.getBrowser()));
         }
     }
 
@@ -262,9 +264,9 @@ public class Utilities {
 
         WINDOWS("windows", "windows", ".exe"), LINUX("linux", "linux", ""), MAC("mac", "mac", "");
 
-        private String operatingSystemName;
-        private String operatingSystemDir;
-        private String suffixBinary;
+        private final String operatingSystemName;
+        private final String operatingSystemDir;
+        private final String suffixBinary;
 
         OperatingSystem(String operatingSystemName, String operatingSystemDir, String suffixBinary) {
             this.operatingSystemName = operatingSystemName;
@@ -273,7 +275,7 @@ public class Utilities {
         }
 
         public static OperatingSystem getOperatingSystem(String osName) {
-            for (OperatingSystem operatingSystemName : values()) {
+            for (final OperatingSystem operatingSystemName : values()) {
                 if (osName.toLowerCase().contains(operatingSystemName.getOperatingSystemName())) {
                     return operatingSystemName;
                 }
@@ -282,16 +284,16 @@ public class Utilities {
         }
 
         public static Set<OperatingSystem> getCurrentOperatingSystemAsAHashSet() {
-            String currentOperatingSystemName = System.getProperties().getProperty("os.name");
+            final String currentOperatingSystemName = System.getProperties().getProperty("os.name");
 
-            Set<OperatingSystem> listOfOperatingSystems = new HashSet<>();
+            final Set<OperatingSystem> listOfOperatingSystems = new HashSet<>();
             listOfOperatingSystems.add(getOperatingSystem(currentOperatingSystemName));
 
             return listOfOperatingSystems;
         }
 
         public static OperatingSystem getCurrentOperatingSystem() {
-            String currentOperatingSystemName = System.getProperties().getProperty("os.name");
+            final String currentOperatingSystemName = System.getProperties().getProperty("os.name");
             return getOperatingSystem(currentOperatingSystemName);
         }
 
@@ -313,7 +315,7 @@ public class Utilities {
 
         ARCHITECTURE_64_BIT("64bit"), ARCHITECTURE_32_BIT("32bit");
 
-        private String systemArchitectureName;
+        private final String systemArchitectureName;
         private static final SystemArchitecture defaultSystemArchitecture = ARCHITECTURE_32_BIT;
         private static List<String> architecture64bitNames = Arrays.asList("amd64", "x86_64");
 
@@ -347,10 +349,10 @@ public class Utilities {
             public WebElement apply(@Nullable WebDriver driver) {
                 WebElement element = null;
                 if (driver != null && locators.length > 0) {
-                    for (By b : locators) {
+                    for (final By b : locators) {
                         try {
                             element = driver.findElement(b);
-                        } catch (Exception e) {
+                        } catch (final Exception e) {
                             logger.debug(e);
                             continue;
                         }
@@ -374,7 +376,7 @@ public class Utilities {
         return new ExpectedCondition<List<WebElement>>() {
             @Override
             public List<WebElement> apply(WebDriver driver) {
-                List<WebElement> elements = driver.findElements(locator);
+                final List<WebElement> elements = driver.findElements(locator);
                 return elements.size() == nb ? elements : null;
             }
         };
@@ -396,8 +398,8 @@ public class Utilities {
             @Override
             public List<WebElement> apply(WebDriver driver) {
                 int nbElementIsDisplayed = 0;
-                List<WebElement> elements = driver.findElements(locator);
-                for (WebElement element : elements) {
+                final List<WebElement> elements = driver.findElements(locator);
+                for (final WebElement element : elements) {
                     if (element.isDisplayed()) {
                         nbElementIsDisplayed++;
                     }

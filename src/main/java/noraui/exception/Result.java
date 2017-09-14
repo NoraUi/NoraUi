@@ -40,14 +40,14 @@ public abstract class Result {
         public Success(O object, String message) throws TechnicalException {
             this.object = object;
             this.message = message;
-            for (Integer i : Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData()).getIndexes()) {
+            for (final Integer i : Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData()).getIndexes()) {
                 Context.getDataOutputProvider().writeSuccessResult(i);
             }
             logger.info(message + " [" + success() + "]");
         }
 
         public O success() {
-            Optional<O> o = Optional.ofNullable(object);
+            final Optional<O> o = Optional.ofNullable(object);
             return o.isPresent() ? o.get() : null;
         }
     }
@@ -73,7 +73,7 @@ public abstract class Result {
             try {
                 Context.getDataOutputProvider().writeWarningResult(Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData()).getIndexes().get(nid),
                         Messages.getMessage(Messages.WARNING_MESSAGE_DEFAULT) + message);
-            } catch (TechnicalException e) {
+            } catch (final TechnicalException e) {
                 logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), e);
             }
             if (!Context.scenarioHasWarning()) {
@@ -84,12 +84,12 @@ public abstract class Result {
                 logger.debug("Current scenario is " + Context.getCurrentScenario());
                 Utilities.takeScreenshot(Context.getCurrentScenario());
             }
-            Context.getCurrentScenario().write(Messages.WARNING_MESSAGE_DEFAULT + message);
+            Context.getCurrentScenario().write(Messages.getMessage(Messages.WARNING_MESSAGE_DEFAULT) + message);
             logger.info(message + " [" + warning() + "]");
         }
 
         public O warning() {
-            Optional<O> o = Optional.ofNullable(object);
+            final Optional<O> o = Optional.ofNullable(object);
             return o.isPresent() ? o.get() : null;
         }
     }
@@ -145,13 +145,13 @@ public abstract class Result {
         }
 
         public O failure() {
-            Optional<O> o = Optional.ofNullable(error);
+            final Optional<O> o = Optional.ofNullable(error);
             return o.isPresent() ? o.get() : null;
         }
 
         public void fail() {
             for (int i = 1; i <= Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData()).getIndexes().size(); i++) {
-                Integer line = Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData()).getIndexes().get(i - 1);
+                final Integer line = Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData()).getIndexes().get(i - 1);
                 try {
                     if (i < this.nid) {
                         Context.getDataOutputProvider().writeWarningResult(line, Messages.getMessage(PARTIAL_SUCCESS_MESSAGE));
@@ -160,7 +160,7 @@ public abstract class Result {
                     } else if (i > this.nid) {
                         Context.getDataOutputProvider().writeWarningResult(line, Messages.getMessage(Messages.NOT_RUN_MESSAGE));
                     }
-                } catch (TechnicalException e) {
+                } catch (final TechnicalException e) {
                     logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), e);
                 }
             }
@@ -177,9 +177,9 @@ public abstract class Result {
                 callback.call();
             }
             if (Context.isStackTraceDisplayed()) {
-                Assert.fail(Messages.FAIL_MESSAGE_DEFAULT + this.message + " [" + failure() + "]");
+                Assert.fail(Messages.getMessage(Messages.FAIL_MESSAGE_DEFAULT) + this.message + " [" + failure() + "]");
             } else {
-                throw new AssertError(Messages.FAIL_MESSAGE_DEFAULT + this.message + " [" + failure() + "]");
+                throw new AssertError(Messages.getMessage(Messages.FAIL_MESSAGE_DEFAULT) + this.message + " [" + failure() + "]");
             }
         }
     }
