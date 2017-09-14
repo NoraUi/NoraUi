@@ -20,10 +20,13 @@ import noraui.utils.Messages;
  * @author nhallouin
  */
 public class InputGherkinDataProvider extends CommonDataProvider implements DataInputProvider {
+
+    private static final String GHERKIN_INPUT_DATA_PROVIDER_USED = "GHERKIN_INPUT_DATA_PROVIDER_USED";
+
     private String[] examples = new String[] {};
 
     public InputGherkinDataProvider() {
-        logger.info("Input data provider used is GHERKIN");
+        logger.info(Messages.getMessage(GHERKIN_INPUT_DATA_PROVIDER_USED));
     }
 
     /**
@@ -63,8 +66,8 @@ public class InputGherkinDataProvider extends CommonDataProvider implements Data
     @Override
     public String readValue(String column, int line) throws TechnicalException {
         if (examples.length > 0) {
-            String[] lineContent = readLine(line, true);
-            int i = columns.indexOf(column) + 1;
+            final String[] lineContent = readLine(line, true);
+            final int i = columns.indexOf(column) + 1;
             if (i > 0 && null != lineContent && lineContent.length > i) {
                 return lineContent[i];
             } else {
@@ -81,7 +84,7 @@ public class InputGherkinDataProvider extends CommonDataProvider implements Data
     @Override
     public String[] readLine(int line, boolean readResult) throws TechnicalException {
         if (examples.length > 0 && examples.length > line) {
-            String[] lineContent = examples[line].split("\\|", -1);
+            final String[] lineContent = examples[line].split("\\|", -1);
             if (lineContent.length < 3) {
                 throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_EXPECTED_AT_LEAST_AN_ID_COLUMN_IN_EXAMPLES));
             }
@@ -99,9 +102,9 @@ public class InputGherkinDataProvider extends CommonDataProvider implements Data
     }
 
     private void initColumns() throws EmptyDataFileContentException, WrongDataFileFormatException {
-        columns = new ArrayList<String>();
+        columns = new ArrayList<>();
         if (examples.length > 1) {
-            String[] cols = examples[0].split("\\|", -1);
+            final String[] cols = examples[0].split("\\|", -1);
             for (int i = 1; i < cols.length - 1; i++) {
                 columns.add(cols[i]);
             }

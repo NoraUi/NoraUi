@@ -1,5 +1,6 @@
 package noraui.utils;
 
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -9,6 +10,8 @@ import noraui.exception.TechnicalException;
 public class Messages {
 
     private static ResourceBundle messages = null;
+
+    private static final String FAIL_MESSAGE_FORMAT_STRING = "FAIL_MESSAGE_FORMAT_STRING";
 
     /**
      * Success message
@@ -87,16 +90,19 @@ public class Messages {
         if (null != templateMessage && countWildcardsOccurrences(templateMessage, "%s") == args.length) {
             try {
                 return String.format(templateMessage, args);
-            } catch (Exception e) {
-                throw new TechnicalException("Technical problem in the code Messages.formatMessage(String templateMessage, String... args) in NoraUi.", e);
+            } catch (final Exception e) {
+                throw new TechnicalException(getMessage(FAIL_MESSAGE_FORMAT_STRING), e);
             }
         } else {
-            throw new TechnicalException("Technical problem in the code Messages.formatMessage(String templateMessage, String... args) in NoraUi.");
+            throw new TechnicalException(getMessage(FAIL_MESSAGE_FORMAT_STRING));
         }
     }
 
     public static String getMessage(String key) {
         if (messages == null) {
+            if (Context.getLocale() == null) {
+                return ResourceBundle.getBundle("i18n/messages", Locale.getDefault()).getString(key);
+            }
             messages = ResourceBundle.getBundle("i18n/messages", Context.getLocale());
         }
         return messages.getString(key);
@@ -113,8 +119,8 @@ public class Messages {
      */
     private static int countWildcardsOccurrences(String templateMessage, String occurrence) {
         if (templateMessage != null && occurrence != null) {
-            Pattern pattern = Pattern.compile(occurrence);
-            Matcher matcher = pattern.matcher(templateMessage);
+            final Pattern pattern = Pattern.compile(occurrence);
+            final Matcher matcher = pattern.matcher(templateMessage);
             int count = 0;
             while (matcher.find()) {
                 count++;

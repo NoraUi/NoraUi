@@ -16,6 +16,7 @@ public class TechnicalException extends Exception {
     public static final String TECHNICAL_EXPECTED_ACTUAL_SIZE_DIFFERENT = "TECHNICAL_EXPECTED_ACTUAL_SIZE_DIFFERENT";
     public static final String TECHNICAL_EXPECTED_EXCEL_EXTENTION_ERROR = "TECHNICAL_EXPECTED_EXCEL_EXTENTION_ERROR";
     public static final String TECHNICAL_EXPECTED_AT_LEAST_AN_ID_COLUMN_IN_EXAMPLES = "TECHNICAL_EXPECTED_AT_LEAST_AN_ID_COLUMN_IN_EXAMPLES";
+    public static final String TECHNICAL_ERROR_MESSAGE_FUSION_PROCESSOR = "TECHNICAL_ERROR_MESSAGE_FUSION_PROCESSOR";
 
     /**
      * Construit un objet <code>TechnicalException</code>.

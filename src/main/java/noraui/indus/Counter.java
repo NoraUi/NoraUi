@@ -7,9 +7,11 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import noraui.utils.Context;
+import noraui.utils.Messages;
 
 public class Counter {
 
+    private static final String COUNTER_USAGE_WARNING_MESSAGE = "COUNTER_USAGE_WARNING_MESSAGE";
     private static final Logger logger = Logger.getLogger(Counter.class);
 
     private Counter() {
@@ -17,9 +19,9 @@ public class Counter {
 
     public static void main(String[] args) {
         if (args.length == 1) {
-            List<String> manager = new ArrayList<>();
-            List<String> scenarioBlacklist = new ArrayList<>();
-            List<String> versionControlSystemsBlacklist = new ArrayList<>();
+            final List<String> manager = new ArrayList<>();
+            final List<String> scenarioBlacklist = new ArrayList<>();
+            final List<String> versionControlSystemsBlacklist = new ArrayList<>();
 
             versionControlSystemsBlacklist.add(".svn");
 
@@ -32,12 +34,12 @@ public class Counter {
                 scenarioBlacklist.add("playToLogoGame");
             }
 
-            MavenRunCounter mavenRunCounter = new MavenRunCounter();
-            List<MavenRunCounter.Counter> counters = mavenRunCounter.count(versionControlSystemsBlacklist, scenarioBlacklist, manager, new File(Context.getResourcesPath() + "/steps"));
+            final MavenRunCounter mavenRunCounter = new MavenRunCounter();
+            final List<MavenRunCounter.Counter> counters = mavenRunCounter.count(versionControlSystemsBlacklist, scenarioBlacklist, manager, new File(Context.getResourcesPath() + "/steps"));
             mavenRunCounter.print(counters, args[0]);
             Context.clear();
         } else {
-            logger.warn("Usage: Counter main must be launched with 1 parameters ==> \"Counter\" <type_of_counter>");
+            logger.warn(Messages.getMessage(COUNTER_USAGE_WARNING_MESSAGE));
         }
 
     }

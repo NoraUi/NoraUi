@@ -7,9 +7,11 @@ import noraui.utils.Messages;
 
 public class OutputExcelDataProvider extends ExcelDataProvider {
 
+    private static final String EXCEL_OUTPUT_DATA_PROVIDER_USED = "EXCEL_OUTPUT_DATA_PROVIDER_USED";
+
     public OutputExcelDataProvider() {
         super();
-        logger.info("Output data provider used is EXCEL");
+        logger.info(Messages.getMessage(EXCEL_OUTPUT_DATA_PROVIDER_USED));
     }
 
     /**
