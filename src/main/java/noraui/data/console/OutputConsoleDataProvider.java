@@ -3,17 +3,23 @@ package noraui.data.console;
 import noraui.data.CommonDataProvider;
 import noraui.data.DataOutputProvider;
 import noraui.exception.TechnicalException;
+import noraui.utils.Messages;
 
 /**
- * This DataOutputProvider can be used to display run results throught the default console.
- * 
+ * This DataOutputProvider can be used to display run results through the default console.
+ *
  * @author nhallouin
  */
 public class OutputConsoleDataProvider extends CommonDataProvider implements DataOutputProvider {
+    private static final String OUTPUT_CONSOLE_DATA_PROVIDER_USED = "OUTPUT_CONSOLE_DATA_PROVIDER_USED";
+    private static final String OUTPUT_CONSOLE_DATA_PROVIDER_FAILED_AT_LINE = "OUTPUT_CONSOLE_DATA_PROVIDER_FAILED_AT_LINE";
+    private static final String OUTPUT_CONSOLE_DATA_PROVIDER_WARNING_AT_LINE = "OUTPUT_CONSOLE_DATA_PROVIDER_WARNING_AT_LINE";
+    private static final String OUTPUT_CONSOLE_DATA_PROVIDER_SUCCESS_AT_LINE = "OUTPUT_CONSOLE_DATA_PROVIDER_SUCCESS_AT_LINE";
+    private static final String OUTPUT_CONSOLE_DATA_PROVIDER_RESULT_AT_LINE = "OUTPUT_CONSOLE_DATA_PROVIDER_RESULT_AT_LINE";
 
     public OutputConsoleDataProvider() {
         super();
-        logger.info("Output data provider used is CONSOLE");
+        logger.info(Messages.getMessage(OUTPUT_CONSOLE_DATA_PROVIDER_USED));
     }
 
     @Override
@@ -23,23 +29,23 @@ public class OutputConsoleDataProvider extends CommonDataProvider implements Dat
 
     @Override
     public void writeFailedResult(int line, String value) throws TechnicalException {
-        logger.error("----- FAILED at line " + line + " > " + value + " -----");
+        logger.error(String.format(Messages.getMessage(OUTPUT_CONSOLE_DATA_PROVIDER_FAILED_AT_LINE), line, value));
     }
 
     @Override
     public void writeWarningResult(int line, String value) throws TechnicalException {
-        logger.warn("----- WARNING at line " + line + " > " + value + " -----");
+        logger.warn(String.format(Messages.getMessage(OUTPUT_CONSOLE_DATA_PROVIDER_WARNING_AT_LINE), line, value));
     }
 
     @Override
     public void writeSuccessResult(int line) throws TechnicalException {
-        logger.info("----- SUCCESS at line " + line + " -----");
+        logger.info(String.format(Messages.getMessage(OUTPUT_CONSOLE_DATA_PROVIDER_SUCCESS_AT_LINE), line));
 
     }
 
     @Override
     public void writeDataResult(String column, int line, String value) throws TechnicalException {
-        logger.info("----- DATA RESULT at line " + line + " > [" + column + "] = " + value + " -----");
+        logger.info(String.format(Messages.getMessage(OUTPUT_CONSOLE_DATA_PROVIDER_RESULT_AT_LINE), line, column, value));
     }
 
 }

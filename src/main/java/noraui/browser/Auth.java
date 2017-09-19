@@ -9,8 +9,11 @@ import org.openqa.selenium.JavascriptExecutor;
 
 import noraui.exception.TechnicalException;
 import noraui.utils.Context;
+import noraui.utils.Messages;
 
 public class Auth {
+
+    private static final String WRONG_URI_SYNTAX = "WRONG_URI_SYNTAX";
 
     private static final Logger logger = Logger.getLogger(Auth.class);
 
@@ -19,6 +22,10 @@ public class Auth {
     public static final String UID = "uid";
 
     public static final String PASSWORD = "password";
+
+    public static enum authenticationTypes {
+        BASIC
+    }
 
     /**
      * Static context instance.
@@ -38,12 +45,18 @@ public class Auth {
     private Cookie authCookie;
 
     /**
+     * Authentication type
+     */
+    private String authenticationType;
+
+    /**
      * Constructor.
      */
     public Auth() {
         this.currentUser = setCredential(System.getProperty(UID), System.getProperty(PASSWORD));
         this.isConnected = false;
         this.authCookie = null;
+        this.authenticationType = "";
     }
 
     /**
@@ -66,6 +79,16 @@ public class Auth {
      */
     public static void setConnected(boolean isConnected) {
         getInstance().isConnected = isConnected;
+    }
+
+    /**
+     * Sets the authentication mode. Modes are listed here: {@link authenticationTypes }.
+     *
+     * @param type
+     *            type of authentication
+     */
+    public static void setAuthenticationType(String type) {
+        getInstance().authenticationType = type;
     }
 
     /**
@@ -119,7 +142,7 @@ public class Auth {
                     logger.debug("New cookie created: " + cookieName + "=" + cookieValue + " on domain " + cookieDomain + cookiePath);
                 }
             } catch (URISyntaxException e) {
-                throw new TechnicalException("Wrong URI syntax (URISyntaxException)", e);
+                throw new TechnicalException(Messages.getMessage(WRONG_URI_SYNTAX), e);
             }
         }
         return getInstance().authCookie;
@@ -142,10 +165,38 @@ public class Auth {
 
     }
 
+    /**
+     * Process a given url using the current authentication mode.
+     *
+     * @param url
+     *            url to access behind authentication
+     * @return
+     *         the given url processed using the right authentication mode
+     */
+    public static String usingAuthentication(String url) {
+        if (authenticationTypes.BASIC.toString().equals(getInstance().authenticationType)) {
+            return url.replace("://", "://" + getLogin() + ":" + getPassword() + "@");
+        }
+        return url;
+
+    }
+
+    /**
+     * Clears authentication data.
+     */
+    public static void clear() {
+        instance = null;
+    }
+
     private User setCredential(String login, String password) {
         return new User(login, password);
     }
 
+    /**
+     * Inner class representing an authenticated user.
+     *
+     * @author Nicolas HALLOUIN
+     */
     public class User {
 
         /**

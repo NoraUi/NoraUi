@@ -11,8 +11,10 @@ import org.apache.log4j.Logger;
 import noraui.exception.TechnicalException;
 
 public class ShellCommand {
-    private String command;
-    private String[] parameters;
+
+    private static final String SHELL_RUNNING_COMMAND = "SHELL_RUNNING_COMMAND";
+    private final String command;
+    private final String[] parameters;
 
     private final Logger logger = Logger.getLogger(ShellCommand.class.getClass());
 
@@ -22,17 +24,17 @@ public class ShellCommand {
     }
 
     public int run() throws TechnicalException {
-        Runtime rt = Runtime.getRuntime();
-        List<String> cmdList = new ArrayList<>();
+        final Runtime rt = Runtime.getRuntime();
+        final List<String> cmdList = new ArrayList<>();
         cmdList.add(command);
-        logger.info("Launched Command: " + command + " with following parameters:");
-        for (String param : parameters) {
+        logger.info(String.format(Messages.getMessage(SHELL_RUNNING_COMMAND), command));
+        for (final String param : parameters) {
             logger.info(param);
             cmdList.add(param);
         }
         try {
-            Process p = rt.exec(cmdList.toArray(new String[cmdList.size()]));
-            BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            final Process p = rt.exec(cmdList.toArray(new String[cmdList.size()]));
+            final BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
 
             String line;
             while ((line = reader.readLine()) != null) {

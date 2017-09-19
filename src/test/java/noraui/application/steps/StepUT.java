@@ -285,11 +285,11 @@ public class StepUT {
     @Test
     public void testFormatMessage() {
         try {
-            DemoPage demoPage = (DemoPage) Page.getInstance(DemoPage.class);
-            PageElement pageElement = demoPage.getPageElementByKey("-input_select_field");
-            String a = Messages.format("Message %s in %s.", pageElement, demoPage.getApplication());
+            final DemoPage demoPage = (DemoPage) Page.getInstance(DemoPage.class);
+            final PageElement pageElement = demoPage.getPageElementByKey("-input_select_field");
+            final String a = Messages.format("Message %s in %s.", pageElement, demoPage.getApplication());
             Assert.assertEquals("", "Message Input Select field in demo.", a);
-        } catch (TechnicalException e) {
+        } catch (final TechnicalException e) {
             Assert.assertFalse("Error", true);
         }
     }
@@ -297,11 +297,11 @@ public class StepUT {
     @Test
     public void testFormatMessage2() {
         try {
-            DemoPage demoPage = (DemoPage) Page.getInstance(DemoPage.class);
-            PageElement pageElement = demoPage.getPageElementByKey("-submit");
-            String a = Messages.format("Message %s in %s.", pageElement, demoPage.getApplication());
+            final DemoPage demoPage = (DemoPage) Page.getInstance(DemoPage.class);
+            final PageElement pageElement = demoPage.getPageElementByKey("-submit");
+            final String a = Messages.format("Message %s in %s.", pageElement, demoPage.getApplication());
             Assert.assertEquals("", "Message Submit button in demo.", a);
-        } catch (TechnicalException e) {
+        } catch (final TechnicalException e) {
             Assert.assertFalse("Error", true);
         }
     }
@@ -309,10 +309,10 @@ public class StepUT {
     @Test
     public void testFormatMessageNullPageElement() {
         try {
-            DemoPage demoPage = (DemoPage) Page.getInstance(DemoPage.class);
-            PageElement pageElement = demoPage.getPageElementByKey("fake");
+            final DemoPage demoPage = (DemoPage) Page.getInstance(DemoPage.class);
+            final PageElement pageElement = demoPage.getPageElementByKey("fake");
             Messages.format("Message %s in %s.", pageElement, demoPage.getApplication());
-        } catch (TechnicalException e) {
+        } catch (final TechnicalException e) {
             Assert.assertEquals("TechnicalException found", "Technical problem in the code Messages.formatMessage(String templateMessage, String... args) in NoraUi.", e.getMessage());
         }
     }
@@ -320,47 +320,47 @@ public class StepUT {
     @Test
     public void testFormatMessageNullMessage() {
         try {
-            DemoPage demoPage = (DemoPage) Page.getInstance(DemoPage.class);
-            PageElement pageElement = demoPage.getPageElementByKey("-input");
+            final DemoPage demoPage = (DemoPage) Page.getInstance(DemoPage.class);
+            final PageElement pageElement = demoPage.getPageElementByKey("-input");
             Messages.format(null, pageElement, demoPage.getApplication());
-        } catch (TechnicalException e) {
-            Assert.assertEquals("TechnicalException found", "Technical problem in the code Messages.formatMessage(String templateMessage, String... args) in NoraUi.", e.getMessage());
+        } catch (final TechnicalException e) {
+            Assert.assertEquals("TechnicalException found", Messages.getMessage("FAIL_MESSAGE_FORMAT_STRING"), e.getMessage());
         }
     }
 
     @Test
     public void testFormatMessageNotValidMessage() {
         try {
-            DemoPage demoPage = (DemoPage) Page.getInstance(DemoPage.class);
-            PageElement pageElement = demoPage.getPageElementByKey("-input");
+            final DemoPage demoPage = (DemoPage) Page.getInstance(DemoPage.class);
+            final PageElement pageElement = demoPage.getPageElementByKey("-input");
             Messages.format("Message %s in %s.%s", pageElement, demoPage.getApplication());
-        } catch (TechnicalException e) {
-            Assert.assertEquals("TechnicalException found", "Technical problem in the code Messages.formatMessage(String templateMessage, String... args) in NoraUi.", e.getMessage());
+        } catch (final TechnicalException e) {
+            Assert.assertEquals("TechnicalException found", Messages.getMessage("FAIL_MESSAGE_FORMAT_STRING"), e.getMessage());
         }
     }
 
     @Test
     public void testFormatMessageNotValid2Message() {
         try {
-            DemoPage demoPage = (DemoPage) Page.getInstance(DemoPage.class);
-            PageElement pageElement = demoPage.getPageElementByKey("-input");
+            final DemoPage demoPage = (DemoPage) Page.getInstance(DemoPage.class);
+            final PageElement pageElement = demoPage.getPageElementByKey("-input");
             Messages.format("Message %s.", pageElement, demoPage.getApplication());
-        } catch (TechnicalException e) {
-            Assert.assertEquals("TechnicalException found", "Technical problem in the code Messages.formatMessage(String templateMessage, String... args) in NoraUi.", e.getMessage());
+        } catch (final TechnicalException e) {
+            Assert.assertEquals("TechnicalException found", Messages.getMessage("FAIL_MESSAGE_FORMAT_STRING"), e.getMessage());
         }
     }
 
     @Test
     public void testRunAllStepsInLoop() {
-        List<GherkinConditionedLoopedStep> steps = new ArrayList<>();
-        String expected = ".+;(ETS Backbone VLAN LL2048K\\|ETS Accès L2ETH\\|Accès XDSL ETS\\|Backbone VLAN Virtuelle)";
-        String actual = "VPNtechnique;OSC_ACC-resource_type";
+        final List<GherkinConditionedLoopedStep> steps = new ArrayList<>();
+        final String expected = ".+;(ETS Backbone VLAN LL2048K\\|ETS Accès L2ETH\\|Accès XDSL ETS\\|Backbone VLAN Virtuelle)";
+        final String actual = "VPNtechnique;OSC_ACC-resource_type";
         Context.saveValue("OSC_ACC-resource_type", "ETS Accès L2ETH");
-        GherkinConditionedLoopedStep gherkinConditionedLoopedStep = new GherkinConditionedLoopedStep("1", "I wait '4' seconds.", expected, actual);
+        final GherkinConditionedLoopedStep gherkinConditionedLoopedStep = new GherkinConditionedLoopedStep("1", "I wait '4' seconds.", expected, actual);
         steps.add(gherkinConditionedLoopedStep);
         try {
             step.runAllStepsInLoop(steps);
-        } catch (TechnicalException e) {
+        } catch (final TechnicalException e) {
             Assert.assertFalse("Error", true);
         }
     }

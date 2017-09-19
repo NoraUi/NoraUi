@@ -1,5 +1,8 @@
 package noraui.utils;
 
+import static noraui.utils.Constants.DATA_IN;
+import static noraui.utils.Constants.DATA_OUT;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
@@ -7,6 +10,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -15,6 +19,7 @@ import org.apache.log4j.Logger;
 import org.ini4j.Ini;
 import org.ini4j.InvalidFileFormatException;
 import org.joda.time.DateTime;
+import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -22,6 +27,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import cucumber.api.Scenario;
 import noraui.application.Application;
 import noraui.application.steps.Step;
+import noraui.browser.Auth;
 import noraui.browser.DriverFactory;
 import noraui.browser.WindowManager;
 import noraui.browser.steps.BrowserSteps;
@@ -41,6 +47,7 @@ import noraui.exception.Callbacks;
 import noraui.exception.Callbacks.Callback;
 import noraui.exception.TechnicalException;
 import noraui.gherkin.ScenarioRegistry;
+import noraui.main.ScenarioInitiator;
 import noraui.model.Model;
 import noraui.model.ModelList;
 
@@ -57,7 +64,11 @@ public class Context {
     public static final String STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME = BrowserSteps.class.getCanonicalName();
     public static final String GO_TO_URL_METHOD_NAME = "goToUrl";
     public static final String RESTART_WEB_DRIVER_METHOD_NAME = "restartWebDriver";
-    public static final String PROXY_KEY = "proxy";
+    public static final String HTTP_PROXY = "http_proxy";
+    public static final String HTTPS_PROXY = "https_proxy";
+    public static final String NO_PROXY = "no_proxy";
+    public static final String LOCALE = "locale";
+    public static final String AUTH_TYPE = "authentication";
     public static final String DISPLAY_STACK_TRACE = "display.stacktrace";
     public static final String TIMEOUT_KEY = "timeout";
     public static final String BROWSER_KEY = "browser";
@@ -76,7 +87,13 @@ public class Context {
     public static final String LOGOGAME_KEY = "logogame";
     public static final String LOGOGAME_HOME = "LOGOGAME_HOME";
 
-    private static final String NOT_SET_LABEL = " NOT set!";
+    private static final String NOT_SET_LABEL = "NOT_SET_LABEL";
+    private static final String CONTEXT_PROPERTIES_FILE_NOT_FOUND = "CONTEXT_PROPERTIES_FILE_NOT_FOUND";
+    private static final String CONTEXT_APP_INI_FILE_NOT_FOUND = "CONTEXT_APP_INI_FILE_NOT_FOUND";
+    private static final String CONTEXT_READING_PROPERTIES_FILE = "CONTEXT_READING_PROPERTIES_FILE";
+    private static final String CONTEXT_LOADED_PROPERTIES_FILE = "CONTEXT_LOADED_PROPERTIES_FILE";
+    private static final String CONTEXT_LOCALE_USED = "CONTEXT_LOCALE_USED";
+    private static final String CONTEXT_ERROR_WHEN_PLUGING_DATA_PROVIDER = "CONTEXT_ERROR_WHEN_PLUGING_DATA_PROVIDER";
     private static Properties scenariosProperties = null;
     private static Properties webdriversProperties = null;
 
@@ -88,17 +105,17 @@ public class Context {
     /**
      * Context driver factory.
      */
-    private DriverFactory driverFactory;
+    private final DriverFactory driverFactory;
 
     /**
      * Context window factory.
      */
-    private WindowManager windowManager;
+    private final WindowManager windowManager;
 
     /**
      * Context scenario registry.
      */
-    private ScenarioRegistry scenarioRegistry;
+    private final ScenarioRegistry scenarioRegistry;
 
     /**
      * Current running data from Scenario data set.
@@ -158,7 +175,12 @@ public class Context {
     /**
      * Proxy
      */
-    private String proxy = "";
+    private Proxy proxy;
+
+    /**
+     * Current locale
+     */
+    private Locale currentLocale;
 
     /**
      * List of model packages in case of using Models for input data
@@ -235,6 +257,12 @@ public class Context {
     public synchronized void initializeEnv(String propertiesFile) {
         logger.info("Context > initializeEnv()");
 
+        // init locale
+        initializeLocale();
+
+        // init scenarios paths
+        initializeScenarioProperties(ScenarioInitiator.class.getClassLoader());
+
         iniFiles = new HashMap<>();
         applicationProperties = initPropertiesFile(Thread.currentThread().getContextClassLoader(), propertiesFile);
 
@@ -246,8 +274,8 @@ public class Context {
         plugDataProvider(applicationProperties);
 
         // Paths configuration
-        getDataInputProvider().setDataInPath(resourcesPath + "/data/in/");
-        getDataOutputProvider().setDataOutPath(resourcesPath + "/data/out/");
+        getDataInputProvider().setDataInPath(resourcesPath + DATA_IN);
+        getDataOutputProvider().setDataOutPath(resourcesPath + DATA_OUT);
 
     }
 
@@ -265,8 +293,29 @@ public class Context {
         // set version of selectors used to deliver several versions
         selectorsVersion = setProperty(SELECTORS_VERSION, applicationProperties);
 
-        // proxy configuration
-        proxy = setProperty(PROXY_KEY, applicationProperties);
+        // proxies configuration
+        proxy = new Proxy();
+        proxy.setAutodetect(true);
+        final String httpProxy = setProperty(HTTP_PROXY, applicationProperties);
+        if (httpProxy != null && !"".equals(httpProxy)) {
+            proxy.setAutodetect(false);
+            proxy.setHttpProxy(httpProxy);
+        }
+
+        final String httpsProxy = setProperty(HTTPS_PROXY, applicationProperties);
+        if (httpsProxy != null && !"".equals(httpsProxy)) {
+            proxy.setAutodetect(false);
+            proxy.setSslProxy(httpsProxy);
+        }
+
+        final String noProxy = setProperty(NO_PROXY, applicationProperties);
+        if (noProxy != null && !"".equals(noProxy)) {
+            proxy.setAutodetect(false);
+            proxy.setNoProxy(noProxy);
+        }
+
+        // authentication mode configuration
+        Auth.setAuthenticationType(setProperty(AUTH_TYPE, applicationProperties));
 
         // stacktrace configuration
         displayStackTrace = "true".equals(setProperty(DISPLAY_STACK_TRACE, applicationProperties));
@@ -405,8 +454,8 @@ public class Context {
         if (getInstance().scenarioName == null || !getInstance().scenarioName.equals(scenarioName)) {
             try {
                 initDataId(scenarioName);
-            } catch (TechnicalException te) {
-                logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE + te.getMessage(), te);
+            } catch (final TechnicalException te) {
+                logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + te.getMessage(), te);
             }
         }
         getInstance().scenarioName = scenarioName;
@@ -458,19 +507,19 @@ public class Context {
 
     protected static Properties initPropertiesFile(ClassLoader loader, String propertiesFileName) {
         if (loader != null) {
-            InputStream in = loader.getResourceAsStream(propertiesFileName);
-            Properties props = new Properties();
+            final InputStream in = loader.getResourceAsStream(propertiesFileName);
+            final Properties props = new Properties();
             try {
                 if (in == null) {
-                    logger.error("Properties file (" + propertiesFileName + ") not found");
+                    logger.error(String.format(Messages.getMessage(CONTEXT_PROPERTIES_FILE_NOT_FOUND), propertiesFileName));
                 } else {
-                    logger.info("Reading properties file (" + propertiesFileName + ")");
+                    logger.info(String.format(Messages.getMessage(CONTEXT_READING_PROPERTIES_FILE), propertiesFileName));
                     props.load(in);
                 }
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 logger.error(e);
             }
-            logger.info("Loaded properties from " + propertiesFileName + " = " + props);
+            logger.info(String.format(Messages.getMessage(CONTEXT_LOADED_PROPERTIES_FILE), propertiesFileName, props));
             return props;
         }
         return null;
@@ -480,11 +529,9 @@ public class Context {
         if (propertyFile == null) {
             return null;
         }
-        String p = propertyFile.getProperty(key);
+        final String p = propertyFile.getProperty(key);
         if (p == null) {
-            logger.error(key + NOT_SET_LABEL);
-        } else {
-            logger.info(key + " = " + p);
+            logger.error(key + Messages.getMessage(NOT_SET_LABEL));
         }
         return p;
     }
@@ -495,15 +542,15 @@ public class Context {
 
     protected static void initApplicationDom(ClassLoader loader, String version, String applicationKey) {
         try {
-            InputStream data = loader.getResourceAsStream("selectors/" + version + "/" + applicationKey + ".ini");
+            final InputStream data = loader.getResourceAsStream("selectors/" + version + "/" + applicationKey + ".ini");
             if (data != null) {
-                Ini ini = new Ini(data);
+                final Ini ini = new Ini(data);
                 iniFiles.put(applicationKey, ini);
             }
-        } catch (InvalidFileFormatException e) {
+        } catch (final InvalidFileFormatException e) {
             logger.error(e);
-        } catch (IOException e) {
-            logger.error("Ini file " + applicationKey + " not found.", e);
+        } catch (final IOException e) {
+            logger.error(String.format(Messages.getMessage(CONTEXT_APP_INI_FILE_NOT_FOUND), applicationKey), e);
         }
     }
 
@@ -531,8 +578,12 @@ public class Context {
         return getInstance().timeout;
     }
 
-    public static String getProxy() {
+    public static Proxy getProxy() {
         return getInstance().proxy;
+    }
+
+    public static Locale getLocale() {
+        return getInstance().currentLocale;
     }
 
     public static boolean isStackTraceDisplayed() {
@@ -561,10 +612,10 @@ public class Context {
 
     public static String getUrlByPagekey(String pageKey) {
         if (pageKey != null) {
-            for (Map.Entry<String, Application> application : getInstance().applications.entrySet()) {
-                for (Map.Entry<String, String> urlPage : application.getValue().getUrlPages().entrySet()) {
+            for (final Map.Entry<String, Application> application : getInstance().applications.entrySet()) {
+                for (final Map.Entry<String, String> urlPage : application.getValue().getUrlPages().entrySet()) {
                     if (pageKey.equals(urlPage.getKey())) {
-                        return urlPage.getValue();
+                        return Auth.usingAuthentication(urlPage.getValue());
                     }
                 }
             }
@@ -576,8 +627,8 @@ public class Context {
 
     public static String getApplicationByPagekey(String pageKey) {
         if (pageKey != null) {
-            for (Map.Entry<String, Application> application : getInstance().applications.entrySet()) {
-                for (Map.Entry<String, String> urlPage : application.getValue().getUrlPages().entrySet()) {
+            for (final Map.Entry<String, Application> application : getInstance().applications.entrySet()) {
+                for (final Map.Entry<String, String> urlPage : application.getValue().getUrlPages().entrySet()) {
                     if (pageKey.equals(urlPage.getKey())) {
                         return application.getKey();
                     }
@@ -590,10 +641,10 @@ public class Context {
     }
 
     private static int setIntProperty(String key, Properties propertyFile) {
-        String property = propertyFile.getProperty(key);
+        final String property = propertyFile.getProperty(key);
         int p = 0;
         if (property == null) {
-            logger.error(key + NOT_SET_LABEL);
+            logger.error(key + Messages.getMessage(NOT_SET_LABEL));
         } else {
             p = Integer.parseInt(property);
             logger.info(key + " = " + p);
@@ -602,41 +653,55 @@ public class Context {
     }
 
     private static void initDataId(String scenarioName) throws TechnicalException {
-        List<DataIndex> indexData = new ArrayList<>();
+        final List<DataIndex> indexData = new ArrayList<>();
         try {
             Context.getDataInputProvider().prepare(scenarioName);
-            Class<Model> model = Context.getDataInputProvider().getModel(Context.getModelPackages());
+            final Class<Model> model = Context.getDataInputProvider().getModel(Context.getModelPackages());
             if (model != null) {
-                String[] headers = Context.getDataInputProvider().readLine(0, false);
+                final String[] headers = Context.getDataInputProvider().readLine(0, false);
                 if (headers != null) {
-                    Constructor<Model> modelConstructor = DataUtils.getModelConstructor(model, headers);
-                    Map<String, ModelList> fusionedData = DataUtils.fusionProcessor(model, modelConstructor);
+                    final Constructor<Model> modelConstructor = DataUtils.getModelConstructor(model, headers);
+                    final Map<String, ModelList> fusionedData = DataUtils.fusionProcessor(model, modelConstructor);
                     int dataIndex = 0;
-                    for (Entry<String, ModelList> e : fusionedData.entrySet()) {
+                    for (final Entry<String, ModelList> e : fusionedData.entrySet()) {
                         dataIndex++;
                         indexData.add(new DataIndex(dataIndex, e.getValue().getIds()));
                     }
                 } else {
-                    logger.error("Data file is empty. No injection has been done !");
+                    logger.error(Messages.getMessage(ScenarioInitiator.SCENARIO_INITIATOR_ERROR_EMPTY_FILE));
                 }
             } else {
                 for (int i = 1; i < Context.getDataInputProvider().getNbLines(); i++) {
-                    List<Integer> index = new ArrayList<>();
+                    final List<Integer> index = new ArrayList<>();
                     index.add(i);
                     indexData.add(new DataIndex(i, index));
                 }
             }
             Context.getDataInputProvider().setIndexData(indexData);
-        } catch (Exception te) {
-            logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE + te.getMessage(), te);
-            throw new TechnicalException("Technical problem during injectWithModel: " + te.getMessage(), te);
+        } catch (final Exception te) {
+            throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + te.getMessage(), te);
         }
+    }
+
+    private void initializeLocale() {
+        final String locale = setProperty(LOCALE, applicationProperties);
+        if (locale != null && !"".equals(locale)) {
+            final String[] localeParts = locale.split("_");
+            if (localeParts.length == 2) {
+                currentLocale = new Locale(localeParts[0], localeParts[1]);
+            } else {
+                currentLocale = new Locale(localeParts[0]);
+            }
+        } else {
+            currentLocale = Locale.getDefault();
+        }
+        logger.info(String.format(Messages.getMessage(CONTEXT_LOCALE_USED), currentLocale));
     }
 
     private void plugDataProvider(Properties applicationProperties) {
         try {
-            String dataIn = setProperty("dataProvider.in.type", applicationProperties);
-            String dataOut = setProperty("dataProvider.out.type", applicationProperties);
+            final String dataIn = setProperty("dataProvider.in.type", applicationProperties);
+            final String dataOut = setProperty("dataProvider.out.type", applicationProperties);
 
             // plug input provider
             if (DataProvider.type.EXCEL.toString().equals(dataIn)) {
@@ -683,8 +748,8 @@ public class Context {
                     dataOutputProvider = (DataOutputProvider) Class.forName(dataOut).getConstructor().newInstance();
                 }
             }
-        } catch (Exception e) {
-            logger.error("plugDataProvider: " + e);
+        } catch (final Exception e) {
+            logger.error(Messages.getMessage(CONTEXT_ERROR_WHEN_PLUGING_DATA_PROVIDER) + e);
         }
     }
 }

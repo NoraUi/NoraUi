@@ -15,9 +15,9 @@ import java.util.Map.Entry;
 import org.apache.log4j.Logger;
 
 import noraui.data.DataIndex;
-import noraui.data.DataProvider;
 import noraui.data.DataUtils;
 import noraui.exception.TechnicalException;
+import noraui.main.ScenarioInitiator;
 import noraui.model.Model;
 import noraui.model.ModelList;
 import noraui.utils.Context;
@@ -30,11 +30,10 @@ public class MavenRunCounter {
     public static final String Z_MANAGER = "zManager";
 
     public List<Counter> count(List<String> versionControlSystemsBlacklist, List<String> blacklist, List<String> manager, File scenarioFolder) {
-
-        List<Counter> result = new ArrayList<>();
-        List<String> files = listFilesForFolder(versionControlSystemsBlacklist, scenarioFolder);
-        for (String file : files) {
-            String scenarioName = file.substring(file.lastIndexOf(File.separator) + 1, file.lastIndexOf('.'));
+        final List<Counter> result = new ArrayList<>();
+        final List<String> files = listFilesForFolder(versionControlSystemsBlacklist, scenarioFolder);
+        for (final String file : files) {
+            final String scenarioName = file.substring(file.lastIndexOf(File.separator) + 1, file.lastIndexOf('.'));
             if (!blacklist.contains(scenarioName)) {
                 Counter counter = new Counter(scenarioName);
                 int nbStep = 0;
@@ -50,11 +49,11 @@ public class MavenRunCounter {
                             if (sCurrentLine.startsWith("Given") || sCurrentLine.startsWith("Then") || sCurrentLine.startsWith("When") || sCurrentLine.startsWith("And")
                                     || sCurrentLine.startsWith("But") || sCurrentLine.startsWith("Alors") || sCurrentLine.startsWith("Et") || sCurrentLine.startsWith("Lorsqu")
                                     || sCurrentLine.startsWith("Mais") || sCurrentLine.startsWith("Quand") || sCurrentLine.startsWith("Soit")) {
-                                logger.error(Messages.SCENARIO_ERROR_MESSAGE_ILLEGAL_TAB_FORMAT + " : " + sCurrentLine);
+                                logger.error(Messages.getMessage(Messages.SCENARIO_ERROR_MESSAGE_ILLEGAL_TAB_FORMAT) + " : " + sCurrentLine);
                             }
                         }
                     }
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     logger.error("IOException error: " + e);
                 }
                 countNbCasFailuresAndSkipped(scenarioName, counter, nbStep);
@@ -82,7 +81,7 @@ public class MavenRunCounter {
     }
 
     private void countNbCasFailuresAndSkipped(String scenarioName, Counter counter, int nbStep) {
-        Counter nb = countNbCasFailuresAndSkipped(scenarioName, nbStep);
+        final Counter nb = countNbCasFailuresAndSkipped(scenarioName, nbStep);
         counter.setNbStep(nbStep);
         counter.setNbcas(nb.getNbCas());
         counter.setRun(nbStep * nb.getNbCas() + nb.getNbCas());
@@ -90,23 +89,23 @@ public class MavenRunCounter {
         counter.setSkipped(nb.getSkipped());
     }
 
-    public void print(List<Counter> counters) {
+    public void print(List<Counter> counters, String type) {
         int run = 0;
         int failures = 0;
         int skipped = 0;
         Collections.sort(counters, new Counter(""));
-        for (MavenRunCounter.Counter counter : counters) {
+        for (final MavenRunCounter.Counter counter : counters) {
             run += counter.getRun();
             failures += counter.getFailures();
             skipped += counter.getSkipped();
-            logger.info("Scenario: " + counter.getScenarioName() + " => NbStep: " + counter.getNbStep() + " and Nb Cas: " + counter.getNbCas() + " -->  runs: " + counter.getRun() + ", failures: "
+            logger.info("Scenario: " + counter.getScenarioName() + " => step: " + counter.getNbStep() + " and cases: " + counter.getNbCas() + " -->  runs: " + counter.getRun() + ", failures: "
                     + counter.getFailures() + ", errors: 0 and skips: " + counter.getSkipped());
         }
-        logger.info("<EXPECTED_RESULTS>Tests run: " + run + ", Failures: " + failures + ", Errors: 0, Skipped: " + skipped + "</EXPECTED_RESULTS>");
+        logger.info("[" + type + "] > <EXPECTED_RESULTS>Tests run: " + run + ", Failures: " + failures + ", Errors: 0, Skipped: " + skipped + "</EXPECTED_RESULTS>");
     }
 
     public static List<String> listFilesForFolder(final List<String> versionControlSystemsBlacklist, final File folder) {
-        List<String> files = new ArrayList<>();
+        final List<String> files = new ArrayList<>();
         for (final File fileEntry : folder.listFiles()) {
             if (!stringContainsItemFromList(fileEntry.getAbsolutePath(), versionControlSystemsBlacklist)) {
                 if (fileEntry.isDirectory()) {
@@ -194,17 +193,17 @@ public class MavenRunCounter {
     }
 
     private static MavenRunCounter.Counter countNbCasFailuresAndSkipped(String scenarioName, int nbStep) {
-        Counter result = new MavenRunCounter().new Counter("");
-        List<DataIndex> indexData = new ArrayList<>();
+        final Counter result = new MavenRunCounter().new Counter("");
+        final List<DataIndex> indexData = new ArrayList<>();
         try {
             Context.getDataInputProvider().prepare(scenarioName);
-            Class<Model> model = Context.getDataInputProvider().getModel(Context.getModelPackages());
+            final Class<Model> model = Context.getDataInputProvider().getModel(Context.getModelPackages());
             if (model != null) {
                 countWithModel(nbStep, result, indexData, model);
             } else {
                 countWithoutModel(nbStep, result, indexData);
             }
-        } catch (Exception te) {
+        } catch (final Exception te) {
             logger.error(te);
         }
         return result;
@@ -214,10 +213,10 @@ public class MavenRunCounter {
         int failures = 0;
         int skipped = 0;
         for (int i = 1; i < Context.getDataInputProvider().getNbLines(); i++) {
-            List<Integer> index = new ArrayList<>();
+            final List<Integer> index = new ArrayList<>();
             index.add(i);
             indexData.add(new DataIndex(i, index));
-            String resultColumn = Context.getDataInputProvider().readValue(DataProvider.NAME_OF_RESULT_COLUMN, i);
+            final String resultColumn = Context.getDataInputProvider().readValue(Context.getDataInputProvider().getResultColumnName(), i);
             if (!"".equals(resultColumn)) {
                 failures += 2;
                 skipped += nbStep - (int) Double.parseDouble(resultColumn);
@@ -231,17 +230,17 @@ public class MavenRunCounter {
     private static void countWithModel(int nbStep, Counter result, List<DataIndex> indexData, Class<Model> model) throws TechnicalException {
         int failures = 0;
         int skipped = 0;
-        String[] headers = Context.getDataInputProvider().readLine(0, false);
+        final String[] headers = Context.getDataInputProvider().readLine(0, false);
         if (headers != null) {
-            Constructor<Model> modelConstructor = DataUtils.getModelConstructor(model, headers);
-            Map<String, ModelList> fusionedData = DataUtils.fusionProcessor(model, modelConstructor);
+            final Constructor<Model> modelConstructor = DataUtils.getModelConstructor(model, headers);
+            final Map<String, ModelList> fusionedData = DataUtils.fusionProcessor(model, modelConstructor);
             int dataIndex = 0;
-            for (Entry<String, ModelList> e : fusionedData.entrySet()) {
+            for (final Entry<String, ModelList> e : fusionedData.entrySet()) {
                 dataIndex++;
                 indexData.add(new DataIndex(dataIndex, e.getValue().getIds()));
                 for (int i = 0; i < e.getValue().getIds().size(); i++) {
-                    Integer wid = e.getValue().getIds().get(i);
-                    String resultColumn = Context.getDataInputProvider().readValue(DataProvider.NAME_OF_RESULT_COLUMN, wid);
+                    final Integer wid = e.getValue().getIds().get(i);
+                    final String resultColumn = Context.getDataInputProvider().readValue(Context.getDataInputProvider().getResultColumnName(), wid);
                     if (!"".equals(resultColumn)) {
                         failures += 2;
                         skipped += nbStep - (int) Double.parseDouble(resultColumn);
@@ -249,7 +248,7 @@ public class MavenRunCounter {
                 }
             }
         } else {
-            logger.error("Data file is empty. No injection has been done !");
+            logger.error(Messages.getMessage(ScenarioInitiator.SCENARIO_INITIATOR_ERROR_EMPTY_FILE));
         }
         result.setNbcas(indexData.size());
         result.setFailures(failures);
@@ -257,7 +256,7 @@ public class MavenRunCounter {
     }
 
     private static boolean stringContainsItemFromList(String inputString, List<String> items) {
-        for (String item : items) {
+        for (final String item : items) {
             if (inputString.contains(item)) {
                 return true;
             }

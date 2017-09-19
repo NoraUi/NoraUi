@@ -18,15 +18,15 @@ import noraui.data.DataInputProvider;
 import noraui.exception.TechnicalException;
 import noraui.exception.data.DatabaseException;
 import noraui.utils.Constants;
+import noraui.utils.Messages;
 
 public class DBDataProvider extends CommonDataProvider implements DataInputProvider {
 
+    private static final String DB_DATA_PROVIDER_USED = "DB_DATA_PROVIDER_USED";
+    private static final String DATABASE_ERROR_FORBIDDEN_WORDS_IN_QUERY = "DATABASE_ERROR_FORBIDDEN_WORDS_IN_QUERY";
     private String connectionUrl;
-    private String user;
-    private String password;
-    private String hostname;
-    private String port;
-    private String database;
+    private final String user;
+    private final String password;
 
     private enum types {
         MYSQL, ORACLE, POSTGRE
@@ -36,55 +36,28 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
         super();
         this.user = user;
         this.password = password;
-        this.hostname = hostname;
-        this.port = port;
-        this.database = database;
         try {
             if (types.MYSQL.toString().equals(type)) {
                 Class.forName("com.mysql.jdbc.Driver");
-                connectionUrl = "jdbc:mysql://" + hostname + ":" + port + "/" + database;
+                this.connectionUrl = "jdbc:mysql://" + hostname + ":" + port + "/" + database;
             } else if (types.ORACLE.toString().equals(type)) {
                 Class.forName("oracle.jdbc.OracleDriver");
-                connectionUrl = "jdbc:oracle:thin:@" + hostname + ":" + port + ":" + database;
+                this.connectionUrl = "jdbc:oracle:thin:@" + hostname + ":" + port + ":" + database;
             } else if (types.POSTGRE.toString().equals(type)) {
                 Class.forName("org.postgresql.Driver");
-                connectionUrl = "jdbc:postgresql://" + hostname + ":" + port + "/" + database;
+                this.connectionUrl = "jdbc:postgresql://" + hostname + ":" + port + "/" + database;
             } else {
-                throw new DatabaseException(String.format(DatabaseException.TECHNICAL_ERROR_MESSAGE_DATABASE_EXCEPTION, type));
+                throw new DatabaseException(String.format(Messages.getMessage(DatabaseException.TECHNICAL_ERROR_MESSAGE_UNKNOWN_DATABASE_TYPE), type));
             }
-        } catch (Exception e) {
-            logger.error(DatabaseException.TECHNICAL_ERROR_MESSAGE_DATABASE_EXCEPTION, e);
-            throw new TechnicalException(DatabaseException.TECHNICAL_ERROR_MESSAGE_DATABASE_EXCEPTION, e);
+        } catch (final Exception e) {
+            logger.error(Messages.getMessage(DatabaseException.TECHNICAL_ERROR_MESSAGE_DATABASE_EXCEPTION), e);
+            throw new TechnicalException(Messages.getMessage(DatabaseException.TECHNICAL_ERROR_MESSAGE_DATABASE_EXCEPTION), e);
         }
-        logger.info("dataProvider used is DB (" + type + ")");
-    }
-
-    public String getConnectionUrl() {
-        return connectionUrl;
-    }
-
-    public String getUser() {
-        return user;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getHostname() {
-        return hostname;
-    }
-
-    public String getPort() {
-        return port;
-    }
-
-    public String getDatabase() {
-        return database;
+        logger.info(String.format(Messages.getMessage(DB_DATA_PROVIDER_USED), type));
     }
 
     public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(connectionUrl, user, password);
+        return DriverManager.getConnection(this.connectionUrl, this.user, this.password);
     }
 
     /**
@@ -95,9 +68,8 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
         scenarioName = scenario;
         try {
             initColumns();
-        } catch (DatabaseException e) {
-            logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE + e.getMessage(), e);
-            throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION, e);
+        } catch (final DatabaseException e) {
+            throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION), e);
         }
     }
 
@@ -111,17 +83,17 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
     public int getNbLines() throws TechnicalException {
         String sqlRequest = "";
         try {
-            Path file = Paths.get(dataInPath + scenarioName + ".sql");
+            final Path file = Paths.get(dataInPath + scenarioName + ".sql");
             sqlRequest = new String(Files.readAllBytes(file), Charset.forName(Constants.DEFAULT_ENDODING));
             sqlSanitized4readOnly(sqlRequest);
-        } catch (IOException e) {
-            throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE + e.getMessage(), e);
+        } catch (final IOException e) {
+            throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), e);
         }
         try (Connection connection = getConnection();
                 Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
                 ResultSet rs = statement.executeQuery(sqlRequest);) {
             return rs.last() ? rs.getRow() + 1 : 0;
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             logger.error("getNbLines()" + e.getMessage(), e);
             return 0;
         }
@@ -137,11 +109,11 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
     public String readValue(String column, int line) throws TechnicalException {
         String sqlRequest;
         try {
-            Path file = Paths.get(dataInPath + scenarioName + ".sql");
+            final Path file = Paths.get(dataInPath + scenarioName + ".sql");
             sqlRequest = new String(Files.readAllBytes(file), Charset.forName(Constants.DEFAULT_ENDODING));
             sqlSanitized4readOnly(sqlRequest);
-        } catch (IOException e) {
-            throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE + e.getMessage(), e);
+        } catch (final IOException e) {
+            throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), e);
         }
         try (Connection connection = getConnection(); PreparedStatement statement = connection.prepareStatement(sqlRequest); ResultSet rs = statement.executeQuery();) {
             if (line < 1) {
@@ -150,7 +122,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
             while (rs.next() && rs.getRow() < line) {
             }
             return rs.getString(column);
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             logger.error("readValue(" + column + ", " + line + ")" + e.getMessage(), e);
             return "";
         }
@@ -166,14 +138,14 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
     public String[] readLine(int line, boolean readResult) throws TechnicalException {
         String sqlRequest;
         try {
-            Path file = Paths.get(dataInPath + scenarioName + ".sql");
+            final Path file = Paths.get(dataInPath + scenarioName + ".sql");
             sqlRequest = new String(Files.readAllBytes(file), Charset.forName(Constants.DEFAULT_ENDODING));
             sqlSanitized4readOnly(sqlRequest);
-        } catch (IOException e) {
-            throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE + e.getMessage(), e);
+        } catch (final IOException e) {
+            throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), e);
         }
         try (Connection connection = getConnection(); PreparedStatement statement = connection.prepareStatement(sqlRequest); ResultSet rs = statement.executeQuery();) {
-            String[] ret = readResult ? new String[columns.size()] : new String[columns.size() - 1];
+            final String[] ret = readResult ? new String[columns.size()] : new String[columns.size() - 1];
             if (line == 0) {
                 for (int i = 0; i < ret.length; i++) {
                     ret[i] = columns.get(i);
@@ -186,7 +158,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
                 }
             }
             return ret;
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             logger.debug("In DBDataProvider, is it a catch used for tested end of data. readLine(" + line + ", " + readResult + ")" + e.getMessage(), e);
             return null;
         }
@@ -196,11 +168,11 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
         columns = new ArrayList<>();
         String sqlRequest;
         try {
-            Path file = Paths.get(dataInPath + scenarioName + ".sql");
+            final Path file = Paths.get(dataInPath + scenarioName + ".sql");
             sqlRequest = new String(Files.readAllBytes(file), Charset.forName(Constants.DEFAULT_ENDODING));
             sqlSanitized4readOnly(sqlRequest);
-        } catch (IOException e) {
-            throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE + e.getMessage(), e);
+        } catch (final IOException e) {
+            throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), e);
         }
         try (Connection connection = getConnection(); PreparedStatement statement = connection.prepareStatement(sqlRequest); ResultSet rs = statement.executeQuery();) {
             if (rs.getMetaData().getColumnCount() < 1) {
@@ -209,16 +181,16 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
             for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
                 columns.add(rs.getMetaData().getColumnLabel(i));
             }
-        } catch (SQLException e) {
-            throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE + e.getMessage(), e);
+        } catch (final SQLException e) {
+            throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), e);
         }
     }
 
     protected static void sqlSanitized4readOnly(String sqlInput) throws TechnicalException {
-        String[] forbiddenWords = { "DROP", "DELETE", "TRUNCATE", "UPDATE" };
-        for (String forbiddenWord : forbiddenWords) {
+        final String[] forbiddenWords = { "DROP", "DELETE", "TRUNCATE", "UPDATE" };
+        for (final String forbiddenWord : forbiddenWords) {
             if (sqlInput.toUpperCase().contains(forbiddenWord)) {
-                throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE + "Your sql file contains a forbidden word for queries. (Read only autorized): " + sqlInput);
+                throw new TechnicalException(Messages.format(Messages.getMessage(DATABASE_ERROR_FORBIDDEN_WORDS_IN_QUERY), sqlInput));
             }
         }
     }

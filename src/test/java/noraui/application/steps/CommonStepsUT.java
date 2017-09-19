@@ -15,6 +15,7 @@ import noraui.application.page.Page;
 import noraui.exception.FailureException;
 import noraui.exception.TechnicalException;
 import noraui.gherkin.GherkinStepCondition;
+import noraui.utils.Messages;
 import noraui.utils.Utilities;
 
 @RunWith(PowerMockRunner.class)
@@ -36,15 +37,15 @@ public class CommonStepsUT {
         s = new CommonSteps();
         try {
             s.checkMandatoryField("demo.DemoSteps", "mockField", "text", new ArrayList<GherkinStepCondition>());
-        } catch (TechnicalException e) {
-            Assert.assertEquals("Unable to retrieve Page with name: demo.DemoSteps", e.getMessage());
-        } catch (FailureException a) {
-            Assert.assertFalse("Erreur car checkMandatoryField ne doit trouver une TechnicalException", true);
+        } catch (final TechnicalException e) {
+            Assert.assertEquals(String.format(Messages.getMessage("PAGE_UNABLE_TO_RETRIEVE"), "demo.DemoSteps"), e.getMessage());
+        } catch (final FailureException a) {
+            Assert.assertFalse("checkMandatoryField must return TechnicalException", true);
         }
         try {
             s.checkMandatoryField("demo.DemoPage", "mockField", "text", new ArrayList<GherkinStepCondition>());
-        } catch (FailureException a) {
-            Assert.assertEquals("Élément non trouvé sur la page. [-mockField]", a.getMessage());
+        } catch (final FailureException a) {
+            Assert.assertEquals(Messages.getMessage("FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT") + " [-mockField]", a.getMessage());
         }
     }
 

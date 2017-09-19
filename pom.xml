@@ -32,7 +32,7 @@
             <name>Stéphane GRILLON</name>
         </developer>
         <developer>
-            <id>ArKniiD</id>
+            <id>nhallouin</id>
             <name>Nicolas HALLOUIN</name>
         </developer>
     </developers>
@@ -83,13 +83,13 @@
         <nexus-staging-maven-plugin.version>1.6.7</nexus-staging-maven-plugin.version>
         <jacoco-maven-plugin.version>0.7.7.201606060606</jacoco-maven-plugin.version>
         <sonar.jacoco.reportPath>${project.testresult.directory}/coverage/jacoco/jacoco.exec</sonar.jacoco.reportPath>
-        <sonar-maven-plugin.version>3.0.1</sonar-maven-plugin.version>
+        <sonar-maven-plugin.version>3.0.2</sonar-maven-plugin.version>
         <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
         <sonar.sources>${project.basedir}/src/main/java/</sonar.sources>
         <sonar.surefire.reportsPath>${project.testresult.directory}/surefire-reports</sonar.surefire.reportsPath>
         <sonar.tests>${project.basedir}/src/test/</sonar.tests>
         <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
-        <sonar.exclusions>**/cucumber/**/*,**/*Exception.*,**/annotation/**/*,**/noraui/model/**/*</sonar.exclusions>
+        <sonar.exclusions>**/cucumber/**/*,**/*Exception.*,**/annotation/**/*,**/noraui/model/**/*,**/noraui/data/rest/Row.java</sonar.exclusions>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -486,7 +486,7 @@
                         <version>${exec-maven-plugin.version}</version>
                         <executions>
                             <execution>
-                                <id>Counter-execution</id>
+                                <id>CounterExcel-execution</id>
                                 <phase>compile</phase>
                                 <goals>
                                     <goal>java</goal>
@@ -496,7 +496,6 @@
                                     <arguments>
                                         <argument>Excel</argument>
                                     </arguments>
-                                    <cleanupDaemonThreads>false</cleanupDaemonThreads>
                                     <systemProperties>
                                         <systemProperty>
                                             <key>resourcespath</key>
@@ -516,7 +515,6 @@
                                     <arguments>
                                         <argument>Csv</argument>
                                     </arguments>
-                                    <cleanupDaemonThreads>false</cleanupDaemonThreads>
                                     <systemProperties>
                                         <systemProperty>
                                             <key>resourcespath</key>
@@ -536,7 +534,25 @@
                                     <arguments>
                                         <argument>RestJson</argument>
                                     </arguments>
-                                    <cleanupDaemonThreads>false</cleanupDaemonThreads>
+                                    <systemProperties>
+                                        <systemProperty>
+                                            <key>resourcespath</key>
+                                            <value>${jenkinsresourcespath}</value>
+                                        </systemProperty>
+                                    </systemProperties>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>CounterGherkin-execution</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>java</goal>
+                                </goals>
+                                <configuration>
+                                    <mainClass>noraui.indus.Counter</mainClass>
+                                    <arguments>
+                                        <argument>Gherkin</argument>
+                                    </arguments>
                                     <systemProperties>
                                         <systemProperty>
                                             <key>resourcespath</key>

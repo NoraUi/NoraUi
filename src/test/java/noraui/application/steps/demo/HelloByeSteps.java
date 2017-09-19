@@ -42,7 +42,7 @@ public class HelloByeSteps extends Step {
     @Then("The DEMO portal is displayed.")
     public void checkDemoPortalPage() throws FailureException {
         if (!demoPage.checkPage()) {
-            new Result.Failure<>("DEMO", Messages.FAIL_MESSAGE_UNKNOWN_CREDENTIALS, true, demoPage.getCallBack());
+            new Result.Failure<>("DEMO", Messages.getMessage(Messages.FAIL_MESSAGE_UNKNOWN_CREDENTIALS), true, demoPage.getCallBack());
         }
     }
 

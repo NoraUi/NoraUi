@@ -9,8 +9,11 @@ import org.openqa.selenium.WebDriver;
 import noraui.exception.Callbacks.Callback;
 import noraui.exception.TechnicalException;
 import noraui.utils.Context;
+import noraui.utils.Messages;
 
 public abstract class Page implements IPage {
+
+    private static final String PAGE_UNABLE_TO_RETRIEVE = "PAGE_UNABLE_TO_RETRIEVE";
 
     private static String pagesPackage = Page.class.getPackage().getName() + '.';
 
@@ -44,10 +47,10 @@ public abstract class Page implements IPage {
      *            is a class
      * @return a Page
      * @throws TechnicalException
-     *             if InstantiationException or IllegalAccessException in getInstance of Page.
+     *             if InstantiationException or IllegalAccessException in getInstance() of Page.
      */
     public static Page getInstance(Class<?> c) throws TechnicalException {
-        for (Page page : instances) {
+        for (final Page page : instances) {
             if (page.getClass() == c) {
                 return page;
             }
@@ -55,7 +58,7 @@ public abstract class Page implements IPage {
         try {
             return (Page) c.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            throw new TechnicalException("InstantiationException or IllegalAccessException in getInstance of Page", e);
+            throw new TechnicalException(Messages.format(Messages.getMessage(PAGE_UNABLE_TO_RETRIEVE), c), e);
         }
     }
 
@@ -68,13 +71,13 @@ public abstract class Page implements IPage {
      * @return
      *         A Page instance
      * @throws TechnicalException
-     *             if InstantiationException or IllegalAccessException in getInstance of Page.
+     *             if ClassNotFoundException in getInstance() of Page.
      */
     public static Page getInstance(String className) throws TechnicalException {
         try {
             return getInstance(Class.forName(pagesPackage + className));
-        } catch (ClassNotFoundException e) {
-            throw new TechnicalException("Unable to retrieve Page with name: " + className, e);
+        } catch (final ClassNotFoundException e) {
+            throw new TechnicalException(Messages.format(Messages.getMessage(PAGE_UNABLE_TO_RETRIEVE), className), e);
         }
     }
 
@@ -94,7 +97,7 @@ public abstract class Page implements IPage {
     @Override
     public PageElement getPageElementByKey(String key) {
         PageElement p;
-        for (Field f : getClass().getDeclaredFields()) {
+        for (final Field f : getClass().getDeclaredFields()) {
             if (f.getType() == PageElement.class) {
                 try {
                     p = (PageElement) f.get(this);

@@ -14,6 +14,12 @@ These are the currently supported languages
 
 Does NoraUi not support your language? Please help us with a PR!
 
+# Last features
+
+* ConsoleOutputDataProvider
+* GherkinInputDataProvider
+* Bug fixes
+
 # Continuous Integration status
 [![Build Status](https://travis-ci.org/NoraUi/NoraUi.svg?branch=master)](https://travis-ci.org/NoraUi/NoraUi)
 [![Quality Gate](https://sonarqube.com/api/badges/gate?key=com.github.noraui:noraui)](https://sonarqube.com/dashboard/index/com.github.noraui:noraui)
@@ -31,7 +37,7 @@ Does NoraUi not support your language? Please help us with a PR!
 # Gitter chat
 [![Join the chat at https://gitter.im/NoraUiChat](https://badges.gitter.im/NoraUiChat/NoraUi.svg)](https://gitter.im/NoraUiChat/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-# How use
+# How to use
 
 Stable:
 
@@ -43,7 +49,7 @@ SNAPSHOT:
 <dependency>
     <groupId>com.github.noraui</groupId>
     <artifactId>noraui</artifactId>
-    <version>2.5.4-SNAPSHOT</version>
+    <version>2.6.2-SNAPSHOT</version>
 </dependency>
 ```
 

@@ -41,7 +41,7 @@ public class LogoGameSteps extends Step {
     @Then("The LOGOGAME portal is displayed")
     public void checkDemoPortalPage() throws FailureException {
         if (!logoGamePage.checkPage()) {
-            new Result.Failure<>("LOGOGAME", Messages.FAIL_MESSAGE_UNKNOWN_CREDENTIALS, true, logoGamePage.getCallBack());
+            new Result.Failure<>("LOGOGAME", Messages.getMessage(Messages.FAIL_MESSAGE_UNKNOWN_CREDENTIALS), true, logoGamePage.getCallBack());
         }
     }
 
@@ -52,7 +52,7 @@ public class LogoGameSteps extends Step {
         try {
             updateText(logoGamePage.amazonElement, "amazon");
         } catch (TechnicalException e) {
-            new Result.Failure<>("LOGOGAME", TechnicalException.TECHNICAL_ERROR_MESSAGE + e.getMessage(), true, logoGamePage.getCallBack());
+            new Result.Failure<>("LOGOGAME", Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), true, logoGamePage.getCallBack());
         }
     }
 
@@ -64,7 +64,7 @@ public class LogoGameSteps extends Step {
             try {
                 clickOn(logoGamePage.addButton);
             } catch (TechnicalException e) {
-                new Result.Failure<>("LOGOGAME", TechnicalException.TECHNICAL_ERROR_MESSAGE + e.getMessage(), true, logoGamePage.getCallBack());
+                new Result.Failure<>("LOGOGAME", Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), true, logoGamePage.getCallBack());
             }
         }
     }
@@ -92,7 +92,7 @@ public class LogoGameSteps extends Step {
         logos.deserialize(jsonLogos);
         for (int i = 0; i < logos.size(); i++) {
             if (ProhibitedBrands.getAlcool().contains(logos.get(i).getBrand()) || ProhibitedBrands.getTabaco().contains(logos.get(i).getBrand())) {
-                new Result.Failure<>(logos.get(i).getBrand(), Messages.format("Brand « %s » is prohibited.", logos.get(i).getBrand()), false, logos.get(i).getWid(),
+                new Result.Failure<>(logos.get(i).getBrand(), Messages.format("Brand « %s » is prohibited.", logos.get(i).getBrand()), false, logos.get(i).getNid(),
                         Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
             }
         }
@@ -105,14 +105,14 @@ public class LogoGameSteps extends Step {
         logos.deserialize(jsonLogos);
         for (int i = 0; i < logos.size(); i++) {
             Logo logo = logos.get(i);
-            logo.setWid(i);
+            logo.setNid(i);
             try {
                 WebElement element = getDriver().findElement(Utilities.getLocator(logoGamePage.brandElement, logo.getBrand(), logo.getBrand()));
                 if (element != null) {
                     updateText(logoGamePage.brandElement, logo.getBrand(), null, logo.getBrand(), logo.getBrand());
                 }
             } catch (Exception e) {
-                new Result.Warning<>(logo.getBrand(), Messages.format("Brand « %s » does not exist.", logo.getBrand()), true, logo.getWid());
+                new Result.Warning<>(logo.getBrand(), Messages.format("Brand « %s » does not exist.", logo.getBrand()), true, logo.getNid());
             }
         }
     }
@@ -123,7 +123,7 @@ public class LogoGameSteps extends Step {
         try {
             clickOn(logoGamePage.validateButton);
         } catch (TechnicalException e) {
-            new Result.Failure<>("LOGOGAME", TechnicalException.TECHNICAL_ERROR_MESSAGE + e.getMessage(), true, logoGamePage.getCallBack());
+            new Result.Failure<>("LOGOGAME", Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), true, logoGamePage.getCallBack());
         }
     }
 
@@ -136,7 +136,7 @@ public class LogoGameSteps extends Step {
                 Context.getCurrentScenario().write("score is:\n" + message.getText());
                 Context.getDataOutputProvider().writeDataResult("score", Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData()).getIndexes().get(0), message.getText());
             } catch (TechnicalException e) {
-                logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE + e.getMessage(), e);
+                logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), e);
             }
         } catch (Exception e) {
             new Result.Failure<>(e.getMessage(), "", true, logoGamePage.getCallBack());

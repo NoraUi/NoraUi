@@ -71,7 +71,7 @@ public class Articles extends DemosModel<Article> implements ModelList {
     public List<Integer> getIds() {
         List<Integer> result = new ArrayList<>();
         for (Article article : this) {
-            result.add(article.getWid());
+            result.add(article.getNid());
         }
         return result;
     }

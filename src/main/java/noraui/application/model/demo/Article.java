@@ -10,7 +10,7 @@ import noraui.application.model.DemoModel;
 public class Article extends DemoModel implements Comparable<Article> {
 
     @Expose(serialize = false, deserialize = false)
-    private Integer wid;
+    private Integer nid;
 
     @Expose
     @Column(name = "Titre")
@@ -30,15 +30,15 @@ public class Article extends DemoModel implements Comparable<Article> {
 
     // constructor by default for serialize/deserialize
     public Article() {
-        this.wid = -1;
+        this.nid = -1;
         this.title = "";
         this.text = "";
         this.author = "";
         this.note = -1;
     }
 
-    public Article(String wid, String title, String text, String author, String note) {
-        this.wid = Integer.parseInt(wid);
+    public Article(String nid, String title, String text, String author, String note) {
+        this.nid = Integer.parseInt(nid);
         this.title = title;
         this.text = text;
         this.author = author;
@@ -54,7 +54,7 @@ public class Article extends DemoModel implements Comparable<Article> {
         builder.excludeFieldsWithoutExposeAnnotation();
         final Gson gson = builder.create();
         Article w = gson.fromJson(jsonString, Article.class);
-        this.wid = w.wid;
+        this.nid = w.nid;
         this.title = w.title;
         this.text = w.text;
         this.author = w.author;
@@ -113,12 +113,12 @@ public class Article extends DemoModel implements Comparable<Article> {
         return ((Integer) this.note).compareTo(other.note);
     }
 
-    public Integer getWid() {
-        return wid;
+    public Integer getNid() {
+        return nid;
     }
 
-    public void setWid(Integer wid) {
-        this.wid = wid;
+    public void setNid(Integer nid) {
+        this.nid = nid;
     }
 
     public String getTitle() {
