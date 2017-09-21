@@ -257,14 +257,14 @@ public class Context {
     public synchronized void initializeEnv(String propertiesFile) {
         logger.info("Context > initializeEnv()");
 
+        iniFiles = new HashMap<>();
+        applicationProperties = initPropertiesFile(Thread.currentThread().getContextClassLoader(), propertiesFile);
+
         // init locale
         initializeLocale();
 
         // init scenarios paths
         initializeScenarioProperties(ScenarioInitiator.class.getClassLoader());
-
-        iniFiles = new HashMap<>();
-        applicationProperties = initPropertiesFile(Thread.currentThread().getContextClassLoader(), propertiesFile);
 
         resourcesPath = System.getProperty("resourcespath");
 

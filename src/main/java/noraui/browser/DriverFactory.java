@@ -157,7 +157,7 @@ public class DriverFactory {
         final LoggingPreferences logPrefs = new LoggingPreferences();
         logPrefs.enable(LogType.BROWSER, Level.ALL);
         capabilities.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
-        if (Context.getProxy().getProxyType() != ProxyType.UNSPECIFIED) {
+        if (Context.getProxy().getProxyType() != ProxyType.UNSPECIFIED && Context.getProxy().getProxyType() != ProxyType.AUTODETECT) {
             capabilities.setCapability(CapabilityType.PROXY, Context.getProxy());
         }
 
@@ -176,7 +176,7 @@ public class DriverFactory {
         capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
         capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
         capabilities.setJavascriptEnabled(true);
-        if (Context.getProxy().getProxyType() != ProxyType.UNSPECIFIED) {
+        if (Context.getProxy().getProxyType() != ProxyType.UNSPECIFIED && Context.getProxy().getProxyType() != ProxyType.AUTODETECT) {
             capabilities.setCapability(CapabilityType.PROXY, Context.getProxy());
         }
         return new HtmlUnitDriver(capabilities);

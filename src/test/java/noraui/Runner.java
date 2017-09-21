@@ -9,7 +9,8 @@ import cucumber.api.junit.Cucumber;
 import noraui.utils.Context;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(monochrome = true, glue = { "noraui.application.steps", "noraui.browser.steps" }, plugin = { "html:target/reports/html" }, features = { "src/test/resources" })
+@CucumberOptions(monochrome = true, glue = { "noraui.application.steps", "noraui.browser.steps" },
+        plugin = { "html:target/reports/html", "json:target/reports/json/report.json", "junit:target/reports/junit/report.xml" }, features = { "src/test/resources" })
 public class Runner {
 
     /**
