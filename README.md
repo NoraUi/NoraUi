@@ -74,8 +74,7 @@ SNAPSHOT:
 
 # License
 
-[![license](https://img.shields.io/github/license/NoraUi/NoraUi.svg)](https://github.com/NoraUi/NoraUi/blob/master/LICENSE)
-BSD, See LICENSE for details
+[![license](https://img.shields.io/github/license/NoraUi/NoraUi.svg)](https://github.com/NoraUi/NoraUi/blob/master/LICENSE), See LICENSE for details
 
 # Contributing
 
