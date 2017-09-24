@@ -5,6 +5,11 @@ Non-Regression Automation for User Interfaces
 
 [Public website for NoraUi (Non-Regression Automation for User Interfaces)](https://noraui.github.io/).
 
+# News 
+See [change log](https://noraui.github.io/changelog.txt) for details
+* 2017-09-??: NoraUi [3.0.0] is in progress.
+* 2017-09-21: NoraUi [2.6.3] is released.
+
 # Supported languages
 
 These are the currently supported languages
