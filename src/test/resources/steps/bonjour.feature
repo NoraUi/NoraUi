@@ -137,5 +137,5 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
 
   Exemples:
     #DATA
-    |id|author|zip|city|element|element2|date|
+    |id|author|zip|city|element|element2|date|title|
     #END
