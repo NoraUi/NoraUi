@@ -1,7 +1,7 @@
 @playToLogoGame 
 Feature: playToLogoGame (Scenario that plays logo game.) 
 
-	Scenario Outline: Scenario that plays logo game.
+  Scenario Outline: Scenario that plays logo game.
     Given I check that player '<player>' is not empty.
     Given I check that all brands '<DataJson>' are not prohibited
     
