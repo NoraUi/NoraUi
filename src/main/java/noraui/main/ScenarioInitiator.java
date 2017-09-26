@@ -38,8 +38,8 @@ public class ScenarioInitiator {
             logger.warn(Messages.getMessage(SCENARIO_INITIATOR_USAGE));
             String tags = System.getProperty("cucumber.options");
             if (tags != null && tags.contains("--tags")) {
-                tags = tags.replace("--tags @", "").replace("@", "").split(" ")[0];
-                for (final String s : tags.split(",")) {
+                tags = tags.replace("'", "").replace("--tags @", "").replace("@", "");
+                for (final String s : tags.split(" or ")) {
                     if (!s.startsWith("~")) {
                         processInjection(s);
                     }
@@ -79,7 +79,6 @@ public class ScenarioInitiator {
     private static void injectWithModel(String scenarioName, Class<Model> model) throws TechnicalException {
         try {
             final String[] headers = Context.getDataInputProvider().readLine(0, false);
-
             if (headers != null) {
                 final List<String[]> examples = new ArrayList<>();
                 final Constructor<Model> modelConstructor = DataUtils.getModelConstructor(model, headers);
