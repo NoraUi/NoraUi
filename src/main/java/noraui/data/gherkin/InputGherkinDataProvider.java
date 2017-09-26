@@ -88,7 +88,7 @@ public class InputGherkinDataProvider extends CommonDataProvider implements Data
             if (lineContent.length < 3) {
                 throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_EXPECTED_AT_LEAST_AN_ID_COLUMN_IN_EXAMPLES));
             }
-            return Arrays.copyOfRange(lineContent, 2, (readResult) ? lineContent.length + 1 : lineContent.length);
+            return Arrays.copyOfRange(lineContent, 2, readResult ? lineContent.length : lineContent.length - 1);
         }
         return null;
     }
