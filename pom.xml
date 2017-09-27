@@ -61,7 +61,7 @@
         <log4j.version>1.2.17</log4j.version>
         <powermock.version>1.6.5</powermock.version>
         <jsr305.version>3.0.0</jsr305.version>
-        <oracle.driver.version>12.1.0.2</oracle.driver.version>
+        <oracle.driver.version>12.2.0.1</oracle.driver.version>
         <postgres.driver.version>9.4.1212.jre7</postgres.driver.version>
         <mysql.driver.version>5.1.6</mysql.driver.version>
         <joda-time.version>2.9.7</joda-time.version>
@@ -109,21 +109,17 @@
             <layout>default</layout>
             <releases>
                 <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
             </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
     </repositories>
     
     <pluginRepositories>
 		<pluginRepository>
 			<id>maven.oracle.com</id>
-			<name>oracle-maven-repo</name>
 			<url>https://maven.oracle.com</url>
-			<layout>default</layout>
-			<releases>
-				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
-			</releases>
 		</pluginRepository>
 	</pluginRepositories>
 
@@ -272,8 +268,8 @@
 
         <!-- database drivers -->
         <dependency>
-            <groupId>com.oracle</groupId>
-            <artifactId>ojdbc7</artifactId>
+            <groupId>com.oracle.jdbc</groupId>
+            <artifactId>ojdbc8</artifactId>
             <version>${oracle.driver.version}</version>
         </dependency>
         <dependency>
