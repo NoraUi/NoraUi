@@ -103,7 +103,7 @@ public class MavenRunCounter {
             logger.info("Scenario: " + counter.getScenarioName() + " => step: " + counter.getNbStep() + " and cases: " + counter.getNbCas() + " -->  runs: " + counter.getRun() + ", failures: "
                     + counter.getFailures() + ", errors: 0 and skips: " + counter.getSkipped());
         }
-        logger.info("[" + type + "] > <EXPECTED_RESULTS_1>" + scenarios + " Scenarios (" + failures + " failed, " + (scenarios + failures) + " passed)</EXPECTED_RESULTS_1>");
+        logger.info("[" + type + "] > <EXPECTED_RESULTS_1>" + scenarios + " Scenarios (" + failures + " failed, " + (scenarios - failures) + " passed)</EXPECTED_RESULTS_1>");
         logger.info("[" + type + "] > <EXPECTED_RESULTS_2>" + (run - scenarios) + " Steps (" + failures + " failed, " + skipped + " skipped, " + (run - scenarios - failures - skipped)
                 + " passed)</EXPECTED_RESULTS_2>");
     }
@@ -222,7 +222,7 @@ public class MavenRunCounter {
             indexData.add(new DataIndex(i, index));
             final String resultColumn = Context.getDataInputProvider().readValue(Context.getDataInputProvider().getResultColumnName(), i);
             if (!"".equals(resultColumn)) {
-                failures += 2;
+                failures += 1;
                 skipped += nbStep - (int) Double.parseDouble(resultColumn);
             }
         }
