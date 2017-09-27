@@ -48,7 +48,6 @@ public class ScenarioInitiator {
                 logger.error(Messages.getMessage(SCENARIO_INITIATOR_ERROR_UNABLE_TO_GET_TAGS));
             }
         }
-
     }
 
     private static void processInjection(String scenarioName) {
