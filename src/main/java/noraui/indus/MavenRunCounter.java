@@ -99,7 +99,7 @@ public class MavenRunCounter {
             run += counter.getRun();
             failures += counter.getFailures();
             skipped += counter.getSkipped();
-            scenarios += counter.getNbStep();
+            scenarios += counter.getNbCas();
             logger.info("Scenario: " + counter.getScenarioName() + " => step: " + counter.getNbStep() + " and cases: " + counter.getNbCas() + " -->  runs: " + counter.getRun() + ", failures: "
                     + counter.getFailures() + ", errors: 0 and skips: " + counter.getSkipped());
         }
