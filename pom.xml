@@ -102,7 +102,30 @@
             <id>sonatype-releases</id>
             <url>https://oss.sonatype.org/content/repositories/releases</url>
         </repository>
+        <repository>
+            <id>maven.oracle.com</id>
+            <name>oracle-maven-repo</name>
+            <url>https://maven.oracle.com</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </releases>
+        </repository>
     </repositories>
+    
+    <pluginRepositories>
+		<pluginRepository>
+			<id>maven.oracle.com</id>
+			<name>oracle-maven-repo</name>
+			<url>https://maven.oracle.com</url>
+			<layout>default</layout>
+			<releases>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</releases>
+		</pluginRepository>
+	</pluginRepositories>
 
     <dependencies>
 
@@ -249,7 +272,7 @@
 
         <!-- database drivers -->
         <dependency>
-            <groupId>com.github.noraui</groupId>
+            <groupId>com.oracle</groupId>
             <artifactId>ojdbc7</artifactId>
             <version>${oracle.driver.version}</version>
         </dependency>
