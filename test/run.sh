@@ -73,7 +73,7 @@ counters2=$(sed -n 's:.*\[Excel\] > <EXPECTED_RESULTS_2>\(.*\)</EXPECTED_RESULTS
 nb_counters2=$(sed -n ":;s/$counters2//p;t" nonaui.log | sed -n '$=')
 
 # 3 = 1 (real) + 2 counters (Excel and CSV)
-if [ "$nb_counters1" == "3" && "$nb_counters2" == "3"]; then
+if [ "$nb_counters1" == "3" ] && [ "$nb_counters2" == "3" ]; then
     echo "******** All counter is SUCCESS"
 else
     echo "******** All counter is FAIL"
