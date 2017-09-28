@@ -104,15 +104,14 @@
         </repository>
         <repository>
             <id>maven.oracle.com</id>
-            <name>oracle-maven-repo</name>
-            <url>https://maven.oracle.com</url>
-            <layout>default</layout>
             <releases>
                 <enabled>true</enabled>
             </releases>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
+            <url>https://maven.oracle.com</url>
+            <layout>default</layout>
         </repository>
     </repositories>
     
