@@ -19,12 +19,6 @@ These are the currently supported languages
 
 Does NoraUi not support your language? Please help us with a PR!
 
-# Last features
-
-* ConsoleOutputDataProvider
-* GherkinInputDataProvider
-* Bug fixes
-
 # Continuous Integration status
 [![Build Status](https://travis-ci.org/NoraUi/NoraUi.svg?branch=master)](https://travis-ci.org/NoraUi/NoraUi)
 [![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.github.noraui:noraui)](https://sonarcloud.io/dashboard/index/com.github.noraui:noraui)
