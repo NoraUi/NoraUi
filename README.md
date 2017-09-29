@@ -5,6 +5,8 @@ Non-Regression Automation for User Interfaces
 
 [Public website for NoraUi (Non-Regression Automation for User Interfaces)](https://noraui.github.io/).
 
+[![Javadocs](https://javadoc.io/badge/com.github.noraui/noraui.svg)](https://noraui.github.io/NoraUi)
+
 # News 
 See [change log](https://noraui.github.io/changelog.txt) for details
 * 2017-09-??: NoraUi [3.0.0] is in progress.
@@ -18,12 +20,6 @@ These are the currently supported languages
 * French
 
 Does NoraUi not support your language? Please help us with a PR!
-
-# Last features
-
-* ConsoleOutputDataProvider
-* GherkinInputDataProvider
-* Bug fixes
 
 # Continuous Integration status
 [![Build Status](https://travis-ci.org/NoraUi/NoraUi.svg?branch=master)](https://travis-ci.org/NoraUi/NoraUi)
@@ -79,7 +75,7 @@ SNAPSHOT:
 
 # License
 
-[![license](https://img.shields.io/github/license/NoraUi/NoraUi.svg)](https://github.com/NoraUi/NoraUi/blob/master/LICENSE), See LICENSE for details
+[![license](https://img.shields.io/github/license/NoraUi/NoraUi.svg)](https://github.com/NoraUi/NoraUi/blob/master/LICENSE) See LICENSE for details
 
 # Contributing
 
@@ -88,4 +84,3 @@ The [issue tracker](https://github.com/NoraUi/NoraUi/issues) is the preferred ch
 For pull requests, editor preferences are available in the [editor config](.editorconfig) for easy use in common text editors. Read more and download plugins at <http://editorconfig.org>.
 
 ![footer](https://noraui.github.io/img/end.png)
-
