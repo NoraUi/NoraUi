@@ -42,7 +42,7 @@ echo "******** noraui-datas-webservices STARTED"
 # start NoraUi part =>
 cd $(dirname $0)
 cd ..
-mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package javadoc:javadoc sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=noraui -Dsonar.login=$SONAR_TOKEN -Dcucumber.options="--tags @hello,@bonjour,@blog,@playToLogoGame,@jouerAuJeuDesLogos" -PscenarioInitiator,javadoc,unit-tests --settings test/mvnsettings.xml -Dmaven.test.failure.ignore=true
+mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package javadoc:javadoc sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=noraui -Dsonar.login=$SONAR_TOKEN -Dcucumber.options="--tags '@hello or @bonjour or @blog or @playToLogoGame or @jouerAuJeuDesLogos'" -PscenarioInitiator,javadoc,unit-tests --settings test/mvnsettings.xml -Dmaven.test.failure.ignore=true
 
 #
 # kill Web Services (REST)
