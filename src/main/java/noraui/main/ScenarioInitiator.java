@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
@@ -36,14 +38,19 @@ public class ScenarioInitiator {
             processInjection(scenarioName);
         } else {
             logger.warn(Messages.getMessage(SCENARIO_INITIATOR_USAGE));
-            String tags = System.getProperty("cucumber.options");
-            if (tags != null && tags.contains("--tags")) {
-                tags = tags.replace("'", "").replace("--tags @", "").replace("@", "");
-                for (final String s : tags.split(" or ")) {
-                    if (!s.startsWith("~")) {
-                        processInjection(s);
+            
+            String cucumberOptions = System.getProperty("cucumber.options");
+            if (cucumberOptions != null && cucumberOptions.contains("--tags")) {
+                Matcher matcher = Pattern.compile(".*--tags '(.*)'.*").matcher(cucumberOptions);
+                if (matcher.find() && matcher.groupCount() > 0) {
+                    String tags = matcher.group(1).replace("not ", "").replace(")", "").replace("(", "").replace(" and ", " ").replace(" or ", " ").replace("@", "");
+                    for (final String s : tags.split(" ")) {
+                        if (!s.startsWith("~")) {
+                            processInjection(s);
+                        }
                     }
                 }
+
             } else {
                 logger.error(Messages.getMessage(SCENARIO_INITIATOR_ERROR_UNABLE_TO_GET_TAGS));
             }
