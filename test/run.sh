@@ -66,14 +66,19 @@ if [ "$nb_failure" != "" ]; then
     fi
 fi
 
-counters=$(sed -n 's:.*\[Excel\] > <EXPECTED_RESULTS>\(.*\)</EXPECTED_RESULTS>.*:\1:p' nonaui.log | head -n 1)
-nb_counters=$(sed -n ":;s/$counters//p;t" nonaui.log | sed -n '$=')
+counters1=$(sed -n 's:.*\[Excel\] > <EXPECTED_RESULTS_1>\(.*\)</EXPECTED_RESULTS_1>.*:\1:p' nonaui.log | head -n 1)
+nb_counters1=$(sed -n ":;s/$counters1//p;t" nonaui.log | sed -n '$=')
+
+counters2=$(sed -n 's:.*\[Excel\] > <EXPECTED_RESULTS_2>\(.*\)</EXPECTED_RESULTS_2>.*:\1:p' nonaui.log | head -n 1)
+nb_counters2=$(sed -n ":;s/$counters2//p;t" nonaui.log | sed -n '$=')
+
 # 3 = 1 (real) + 2 counters (Excel and CSV)
-if [ "$nb_counters" == "3" ]; then
+if [ "$nb_counters1" == "3" ] && [ "$nb_counters2" == "3" ]; then
     echo "******** All counter is SUCCESS"
 else
     echo "******** All counter is FAIL"
-    echo "$counters found $nb_counters times"
+    echo "$counters1 found $nb_counters1 times"
+    echo "$counters2 found $nb_counters2 times"
     pwd
     ls -l
     cat target/reports/html/index.html

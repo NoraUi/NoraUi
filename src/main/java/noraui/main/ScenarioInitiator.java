@@ -38,6 +38,7 @@ public class ScenarioInitiator {
             processInjection(scenarioName);
         } else {
             logger.warn(Messages.getMessage(SCENARIO_INITIATOR_USAGE));
+            
             String cucumberOptions = System.getProperty("cucumber.options");
             if (cucumberOptions != null && cucumberOptions.contains("--tags")) {
                 Matcher matcher = Pattern.compile(".*--tags '(.*)'.*").matcher(cucumberOptions);
@@ -54,7 +55,6 @@ public class ScenarioInitiator {
                 logger.error(Messages.getMessage(SCENARIO_INITIATOR_ERROR_UNABLE_TO_GET_TAGS));
             }
         }
-
     }
 
     private static void processInjection(String scenarioName) {
@@ -85,7 +85,6 @@ public class ScenarioInitiator {
     private static void injectWithModel(String scenarioName, Class<Model> model) throws TechnicalException {
         try {
             final String[] headers = Context.getDataInputProvider().readLine(0, false);
-
             if (headers != null) {
                 final List<String[]> examples = new ArrayList<>();
                 final Constructor<Model> modelConstructor = DataUtils.getModelConstructor(model, headers);

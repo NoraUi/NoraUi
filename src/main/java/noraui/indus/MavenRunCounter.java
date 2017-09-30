@@ -93,15 +93,19 @@ public class MavenRunCounter {
         int run = 0;
         int failures = 0;
         int skipped = 0;
+        int scenarios = 0;
         Collections.sort(counters, new Counter(""));
         for (final MavenRunCounter.Counter counter : counters) {
             run += counter.getRun();
             failures += counter.getFailures();
             skipped += counter.getSkipped();
+            scenarios += counter.getNbCas();
             logger.info("Scenario: " + counter.getScenarioName() + " => step: " + counter.getNbStep() + " and cases: " + counter.getNbCas() + " -->  runs: " + counter.getRun() + ", failures: "
                     + counter.getFailures() + ", errors: 0 and skips: " + counter.getSkipped());
         }
-        logger.info("[" + type + "] > <EXPECTED_RESULTS>Tests run: " + run + ", Failures: " + failures + ", Errors: 0, Skipped: " + skipped + "</EXPECTED_RESULTS>");
+        logger.info("[" + type + "] > <EXPECTED_RESULTS_1>" + scenarios + " Scenarios (" + failures + " failed, " + (scenarios - failures) + " passed)</EXPECTED_RESULTS_1>");
+        logger.info("[" + type + "] > <EXPECTED_RESULTS_2>" + (run - scenarios) + " Steps (" + failures + " failed, " + skipped + " skipped, " + (run - scenarios - failures - skipped)
+                + " passed)</EXPECTED_RESULTS_2>");
     }
 
     public static List<String> listFilesForFolder(final List<String> versionControlSystemsBlacklist, final File folder) {
@@ -218,7 +222,7 @@ public class MavenRunCounter {
             indexData.add(new DataIndex(i, index));
             final String resultColumn = Context.getDataInputProvider().readValue(Context.getDataInputProvider().getResultColumnName(), i);
             if (!"".equals(resultColumn)) {
-                failures += 2;
+                failures += 1;
                 skipped += nbStep - (int) Double.parseDouble(resultColumn);
             }
         }
@@ -242,7 +246,7 @@ public class MavenRunCounter {
                     final Integer wid = e.getValue().getIds().get(i);
                     final String resultColumn = Context.getDataInputProvider().readValue(Context.getDataInputProvider().getResultColumnName(), wid);
                     if (!"".equals(resultColumn)) {
-                        failures += 2;
+                        failures += 1;
                         skipped += nbStep - (int) Double.parseDouble(resultColumn);
                     }
                 }

@@ -1,7 +1,7 @@
 @hello 
 Feature: hello (Function to validate the environment.) 
 
-	Scenario Outline: Function to validate the environment.
+  Scenario Outline: Function to validate the environment.
     Given I check that author '<author>' is not empty.
     Given I check that city '<city>' is not empty.
     
@@ -42,7 +42,7 @@ Feature: hello (Function to validate the environment.)
     And I update radio list 'demo.DemoPage-rate' with 'day'.
     Then I update checkboxes and check radio list 'DEMO_HOME-agree' with 'yes':
         |yes|true|
-	      |no|false|
+        |no|false|
     
     And I save the value of 'demo.DemoPage-input_text_field'.
     
@@ -101,9 +101,9 @@ Feature: hello (Function to validate the environment.)
     And I check mandatory field 'demo.DemoPage-input_text_field' of type 'text'.
     
     And I update radio list 'demo.DemoPage-rate' with '<author>' from these values:
-      |Jenkins T1|week-end|
-      |Jenkins T2|night|
-      |Default|day|
+        |Jenkins T1|week-end|
+        |Jenkins T2|night|
+        |Default|day|
     
     Then I update checkbox 'demo.DemoPage-iagree' with 'true'.
     Then I update checkbox 'demo.DemoPage-iagree' with 'true'?
@@ -137,12 +137,12 @@ Feature: hello (Function to validate the environment.)
   Examples:
     #DATA
     |id|author|zip|city|element|element2|date|title|
-    |1|Jenkins T1|35000|Rennes|smile|smile|16/01/2020|||
-    |2|Jenkins T2|75000|Paris|smile|smile||||
-    |3|Jenkins T3|56100|Lorient|smile|smile||||
-    |4|Jenkins T4|35000|Rennes|smile|smile||||
-    |5|Jenkins T5|35000|Rennes|noExistElement|noExistElement||||
-    |6|Jenkins T6|35000||smile|smile||||
-    |7|Jenkins T7|35000|Rennes||||||
-    |8|Jenkins T8||Rennes|smile|smile||||
+    |1|Jenkins T1|35000|Rennes|smile|smile|16/01/2020||
+    |2|Jenkins T2|75000|Paris|smile|smile|||
+    |3|Jenkins T3|56100|Lorient|smile|smile|||
+    |4|Jenkins T4|35000|Rennes|smile|smile|||
+    |5|Jenkins T5|35000|Rennes|noExistElement|noExistElement|||
+    |6|Jenkins T6|35000||smile|smile|||
+    |7|Jenkins T7|35000|Rennes|||||
+    |8|Jenkins T8||Rennes|smile|smile|||
     #END

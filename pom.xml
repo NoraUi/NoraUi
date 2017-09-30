@@ -5,7 +5,7 @@
 
     <groupId>com.github.noraui</groupId>
     <artifactId>noraui</artifactId>
-    <version>2.6.3</version>
+    <version>3.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>NORAUI</name>
@@ -41,14 +41,14 @@
         <connection>scm:git:git://github.com/NoraUi/NoraUi.git</connection>
         <developerConnection>scm:git:git@github.com:NoraUi/NoraUi.git</developerConnection>
         <url>git://github.com/NoraUi/NoraUi.git</url>
-        <tag>v2.6.1</tag>
+        <tag>v3.0.0</tag>
     </scm>
 
     <properties>
         <cucumber.options>--tags @TOSPECIFY</cucumber.options>
         <jenkinsresourcespath>src/test/resources</jenkinsresourcespath>
         <excelfilename>@TOSPECIFY</excelfilename>
-        <cucumber.version>1.2.5</cucumber.version>
+        <cucumber.version>2.0.1</cucumber.version>
         <selenium.version>3.4.0</selenium.version>
         <phantomjsdriver.version>1.4.3</phantomjsdriver.version>
         <htmlunit.version>2.26</htmlunit.version>
@@ -126,17 +126,12 @@
 
         <!-- cucumber -->
         <dependency>
-            <groupId>info.cukes</groupId>
-            <artifactId>cucumber-core</artifactId>
-            <version>${cucumber.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>info.cukes</groupId>
+            <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
             <version>${cucumber.version}</version>
         </dependency>
         <dependency>
-            <groupId>info.cukes</groupId>
+            <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit</artifactId>
             <version>${cucumber.version}</version>
         </dependency>
