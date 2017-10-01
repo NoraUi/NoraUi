@@ -12,7 +12,7 @@ See [change log](https://noraui.github.io/changelog.txt) for details
 * 2017-09-??: NoraUi [3.0.0] is in progress.
 * 2017-09-21: NoraUi [2.6.3] is released.
 
-# how to migrate from [2.x.x] to [3.x.x]
+# How to migrate from [2.x.x] to [3.x.x]
 
 * -Dcucumber.options="--tags '@tag1 or @tag2 or @tag3 or @tag4'"
 * NoraUi use Oracle Jdbc Driver
