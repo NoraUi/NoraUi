@@ -68,13 +68,13 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
     
     Alors Si '' matche '', je fais '2' fois:
         |key|step|expected|actual|
-        |1|J'attends '3' seconds.|1|1|
-        |2|J'attends '4' seconds.|1|2|
+        |1|J'attends '3' secondes.|1|1|
+        |2|J'attends '4' secondes.|1|2|
     
     Alors Si '' matche '', je fais jusqu'à 'myOutLoopKey' respecte 'Rennes' avec '4' essais maxi: 
         |key|step|expected|actual|
-        |1|J'attends '3' seconds.|1|1|
-        |2|J'attends '4' seconds.|1|2|
+        |1|J'attends '3' secondes.|1|1|
+        |2|J'attends '4' secondes.|1|2|
         |3|Je met à jour la liste déroulante 'demo.DemoPage-input_select_field' avec '<city>'|||
         |4|Je sauvegarde la valeur de 'demo.DemoPage-input_select_field' dans la clé 'myOutLoopKey' du contexte.|||
 
