@@ -5,10 +5,8 @@ import java.util.Arrays;
 
 import noraui.data.CommonDataProvider;
 import noraui.data.DataInputProvider;
-import noraui.data.DataProvider;
 import noraui.exception.TechnicalException;
 import noraui.exception.data.EmptyDataFileContentException;
-import noraui.exception.data.WrongDataFileFormatException;
 import noraui.gherkin.GherkinFactory;
 import noraui.model.Model;
 import noraui.utils.Messages;
@@ -37,7 +35,7 @@ public class InputGherkinDataProvider extends CommonDataProvider implements Data
         examples = GherkinFactory.getExamples(scenario);
         try {
             initColumns();
-        } catch (EmptyDataFileContentException | WrongDataFileFormatException e) {
+        } catch (EmptyDataFileContentException e) {
             logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION), e);
             System.exit(-1);
         }
@@ -101,7 +99,7 @@ public class InputGherkinDataProvider extends CommonDataProvider implements Data
         return null;
     }
 
-    private void initColumns() throws EmptyDataFileContentException, WrongDataFileFormatException {
+    private void initColumns() throws EmptyDataFileContentException {
         columns = new ArrayList<>();
         if (examples.length > 1) {
             final String[] cols = examples[0].split("\\|", -1);
@@ -116,7 +114,7 @@ public class InputGherkinDataProvider extends CommonDataProvider implements Data
         }
         resultColumnName = columns.get(columns.size() - 1);
         if (!isResultColumnNameAuthorized(resultColumnName)) {
-            resultColumnName = DataProvider.AUTHORIZED_NAMES_FOR_RESULT_COLUMN.get(0);
+            resultColumnName = AUTHORIZED_NAMES_FOR_RESULT_COLUMN.get(0);
         }
     }
 }

@@ -125,7 +125,7 @@ public abstract class CommonDataProvider implements DataProvider {
      */
     @Override
     public boolean isResultColumnNameAuthorized(String name) {
-        return DataProvider.AUTHORIZED_NAMES_FOR_RESULT_COLUMN.contains(name);
+        return AUTHORIZED_NAMES_FOR_RESULT_COLUMN.contains(name);
     }
 
     private Set<Class<?>> getClasses(String packageName) {

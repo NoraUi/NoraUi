@@ -69,7 +69,6 @@ public class CucumberHooks {
                 + String.valueOf(Context.getDataInputProvider().getNbGherkinExample()).length() + String.valueOf(Context.getNbFailure()).length() + String.valueOf(Context.getNbWarning()).length()
                 + String.valueOf(remainingTime).length();
 
-        // String message = "* Scénario: %s étape %s sur %s avec %s erreur(s) et %s alerte(s). Il reste %ss *";
         String message = Messages.getMessage(PROGRESS_MESSAGE);
         for (int i = 0; i < message.length() - 12 + width; i++) {
             star.append("*");

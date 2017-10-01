@@ -13,7 +13,7 @@ public interface DataProvider {
         EXCEL, CSV, DB, REST, GHERKIN, CONSOLE
     }
 
-    public static final ArrayList<String> AUTHORIZED_NAMES_FOR_RESULT_COLUMN = new ArrayList<String>(Arrays.asList(new String[] { "Résultat", "Result" }));
+    final List<String> AUTHORIZED_NAMES_FOR_RESULT_COLUMN = new ArrayList<>(Arrays.asList("Résultat", "Result"));
 
     void prepare(String scenario) throws TechnicalException;
 

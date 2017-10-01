@@ -12,7 +12,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
@@ -22,13 +21,11 @@ import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFFormulaEvaluator;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import noraui.data.CommonDataProvider;
 import noraui.data.DataInputProvider;
 import noraui.data.DataOutputProvider;
-import noraui.data.DataProvider;
 import noraui.exception.TechnicalException;
 import noraui.exception.data.EmptyDataFileContentException;
 import noraui.exception.data.WrongDataFileFormatException;
@@ -154,8 +151,7 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
         }
         resultColumnName = columns.get(columns.size() - 1);
         if (!isResultColumnNameAuthorized(resultColumnName)) {
-            throw new WrongDataFileFormatException(
-                    String.format(Messages.getMessage(WrongDataFileFormatException.WRONG_RESULT_COLUMN_NAME_ERROR_MESSAGE), DataProvider.AUTHORIZED_NAMES_FOR_RESULT_COLUMN));
+            throw new WrongDataFileFormatException(String.format(Messages.getMessage(WrongDataFileFormatException.WRONG_RESULT_COLUMN_NAME_ERROR_MESSAGE), AUTHORIZED_NAMES_FOR_RESULT_COLUMN));
         }
     }
 
@@ -166,21 +162,7 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
     protected void openInputData() throws TechnicalException {
         final String dataInExtension = validExtension(dataInPath);
         try (FileInputStream fileIn = new FileInputStream(dataInPath + scenarioName + "." + dataInExtension);) {
-            // Check extension
-            switch (dataInExtension) {
-                case "xlsx":
-                    workbook = new XSSFWorkbook(fileIn);
-                    XSSFFormulaEvaluator.evaluateAllFormulaCells((XSSFWorkbook) workbook);
-                    break;
-                case "xlsm":
-                    workbook = new XSSFWorkbook(fileIn);
-                    XSSFFormulaEvaluator.evaluateAllFormulaCells((XSSFWorkbook) workbook);
-                    break;
-                case "xls":
-                    workbook = new HSSFWorkbook(fileIn);
-                    HSSFFormulaEvaluator.evaluateAllFormulaCells(workbook);
-                    break;
-            }
+            initWorkbook(fileIn, dataInExtension);
         } catch (final IOException e) {
             throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION), e);
         }
@@ -192,18 +174,8 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
      */
     void openOutputData() throws TechnicalException {
         this.dataOutExtension = validExtension(dataOutPath);
-        try (FileInputStream fileOut = new FileInputStream(dataOutPath + scenarioName + "." + this.dataOutExtension);) {
-            switch (this.dataOutExtension) {
-                case "xlsx":
-                    workbook = new XSSFWorkbook(fileOut);
-                    break;
-                case "xlsm":
-                    workbook = new XSSFWorkbook(fileOut);
-                    break;
-                case "xls":
-                    workbook = new HSSFWorkbook(fileOut);
-                    break;
-            }
+        try (FileInputStream fileOut = new FileInputStream(dataOutPath + scenarioName + "." + dataOutExtension);) {
+            initWorkbook(fileOut, dataOutExtension);
         } catch (final IOException e) {
             throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION), e);
         }
@@ -222,6 +194,22 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
         final Font fontWarning = workbook.createFont();
         fontWarning.setColor(HSSFColor.ORANGE.index);
         styleWarning.setFont(fontWarning);
+    }
+
+    private void initWorkbook(FileInputStream stream, String extension) throws IOException {
+        switch (extension) {
+            case "xlsx":
+                workbook = new XSSFWorkbook(stream);
+                break;
+            case "xlsm":
+                workbook = new XSSFWorkbook(stream);
+                break;
+            case "xls":
+                workbook = new HSSFWorkbook(stream);
+                break;
+            default:
+                throw new IOException();
+        }
     }
 
     /**

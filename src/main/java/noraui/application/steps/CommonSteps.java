@@ -579,7 +579,7 @@ public class CommonSteps extends Step {
      * @param fieldName
      *            Name of the field to check (see .ini file)
      * @param type
-     *            Type of the field ('text', 'select'...)
+     *            Type of the field ('text', 'select'...). Only 'text' is implemented for the moment!
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
@@ -593,17 +593,14 @@ public class CommonSteps extends Step {
     @Then("I check mandatory field '(.*)-(.*)' of type '(.*)'[\\.|\\?]")
     public void checkMandatoryField(String page, String fieldName, String type, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         PageElement pageElement = Page.getInstance(page).getPageElementByKey('-' + fieldName);
-        switch (type) {
-            case "text":
-                if (!checkMandatoryTextField(pageElement)) {
-                    new Result.Failure<>(pageElement, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_EMPTY_MANDATORY_FIELD), pageElement, pageElement.getPage().getApplication()), true,
-                            pageElement.getPage().getCallBack());
-                }
-                break;
-            default:
-                new Result.Failure<>(type, Messages.format(Messages.getMessage(Messages.SCENARIO_ERROR_MESSAGE_TYPE_NOT_IMPLEMENTED), type, "checkMandatoryField"), false,
+        if ("text".equals(type)) {
+            if (!checkMandatoryTextField(pageElement)) {
+                new Result.Failure<>(pageElement, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_EMPTY_MANDATORY_FIELD), pageElement, pageElement.getPage().getApplication()), true,
                         pageElement.getPage().getCallBack());
-                break;
+            }
+        } else {
+            new Result.Failure<>(type, Messages.format(Messages.getMessage(Messages.SCENARIO_ERROR_MESSAGE_TYPE_NOT_IMPLEMENTED), type, "checkMandatoryField"), false,
+                    pageElement.getPage().getCallBack());
         }
 
     }

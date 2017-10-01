@@ -840,6 +840,7 @@ public class Step implements IStep {
             for (int i = 0; i < expecteds.length; i++) {
                 stepConditions.add(new GherkinStepCondition(loopedStep.getKey(), expecteds[i], actuals[i]));
             }
+            boolean found = false;
             for (Entry<String, Method> elem : Context.getCucumberMethods().entrySet()) {
                 Matcher matcher = Pattern.compile("value=(.*)\\)").matcher(elem.getKey());
                 if (matcher.find()) {
@@ -865,13 +866,17 @@ public class Step implements IStep {
                             }
                         }
                         try {
+                            found = true;
                             elem.getValue().invoke(NoraUiInjector.getNoraUiInjectorSource().getInstance(elem.getValue().getDeclaringClass()), tab);
+                            break;
                         } catch (Exception e) {
                             throw new TechnicalException("\"" + loopedStep.getStep() + "\"", e.getCause());
                         }
                     }
-                    // TODO renvoyer une technical exception si pas de mapping de la step.
                 }
+            }
+            if (!found) {
+                throw new TechnicalException(String.format(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_STEP_UNDEFINED), loopedStep.getStep()));
             }
         }
     }

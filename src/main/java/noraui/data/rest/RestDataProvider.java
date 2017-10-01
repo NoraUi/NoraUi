@@ -10,7 +10,6 @@ import org.springframework.web.client.RestTemplate;
 import noraui.data.CommonDataProvider;
 import noraui.data.DataInputProvider;
 import noraui.data.DataOutputProvider;
-import noraui.data.DataProvider;
 import noraui.exception.TechnicalException;
 import noraui.exception.data.EmptyDataFileContentException;
 import noraui.exception.data.WebServicesException;
@@ -20,8 +19,9 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
 
     private static final String REST_DATA_PROVIDER_USED = "REST_DATA_PROVIDER_USED";
     private static final String REST_DATA_PROVIDER_WRITING_IN_REST_WS_ERROR_MESSAGE = "REST_DATA_PROVIDER_WRITING_IN_REST_WS_ERROR_MESSAGE";
-
     private static final String NORAUI_API = "/noraui/api/";
+    private static final String COLUMN = "/column/";
+    private static final String LINE = "/line/";
 
     private final String norauiWebServicesApi;
 
@@ -118,7 +118,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
      */
     @Override
     public String readValue(String column, int line) {
-        final String uri = this.norauiWebServicesApi + scenarioName + "/column/" + (columns.indexOf(column) + 1) + "/line/" + line;
+        final String uri = this.norauiWebServicesApi + scenarioName + COLUMN + (columns.indexOf(column) + 1) + LINE + line;
         final ResponseEntity<String> entity = restTemplate.getForEntity(uri, String.class);
         if (HttpStatus.NO_CONTENT.equals(entity.getStatusCode())) {
             return "";
@@ -132,7 +132,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
     @Override
     public String[] readLine(int line, boolean readResult) {
         logger.debug("readLine at line " + line);
-        final String uri = this.norauiWebServicesApi + scenarioName + "/line/" + line;
+        final String uri = this.norauiWebServicesApi + scenarioName + LINE + line;
         final Row row = restTemplate.getForObject(uri, DataModel.class).getRows().get(0);
         final List<String> l = row.getColumns();
         final String[] response = l.toArray(new String[l.size() + 1]);
@@ -143,7 +143,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
     private void initColumns() throws EmptyDataFileContentException {
         final String uri = this.norauiWebServicesApi + scenarioName + "/columns";
         columns = restTemplate.getForObject(uri, DataModel.class).getColumns();
-        resultColumnName = DataProvider.AUTHORIZED_NAMES_FOR_RESULT_COLUMN.get(0);
+        resultColumnName = AUTHORIZED_NAMES_FOR_RESULT_COLUMN.get(0);
         columns.add(resultColumnName);
         if (columns.size() < 2) {
             throw new EmptyDataFileContentException(Messages.getMessage(EmptyDataFileContentException.EMPTY_DATA_FILE_CONTENT_ERROR_MESSAGE));
@@ -153,7 +153,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
     private void writeValue(String column, int line, String value) {
         logger.debug("Writing: " + value + " at line " + line + " in column '" + column + "'");
         final int colIndex = columns.indexOf(column);
-        final String uri = this.norauiWebServicesApi + scenarioName + "/column/" + colIndex + "/line/" + line;
+        final String uri = this.norauiWebServicesApi + scenarioName + COLUMN + colIndex + LINE + line;
         final DataModel dataModel = restTemplate.patchForObject(uri, value, DataModel.class);
         if (resultColumnName.equals(column)) {
             if (value.equals(dataModel.getRows().get(line - 1).getResult())) {

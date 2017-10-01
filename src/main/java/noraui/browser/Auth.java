@@ -23,7 +23,7 @@ public class Auth {
 
     public static final String PASSWORD = "password";
 
-    public static enum authenticationTypes {
+    public enum authenticationTypes {
         BASIC
     }
 

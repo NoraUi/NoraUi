@@ -9,7 +9,7 @@ import noraui.exception.TechnicalException;
 
 public class Messages {
 
-    private static ResourceBundle messages = null;
+    private static ResourceBundle messagesBundle = null;
 
     private static final String FAIL_MESSAGE_FORMAT_STRING = "FAIL_MESSAGE_FORMAT_STRING";
 
@@ -99,13 +99,13 @@ public class Messages {
     }
 
     public static String getMessage(String key) {
-        if (messages == null) {
+        if (messagesBundle == null) {
             if (Context.getLocale() == null) {
                 return ResourceBundle.getBundle("i18n/messages", Locale.getDefault()).getString(key);
             }
-            messages = ResourceBundle.getBundle("i18n/messages", Context.getLocale());
+            messagesBundle = ResourceBundle.getBundle("i18n/messages", Context.getLocale());
         }
-        return messages.getString(key);
+        return messagesBundle.getString(key);
     }
 
     /**
