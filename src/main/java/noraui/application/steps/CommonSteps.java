@@ -346,7 +346,7 @@ public class CommonSteps extends Step {
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} or {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_RETRIEVE_VALUE}
      */
     @Conditioned
-    @Et("Je sauvegarde la valeur de '(.*)' dans la clé '(.*)' du contexte[\\.|\\?]")
+    @Et("Je sauvegarde la valeur de '(.*)-(.*)' dans la clé '(.*)' du contexte[\\.|\\?]")
     @And("I save the value of '(.*)-(.*)' in '(.*)' context key[\\.|\\?]")
     public void saveValue(String page, String field, String targetKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         saveElementValue('-' + field, targetKey, Page.getInstance(page));
@@ -486,7 +486,7 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Quand("Je met à jour la date '(.*)-(.*)' avec une '(.*)' date '(.*)'[\\.|\\?]")
+    @Quand("Je mets à jour la date '(.*)-(.*)' avec une '(.*)' date '(.*)'[\\.|\\?]")
     @When("I update date '(.*)-(.*)' with a '(.*)' date '(.*)'[\\.|\\?]")
     public void updateDate(String page, String elementName, String dateType, String dateOrKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         String date = Context.getValue(dateOrKey) != null ? Context.getValue(dateOrKey) : dateOrKey;
@@ -518,7 +518,7 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Quand("Je met à jour la liste déroulante '(.*)-(.*)' avec '(.*)'[\\.|\\?]")
+    @Quand("Je mets à jour la liste déroulante '(.*)-(.*)' avec '(.*)'[\\.|\\?]")
     @When("I update select list '(.*)-(.*)' with '(.*)'[\\.|\\?]")
     public void updateList(String page, String elementName, String textOrKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         updateList(Page.getInstance(page).getPageElementByKey('-' + elementName), textOrKey);
@@ -542,7 +542,7 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Quand("Je met à jour le texte '(.*)-(.*)' avec '(.*)'[\\.|\\?]")
+    @Quand("Je mets à jour le texte '(.*)-(.*)' avec '(.*)'[\\.|\\?]")
     @When("I update text '(.*)-(.*)' with '(.*)'[\\.|\\?]")
     public void updateText(String page, String elementName, String textOrKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         updateText(Page.getInstance(page).getPageElementByKey('-' + elementName), textOrKey);
@@ -565,7 +565,7 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Quand("Je met à jour le texte '(.*)-(.*)' et entre ENTRER avec '(.*)'[\\.|\\?]")
+    @Quand("Je mets à jour le texte '(.*)-(.*)' et entre ENTRER avec '(.*)'[\\.|\\?]")
     @When("I update text '(.*)-(.*)' and type ENTER with '(.*)'[\\.|\\?]")
     public void updateTextAndEnter(String page, String elementName, String textOrKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         updateText(Page.getInstance(page).getPageElementByKey('-' + elementName), textOrKey, Keys.ENTER);
@@ -785,7 +785,7 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Et("Je met à jour la liste radio '(.*)-(.*)' avec '(.*)'[\\.|\\?]")
+    @Et("Je mets à jour la liste radio '(.*)-(.*)' avec '(.*)'[\\.|\\?]")
     @And("I update radio list '(.*)-(.*)' with '(.*)'[\\.|\\?]")
     public void updateRadioList(String page, String elementName, String valueOrKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         updateRadioList(Page.getInstance(page).getPageElementByKey('-' + elementName), valueOrKey);
@@ -808,7 +808,7 @@ public class CommonSteps extends Step {
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    @Et("Je met à jour la liste radio '(.*)-(.*)' avec '(.*)' à partir de ces valeurs:")
+    @Et("Je mets à jour la liste radio '(.*)-(.*)' avec '(.*)' à partir de ces valeurs:")
     @And("I update radio list '(.*)-(.*)' with '(.*)' from these values:")
     public void updateRadioList(String page, String elementName, String valueKeyOrKey, Map<String, String> printedValues) throws TechnicalException, FailureException {
         updateRadioList(Page.getInstance(page).getPageElementByKey('-' + elementName), valueKeyOrKey, printedValues);
@@ -831,7 +831,7 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Lorsque("Je met à jour la case à cocher '(.*)-(.*)' avec '(.*)'[\\.|\\?]")
+    @Lorsque("Je mets à jour la case à cocher '(.*)-(.*)' avec '(.*)'[\\.|\\?]")
     @Then("I update checkbox '(.*)-(.*)' with '(.*)'[\\.|\\?]")
     public void selectCheckbox(String page, String elementKey, boolean value, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         selectCheckbox(Page.getInstance(page).getPageElementByKey('-' + elementKey), value);
@@ -853,7 +853,7 @@ public class CommonSteps extends Step {
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    @Lorsque("Je met à jour la case à cocher '(.*)-(.*)' avec '(.*)' à partir de ces valeurs:")
+    @Lorsque("Je mets à jour la case à cocher '(.*)-(.*)' avec '(.*)' à partir de ces valeurs:")
     @Then("I update checkbox '(.*)-(.*)' with '(.*)' from these values:")
     public void selectCheckbox(String page, String elementKey, String value, Map<String, Boolean> values) throws TechnicalException, FailureException {
         selectCheckbox(Page.getInstance(page).getPageElementByKey('-' + elementKey), value, values);

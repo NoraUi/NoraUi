@@ -33,15 +33,15 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
     Lorsque moi un chat, s'il vous plaît, meilleures salutations '<author>'.
     
     Quand Je clarifie le texte dans 'demo.DemoPage-input_text_field'.
-    Quand Je met à jour le texte 'demo.DemoPage-input_text_field' avec '<author>'.
-    Quand Je met à jour le texte 'demo.DemoPage-input_text_field' et entre ENTRER avec '<author>'.
+    Quand Je mets à jour le texte 'demo.DemoPage-input_text_field' avec '<author>'.
+    Quand Je mets à jour le texte 'demo.DemoPage-input_text_field' et entre ENTRER avec '<author>'.
     Et Je vérifie le champ obligatoire 'demo.DemoPage-input_text_field' de type 'text'.
     Et Je vérifie le texte 'demo.DemoPage-input_text_field' avec '<author>'.
-    Quand Je met à jour la liste déroulante 'demo.DemoPage-input_select_field' avec '<city>'.
-    Alors Je met à jour la date 'demo.DemoPage-input_text_field' avec une 'future' date '<date>'.
+    Quand Je mets à jour la liste déroulante 'demo.DemoPage-input_select_field' avec '<city>'.
+    Alors Je mets à jour la date 'demo.DemoPage-input_text_field' avec une 'future' date '<date>'.
     
-    Et Je met à jour la liste radio 'demo.DemoPage-rate' avec 'day'.
-    Alors Je met à jour les checkboxes et vérifie la liste radio 'DEMO_HOME-agree' avec 'yes':
+    Et Je mets à jour la liste radio 'demo.DemoPage-rate' avec 'day'.
+    Alors Je mets à jour les checkboxes et vérifie la liste radio 'DEMO_HOME-agree' avec 'yes':
         |yes|true|
         |no|false|
     
@@ -75,7 +75,7 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
         |key|step|expected|actual|
         |1|J'attends '3' secondes.|1|1|
         |2|J'attends '4' secondes.|1|2|
-        |3|Je met à jour la liste déroulante 'demo.DemoPage-input_select_field' avec '<city>'|||
+        |3|Je mets à jour la liste déroulante 'demo.DemoPage-input_select_field' avec '<city>'.|||
         |4|Je sauvegarde la valeur de 'demo.DemoPage-input_select_field' dans la clé 'myOutLoopKey' du contexte.|||
 
     Lorsque Si '<author>' matche '.+', je fais jusqu'à 'demo.DemoPage-big_title' respecte 'This is a demo for NORAUI.*' avec '3' essais maxi:
@@ -98,22 +98,22 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
     Et Je vérifie que 'demo.DemoPage-display_none_title' n'est pas visible.
 
     Quand Je clarifie le texte dans 'demo.DemoPage-input_text_field'.
-    Quand Je met à jour le texte 'demo.DemoPage-input_text_field' et entre ENTRER avec '<zip>'.
+    Quand Je mets à jour le texte 'demo.DemoPage-input_text_field' et entre ENTRER avec '<zip>'.
     Et Je vérifie le champ obligatoire 'demo.DemoPage-input_text_field' de type 'text'.
 
-    Et Je met à jour la liste radio 'demo.DemoPage-rate' avec '<author>' à partir de ces valeurs:
+    Et Je mets à jour la liste radio 'demo.DemoPage-rate' avec '<author>' à partir de ces valeurs:
       |Jenkins T1|week-end|
       |Jenkins T2|night|
       |Default|day|
       
-    Lorsque Je met à jour la case à cocher 'demo.DemoPage-iagree' avec 'true'.
-    Lorsque Je met à jour la case à cocher 'demo.DemoPage-iagree' avec 'true'?
+    Lorsque Je mets à jour la case à cocher 'demo.DemoPage-iagree' avec 'true'.
+    Lorsque Je mets à jour la case à cocher 'demo.DemoPage-iagree' avec 'true'?
         |key|expected|actual|
         |wid|.+|<author>|
-    Lorsque Je met à jour la case à cocher 'demo.DemoPage-iagree' avec 'yes' à partir de ces valeurs:
+    Lorsque Je mets à jour la case à cocher 'demo.DemoPage-iagree' avec 'yes' à partir de ces valeurs:
         |yes|true|
         |Default|false|
-    Lorsque Je met à jour la case à cocher 'demo.DemoPage-iagree' avec '<author>' à partir de ces valeurs:
+    Lorsque Je mets à jour la case à cocher 'demo.DemoPage-iagree' avec '<author>' à partir de ces valeurs:
         |Jenkins T1|true|
         |Default|false| 
 
@@ -130,7 +130,7 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
     Quand Je passe à la fenêtre 'demo'.
 
     Quand Je clarifie le texte dans 'demo.DemoPage-input_text_field'.
-    Quand Je met à jour le texte 'demo.DemoPage-input_text_field' avec '01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789'.
+    Quand Je mets à jour le texte 'demo.DemoPage-input_text_field' avec '01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789'.
     Et Je vérifie le texte 'demo.DemoPage-input_text_field' avec '01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789'.
 
     Et Je retourne vers 'DEMO_HOME'

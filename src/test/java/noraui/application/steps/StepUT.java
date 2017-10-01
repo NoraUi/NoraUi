@@ -351,7 +351,7 @@ public class StepUT {
     }
 
     @Test
-    public void testRunAllStepsInLoop() {
+    public void testRunAllStepsInLoopWithUndefinedStep() {
         final List<GherkinConditionedLoopedStep> steps = new ArrayList<>();
         final String expected = ".+;(ETS Backbone VLAN LL2048K\\|ETS Accès L2ETH\\|Accès XDSL ETS\\|Backbone VLAN Virtuelle)";
         final String actual = "VPNtechnique;OSC_ACC-resource_type";
@@ -360,9 +360,13 @@ public class StepUT {
         steps.add(gherkinConditionedLoopedStep);
         try {
             step.runAllStepsInLoop(steps);
+            Assert.fail("TechnicalException should have been thrown");
         } catch (final TechnicalException e) {
-            Assert.assertFalse("Error", true);
+            Assert.assertEquals(e.getMessage(), String.format(Messages.getMessage("TECHNICAL_ERROR_STEP_UNDEFINED"), "I wait '4' seconds."));
         }
     }
+
+    // TODO ajouter un test sur les loop en lancant une méthode qui existe dans le liste getCucumberMethods().
+    // Cela nécessite une initialisation complexe
 
 }

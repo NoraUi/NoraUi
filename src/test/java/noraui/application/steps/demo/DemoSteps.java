@@ -19,7 +19,7 @@ public class DemoSteps extends Step {
         this.demoPage = (DemoPage) Page.getInstance(DemoPage.class);
     }
 
-    @Alors("Je met à jour les checkboxes et vérifie la liste radio 'DEMO_HOME(.*)' avec '(.*)':")
+    @Alors("Je mets à jour les checkboxes et vérifie la liste radio 'DEMO_HOME(.*)' avec '(.*)':")
     @Then("I update checkboxes and check radio list 'DEMO_HOME(.*)' with '(.*)':")
     public void selectCheckbox(String elementKey, String valueKey, Map<String, Boolean> values) throws TechnicalException, FailureException {
         selectCheckbox(demoPage.getPageElementByKey(elementKey), true);

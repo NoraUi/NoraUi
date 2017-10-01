@@ -917,9 +917,7 @@ public class Step implements IStep {
         for (Class<?> c : classes) {
             Method[] methods = c.getDeclaredMethods();
             for (Method method : methods) {
-                Annotation[] annotations = method.getAnnotations();
-                if (annotations.length > 0) {
-                    Annotation stepAnnotation = annotations[annotations.length - 1];
+                for (Annotation stepAnnotation : method.getAnnotations()) {
                     if (stepAnnotation.annotationType().isAnnotationPresent(StepDefAnnotation.class)) {
                         result.put(stepAnnotation.toString(), method);
                     }
