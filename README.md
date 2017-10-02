@@ -12,6 +12,13 @@ See [change log](https://noraui.github.io/changelog.txt) for details
 * 2017-09-??: NoraUi [3.0.0] is in progress.
 * 2017-09-21: NoraUi [2.6.3] is released.
 
+# How to migrate from [2.x.x] to [3.x.x]
+
+* -Dcucumber.options="--tags '@tag1 or @tag2 or @tag3 or @tag4'"
+* NoraUi use Oracle Jdbc Driver
+1. if you use Oracle Db provider, configure your env with OTN: Sample(https://github.com/sgrillon14/MavenSampleOracleJdbc)
+2. if you do not use Oracle Db provider, remove com.oracle.jdbc:ojdbc8 dependency
+
 # Supported languages
 
 These are the currently supported languages
@@ -50,7 +57,7 @@ SNAPSHOT:
 <dependency>
     <groupId>com.github.noraui</groupId>
     <artifactId>noraui</artifactId>
-    <version>2.6.2-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
 </dependency>
 ```
 
