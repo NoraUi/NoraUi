@@ -103,7 +103,7 @@
             <url>https://oss.sonatype.org/content/repositories/releases</url>
         </repository>
         <repository>
-            <id>maven.oracle.com</id>
+            <id>xxx-maven.oracle.com</id>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -117,7 +117,7 @@
     
     <pluginRepositories>
 		<pluginRepository>
-			<id>maven.oracle.com</id>
+			<id>xxx-maven.oracle.com</id>
 			<url>https://maven.oracle.com</url>
 		</pluginRepository>
 	</pluginRepositories>
