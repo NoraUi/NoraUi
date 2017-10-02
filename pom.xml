@@ -116,6 +116,10 @@
     </repositories>
     
     <pluginRepositories>
+        <pluginRepository>
+            <id>sonatype-releases</id>
+            <url>https://oss.sonatype.org/content/repositories/releases</url>
+        </pluginRepository>
 		<pluginRepository>
 			<id>maven.oracle.com</id>
 			<url>https://maven.oracle.com</url>
