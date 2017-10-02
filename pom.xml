@@ -56,7 +56,7 @@
         <junit.version>4.12</junit.version>
         <ini4j.version>0.5.4</ini4j.version>
         <poi.version>3.14</poi.version>
-        <opencsv.version>2.3</opencsv.version>
+        <opencsv.version>4.0</opencsv.version>
         <springframework.version>4.3.9.RELEASE</springframework.version>
         <log4j.version>1.2.17</log4j.version>
         <powermock.version>1.7.3</powermock.version>
@@ -216,7 +216,7 @@
 
         <!-- opencsv (CSV lib) -->
         <dependency>
-            <groupId>net.sf.opencsv</groupId>
+            <groupId>com.opencsv</groupId>
             <artifactId>opencsv</artifactId>
             <version>${opencsv.version}</version>
         </dependency>
