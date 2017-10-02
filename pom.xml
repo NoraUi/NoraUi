@@ -117,7 +117,7 @@
     
     <pluginRepositories>
 		<pluginRepository>
-			<id>xxx-maven.oracle.com</id>
+			<id>maven.oracle.com</id>
 			<url>https://maven.oracle.com</url>
 		</pluginRepository>
 	</pluginRepositories>
