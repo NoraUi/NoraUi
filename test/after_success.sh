@@ -5,7 +5,7 @@ if [ "$TRAVIS_BRANCH" = 'master' ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ]; the
     echo "Maven version is $mvn_version"
     if [[ $mvn_version == *"-SNAPSHOT" ]]; then
         echo "******** Starting deploy snapshot"
-        mvn clean deploy -Psnapshot --settings test/mvnsettings.xml -DskipTests=true
+        travis_wait mvn clean deploy -Psnapshot --settings test/mvnsettings.xml -DskipTests=true
         exit $?
     else
         echo "******** Starting deploy release"
