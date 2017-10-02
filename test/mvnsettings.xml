@@ -7,7 +7,7 @@
       <password>${OSS_SONATYPE_PASSWORD}</password>
     </server>
     <server>
-      <id>maven.oracle.com</id>
+      <id>xxx-maven.oracle.com</id>
       <username>${OTN_USERNAME}</username>
       <password>${OTN_PASSWORD}</password>
       <configuration>
