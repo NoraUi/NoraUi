@@ -7,7 +7,7 @@
       <password>${OSS_SONATYPE_PASSWORD}</password>
     </server>
     <server>
-      <id>xxx-maven.oracle.com</id>
+      <id>maven.oracle.com</id>
       <username>${OTN_USERNAME}</username>
       <password>${OTN_PASSWORD}</password>
       <configuration>
@@ -31,6 +31,15 @@
   </servers>
   
   <profiles>
+    <profile>
+      <id>snapshot</id>
+      <repositories>
+        <repository>
+            <id>sonatype-releases</id>
+            <url>https://oss.sonatype.org/content/repositories/releases</url>
+        </repository>
+      </repositories>
+    </profile>
     <profile>
       <id>sonatype-nexus</id>
       <activation>
