@@ -59,7 +59,7 @@
         <opencsv.version>2.3</opencsv.version>
         <springframework.version>4.3.9.RELEASE</springframework.version>
         <log4j.version>1.2.17</log4j.version>
-        <powermock.version>1.6.5</powermock.version>
+        <powermock.version>1.7.3</powermock.version>
         <jsr305.version>3.0.0</jsr305.version>
         <oracle.driver.version>12.2.0.1</oracle.driver.version>
         <postgres.driver.version>9.4.1212.jre7</postgres.driver.version>
