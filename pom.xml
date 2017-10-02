@@ -57,7 +57,7 @@
         <ini4j.version>0.5.4</ini4j.version>
         <poi.version>3.14</poi.version>
         <opencsv.version>4.0</opencsv.version>
-        <springframework.version>4.3.9.RELEASE</springframework.version>
+        <springframework.version>5.0.0.RELEASE</springframework.version>
         <log4j.version>1.2.17</log4j.version>
         <powermock.version>1.7.3</powermock.version>
         <jsr305.version>3.0.0</jsr305.version>
