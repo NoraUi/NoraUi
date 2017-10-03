@@ -1,22 +1,18 @@
 package noraui.application.steps;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Select;
 
 import noraui.application.page.Page;
 import noraui.application.page.Page.PageElement;
 import noraui.application.page.demo.DemoPage;
 import noraui.cucumber.interceptor.ConditionedInterceptor;
 import noraui.exception.TechnicalException;
+import noraui.gherkin.GherkinConditionedLoopedStep;
 import noraui.gherkin.GherkinStepCondition;
 import noraui.utils.Context;
 import noraui.utils.Messages;
@@ -30,6 +26,7 @@ public class StepUT {
 
     public static final String DO_NOT_MATCH_STRING = "^(?!.*IPADSL|.*C2E|.*LL2048).*$";
     public static final String CONTAINS_STRING = "^(.*Accès L2ETH|.*Accès L2TP).*$";
+    public static final String START_STRING = "^\\[\\{\"action\":\"Qualif OSM\".*";
 
     @Before
     public void setUp() {
@@ -276,13 +273,23 @@ public class StepUT {
     }
 
     @Test
+    public void testCheckConditionsStartString() {
+        Context.saveValue("-stubKey",
+                "[{\"action\":\"Qualif OSM\",\"stepToBeProcessed\":\"Migration Flux Clients\",\"actionOfStepToBeProcessed\":\"à annuler\"},{\"action\":\"Editer qualif OSM\",\"stepToBeProcessed\":\"Activation Supervision\",\"actionOfStepToBeProcessed\":\"à annuler\"},{\"action\":\"Editer qualif OSM\",\"stepToBeProcessed\":\"Transfert OT\",\"actionOfStepToBeProcessed\":\"à réaliser\"}]");
+        gherkinCondition.setExpected(START_STRING);
+        gherkinCondition.setActual("-stubKey");
+        conditions.add(gherkinCondition);
+        Assert.assertTrue(ci.checkConditions(conditions));
+    }
+
+    @Test
     public void testFormatMessage() {
         try {
-            DemoPage demoPage = (DemoPage) Page.getInstance(DemoPage.class);
-            PageElement pageElement = demoPage.getPageElementByKey("-input_text_field");
-            String a = Messages.format("Message %s in %s.", pageElement, demoPage.getApplication());
-            Assert.assertEquals("", "Message Input Text field in demo.", a);
-        } catch (TechnicalException e) {
+            final DemoPage demoPage = (DemoPage) Page.getInstance(DemoPage.class);
+            final PageElement pageElement = demoPage.getPageElementByKey("-input_select_field");
+            final String a = Messages.format("Message %s in %s.", pageElement, demoPage.getApplication());
+            Assert.assertEquals("", "Message Input Select field in demo.", a);
+        } catch (final TechnicalException e) {
             Assert.assertFalse("Error", true);
         }
     }
@@ -290,11 +297,11 @@ public class StepUT {
     @Test
     public void testFormatMessage2() {
         try {
-            DemoPage demoPage = (DemoPage) Page.getInstance(DemoPage.class);
-            PageElement pageElement = demoPage.getPageElementByKey("-submit");
-            String a = Messages.format("Message %s in %s.", pageElement, demoPage.getApplication());
+            final DemoPage demoPage = (DemoPage) Page.getInstance(DemoPage.class);
+            final PageElement pageElement = demoPage.getPageElementByKey("-submit");
+            final String a = Messages.format("Message %s in %s.", pageElement, demoPage.getApplication());
             Assert.assertEquals("", "Message Submit button in demo.", a);
-        } catch (TechnicalException e) {
+        } catch (final TechnicalException e) {
             Assert.assertFalse("Error", true);
         }
     }
@@ -302,10 +309,10 @@ public class StepUT {
     @Test
     public void testFormatMessageNullPageElement() {
         try {
-            DemoPage demoPage = (DemoPage) Page.getInstance(DemoPage.class);
-            PageElement pageElement = demoPage.getPageElementByKey("fake");
+            final DemoPage demoPage = (DemoPage) Page.getInstance(DemoPage.class);
+            final PageElement pageElement = demoPage.getPageElementByKey("fake");
             Messages.format("Message %s in %s.", pageElement, demoPage.getApplication());
-        } catch (TechnicalException e) {
+        } catch (final TechnicalException e) {
             Assert.assertEquals("TechnicalException found", "Technical problem in the code Messages.formatMessage(String templateMessage, String... args) in NoraUi.", e.getMessage());
         }
     }
@@ -313,104 +320,53 @@ public class StepUT {
     @Test
     public void testFormatMessageNullMessage() {
         try {
-            DemoPage demoPage = (DemoPage) Page.getInstance(DemoPage.class);
-            PageElement pageElement = demoPage.getPageElementByKey("-input");
+            final DemoPage demoPage = (DemoPage) Page.getInstance(DemoPage.class);
+            final PageElement pageElement = demoPage.getPageElementByKey("-input");
             Messages.format(null, pageElement, demoPage.getApplication());
-        } catch (TechnicalException e) {
-            Assert.assertEquals("TechnicalException found", "Technical problem in the code Messages.formatMessage(String templateMessage, String... args) in NoraUi.", e.getMessage());
+        } catch (final TechnicalException e) {
+            Assert.assertEquals("TechnicalException found", Messages.getMessage("FAIL_MESSAGE_FORMAT_STRING"), e.getMessage());
         }
     }
 
     @Test
     public void testFormatMessageNotValidMessage() {
         try {
-            DemoPage demoPage = (DemoPage) Page.getInstance(DemoPage.class);
-            PageElement pageElement = demoPage.getPageElementByKey("-input");
+            final DemoPage demoPage = (DemoPage) Page.getInstance(DemoPage.class);
+            final PageElement pageElement = demoPage.getPageElementByKey("-input");
             Messages.format("Message %s in %s.%s", pageElement, demoPage.getApplication());
-        } catch (TechnicalException e) {
-            Assert.assertEquals("TechnicalException found", "Technical problem in the code Messages.formatMessage(String templateMessage, String... args) in NoraUi.", e.getMessage());
+        } catch (final TechnicalException e) {
+            Assert.assertEquals("TechnicalException found", Messages.getMessage("FAIL_MESSAGE_FORMAT_STRING"), e.getMessage());
         }
     }
 
     @Test
     public void testFormatMessageNotValid2Message() {
         try {
-            DemoPage demoPage = (DemoPage) Page.getInstance(DemoPage.class);
-            PageElement pageElement = demoPage.getPageElementByKey("-input");
+            final DemoPage demoPage = (DemoPage) Page.getInstance(DemoPage.class);
+            final PageElement pageElement = demoPage.getPageElementByKey("-input");
             Messages.format("Message %s.", pageElement, demoPage.getApplication());
-        } catch (TechnicalException e) {
-            Assert.assertEquals("TechnicalException found", "Technical problem in the code Messages.formatMessage(String templateMessage, String... args) in NoraUi.", e.getMessage());
+        } catch (final TechnicalException e) {
+            Assert.assertEquals("TechnicalException found", Messages.getMessage("FAIL_MESSAGE_FORMAT_STRING"), e.getMessage());
         }
     }
 
     @Test
-    public void testFindOptionByIgnoreCaseText() {
-        final WebElement peterOption = mockOption("Peter");
-        final WebElement stephaneOption = mockOption("Stephane");
-        final WebElement noelOption = mockOption("Noël");
-        final WebElement katyOption = mockOption("Céline");
-        final WebElement bradOption = mockOption("Brad ");
-        final WebElement pierreOption = mockOption(" Pierre");
-        final WebElement christopheOption = mockOption("christophe");
-        final List<WebElement> options = Arrays.asList(peterOption, stephaneOption, noelOption, katyOption, bradOption, pierreOption, christopheOption);
-
-        final WebElement element = Mockito.mock(WebElement.class);
-        Mockito.when(element.getTagName()).thenReturn("select");
-        Mockito.when(element.findElements(By.tagName("option"))).thenReturn(options);
-        Select select = new Select(element);
-
-        Assert.assertEquals("KO", -1, step.findOptionByIgnoreCaseText("fake", select));
-
-        Assert.assertEquals("OK", 0, step.findOptionByIgnoreCaseText("Peter", select));
-        Assert.assertEquals("OK", 0, step.findOptionByIgnoreCaseText(" Peter", select));
-        Assert.assertEquals("OK", 0, step.findOptionByIgnoreCaseText("Peter ", select));
-        Assert.assertEquals("OK", 0, step.findOptionByIgnoreCaseText("peter", select));
-        Assert.assertEquals("OK", 0, step.findOptionByIgnoreCaseText(" peter", select));
-        Assert.assertEquals("OK", 0, step.findOptionByIgnoreCaseText("peter ", select));
-
-        Assert.assertEquals("OK", 1, step.findOptionByIgnoreCaseText("Stephane", select));
-        Assert.assertEquals("OK", 1, step.findOptionByIgnoreCaseText(" Stephane", select));
-        Assert.assertEquals("OK", 1, step.findOptionByIgnoreCaseText("Stephane ", select));
-        Assert.assertEquals("OK", 1, step.findOptionByIgnoreCaseText(" Stephane ", select));
-        Assert.assertEquals("OK", 1, step.findOptionByIgnoreCaseText("Stéphane", select));
-        Assert.assertEquals("OK", 1, step.findOptionByIgnoreCaseText(" Stéphane", select));
-        Assert.assertEquals("OK", 1, step.findOptionByIgnoreCaseText("Stéphane ", select));
-        Assert.assertEquals("OK", 1, step.findOptionByIgnoreCaseText(" Stéphane ", select));
-
-        Assert.assertEquals("OK", 2, step.findOptionByIgnoreCaseText("Noël", select));
-        Assert.assertEquals("OK", 2, step.findOptionByIgnoreCaseText("Noel", select));
-
-        Assert.assertEquals("OK", 3, step.findOptionByIgnoreCaseText("Celine", select));
-        Assert.assertEquals("OK", 3, step.findOptionByIgnoreCaseText(" Celine", select));
-        Assert.assertEquals("OK", 3, step.findOptionByIgnoreCaseText("Celine ", select));
-        Assert.assertEquals("OK", 3, step.findOptionByIgnoreCaseText(" Celine ", select));
-        Assert.assertEquals("OK", 3, step.findOptionByIgnoreCaseText("Céline", select));
-        Assert.assertEquals("OK", 3, step.findOptionByIgnoreCaseText(" Céline", select));
-        Assert.assertEquals("OK", 3, step.findOptionByIgnoreCaseText("Céline ", select));
-        Assert.assertEquals("OK", 3, step.findOptionByIgnoreCaseText(" Céline ", select));
-
-        Assert.assertEquals("OK", 4, step.findOptionByIgnoreCaseText("Brad", select));
-        Assert.assertEquals("OK", 4, step.findOptionByIgnoreCaseText(" Brad", select));
-        Assert.assertEquals("OK", 4, step.findOptionByIgnoreCaseText("Brad ", select));
-        Assert.assertEquals("OK", 4, step.findOptionByIgnoreCaseText(" Brad ", select));
-
-        Assert.assertEquals("OK", 5, step.findOptionByIgnoreCaseText("Pierre", select));
-        Assert.assertEquals("OK", 5, step.findOptionByIgnoreCaseText(" Pierre", select));
-        Assert.assertEquals("OK", 5, step.findOptionByIgnoreCaseText("Pierre ", select));
-        Assert.assertEquals("OK", 5, step.findOptionByIgnoreCaseText(" Pierre ", select));
-
-        Assert.assertEquals("OK", 6, step.findOptionByIgnoreCaseText("christophe", select));
-        Assert.assertEquals("OK", 6, step.findOptionByIgnoreCaseText(" christophe", select));
-        Assert.assertEquals("OK", 6, step.findOptionByIgnoreCaseText("christophe ", select));
-        Assert.assertEquals("OK", 6, step.findOptionByIgnoreCaseText("Christophe", select));
-        Assert.assertEquals("OK", 6, step.findOptionByIgnoreCaseText(" Christophe", select));
-        Assert.assertEquals("OK", 6, step.findOptionByIgnoreCaseText("Christophe ", select));
+    public void testRunAllStepsInLoopWithUndefinedStep() {
+        final List<GherkinConditionedLoopedStep> steps = new ArrayList<>();
+        final String expected = ".+;(ETS Backbone VLAN LL2048K\\|ETS Accès L2ETH\\|Accès XDSL ETS\\|Backbone VLAN Virtuelle)";
+        final String actual = "VPNtechnique;OSC_ACC-resource_type";
+        Context.saveValue("OSC_ACC-resource_type", "ETS Accès L2ETH");
+        final GherkinConditionedLoopedStep gherkinConditionedLoopedStep = new GherkinConditionedLoopedStep("1", "I wait '4' seconds.", expected, actual);
+        steps.add(gherkinConditionedLoopedStep);
+        try {
+            step.runAllStepsInLoop(steps);
+            Assert.fail("TechnicalException should have been thrown");
+        } catch (final TechnicalException e) {
+            Assert.assertEquals(e.getMessage(), String.format(Messages.getMessage("TECHNICAL_ERROR_STEP_UNDEFINED"), "I wait '4' seconds."));
+        }
     }
 
-    private WebElement mockOption(String name) {
-        final WebElement option = Mockito.mock(WebElement.class, name);
-        Mockito.when(option.getText()).thenReturn(name);
-        return option;
-    }
+    // TODO ajouter un test sur les loop en lancant une méthode qui existe dans le liste getCucumberMethods().
+    // Cela nécessite une initialisation complexe
 
 }

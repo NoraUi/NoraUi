@@ -1,6 +1,5 @@
 package noraui.data;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,19 +10,20 @@ import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 
 import noraui.annotation.Column;
-import noraui.data.excel.ExcelDataProvider;
 import noraui.exception.TechnicalException;
 import noraui.model.Model;
+import noraui.utils.Messages;
 
 public abstract class CommonDataProvider implements DataProvider {
 
-    protected static final Logger logger = Logger.getLogger(ExcelDataProvider.class);
+    protected static final Logger logger = Logger.getLogger(CommonDataProvider.class);
 
     protected String dataInPath;
     protected String dataOutPath;
     protected List<DataIndex> indexData;
     protected String scenarioName;
     protected List<String> columns;
+    protected String resultColumnName;
 
     /**
      * {@inheritDoc}
@@ -88,8 +88,7 @@ public abstract class CommonDataProvider implements DataProvider {
                 }
                 return null;
             } catch (Exception e) {
-                logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION, e);
-                throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION, e);
+                throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION), e);
             }
         } else {
             return null;
@@ -112,7 +111,24 @@ public abstract class CommonDataProvider implements DataProvider {
         this.dataOutPath = dataOutPath;
     }
 
-    private Set<Class<?>> getClasses(String packageName) throws ClassNotFoundException, IOException {
+    /**
+     * {@inheritDoc}
+     */
+
+    @Override
+    public String getResultColumnName() {
+        return resultColumnName;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isResultColumnNameAuthorized(String name) {
+        return AUTHORIZED_NAMES_FOR_RESULT_COLUMN.contains(name);
+    }
+
+    private Set<Class<?>> getClasses(String packageName) {
         return new Reflections(packageName, new SubTypesScanner(false)).getSubTypesOf(Object.class);
     }
 

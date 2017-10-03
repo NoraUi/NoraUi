@@ -12,20 +12,15 @@ import java.security.NoSuchAlgorithmException;
 
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 
-import org.apache.log4j.Logger;
-
 import noraui.exception.TechnicalException;
 
 public class Security {
-
-    private static Logger logger = Logger.getLogger(Security.class.getName());
 
     public void createSha1CheckSumFile(File file) throws TechnicalException {
         try (PrintWriter sha1File = new PrintWriter(new BufferedWriter(new FileWriter(file.getAbsolutePath().replace(".properties", ".sha1"))))) {
             sha1File.print(createSha1(file));
         } catch (IOException e) {
-            logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE_CHECKSUM_IO_EXCEPTION, e);
-            throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE_CHECKSUM_IO_EXCEPTION, e);
+            throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_CHECKSUM_IO_EXCEPTION), e);
         }
     }
 
@@ -42,8 +37,7 @@ public class Security {
             }
             return new HexBinaryAdapter().marshal(sha1.digest());
         } catch (NoSuchAlgorithmException | IOException e) {
-            logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE_CHECKSUM_IO_EXCEPTION, e);
-            throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE_CHECKSUM_IO_EXCEPTION, e);
+            throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_CHECKSUM_IO_EXCEPTION), e);
         }
     }
 

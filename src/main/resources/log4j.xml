@@ -20,6 +20,9 @@
 	<category name="org.apache.log4j">
 		<priority value="off" />
 	</category>
+	<category name="com.gargoylesoftware">
+		<priority value="off" />
+	</category>
 
 	<root>
 		<level value="INFO" />

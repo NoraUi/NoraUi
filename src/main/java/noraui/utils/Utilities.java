@@ -26,27 +26,46 @@ import noraui.application.page.Page.PageElement;
 import noraui.browser.DriverFactory;
 
 public class Utilities {
+
     /**
      * Specific logger
      */
     private static final Logger logger = Logger.getLogger(Utilities.class);
 
-    public static String getLocatorValue(String applicationKey, String code, Object... args) {
+    private static final String UTILITIES_ERROR_TAKING_SCREENSHOT = "UTILITIES_ERROR_TAKING_SCREENSHOT";
+
+    /**
+     * @param applicationKey
+     *            is key of application
+     * @param code
+     *            is key of selector (CAUTION: if you use any % char. {@link String#format(String, Object...)})
+     * @param args
+     *            is list of args ({@link String#format(String, Object...)})
+     * @return the selector
+     */
+    public static String getSelectorValue(String applicationKey, String code, Object... args) {
         String selector = "";
         logger.debug("getLocator with this application key : " + applicationKey);
         logger.debug("getLocator with this locator file : " + Context.iniFiles.get(applicationKey));
-        Ini ini = Context.iniFiles.get(applicationKey);
+        final Ini ini = Context.iniFiles.get(applicationKey);
 
-        Map<String, String> section = ini.get(code);
+        final Map<String, String> section = ini.get(code);
         if (section != null) {
-            Entry<String, String> entry = section.entrySet().iterator().next();
+            final Entry<String, String> entry = section.entrySet().iterator().next();
             selector = String.format(entry.getValue(), args);
         }
         return selector;
     }
 
+    /**
+     * @param element
+     *            is a PageElement
+     * @param args
+     *            is list of args ({@link String#format(String, Object...)})
+     * @return the selector
+     */
     public static String getLocatorValue(PageElement element, Object... args) {
-        return getLocatorValue(element.getPage().getApplication(), element.getPage().getPageKey() + element.getKey(), args);
+        return getSelectorValue(element.getPage().getApplication(), element.getPage().getPageKey() + element.getKey(), args);
     }
 
     /**
@@ -64,12 +83,12 @@ public class Utilities {
         By locator = null;
         logger.debug("getLocator with this application key : " + applicationKey);
         logger.debug("getLocator with this locator file : " + Context.iniFiles.get(applicationKey));
-        Ini ini = Context.iniFiles.get(applicationKey);
+        final Ini ini = Context.iniFiles.get(applicationKey);
 
-        Map<String, String> section = ini.get(code);
+        final Map<String, String> section = ini.get(code);
         if (section != null) {
-            Entry<String, String> entry = section.entrySet().iterator().next();
-            String selector = String.format(entry.getValue(), args);
+            final Entry<String, String> entry = section.entrySet().iterator().next();
+            final String selector = String.format(entry.getValue(), args);
             if ("css".equals(entry.getKey())) {
                 locator = By.cssSelector(selector);
             } else if ("link".equals(entry.getKey())) {
@@ -154,7 +173,7 @@ public class Utilities {
      * @return the first {@link WebElement} using the given method
      */
     public static WebElement findElement(Page page, String code, Object... args) {
-        return Page.getDriver().findElement(getLocator(page.getApplication(), page.getPageKey() + code, args));
+        return Context.getDriver().findElement(getLocator(page.getApplication(), page.getPageKey() + code, args));
     }
 
     /**
@@ -170,7 +189,7 @@ public class Utilities {
      * @return the first {@link WebElement} using the given method
      */
     public static WebElement findElement(PageElement element, Object... args) {
-        return Page.getDriver().findElement(getLocator(element.getPage().getApplication(), element.getPage().getPageKey() + element.getKey(), args));
+        return Context.getDriver().findElement(getLocator(element.getPage().getApplication(), element.getPage().getPageKey() + element.getKey(), args));
     }
 
     /**
@@ -198,12 +217,12 @@ public class Utilities {
      */
     public static WebElement isElementPresentAndGetFirstOne(By element) {
 
-        WebDriver webDriver = Context.getDriver();
+        final WebDriver webDriver = Context.getDriver();
 
         webDriver.manage().timeouts().implicitlyWait(DriverFactory.IMPLICIT_WAIT * 2, TimeUnit.MICROSECONDS);
 
-        List<WebElement> foundElements = webDriver.findElements(element);
-        boolean exists = !foundElements.isEmpty();
+        final List<WebElement> foundElements = webDriver.findElements(element);
+        final boolean exists = !foundElements.isEmpty();
 
         webDriver.manage().timeouts().implicitlyWait(DriverFactory.IMPLICIT_WAIT, TimeUnit.MICROSECONDS);
 
@@ -233,17 +252,21 @@ public class Utilities {
      *            is instance of {link cucumber.api.Scenario}
      */
     public static void takeScreenshot(Scenario scenario) {
-        final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
-        scenario.embed(screenshot, "image/png");
+        if (!DriverFactory.HTMLUNIT.equals(Context.getBrowser())) {
+            final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
+            scenario.embed(screenshot, "image/png");
+        } else {
+            logger.warn(String.format(Messages.getMessage(UTILITIES_ERROR_TAKING_SCREENSHOT), Context.getBrowser()));
+        }
     }
 
     public enum OperatingSystem {
 
-        WINDOWS("windows", "windows", ".exe"), LINUX("linux", "linux", "");
+        WINDOWS("windows", "windows", ".exe"), LINUX("linux", "linux", ""), MAC("mac", "mac", "");
 
-        private String operatingSystemName;
-        private String operatingSystemDir;
-        private String suffixBinary;
+        private final String operatingSystemName;
+        private final String operatingSystemDir;
+        private final String suffixBinary;
 
         OperatingSystem(String operatingSystemName, String operatingSystemDir, String suffixBinary) {
             this.operatingSystemName = operatingSystemName;
@@ -252,7 +275,7 @@ public class Utilities {
         }
 
         public static OperatingSystem getOperatingSystem(String osName) {
-            for (OperatingSystem operatingSystemName : values()) {
+            for (final OperatingSystem operatingSystemName : values()) {
                 if (osName.toLowerCase().contains(operatingSystemName.getOperatingSystemName())) {
                     return operatingSystemName;
                 }
@@ -261,16 +284,16 @@ public class Utilities {
         }
 
         public static Set<OperatingSystem> getCurrentOperatingSystemAsAHashSet() {
-            String currentOperatingSystemName = System.getProperties().getProperty("os.name");
+            final String currentOperatingSystemName = System.getProperties().getProperty("os.name");
 
-            Set<OperatingSystem> listOfOperatingSystems = new HashSet<>();
+            final Set<OperatingSystem> listOfOperatingSystems = new HashSet<>();
             listOfOperatingSystems.add(getOperatingSystem(currentOperatingSystemName));
 
             return listOfOperatingSystems;
         }
 
         public static OperatingSystem getCurrentOperatingSystem() {
-            String currentOperatingSystemName = System.getProperties().getProperty("os.name");
+            final String currentOperatingSystemName = System.getProperties().getProperty("os.name");
             return getOperatingSystem(currentOperatingSystemName);
         }
 
@@ -292,7 +315,7 @@ public class Utilities {
 
         ARCHITECTURE_64_BIT("64bit"), ARCHITECTURE_32_BIT("32bit");
 
-        private String systemArchitectureName;
+        private final String systemArchitectureName;
         private static final SystemArchitecture defaultSystemArchitecture = ARCHITECTURE_32_BIT;
         private static List<String> architecture64bitNames = Arrays.asList("amd64", "x86_64");
 
@@ -321,17 +344,15 @@ public class Utilities {
     }
 
     public static ExpectedCondition<WebElement> atLeastOneOfTheseElementsIsPresent(final By... locators) {
-
         return new ExpectedCondition<WebElement>() {
-
             @Override
             public WebElement apply(@Nullable WebDriver driver) {
                 WebElement element = null;
                 if (driver != null && locators.length > 0) {
-                    for (By b : locators) {
+                    for (final By b : locators) {
                         try {
                             element = driver.findElement(b);
-                        } catch (Exception e) {
+                        } catch (final Exception e) {
                             logger.debug(e);
                             continue;
                         }
@@ -341,4 +362,51 @@ public class Utilities {
             }
         };
     }
+
+    /**
+     * An expectation for checking that there is at least one element present on a web page.
+     *
+     * @param locator
+     *            used to find the element
+     * @param nb
+     *            is exactly number of responses
+     * @return the list of WebElements once they are located
+     */
+    public static ExpectedCondition<List<WebElement>> presenceOfNbElementsLocatedBy(final By locator, final int nb) {
+        return new ExpectedCondition<List<WebElement>>() {
+            @Override
+            public List<WebElement> apply(WebDriver driver) {
+                final List<WebElement> elements = driver.findElements(locator);
+                return elements.size() == nb ? elements : null;
+            }
+        };
+    }
+
+    /**
+     * An expectation for checking that nb elements present on the web page that match the locator
+     * are visible. Visibility means that the elements are not only displayed but also have a height
+     * and width that is greater than 0.
+     *
+     * @param locator
+     *            used to find the element
+     * @param nb
+     *            is exactly number of responses
+     * @return the list of WebElements once they are located
+     */
+    public static ExpectedCondition<List<WebElement>> visibilityOfNbElementsLocatedBy(final By locator, final int nb) {
+        return new ExpectedCondition<List<WebElement>>() {
+            @Override
+            public List<WebElement> apply(WebDriver driver) {
+                int nbElementIsDisplayed = 0;
+                final List<WebElement> elements = driver.findElements(locator);
+                for (final WebElement element : elements) {
+                    if (element.isDisplayed()) {
+                        nbElementIsDisplayed++;
+                    }
+                }
+                return nbElementIsDisplayed == nb ? elements : null;
+            }
+        };
+    }
+
 }

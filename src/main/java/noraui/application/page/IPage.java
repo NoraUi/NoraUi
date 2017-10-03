@@ -1,9 +1,19 @@
 package noraui.application.page;
 
+import org.openqa.selenium.WebDriver;
+
 import noraui.application.page.Page.PageElement;
 import noraui.exception.Callbacks.Callback;
 
 public interface IPage {
+
+    /**
+     * Quick getter to the global web driver
+     * 
+     * @return
+     *         The global instance of web driver
+     */
+    WebDriver getDriver();
 
     /**
      * @return noraui.exception.Callbacks.Callback of page.

@@ -5,19 +5,24 @@ import static noraui.utils.Constants.VALUE;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.text.DateFormat;
-import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -34,23 +39,26 @@ import cucumber.runtime.java.StepDefAnnotation;
 import noraui.application.page.IPage;
 import noraui.application.page.Page;
 import noraui.application.page.Page.PageElement;
+import noraui.browser.DriverFactory;
 import noraui.browser.steps.BrowserSteps;
+import noraui.cucumber.annotation.Conditioned;
+import noraui.cucumber.injector.NoraUiInjector;
 import noraui.exception.FailureException;
 import noraui.exception.Result;
 import noraui.exception.TechnicalException;
+import noraui.gherkin.GherkinConditionedLoopedStep;
+import noraui.gherkin.GherkinStepCondition;
 import noraui.utils.Constants;
 import noraui.utils.Context;
 import noraui.utils.Messages;
+import noraui.utils.NameUtilities;
 import noraui.utils.Utilities;
 
 public class Step implements IStep {
 
-    private static volatile WebDriver webDriver = null;
-
     protected final Logger loggerStep = Logger.getLogger(Step.class.getClass());
 
     protected Step() {
-        webDriver = Context.getDriver();
     }
 
     /**
@@ -62,10 +70,11 @@ public class Step implements IStep {
     }
 
     /**
-     * @return a WebDriver
+     * {@inheritDoc}
      */
-    public static WebDriver getDriver() {
-        return webDriver;
+    @Override
+    public WebDriver getDriver() {
+        return Context.getDriver();
     }
 
     /**
@@ -86,7 +95,8 @@ public class Step implements IStep {
         try {
             Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(toClick, args))).click();
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK, toClick, toClick.getPage().getApplication()), true, toClick.getPage().getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK), toClick, toClick.getPage().getApplication()), true,
+                    toClick.getPage().getCallBack());
         }
     }
 
@@ -106,11 +116,12 @@ public class Step implements IStep {
     protected void clickOnByJs(PageElement toClick, Object... args) throws TechnicalException, FailureException {
         displayMessageAtTheBeginningOfMethod("clickOnByJs: %s in %s", toClick.toString(), toClick.getPage().getApplication());
         try {
-            ((JavascriptExecutor) Step.getDriver())
+            Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(toClick, args)));
+            ((JavascriptExecutor) getDriver())
                     .executeScript("document.evaluate(\"" + Utilities.getLocatorValue(toClick, args) + "\", document, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click();");
-
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK, toClick, toClick.getPage().getApplication()), true, toClick.getPage().getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK), toClick, toClick.getPage().getApplication()), true,
+                    toClick.getPage().getCallBack());
         }
     }
 
@@ -130,10 +141,10 @@ public class Step implements IStep {
     protected void clickOnByJs(Page page, String xpath) throws TechnicalException, FailureException {
         displayMessageAtTheBeginningOfMethod("clickOnByJs: %s in %s", xpath, page.getApplication());
         try {
-            ((JavascriptExecutor) Step.getDriver()).executeScript("document.evaluate(\"" + xpath + "\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click();");
+            Context.waitUntil(ExpectedConditions.elementToBeClickable(By.xpath(xpath.replaceAll("\\\\'", "'"))));
+            ((JavascriptExecutor) getDriver()).executeScript("document.evaluate(\"" + xpath + "\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click();");
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_EVALUATE_XPATH, xpath, page.getApplication()), true, page.getCallBack());
-
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_EVALUATE_XPATH), xpath, page.getApplication()), true, page.getCallBack());
         }
     }
 
@@ -143,7 +154,7 @@ public class Step implements IStep {
      * @param pageElement
      *            Is target element
      * @param textOrKey
-     *            Is the new data (text)
+     *            Is the new data (text or text in context (after a save))
      * @param args
      *            list of arguments to format the found selector with
      * @throws TechnicalException
@@ -162,7 +173,7 @@ public class Step implements IStep {
      * @param pageElement
      *            Is target element
      * @param textOrKey
-     *            Is the new data (text)
+     *            Is the new data (text or text in context (after a save))
      * @param keysToSend
      *            character to send to the element after {@link org.openqa.selenium.WebElement#sendKeys(CharSequence...) sendKeys} with textOrKey
      * @param args
@@ -174,21 +185,26 @@ public class Step implements IStep {
      *             if the scenario encounters a functional error
      */
     protected void updateText(PageElement pageElement, String textOrKey, CharSequence keysToSend, Object... args) throws TechnicalException, FailureException {
-        if (textOrKey != null && !"".equals(textOrKey)) {
+        String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
+        if (!"".equals(value)) {
             try {
-                String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
                 WebElement element = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(pageElement, args)));
                 element.clear();
-                element.sendKeys(value);
+                if (DriverFactory.IE.equals(Context.getBrowser())) {
+                    String javascript = "arguments[0].value='" + value + "';";
+                    ((JavascriptExecutor) getDriver()).executeScript(javascript, element);
+                } else {
+                    element.sendKeys(value);
+                }
                 if (keysToSend != null) {
                     element.sendKeys(keysToSend);
                 }
             } catch (Exception e) {
-                new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_ERROR_ON_INPUT, pageElement, pageElement.getPage().getApplication()), true,
+                new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_ERROR_ON_INPUT), pageElement, pageElement.getPage().getApplication()), true,
                         pageElement.getPage().getCallBack());
             }
         } else {
-            loggerStep.debug("Empty data provided. No need to update text.");
+            loggerStep.debug("Empty data provided. No need to update text. If you want clear data, you need use: \"I clear text in ...\"");
         }
     }
 
@@ -232,7 +248,7 @@ public class Step implements IStep {
                 element.sendKeys(keysToSend);
             }
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_ERROR_CLEAR_ON_INPUT, pageElement, pageElement.getPage().getApplication()), true,
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_ERROR_CLEAR_ON_INPUT), pageElement, pageElement.getPage().getApplication()), true,
                     pageElement.getPage().getCallBack());
         }
     }
@@ -242,23 +258,21 @@ public class Step implements IStep {
      *
      * @param pageElement
      *            Is target element
-     * @param value
-     *            Is expected value in input text (value can be null).
+     * @param textOrKey
+     *            Is the new data (text or text in context (after a save))
      * @return true or false
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    protected boolean checkInputText(PageElement pageElement, String value) throws FailureException {
+    protected boolean checkInputText(PageElement pageElement, String textOrKey) throws FailureException {
         WebElement inputText = null;
+        String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
         try {
             inputText = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT, true, pageElement.getPage().getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
         }
-        if (inputText == null || value == null || !value.equals(inputText.getAttribute(VALUE).trim())) {
-            return false;
-        }
-        return true;
+        return !(inputText == null || value == null || inputText.getAttribute(VALUE) == null || !value.equals(inputText.getAttribute(VALUE).trim()));
     }
 
     /**
@@ -275,19 +289,16 @@ public class Step implements IStep {
         try {
             inputText = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT, true, pageElement.getPage().getCallBack());
+            new Result.Failure<>(pageElement, Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
         }
-        if (inputText == null || "".equals(inputText.getAttribute(VALUE).trim())) {
-            return false;
-        }
-        return true;
+        return !(inputText == null || "".equals(inputText.getAttribute(VALUE).trim()));
     }
 
     protected String readValueTextField(PageElement pageElement) throws FailureException {
         try {
             return Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement))).getAttribute(VALUE);
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT, true, pageElement.getPage().getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
         }
         return null;
     }
@@ -297,8 +308,8 @@ public class Step implements IStep {
      *
      * @param pageElement
      *            Is target element
-     * @param value
-     *            Is expected value in input text (value can be null).
+     * @param textOrKey
+     *            Is the new data (text or text in context (after a save))
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_WRONG_EXPECTED_VALUE} message (with screenshot, with exception) or with
@@ -307,19 +318,72 @@ public class Step implements IStep {
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    protected void checkText(PageElement pageElement, String value) throws TechnicalException, FailureException {
+    protected void checkText(PageElement pageElement, String textOrKey) throws TechnicalException, FailureException {
         WebElement inputText = null;
-        if (value == null) {
-            throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE + "value ne peut être null.");
-        }
+        String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
         try {
             inputText = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT, true, pageElement.getPage().getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
         }
         if (inputText == null || !value.equals(inputText.getText())) {
             new Result.Failure<>(inputText == null ? null : inputText.getText(),
-                    Messages.format(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE, pageElement, value, pageElement.getPage().getApplication()), true, pageElement.getPage().getCallBack());
+                    Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE), pageElement, value, pageElement.getPage().getApplication()), true,
+                    pageElement.getPage().getCallBack());
+        }
+    }
+
+    /**
+     * Checks if an html element (PageElement) is displayed.
+     *
+     * @param pageElement
+     *            Is target element
+     * @param displayed
+     *            Is target element supposed to be displayed
+     * @throws FailureException
+     *             if the scenario encounters a functional error. Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} message
+     *             (with screenshot, with exception)
+     */
+    protected void checkElementVisible(PageElement pageElement, boolean displayed) throws FailureException {
+        if (displayed) {
+            try {
+                Context.waitUntil(ExpectedConditions.visibilityOfElementLocated(Utilities.getLocator(pageElement)));
+            } catch (Exception e) {
+                new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_ELEMENT_STILL_VISIBLE), true, pageElement.getPage().getCallBack());
+            }
+        } else {
+            try {
+                Context.waitUntil(ExpectedConditions.not(ExpectedConditions.visibilityOfElementLocated(Utilities.getLocator(pageElement))));
+            } catch (Exception e) {
+                new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_ELEMENT_STILL_VISIBLE), true, pageElement.getPage().getCallBack());
+            }
+        }
+    }
+
+    /**
+     * Checks if an html element (PageElement) is displayed.
+     *
+     * @param pageElement
+     *            Is target element
+     * @param present
+     *            Is target element supposed to be present
+     * @throws FailureException
+     *             if the scenario encounters a functional error. Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} message
+     *             (with screenshot, with exception)
+     */
+    protected void checkElementPresence(PageElement pageElement, boolean present) throws FailureException {
+        if (present) {
+            try {
+                Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
+            } catch (Exception e) {
+                new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
+            }
+        } else {
+            try {
+                Context.waitUntil(ExpectedConditions.not(ExpectedConditions.presenceOfAllElementsLocatedBy(Utilities.getLocator(pageElement))));
+            } catch (Exception e) {
+                new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_ELEMENT_STILL_VISIBLE), true, pageElement.getPage().getCallBack());
+            }
         }
     }
 
@@ -328,8 +392,8 @@ public class Step implements IStep {
      *
      * @param pageElement
      *            Is target element
-     * @param text
-     *            Is the new data (text)
+     * @param textOrKey
+     *            Is the new data (text or text in context (after a save))
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_ERROR_ON_INPUT} message (with screenshot, no exception)
@@ -338,14 +402,13 @@ public class Step implements IStep {
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    protected void updateList(PageElement pageElement, String text) throws TechnicalException, FailureException {
-        if (!"".equals(text)) {
-            try {
-                setDropDownValue(pageElement, text);
-            } catch (Exception e) {
-                new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_ERROR_ON_INPUT, pageElement, pageElement.getPage().getApplication()), true,
-                        pageElement.getPage().getCallBack());
-            }
+    protected void updateList(PageElement pageElement, String textOrKey) throws TechnicalException, FailureException {
+        String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
+        try {
+            setDropDownValue(pageElement, value);
+        } catch (Exception e) {
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_ERROR_ON_INPUT), pageElement, pageElement.getPage().getApplication()), true,
+                    pageElement.getPage().getCallBack());
         }
     }
 
@@ -361,12 +424,12 @@ public class Step implements IStep {
      *             if the scenario encounters a functional error
      */
     protected boolean checkTextSelectedInList(PageElement pageElement, String text) throws FailureException {
-        WebElement select = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(pageElement)));
-        if (select != null) {
+        try {
+            WebElement select = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(pageElement)));
             Select dropDown = new Select(select);
             return text.equalsIgnoreCase(dropDown.getFirstSelectedOption().getText());
-        } else {
-            new Result.Failure<>(select, Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT, true, pageElement.getPage().getCallBack());
+        } catch (Exception e) {
+            new Result.Failure<>(text, Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
             return false;
         }
     }
@@ -404,10 +467,11 @@ public class Step implements IStep {
                 loggerStep.debug("update Date with a date after today: " + date);
                 updateText(pageElement, date);
             } else {
-                new Result.Failure<>(date, Messages.format(Messages.FAIL_MESSAGE_UNEXPECTED_DATE, "supérieure ou égale à la date du jour"), true, pageElement.getPage().getCallBack());
+                new Result.Failure<>(date, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNEXPECTED_DATE), Messages.getMessage(Messages.DATE_GREATER_THAN_TODAY)), true,
+                        pageElement.getPage().getCallBack());
             }
         } catch (ParseException e) {
-            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_WRONG_DATE_FORMAT, pageElement, date), false, pageElement.getPage().getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_DATE_FORMAT), pageElement, date), false, pageElement.getPage().getCallBack());
         }
 
     }
@@ -456,13 +520,14 @@ public class Step implements IStep {
             WebElement elem = Utilities.findElement(page, field);
             txt = elem.getAttribute(VALUE) != null ? elem.getAttribute(VALUE) : elem.getText();
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT, true, page.getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, page.getCallBack());
         }
         try {
             Context.saveValue(targetKey, txt);
             Context.getCurrentScenario().write("SAVE " + targetKey + "=" + txt);
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_RETRIEVE_VALUE, page.getPageElementByKey(field), page.getApplication()), true, page.getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_RETRIEVE_VALUE), page.getPageElementByKey(field), page.getApplication()), true,
+                    page.getCallBack());
         }
     }
 
@@ -471,7 +536,7 @@ public class Step implements IStep {
      *
      * @param pageElement
      *            Is concerned element
-     * @param valueKey
+     * @param valueKeyOrKey
      *            key printedValues
      * @param printedValues
      *            contain all possible value (order by key)
@@ -481,7 +546,8 @@ public class Step implements IStep {
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    protected void updateRadioList(PageElement pageElement, String valueKey, Map<String, String> printedValues) throws TechnicalException, FailureException {
+    protected void updateRadioList(PageElement pageElement, String valueKeyOrKey, Map<String, String> printedValues) throws TechnicalException, FailureException {
+        String valueKey = Context.getValue(valueKeyOrKey) != null ? Context.getValue(valueKeyOrKey) : valueKeyOrKey;
         try {
             List<WebElement> radioButtons = Context.waitUntil(ExpectedConditions.presenceOfAllElementsLocatedBy(Utilities.getLocator(pageElement)));
             String radioToSelect = printedValues.get(valueKey);
@@ -495,7 +561,7 @@ public class Step implements IStep {
                 }
             }
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_SELECT_RADIO_BUTTON, pageElement), true, pageElement.getPage().getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_SELECT_RADIO_BUTTON), pageElement), true, pageElement.getPage().getCallBack());
         }
     }
 
@@ -519,7 +585,7 @@ public class Step implements IStep {
                 }
             }
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT, true, pageElement.getPage().getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
         }
         return false;
     }
@@ -529,18 +595,18 @@ public class Step implements IStep {
      *
      * @param pageElement
      *            Is concerned element
-     * @param value
-     *            is the value use for selection
+     * @param valueOrKey
+     *            Is the value (value or value in context (after a save)) use for selection
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Failure with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_SELECT_RADIO_BUTTON} message (with screenshot)
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    protected void updateRadioList(PageElement pageElement, String value) throws TechnicalException, FailureException {
+    protected void updateRadioList(PageElement pageElement, String valueOrKey) throws TechnicalException, FailureException {
+        String value = Context.getValue(valueOrKey) != null ? Context.getValue(valueOrKey) : valueOrKey;
         try {
             List<WebElement> radioButtons = Context.waitUntil(ExpectedConditions.presenceOfAllElementsLocatedBy(Utilities.getLocator(pageElement)));
-
             for (WebElement button : radioButtons) {
                 if (button.getAttribute(VALUE).contains(value)) {
                     button.click();
@@ -548,7 +614,7 @@ public class Step implements IStep {
                 }
             }
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_SELECT_RADIO_BUTTON, pageElement.getLabel()), true, pageElement.getPage().getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_SELECT_RADIO_BUTTON), pageElement), true, pageElement.getPage().getCallBack());
         }
     }
 
@@ -567,10 +633,10 @@ public class Step implements IStep {
         try {
             String javascript = "var evObj = document.createEvent('MouseEvents');" + "evObj.initMouseEvent(\"mouseover\",true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);"
                     + "arguments[0].dispatchEvent(evObj);";
-            ((JavascriptExecutor) Step.getDriver()).executeScript(javascript, Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(element))));
+            ((JavascriptExecutor) getDriver()).executeScript(javascript, Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(element))));
 
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_PASS_OVER_ELEMENT, element, element.getPage().getApplication()), true,
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_PASS_OVER_ELEMENT), element, element.getPage().getApplication()), true,
                     element.getPage().getCallBack());
         }
 
@@ -583,20 +649,23 @@ public class Step implements IStep {
      *            Target page element
      * @param checked
      *            Final checkbox value
+     * @param args
+     *            list of arguments to format the found selector with
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Failure with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_CHECK_ELEMENT} message (with screenshot)
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    protected void selectCheckbox(PageElement element, boolean checked) throws TechnicalException, FailureException {
+    protected void selectCheckbox(PageElement element, boolean checked, Object... args) throws TechnicalException, FailureException {
         try {
-            WebElement webElement = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(element)));
+            WebElement webElement = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(element, args)));
             if (webElement.isSelected() != checked) {
                 webElement.click();
             }
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_CHECK_ELEMENT, element, element.getPage().getApplication()), true, element.getPage().getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_CHECK_ELEMENT), element, element.getPage().getApplication()), true,
+                    element.getPage().getCallBack());
         }
     }
 
@@ -605,8 +674,8 @@ public class Step implements IStep {
      *
      * @param element
      *            Target page element
-     * @param valueKey
-     *            Key to match in values map
+     * @param valueKeyOrKey
+     *            is valueKey (valueKey or key in context (after a save)) to match in values map
      * @param values
      *            Values map
      * @throws TechnicalException
@@ -615,7 +684,8 @@ public class Step implements IStep {
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    protected void selectCheckbox(PageElement element, String valueKey, Map<String, Boolean> values) throws TechnicalException, FailureException {
+    protected void selectCheckbox(PageElement element, String valueKeyOrKey, Map<String, Boolean> values) throws TechnicalException, FailureException {
+        String valueKey = Context.getValue(valueKeyOrKey) != null ? Context.getValue(valueKeyOrKey) : valueKeyOrKey;
         try {
             WebElement webElement = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(element)));
             Boolean checkboxValue = values.get(valueKey);
@@ -626,7 +696,30 @@ public class Step implements IStep {
                 webElement.click();
             }
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.format(Messages.FAIL_MESSAGE_UNABLE_TO_CHECK_ELEMENT, element, element.getPage().getApplication()), true, element.getPage().getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_CHECK_ELEMENT), element, element.getPage().getApplication()), true,
+                    element.getPage().getCallBack());
+        }
+    }
+
+    /**
+     * Switches to the given frame.
+     *
+     * @param element
+     *            The PageElement representing a frame.
+     * @param args
+     *            list of arguments to format the found selector with
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_SWITCH_FRAME} message (with screenshot, with exception)
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     */
+    protected void switchFrame(PageElement element, Object... args) throws FailureException, TechnicalException {
+        try {
+            Context.waitUntil(ExpectedConditions.frameToBeAvailableAndSwitchToIt(Utilities.getLocator(element, args)));
+        } catch (Exception e) {
+            new Result.Failure<>(element, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_SWITCH_FRAME), element, element.getPage().getApplication()), true,
+                    element.getPage().getCallBack());
         }
     }
 
@@ -691,7 +784,6 @@ public class Step implements IStep {
         try {
             loggerStep.debug(Messages.format(message, element, application));
         } catch (Exception te) {
-            loggerStep.error(TechnicalException.TECHNICAL_ERROR_MESSAGE + te.getMessage(), te);
             throw new TechnicalException("Technical problem in the code Messages.formatMessage(String templateMessage, String... args) in NoraUi.", te);
         }
     }
@@ -699,29 +791,19 @@ public class Step implements IStep {
     private void setDropDownValue(PageElement element, String text) throws TechnicalException, FailureException {
         WebElement select = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(element)));
         Select dropDown = new Select(select);
-        int index = findOptionByIgnoreCaseText(text, dropDown);
+        int index = NameUtilities.findOptionByIgnoreCaseText(text, dropDown);
         if (index != -1) {
             dropDown.selectByIndex(index);
         } else {
-            new Result.Failure<>(text, Messages.format(Messages.FAIL_MESSAGE_VALUE_NOT_AVAILABLE_IN_THE_LIST, element, element.getPage().getApplication()), false, element.getPage().getCallBack());
+            new Result.Failure<>(text, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_VALUE_NOT_AVAILABLE_IN_THE_LIST), element, element.getPage().getApplication()), false,
+                    element.getPage().getCallBack());
         }
 
-    }
-
-    protected int findOptionByIgnoreCaseText(String text, Select dropDown) {
-        int index = 0;
-        for (WebElement option : dropDown.getOptions()) {
-            if (Normalizer.normalize(option.getText(), Normalizer.Form.NFD).replaceAll("[\\p{InCombiningDiacriticalMarks}]", "").trim()
-                    .equalsIgnoreCase(Normalizer.normalize(text, Normalizer.Form.NFD).replaceAll("[\\p{InCombiningDiacriticalMarks}]", "").trim())) {
-                return index;
-            }
-            index++;
-        }
-        return -1;
     }
 
     /**
      * Checks that a given page displays a html alert.
+     * CAUTION: This check do not work with IE: https://github.com/SeleniumHQ/selenium/issues/468
      *
      * @param page
      *            A Page
@@ -729,45 +811,113 @@ public class Step implements IStep {
      *             if the scenario encounters a functional error
      */
     protected void checkAlert(Page page) throws FailureException {
-        String txt = getLastConsoleAlertMessage();
-        if (txt != null) {
-            new Result.Failure<>(txt, Messages.FAIL_MESSAGE_ALERT_FOUND, true, page.getCallBack());
+        if (!DriverFactory.IE.equals(Context.getBrowser())) {
+            String txt = getLastConsoleAlertMessage();
+            if (txt != null) {
+                new Result.Failure<>(txt, Messages.getMessage(Messages.FAIL_MESSAGE_ALERT_FOUND), true, page.getCallBack());
+            }
+        } else {
+            Context.getCurrentScenario().write("SKIPPED for Internet Explorer browser.");
         }
     }
 
     /**
+     * Runs a bunch of steps for a Gherkin loop.
+     *
+     * @param loopedSteps
+     *            GherkinConditionedLoopedStep steps to run
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     */
+    protected void runAllStepsInLoop(List<GherkinConditionedLoopedStep> loopedSteps) throws TechnicalException {
+        for (GherkinConditionedLoopedStep loopedStep : loopedSteps) {
+            List<GherkinStepCondition> stepConditions = new ArrayList<>();
+            String[] expecteds = loopedStep.getExpected().split(";");
+            String[] actuals = loopedStep.getActual().split(";");
+            if (actuals.length != expecteds.length) {
+                throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_EXPECTED_ACTUAL_SIZE_DIFFERENT));
+            }
+            for (int i = 0; i < expecteds.length; i++) {
+                stepConditions.add(new GherkinStepCondition(loopedStep.getKey(), expecteds[i], actuals[i]));
+            }
+            boolean found = false;
+            for (Entry<String, Method> elem : Context.getCucumberMethods().entrySet()) {
+                Matcher matcher = Pattern.compile("value=(.*)\\)").matcher(elem.getKey());
+                if (matcher.find()) {
+                    Matcher matcher2 = Pattern.compile(matcher.group(1)).matcher(loopedStep.getStep());
+                    if (matcher2.find()) {
+                        Object[] tab;
+                        if (elem.getValue().isAnnotationPresent(Conditioned.class)) {
+                            tab = new Object[matcher2.groupCount() + 1];
+                            tab[matcher2.groupCount()] = stepConditions;
+                        } else {
+                            tab = new Object[matcher2.groupCount()];
+                        }
+
+                        for (int i = 0; i < matcher2.groupCount(); i++) {
+                            Parameter param = elem.getValue().getParameters()[i];
+                            if (param.getType() == int.class) {
+                                int ii = Integer.parseInt(matcher2.group(i + 1));
+                                tab[i] = ii;
+                            } else if (param.getType() == boolean.class) {
+                                tab[i] = Boolean.parseBoolean(matcher2.group(i + 1));
+                            } else {
+                                tab[i] = matcher2.group(i + 1);
+                            }
+                        }
+                        try {
+                            found = true;
+                            elem.getValue().invoke(NoraUiInjector.getNoraUiInjectorSource().getInstance(elem.getValue().getDeclaringClass()), tab);
+                            break;
+                        } catch (Exception e) {
+                            throw new TechnicalException("\"" + loopedStep.getStep() + "\"", e.getCause());
+                        }
+                    }
+                }
+            }
+            if (!found) {
+                throw new TechnicalException(String.format(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_STEP_UNDEFINED), loopedStep.getStep()));
+            }
+        }
+    }
+
+    /**
+     * CAUTION: This check do not work with IE: https://github.com/SeleniumHQ/selenium/issues/468
+     * CAUTION: This feature is not supported by HtmlUnit web driver
+     *
      * @return a String with the message of Alert, return null if no alert message.
      */
     protected String getLastConsoleAlertMessage() {
-        LogEntries logEntries = Step.getDriver().manage().logs().get(LogType.BROWSER);
+        String msg;
+        LogEntries logEntries = getDriver().manage().logs().get(LogType.BROWSER);
         List<LogEntry> l = logEntries.getAll();
         for (int i = l.size() - 1; i >= 0; i--) {
             if (l.get(i).getMessage().contains(ALERT_KEY)) {
-                return l.get(i).getMessage().replace(ALERT_KEY, "").replace(" (:)", "");
+                msg = l.get(i).getMessage();
+                return msg.substring(msg.indexOf('"') + 1, msg.length() - 1).replace(ALERT_KEY, "").replace(" (:", "");
             }
         }
         return null;
     }
 
     /**
-     * get all cucumber methods.
+     * Gets all Cucumber methods.
      *
      * @param clazz
-     *            class of context (for classLoader)
-     * @return a String with the message of Alert, return null if no alert message.
+     *            Class which is the main point of the application (Decorated with the annotation {@link cucumber.api.CucumberOptions})
+     * @return a Map of all Cucumber glue code methods of the application. First part of the entry is the Gherkin matching regular expression.
+     *         Second part is the corresponding invokable method.
      */
     public static Map<String, Method> getAllCucumberMethods(Class<?> clazz) {
         Map<String, Method> result = new HashMap<>();
         CucumberOptions co = clazz.getAnnotation(CucumberOptions.class);
-        Set<Class<?>> c = getClasses(co.glue());
-        c.add(BrowserSteps.class);
+        Set<Class<?>> classes = getClasses(co.glue());
+        classes.add(BrowserSteps.class);
 
-        for (Class<?> class1 : c) {
-            Method[] methods = class1.getDeclaredMethods();
+        for (Class<?> c : classes) {
+            Method[] methods = c.getDeclaredMethods();
             for (Method method : methods) {
-                Annotation[] annotations = method.getAnnotations();
-                if (annotations.length > 0) {
-                    Annotation stepAnnotation = annotations[annotations.length - 1];
+                for (Annotation stepAnnotation : method.getAnnotations()) {
                     if (stepAnnotation.annotationType().isAnnotationPresent(StepDefAnnotation.class)) {
                         result.put(stepAnnotation.toString(), method);
                     }

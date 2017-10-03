@@ -1,10 +1,21 @@
 package noraui.gherkin;
 
+import noraui.utils.Context;
+
 public class GherkinStepCondition {
 
     private String key;
     private String expected;
     private String actual;
+
+    public GherkinStepCondition() {
+    }
+
+    public GherkinStepCondition(String key, String expected, String actual) {
+        this.key = key;
+        this.expected = expected;
+        this.actual = actual;
+    }
 
     public String getKey() {
         return key;
@@ -28,6 +39,14 @@ public class GherkinStepCondition {
 
     public void setActual(String actual) {
         this.actual = actual;
+    }
+
+    public boolean checkCondition() {
+        String actu = Context.getValue(this.actual) != null ? Context.getValue(this.actual) : this.actual;
+        if (actu == null) {
+            return false;
+        }
+        return actu.matches("(?i)" + this.expected);
     }
 
 }

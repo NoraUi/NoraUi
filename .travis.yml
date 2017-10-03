@@ -1,5 +1,6 @@
 language: java
 sudo: false
+dist: precise
 install: true
 
 services:
@@ -8,7 +9,7 @@ services:
 
 addons:
   postgresql: "9.4"
-  sonarqube:
+  sonarcloud:
     organization: "noraui"
 
 jdk:
@@ -21,11 +22,15 @@ before_install:
 - psql -U travis -d noraui -a -f config/noraui-db.sql
 - mysql -e 'CREATE DATABASE noraui;'
 - mysql --user=travis noraui < config/noraui-db.sql > output.tab
-
+  
 script:
 - test/run.sh
 
-after_success: test/after_success.sh
+dist:
+- precise
+
+after_success:
+- test/after_success.sh
 
 cache:
   directories:

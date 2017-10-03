@@ -53,8 +53,16 @@ public class Application {
         return urlPages;
     }
 
-    public void setUrlPages(Map<String, String> urlPages) {
-        this.urlPages = urlPages;
+    /**
+     * add a url page to an application.
+     *
+     * @param key
+     *            of page
+     * @param url
+     *            of page
+     */
+    public void addUrlPage(String key, String url) {
+        this.urlPages.put(key, url);
     }
 
 }

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
@@ -14,55 +16,65 @@ import noraui.gherkin.GherkinFactory;
 import noraui.model.Model;
 import noraui.model.ModelList;
 import noraui.utils.Context;
+import noraui.utils.Messages;
 
 public class ScenarioInitiator {
 
+    public static final String SCENARIO_INITIATOR_ERROR_EMPTY_FILE = "SCENARIO_INITIATOR_ERROR_EMPTY_FILE";
+
     private static final Logger logger = Logger.getLogger(ScenarioInitiator.class);
+    private static final String SCENARIO_INITIATOR_ERROR_UNABLE_TO_GET_TAGS = "SCENARIO_INITIATOR_ERROR_UNABLE_TO_GET_TAGS";
+    private static final String SCENARIO_INITIATOR_USAGE = "SCENARIO_INITIATOR_USAGE";
+    private static final String SCENARIO_INITIATOR_INJECT_WITHOUT_MODEL = "SCENARIO_INITIATOR_INJECT_WITHOUT_MODEL";
+    private static final String SCENARIO_INITIATOR_INJECT_WITH_MODEL = "SCENARIO_INITIATOR_INJECT_WITH_MODEL";
+    private static final String SCENARIO_INITIATOR_ERROR_ON_INJECTING_MODEL = "SCENARIO_INITIATOR_ERROR_ON_INJECTING_MODEL";
 
     public void start(String[] args) {
-
-        Context.initializeScenarioProperties(ScenarioInitiator.class.getClassLoader());
-        logger.info("Working Directory = " + System.getProperty("user.dir"));
-        logger.info("ScenarioInitiator.start:");
+        logger.info("Working Directory is '" + System.getProperty("user.dir") + "'");
+        logger.info("ScenarioInitiator > start()");
         if (args != null && args.length == 1 && !"@TOSPECIFY".equals(args[0])) {
-            for (String a : args) {
-                logger.info("# " + a);
-            }
-            String scenarioName = args[0];
+            logger.info("# " + args[0]);
+            final String scenarioName = args[0];
             processInjection(scenarioName);
         } else {
-            logger.warn("Usage: ScenarioInitiator main must be launched with 1 parameters ==> \"ScenarioName\"\nUsing tags instead");
-            String tags = System.getProperty("cucumber.options");
-            if (tags != null && tags.contains("--tags")) {
-                tags = tags.replace("--tags @", "").replace("@", "");
-                for (String s : tags.split(",")) {
-                    processInjection(s);
+            logger.warn(Messages.getMessage(SCENARIO_INITIATOR_USAGE));
+            
+            String cucumberOptions = System.getProperty("cucumber.options");
+            if (cucumberOptions != null && cucumberOptions.contains("--tags")) {
+                Matcher matcher = Pattern.compile(".*--tags '(.*)'.*").matcher(cucumberOptions);
+                if (matcher.find() && matcher.groupCount() > 0) {
+                    String tags = matcher.group(1).replace("not ", "").replace(")", "").replace("(", "").replace(" and ", " ").replace(" or ", " ").replace("@", "");
+                    for (final String s : tags.split(" ")) {
+                        if (!s.startsWith("~")) {
+                            processInjection(s);
+                        }
+                    }
                 }
+
             } else {
-                logger.error("Unable to get tags to process injection");
+                logger.error(Messages.getMessage(SCENARIO_INITIATOR_ERROR_UNABLE_TO_GET_TAGS));
             }
         }
-
     }
 
     private static void processInjection(String scenarioName) {
         try {
             Context.getDataInputProvider().prepare(scenarioName);
-            Class<Model> model = Context.getDataInputProvider().getModel(Context.getModelPackages());
+            final Class<Model> model = Context.getDataInputProvider().getModel(Context.getModelPackages());
             if (model == null) {
-                logger.info("ScenarioInitiator > processInjection(" + scenarioName + ") without using model");
+                logger.info(String.format(Messages.getMessage(SCENARIO_INITIATOR_INJECT_WITHOUT_MODEL), scenarioName));
                 injectWithoutModel(scenarioName);
             } else {
-                logger.info("ScenarioInitiator > processInjection(" + scenarioName + ") using '" + model.getSimpleName() + "' model");
+                logger.info(String.format(Messages.getMessage(SCENARIO_INITIATOR_INJECT_WITH_MODEL), scenarioName, model.getSimpleName()));
                 injectWithModel(scenarioName, model);
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             logger.error(e);
         }
     }
 
     private static void injectWithoutModel(String scenarioName) throws TechnicalException {
-        List<String[]> examples = new ArrayList<>();
+        final List<String[]> examples = new ArrayList<>();
         String[] example;
         for (int i = 1; (example = Context.getDataInputProvider().readLine(i, false)) != null; i++) {
             examples.add(example);
@@ -72,22 +84,20 @@ public class ScenarioInitiator {
 
     private static void injectWithModel(String scenarioName, Class<Model> model) throws TechnicalException {
         try {
-            String[] headers = Context.getDataInputProvider().readLine(0, false);
-
+            final String[] headers = Context.getDataInputProvider().readLine(0, false);
             if (headers != null) {
-                List<String[]> examples = new ArrayList<>();
-                Constructor<Model> modelConstructor = DataUtils.getModelConstructor(model, headers);
-                Map<String, ModelList> fusionedData = DataUtils.fusionProcessor(model, modelConstructor);
-                for (Entry<String, ModelList> e : fusionedData.entrySet()) {
+                final List<String[]> examples = new ArrayList<>();
+                final Constructor<Model> modelConstructor = DataUtils.getModelConstructor(model, headers);
+                final Map<String, ModelList> fusionedData = DataUtils.fusionProcessor(model, modelConstructor);
+                for (final Entry<String, ModelList> e : fusionedData.entrySet()) {
                     examples.add(new String[] { e.getKey(), e.getValue().serialize() });
                 }
                 GherkinFactory.injectDataInGherkinExamples(scenarioName, examples);
             } else {
-                logger.error("Data file is empty. No injection has been done !");
+                logger.error(Messages.getMessage(SCENARIO_INITIATOR_ERROR_EMPTY_FILE));
             }
-        } catch (Exception te) {
-            logger.error("Technical problem during injectWithModel: " + te.getMessage());
-            throw new TechnicalException("Technical problem during injectWithModel: " + te.getMessage(), te);
+        } catch (final Exception te) {
+            throw new TechnicalException(Messages.getMessage(SCENARIO_INITIATOR_ERROR_ON_INJECTING_MODEL) + te.getMessage(), te);
         }
     }
 

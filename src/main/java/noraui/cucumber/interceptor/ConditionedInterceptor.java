@@ -10,9 +10,11 @@ import org.apache.log4j.Logger;
 import noraui.cucumber.annotation.Conditioned;
 import noraui.gherkin.GherkinStepCondition;
 import noraui.utils.Context;
+import noraui.utils.Messages;
 
 public class ConditionedInterceptor implements MethodInterceptor {
 
+    private static final String SKIPPED_DUE_TO_CONDITIONS = "SKIPPED_DUE_TO_CONDITIONS";
     private static Logger logger = Logger.getLogger(ConditionedInterceptor.class.getName());
 
     /**
@@ -29,7 +31,7 @@ public class ConditionedInterceptor implements MethodInterceptor {
                 List<GherkinStepCondition> conditions = (List) arg[arg.length - 1];
                 displayMessageAtTheBeginningOfMethod(m.getName(), conditions);
                 if (!checkConditions(conditions)) {
-                    Context.getCurrentScenario().write("SKIPPED BY CONDITIONS");
+                    Context.getCurrentScenario().write(Messages.getMessage(SKIPPED_DUE_TO_CONDITIONS));
                     return Void.TYPE;
                 }
             }
@@ -92,8 +94,7 @@ public class ConditionedInterceptor implements MethodInterceptor {
     public boolean checkConditions(List<GherkinStepCondition> conditions) {
         for (GherkinStepCondition gherkinCondition : conditions) {
             logger.debug("checkConditions " + gherkinCondition.getActual() + " in context is " + Context.getValue(gherkinCondition.getActual()));
-            String actual = Context.getValue(gherkinCondition.getActual()) != null ? Context.getValue(gherkinCondition.getActual()) : gherkinCondition.getActual();
-            if (actual == null || !actual.matches("(?i)" + gherkinCondition.getExpected())) {
+            if (!gherkinCondition.checkCondition()) {
                 return false;
             }
         }

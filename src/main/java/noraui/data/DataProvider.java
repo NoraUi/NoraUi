@@ -1,5 +1,7 @@
 package noraui.data;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import noraui.exception.TechnicalException;
@@ -8,10 +10,10 @@ import noraui.model.Model;
 public interface DataProvider {
 
     enum type {
-        EXCEL, CSV, DB
-    };
+        EXCEL, CSV, DB, REST, GHERKIN, CONSOLE
+    }
 
-    public static final String NAME_OF_RESULT_COLUMN = "Résultat";
+    final List<String> AUTHORIZED_NAMES_FOR_RESULT_COLUMN = new ArrayList<>(Arrays.asList("Résultat", "Result"));
 
     void prepare(String scenario) throws TechnicalException;
 
@@ -58,4 +60,22 @@ public interface DataProvider {
      *            the new data out path
      */
     public void setDataOutPath(String dataOutPath);
+
+    /**
+     * Getter of resultName column name.
+     *
+     * @return
+     *         the name of the result column
+     */
+    public String getResultColumnName();
+
+    /**
+     * Returns true if the given column name is part of authorized column names. See {@link AUTHORIZED_NAMES_FOR_RESULT_COLUMN}.
+     *
+     * @param name
+     *            the name to check
+     * @return
+     *         true if the name is authorized, false otherwise
+     */
+    public boolean isResultColumnNameAuthorized(String name);
 }

@@ -7,10 +7,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 import org.apache.log4j.Logger;
-import org.openqa.selenium.Proxy;
+import org.openqa.selenium.Proxy.ProxyType;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
@@ -19,7 +20,9 @@ import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import noraui.exception.TechnicalException;
 import noraui.utils.Context;
+import noraui.utils.Messages;
 import noraui.utils.Utilities;
 import noraui.utils.Utilities.OperatingSystem;
 import noraui.utils.Utilities.SystemArchitecture;
@@ -34,10 +37,11 @@ public class DriverFactory {
     public static final String PHANTOM = "phantom";
     public static final String IE = "ie";
     public static final String CHROME = "chrome";
+    public static final String HTMLUNIT = "htmlunit";
     public static final String DEFAULT_DRIVER = PHANTOM;
 
     /** Selenium drivers. **/
-    private Map<String, WebDriver> drivers;
+    private final Map<String, WebDriver> drivers;
 
     public DriverFactory() {
         drivers = new HashMap<>();
@@ -52,9 +56,13 @@ public class DriverFactory {
         // Driver's name is retrieved by system properties
         String driverName = Context.getBrowser();
         driverName = driverName != null ? driverName : DEFAULT_DRIVER;
-        WebDriver driver;
+        WebDriver driver = null;
         if (!drivers.containsKey(driverName)) {
-            driver = generateWebDriver(driverName);
+            try {
+                driver = generateWebDriver(driverName);
+            } catch (final TechnicalException e) {
+                logger.error(e.getMessage());
+            }
         } else {
             driver = drivers.get(driverName);
         }
@@ -65,7 +73,7 @@ public class DriverFactory {
      * Clear loaded drivers
      */
     public void clear() {
-        for (WebDriver wd : drivers.values()) {
+        for (final WebDriver wd : drivers.values()) {
             wd.quit();
         }
         drivers.clear();
@@ -75,40 +83,57 @@ public class DriverFactory {
      * Generate a phantomJs webdriver.
      *
      * @return a phantomJs webdriver
+     * @throws TechnicalException
+     *             if an error occured when Webdriver setExecutable to true.
      */
-    private WebDriver generatePhantomJsDriver() {
+    private WebDriver generatePhantomJsDriver() throws TechnicalException {
         logger.info("Driver phantomjs");
-        String pathWebdriver = DriverFactory.getPath(Driver.PHANTOMJS);
-        new File(pathWebdriver).setExecutable(true);
-        DesiredCapabilities caps = new DesiredCapabilities();
+        final String pathWebdriver = DriverFactory.getPath(Driver.PHANTOMJS);
+        if (!new File(pathWebdriver).setExecutable(true)) {
+            throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_WEBDRIVER_SET_EXECUTABLE));
+        }
+        final DesiredCapabilities caps = new DesiredCapabilities();
         caps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, pathWebdriver);
         caps.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
         caps.setJavascriptEnabled(true);
-        LoggingPreferences logPrefs = new LoggingPreferences();
+        final LoggingPreferences logPrefs = new LoggingPreferences();
         logPrefs.enable(LogType.BROWSER, Level.ALL);
         caps.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
         caps.setCapability(PhantomJSDriverService.PHANTOMJS_PAGE_CUSTOMHEADERS_PREFIX + "Accept-Language", "fr-FR");
+        String proxy = "";
+        if (Context.getProxy().getProxyType() != ProxyType.UNSPECIFIED && Context.getProxy().getProxyType() != ProxyType.AUTODETECT) {
+            proxy = Context.getProxy().getHttpProxy();
+        }
         caps.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS,
-                new String[] { "--proxy=" + Context.getProxy(), "--web-security=no", "--ignore-ssl-errors=true", "--ssl-protocol=tlsv1", "--webdriver-loglevel=NONE" });
+                new String[] { "--proxy=" + proxy, "--web-security=no", "--ignore-ssl-errors=true", "--ssl-protocol=tlsv1", "--webdriver-loglevel=NONE" });
         return new PhantomJSDriver(caps);
     }
 
     /**
-     * Generate an ie webdriver.
+     * Generate an ie webdriver. Unable to use it with a proxy. Causes a crash.
      *
-     * @deprecated It should not be used in production and it is very slow for developments.
      * @return an ie webdriver
+     * @throws TechnicalException
+     *             if an error occured when Webdriver setExecutable to true.
      */
-    @Deprecated
-    private WebDriver generateIEDriver() {
+    private WebDriver generateIEDriver() throws TechnicalException {
         logger.info("Driver ie");
-        String pathWebdriver = DriverFactory.getPath(Driver.IE);
-        new File(pathWebdriver).setExecutable(true);
-        DesiredCapabilities capabilities = DesiredCapabilities.internetExplorer();
-        capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
+        final String pathWebdriver = DriverFactory.getPath(Driver.IE);
+        if (!new File(pathWebdriver).setExecutable(true)) {
+            throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_WEBDRIVER_SET_EXECUTABLE));
+        }
+        final DesiredCapabilities capabilities = DesiredCapabilities.internetExplorer();
+        capabilities.setCapability(InternetExplorerDriver.IE_ENSURE_CLEAN_SESSION, true);
+        capabilities.setCapability(InternetExplorerDriver.IGNORE_ZOOM_SETTING, true);
+        capabilities.setCapability(InternetExplorerDriver.REQUIRE_WINDOW_FOCUS, true);
+        capabilities.setCapability(InternetExplorerDriver.NATIVE_EVENTS, false);
         capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
-        capabilities.setCapability("requireWindowFocus", true);
-        capabilities.setCapability(CapabilityType.PROXY, Context.getProxy());
+        capabilities.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
+        capabilities.setCapability("disable-popup-blocking", true);
+        capabilities.setJavascriptEnabled(true);
+        if (Context.getProxy().getProxyType() != ProxyType.UNSPECIFIED && Context.getProxy().getProxyType() != ProxyType.AUTODETECT) {
+            capabilities.setCapability(CapabilityType.PROXY, Context.getProxy());
+        }
         System.setProperty(Driver.IE.getDriverName(), pathWebdriver);
         return new InternetExplorerDriver(capabilities);
     }
@@ -117,22 +142,44 @@ public class DriverFactory {
      * Generate a chrome webdriver.
      *
      * @return a chrome webdriver
+     * @throws TechnicalException
+     *             if an error occured when Webdriver setExecutable to true.
      */
-    private WebDriver generateGoogleChromeDriver() {
+    private WebDriver generateGoogleChromeDriver() throws TechnicalException {
         logger.info("Driver chrome");
-        String pathWebdriver = DriverFactory.getPath(Driver.CHROME);
-        new File(pathWebdriver).setExecutable(true);
-        DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+        final String pathWebdriver = DriverFactory.getPath(Driver.CHROME);
+        if (!new File(pathWebdriver).setExecutable(true)) {
+            throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_WEBDRIVER_SET_EXECUTABLE));
+        }
+        final DesiredCapabilities capabilities = DesiredCapabilities.chrome();
         capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
         capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
-        capabilities.setCapability("requireWindowFocus", true);
-        if (!Context.getProxy().isEmpty()) {
-            Proxy proxy = new Proxy();
-            proxy.setHttpProxy(Context.getProxy());
-            capabilities.setCapability(CapabilityType.PROXY, proxy);
+        final LoggingPreferences logPrefs = new LoggingPreferences();
+        logPrefs.enable(LogType.BROWSER, Level.ALL);
+        capabilities.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
+        if (Context.getProxy().getProxyType() != ProxyType.UNSPECIFIED && Context.getProxy().getProxyType() != ProxyType.AUTODETECT) {
+            capabilities.setCapability(CapabilityType.PROXY, Context.getProxy());
         }
+
         System.setProperty(Driver.CHROME.getDriverName(), pathWebdriver);
         return new ChromeDriver(capabilities);
+    }
+
+    /**
+     * Generate a htmlunit webdriver.
+     *
+     * @return a htmlunit webdriver
+     */
+    private WebDriver generateHtmlUnitDriver() {
+        logger.info("Driver htmlunit");
+        final DesiredCapabilities capabilities = DesiredCapabilities.htmlUnit();
+        capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
+        capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
+        capabilities.setJavascriptEnabled(true);
+        if (Context.getProxy().getProxyType() != ProxyType.UNSPECIFIED && Context.getProxy().getProxyType() != ProxyType.AUTODETECT) {
+            capabilities.setCapability(CapabilityType.PROXY, Context.getProxy());
+        }
+        return new HtmlUnitDriver(capabilities);
     }
 
     /**
@@ -140,13 +187,17 @@ public class DriverFactory {
      *
      * @param driverName
      * @return
+     * @throws TechnicalException
+     *             if an error occured when Webdriver setExecutable to true.
      */
-    private WebDriver generateWebDriver(String driverName) {
+    private WebDriver generateWebDriver(String driverName) throws TechnicalException {
         WebDriver driver;
-        if ("ie".equals(driverName)) {
+        if (IE.equals(driverName)) {
             driver = generateIEDriver();
-        } else if ("chrome".equals(driverName)) {
+        } else if (CHROME.equals(driverName)) {
             driver = generateGoogleChromeDriver();
+        } else if (HTMLUNIT.equals(driverName)) {
+            driver = generateHtmlUnitDriver();
         } else {
             driver = generatePhantomJsDriver();
         }
@@ -158,7 +209,7 @@ public class DriverFactory {
     }
 
     public static String getPath(Driver currentDriver) {
-        OperatingSystem currentOperatingSystem = OperatingSystem.getCurrentOperatingSystem();
+        final OperatingSystem currentOperatingSystem = OperatingSystem.getCurrentOperatingSystem();
         String format = "";
         if ("webdriver.ie.driver".equals(currentDriver.driverName)) {
             format = Utilities.setProperty(Context.getWebdriversProperties(currentDriver.driverName), "src/test/resources/drivers/%s/internetexplorer/%s/IEDriverServer%s");

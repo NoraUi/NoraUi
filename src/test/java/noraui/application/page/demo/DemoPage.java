@@ -18,15 +18,15 @@ public class DemoPage extends Page {
     private static Logger logger = Logger.getLogger(DemoPage.class.getName());
 
     public final PageElement bigTitle = new PageElement("-big_title", "This is a demo for NORAUI (Non-Regression Automation for User Interfaces).");
-    public final PageElement inputText = new PageElement("-input_text_field", "Input Text field");
     public final PageElement inputSelect = new PageElement("-input_select_field", "Input Select field");
     public final PageElement rateRadio = new PageElement("-rate", "Input radio rate");
     public final PageElement agreeCheckbox = new PageElement("-agree", "Input checkbox agree");
     public final PageElement submit = new PageElement("-submit", "Submit button");
-    public final PageElement smilejs = new PageElement("-smilejs", "link a html balise with onclick by js (smile)");
+    public final PageElement smilejs = new PageElement("-smilejs", "link a html balise with onclick by js (smilejs)");
     public final PageElement smile = new PageElement("-smile", "link a html balise with onclick (smile)");
     public final PageElement noExistElement = new PageElement("-noExistElement", "no exist element");
     public final PageElement message = new PageElement("-message", "message");
+    public final PageElement xpathContainPercentChar = new PageElement("-xpathContainPercentChar");
 
     private static final String TITLE_PAGE = "NoraUi Demo";
 
@@ -44,7 +44,7 @@ public class DemoPage extends Page {
     public boolean checkPage(Object... elements) {
         try {
             Context.waitUntil(ExpectedConditions.not(ExpectedConditions.titleIs("")));
-            if (!TITLE_PAGE.equals(Page.getDriver().getTitle())) {
+            if (!TITLE_PAGE.equals(getDriver().getTitle())) {
                 logger.error("HTML title is not good");
                 return false;
             }

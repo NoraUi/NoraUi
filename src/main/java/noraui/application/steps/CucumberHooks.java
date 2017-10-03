@@ -1,5 +1,7 @@
 package noraui.application.steps;
 
+import java.util.Collection;
+
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Seconds;
@@ -17,13 +19,17 @@ import noraui.utils.Messages;
 public class CucumberHooks {
 
     private static final Logger logger = Logger.getLogger(CucumberHooks.class);
+    private static final String PROGRESS_MESSAGE = "PROGRESS_MESSAGE";
+    private static final String SUCCESS_MESSAGE_BY_DEFAULT = "SUCCESS_MESSAGE_BY_DEFAULT";
 
     @Before()
     public static void setUpScenario(Scenario scenario) throws TechnicalException {
         logger.debug("setUpScenario " + scenario.getName() + " scenario.");
+
         if (Context.getCurrentScenarioData() == 0) {
             // Retrieve Excel filename to read
-            String scenarioName = System.getProperty("excelfilename") != null ? System.getProperty("excelfilename") : ((String) scenario.getSourceTagNames().toArray()[0]).replaceAll("@", "");
+            String scenarioName = System.getProperty("excelfilename") != null ? System.getProperty("excelfilename") : getFirstNonEnvironmentTag(scenario.getSourceTagNames());
+
             Context.setScenarioName(scenarioName);
 
             Context.getDataInputProvider().prepare(Context.getScenarioName());
@@ -37,7 +43,8 @@ public class CucumberHooks {
         Context.saveValue(Constants.IS_CONNECTED_REGISTRY_KEY, String.valueOf(Auth.isConnected()));
 
         Context.setCurrentScenario(scenario);
-        new Result.Success<>(Context.getScenarioName(), Messages.SUCCESS_MESSAGE_BY_DEFAULT);
+        new Result.Success<>(Context.getScenarioName(), Messages.getMessage(SUCCESS_MESSAGE_BY_DEFAULT));
+
     }
 
     @After()
@@ -61,18 +68,20 @@ public class CucumberHooks {
         int width = scenario.getSourceTagNames().toString().length() + String.valueOf(Context.getCurrentScenarioData()).length()
                 + String.valueOf(Context.getDataInputProvider().getNbGherkinExample()).length() + String.valueOf(Context.getNbFailure()).length() + String.valueOf(Context.getNbWarning()).length()
                 + String.valueOf(remainingTime).length();
-        for (int i = 0; i < 72 + width; i++) {
+
+        String message = Messages.getMessage(PROGRESS_MESSAGE);
+        for (int i = 0; i < message.length() - 12 + width; i++) {
             star.append("*");
         }
         postStar.append("*");
-        for (int i = 0; i < 70 + width; i++) {
+        for (int i = 0; i < message.length() - 14 + width; i++) {
             postStar.append(" ");
         }
         postStar.append("*");
         logger.info(star.toString());
         logger.info(postStar.toString());
-        logger.info("*   Scenario: " + scenario.getSourceTagNames() + " étape " + Context.getCurrentScenarioData() + " sur " + Context.getDataInputProvider().getNbGherkinExample() + " avec "
-                + Context.getNbFailure() + " erreur(s) et " + Context.getNbWarning() + " alerte(s). Il reste " + remainingTime + "s   *");
+        logger.info(String.format(message, scenario.getSourceTagNames(), Context.getCurrentScenarioData(), Context.getDataInputProvider().getNbGherkinExample(), Context.getNbFailure(),
+                Context.getNbWarning(), remainingTime));
         logger.info(postStar.toString());
         logger.info(star.toString());
     }
@@ -82,6 +91,15 @@ public class CucumberHooks {
         Seconds pastTime = Seconds.secondsBetween(Context.getStartCurrentScenario(), now);
         int totalTimecalculated = pastTime.getSeconds() * Context.getDataInputProvider().getNbGherkinExample() / Context.getCurrentScenarioData();
         return totalTimecalculated - pastTime.getSeconds();
+    }
+
+    private static String getFirstNonEnvironmentTag(Collection<String> collection) {
+        for (String tag : collection) {
+            if (!tag.startsWith("@~")) {
+                return tag.replaceAll("@", "");
+            }
+        }
+        return null;
     }
 
 }
