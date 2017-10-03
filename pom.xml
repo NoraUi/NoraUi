@@ -50,7 +50,7 @@
         <jenkinsresourcespath>src/test/resources</jenkinsresourcespath>
         <excelfilename>@TOSPECIFY</excelfilename>
         <cucumber.version>2.0.1</cucumber.version>
-        <selenium.version>3.6.0</selenium.version>
+        <selenium.version>3.5.3</selenium.version>
         <phantomjsdriver.version>1.4.3</phantomjsdriver.version>
         <htmlunit.version>2.26</htmlunit.version>
         <htmlunitdriver.version>2.26</htmlunitdriver.version>
