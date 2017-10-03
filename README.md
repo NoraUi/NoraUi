@@ -88,6 +88,20 @@ SNAPSHOT:
 
 The [issue tracker](https://github.com/NoraUi/NoraUi/issues) is the preferred channel for bug reports, features requests and submitting pull requests.
 
-For pull requests, editor preferences are available in the [editor config](.editorconfig) for easy use in common text editors. Read more and download plugins at <http://editorconfig.org>.
+For pull requests, read [CONTRIBUTING](https://github.com/JarekLipsko/NoraUi/blob/master/CONTRIBUTING) before.
+
+* Step 1: Create a fork.
+* Step 2: Create a branch on this new fork.
+* Step 3: Sync your travis-ci account and guithub account.
+
+![howtocontribute-travis-ci-sync](/screenshots/howtocontribute-travis-ci-sync.png)
+* Step 4: Flick the repository switch on.
+
+![howtocontribute-travis-ci-on](/screenshots/howtocontribute-travis-ci-on.png)
+* Step 5: Add OTN login/password in Travis-ci environnement.
+
+![howtocontribute-travis-ci-env-var](/screenshots/howtocontribute-travis-ci-env-var.png)
+* Step 6: Valid if Travis status is OK.
+* Step 7: Create pull request.
 
 ![footer](https://noraui.github.io/img/end.png)
