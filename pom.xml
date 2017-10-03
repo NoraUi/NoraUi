@@ -21,8 +21,9 @@
 
     <licenses>
         <license>
-            <name>BSD license</name>
-            <comments>All source code is under the BSD license.</comments>
+            <name>GNU Affero General Public License, Version 3</name>
+            <url>https://www.gnu.org/licenses/agpl-3.0-standalone.html</url>
+            <comments>All source code is under the GNU AGPL-3 license.</comments>
         </license>
     </licenses>
 
