@@ -66,11 +66,19 @@ if [ "$nb_failure" != "" ]; then
     fi
 fi
 
+echo "***************************************************"
+
 counters1=$(sed -n 's:.*\[Excel\] > <EXPECTED_RESULTS_1>\(.*\)</EXPECTED_RESULTS_1>.*:\1:p' nonaui.log | head -n 1)
+echo "******** $counters1"
 nb_counters1=$(sed -n ":;s/$counters1//p;t" nonaui.log | sed -n '$=')
+echo "********" found $nb_counters1 times
 
 counters2=$(sed -n 's:.*\[Excel\] > <EXPECTED_RESULTS_2>\(.*\)</EXPECTED_RESULTS_2>.*:\1:p' nonaui.log | head -n 1)
+echo "******** $counters2"
 nb_counters2=$(sed -n ":;s/$counters2//p;t" nonaui.log | sed -n '$=')
+echo "******** found $nb_counters2 times"
+
+echo "***************************************************"
 
 # 3 = 1 (real) + 2 counters (Excel and CSV)
 if [ "$nb_counters1" == "3" ] && [ "$nb_counters2" == "3" ]; then
