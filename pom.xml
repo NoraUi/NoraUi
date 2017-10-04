@@ -66,7 +66,7 @@
         <mysql.driver.version>5.1.6</mysql.driver.version>
         <joda-time.version>2.9.9</joda-time.version>
         <joda-convert.version>1.9.2</joda-convert.version>
-        <javassist.version>3.22.0-CR1</javassist.version>
+        <javassist.version>3.22.0-CR2</javassist.version>
         <reflections.version>0.9.9-RC2</reflections.version>
         <xml-apis.version>1.4.01</xml-apis.version>
         <guava.version>23.0</guava.version>
