@@ -52,8 +52,7 @@
         <cucumber.version>2.0.1</cucumber.version>
         <selenium.version>3.5.3</selenium.version>
         <phantomjsdriver.version>1.4.3</phantomjsdriver.version>
-        <htmlunit.version>2.26</htmlunit.version>
-        <htmlunitdriver.version>2.26</htmlunitdriver.version>
+        <htmlunit.version>2.27</htmlunit.version>
         <junit.version>4.12</junit.version>
         <ini4j.version>0.5.4</ini4j.version>
         <poi.version>3.14</poi.version>
@@ -189,7 +188,7 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>htmlunit-driver</artifactId>
-            <version>${htmlunitdriver.version}</version>
+            <version>${htmlunit.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.google.code.gson</groupId>
