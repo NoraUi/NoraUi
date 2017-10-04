@@ -1,5 +1,7 @@
+/.idea
 /target/
+/bin/
 /.settings
 /.classpath
 /.project
-/bin/
+/noraui.iml
