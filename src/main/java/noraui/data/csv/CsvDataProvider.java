@@ -1,10 +1,14 @@
 package noraui.data.csv;
 
+import static noraui.utils.Constants.DEFAULT_ENDODING;
+
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -169,12 +173,12 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
         }
     }
 
-    private CSVReader openInputData() throws FileNotFoundException {
-        return new CSVReader(new FileReader(new File(dataInPath + scenarioName + "." + CSV_TYPE)), CSV_CHAR_SEPARATOR);
+    private CSVReader openInputData() throws FileNotFoundException, UnsupportedEncodingException {
+        return new CSVReader(new InputStreamReader(new FileInputStream(dataInPath + scenarioName + "." + CSV_TYPE), DEFAULT_ENDODING), CSV_CHAR_SEPARATOR);
     }
 
-    private CSVReader openOutputData() throws FileNotFoundException {
-        return new CSVReader(new FileReader(new File(dataOutPath + scenarioName + "." + CSV_TYPE)), CSV_CHAR_SEPARATOR);
+    private CSVReader openOutputData() throws FileNotFoundException, UnsupportedEncodingException {
+        return new CSVReader(new InputStreamReader(new FileInputStream(dataOutPath + scenarioName + "." + CSV_TYPE), DEFAULT_ENDODING), CSV_CHAR_SEPARATOR);
     }
 
 }
