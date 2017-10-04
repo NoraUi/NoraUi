@@ -65,8 +65,8 @@
         <oracle.driver.version>12.2.0.1</oracle.driver.version>
         <postgres.driver.version>9.4.1212.jre7</postgres.driver.version>
         <mysql.driver.version>5.1.6</mysql.driver.version>
-        <joda-time.version>2.9.7</joda-time.version>
-        <joda-convert.version>1.8.1</joda-convert.version>
+        <joda-time.version>2.9.9</joda-time.version>
+        <joda-convert.version>1.9.2</joda-convert.version>
         <javassist.version>3.22.0-CR1</javassist.version>
         <reflections.version>0.9.9-RC2</reflections.version>
         <xml-apis.version>1.4.01</xml-apis.version>
