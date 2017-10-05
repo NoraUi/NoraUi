@@ -63,7 +63,7 @@
         <jsr305.version>3.0.2</jsr305.version>
         <oracle.driver.version>12.2.0.1</oracle.driver.version>
         <postgres.driver.version>9.4.1212.jre7</postgres.driver.version>
-        <mysql.driver.version>5.1.6</mysql.driver.version>
+        <mysql.driver.version>6.0.6</mysql.driver.version>
         <joda-time.version>2.9.9</joda-time.version>
         <joda-convert.version>1.9.2</joda-convert.version>
         <javassist.version>3.22.0-CR2</javassist.version>
