@@ -3,15 +3,20 @@ package noraui.application.steps;
 import java.util.ArrayList;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Matchers;
 import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import com.google.inject.Inject;
+
 import cucumber.api.Scenario;
 import noraui.application.page.Page;
+import noraui.cucumber.injector.NoraUiInjectorSource;
 import noraui.exception.FailureException;
 import noraui.exception.TechnicalException;
 import noraui.gherkin.GherkinStepCondition;
@@ -19,10 +24,16 @@ import noraui.utils.Messages;
 import noraui.utils.Utilities;
 
 @RunWith(PowerMockRunner.class)
+@PowerMockIgnore("javax.management.*")
 @PrepareForTest({ Utilities.class })
 public class CommonStepsUT {
 
     private CommonSteps s = null;
+    
+    @Before
+    public void setUp() {
+        new NoraUiInjectorSource().getInjector();
+    }
 
     @Test
     public void checkMandatoryFieldTextTypeTest() throws TechnicalException {
