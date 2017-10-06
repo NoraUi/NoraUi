@@ -81,7 +81,7 @@
         <exec-maven-plugin.version>1.6.0</exec-maven-plugin.version>
         <maven-surefire-plugin.version>2.20.1</maven-surefire-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
-        <nexus-staging-maven-plugin.version>1.6.7</nexus-staging-maven-plugin.version>
+        <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
         <jacoco-maven-plugin.version>0.7.9</jacoco-maven-plugin.version>
         <sonar.jacoco.reportPath>${project.testresult.directory}/coverage/jacoco/jacoco.exec</sonar.jacoco.reportPath>
         <sonar-maven-plugin.version>3.0.2</sonar-maven-plugin.version>
