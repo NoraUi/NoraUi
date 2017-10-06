@@ -10,6 +10,7 @@ import org.junit.Test;
 import noraui.application.page.Page;
 import noraui.application.page.Page.PageElement;
 import noraui.application.page.demo.DemoPage;
+import noraui.cucumber.injector.NoraUiInjectorSource;
 import noraui.cucumber.interceptor.ConditionedInterceptor;
 import noraui.exception.TechnicalException;
 import noraui.gherkin.GherkinConditionedLoopedStep;
@@ -36,6 +37,7 @@ public class StepUT {
         ci = new ConditionedInterceptor();
         gherkinCondition = new GherkinStepCondition();
         conditions = new ArrayList<>();
+        new NoraUiInjectorSource().getInjector();
     }
 
     @Test
