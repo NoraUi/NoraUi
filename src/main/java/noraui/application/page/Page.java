@@ -1,11 +1,11 @@
 package noraui.application.page;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 
+import noraui.cucumber.injector.NoraUiInjector;
 import noraui.exception.Callbacks.Callback;
 import noraui.exception.TechnicalException;
 import noraui.utils.Context;
@@ -18,8 +18,6 @@ public abstract class Page implements IPage {
     private static String pagesPackage = Page.class.getPackage().getName() + '.';
 
     private static Logger logger = Logger.getLogger(Page.class.getName());
-
-    private static ArrayList<Page> instances = new ArrayList<>();
 
     protected Page motherPage = null;
 
@@ -41,29 +39,8 @@ public abstract class Page implements IPage {
     }
 
     /**
-     * Create a instance of page if class in parameter not in instances list else use instance already exist.
-     *
-     * @param c
-     *            is a class
-     * @return a Page
-     * @throws TechnicalException
-     *             if InstantiationException or IllegalAccessException in getInstance() of Page.
-     */
-    public static Page getInstance(Class<?> c) throws TechnicalException {
-        for (final Page page : instances) {
-            if (page.getClass() == c) {
-                return page;
-            }
-        }
-        try {
-            return (Page) c.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            throw new TechnicalException(Messages.format(Messages.getMessage(PAGE_UNABLE_TO_RETRIEVE), c), e);
-        }
-    }
-
-    /**
      * Finds a Page by its name (not the full qualified name).
+     * Create a instance or use instance if already exist (com.google.inject.@Singleton).
      *
      * @param className
      *            The name of the class to find. Full qualified name is not required.
@@ -75,7 +52,7 @@ public abstract class Page implements IPage {
      */
     public static Page getInstance(String className) throws TechnicalException {
         try {
-            return getInstance(Class.forName(pagesPackage + className));
+            return (Page) NoraUiInjector.getNoraUiInjectorSource().getInstance(Class.forName(pagesPackage + className));
         } catch (final ClassNotFoundException e) {
             throw new TechnicalException(Messages.format(Messages.getMessage(PAGE_UNABLE_TO_RETRIEVE), className), e);
         }
