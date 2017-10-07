@@ -102,7 +102,7 @@
             <id>sonatype-releases</id>
             <url>https://oss.sonatype.org/content/repositories/releases</url>
         </repository>
-        <repository>
+        <!-- <repository>
             <id>maven.oracle.com</id>
             <releases>
                 <enabled>true</enabled>
@@ -112,15 +112,15 @@
             </snapshots>
             <url>https://maven.oracle.com</url>
             <layout>default</layout>
-        </repository>
+        </repository> -->
     </repositories>
     
-    <pluginRepositories>
+    <!-- <pluginRepositories>
 		<pluginRepository>
 			<id>maven.oracle.com</id>
 			<url>https://maven.oracle.com</url>
 		</pluginRepository>
-	</pluginRepositories>
+	</pluginRepositories> -->
 
     <dependencies>
 
@@ -271,11 +271,11 @@
         </dependency>
 
         <!-- database drivers -->
-        <dependency>
+        <!-- <dependency>
             <groupId>com.oracle.jdbc</groupId>
             <artifactId>ojdbc8</artifactId>
             <version>${oracle.driver.version}</version>
-        </dependency>
+        </dependency> -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
