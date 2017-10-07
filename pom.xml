@@ -21,8 +21,9 @@
 
     <licenses>
         <license>
-            <name>BSD license</name>
-            <comments>All source code is under the BSD license.</comments>
+            <name>GNU Affero General Public License, Version 3</name>
+            <url>https://www.gnu.org/licenses/agpl-3.0-standalone.html</url>
+            <comments>All source code is under the GNU AGPL-3 license.</comments>
         </license>
     </licenses>
 
@@ -49,39 +50,38 @@
         <jenkinsresourcespath>src/test/resources</jenkinsresourcespath>
         <excelfilename>@TOSPECIFY</excelfilename>
         <cucumber.version>2.0.1</cucumber.version>
-        <selenium.version>3.4.0</selenium.version>
+        <selenium.version>3.5.3</selenium.version>
         <phantomjsdriver.version>1.4.3</phantomjsdriver.version>
-        <htmlunit.version>2.26</htmlunit.version>
-        <htmlunitdriver.version>2.26</htmlunitdriver.version>
+        <htmlunit.version>2.27</htmlunit.version>
         <junit.version>4.12</junit.version>
         <ini4j.version>0.5.4</ini4j.version>
-        <poi.version>3.14</poi.version>
-        <opencsv.version>2.3</opencsv.version>
-        <springframework.version>4.3.9.RELEASE</springframework.version>
+        <poi.version>3.17</poi.version>
+        <opencsv.version>4.0</opencsv.version>
+        <springframework.version>5.0.0.RELEASE</springframework.version>
         <log4j.version>1.2.17</log4j.version>
-        <powermock.version>1.6.5</powermock.version>
-        <jsr305.version>3.0.0</jsr305.version>
+        <powermock.version>1.7.3</powermock.version>
+        <jsr305.version>3.0.2</jsr305.version>
         <oracle.driver.version>12.2.0.1</oracle.driver.version>
-        <postgres.driver.version>9.4.1212.jre7</postgres.driver.version>
-        <mysql.driver.version>5.1.6</mysql.driver.version>
-        <joda-time.version>2.9.7</joda-time.version>
-        <joda-convert.version>1.8.1</joda-convert.version>
-        <javassist.version>3.22.0-CR1</javassist.version>
-        <reflections.version>0.9.9-RC2</reflections.version>
-        <xml-apis.version>1.4.01</xml-apis.version>
-        <guava.version>21.0</guava.version>
-        <error_prone_annotations.version>2.0.19</error_prone_annotations.version>
+        <postgres.driver.version>42.1.4.jre7</postgres.driver.version>
+        <mysql.driver.version>8.0.8-dmr</mysql.driver.version>
+        <joda-time.version>2.9.9</joda-time.version>
+        <joda-convert.version>1.9.2</joda-convert.version>
+        <javassist.version>3.22.0-CR2</javassist.version>
+        <reflections.version>0.9.11</reflections.version>
+        <guava.version>23.0</guava.version>
+        <gson.version>2.8.2</gson.version>
+        <error_prone_annotations.version>2.1.1</error_prone_annotations.version>
         <j2objc-annotations.version>1.3</j2objc-annotations.version>
         <slf4j-api.version>1.7.25</slf4j-api.version>
-        <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
         <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
-        <maven-javadoc-plugin.version>2.10.4</maven-javadoc-plugin.version>
-        <maven-resources-plugin.version>2.7</maven-resources-plugin.version>
-        <exec-maven-plugin.version>1.5.0</exec-maven-plugin.version>
-        <maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
+        <maven-javadoc-plugin.version>3.0.0-M1</maven-javadoc-plugin.version>
+        <maven-resources-plugin.version>3.0.2</maven-resources-plugin.version>
+        <exec-maven-plugin.version>1.6.0</exec-maven-plugin.version>
+        <maven-surefire-plugin.version>2.20.1</maven-surefire-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
-        <nexus-staging-maven-plugin.version>1.6.7</nexus-staging-maven-plugin.version>
-        <jacoco-maven-plugin.version>0.7.7.201606060606</jacoco-maven-plugin.version>
+        <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.7.9</jacoco-maven-plugin.version>
         <sonar.jacoco.reportPath>${project.testresult.directory}/coverage/jacoco/jacoco.exec</sonar.jacoco.reportPath>
         <sonar-maven-plugin.version>3.0.2</sonar-maven-plugin.version>
         <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
@@ -157,12 +157,22 @@
                     <groupId>com.codeborne</groupId>
                     <artifactId>phantomjsdriver</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-ie-driver</artifactId>
             <version>${selenium.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.codeborne</groupId>
@@ -177,7 +187,7 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>htmlunit-driver</artifactId>
-            <version>${htmlunitdriver.version}</version>
+            <version>${htmlunit.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.google.code.gson</groupId>
@@ -190,7 +200,7 @@
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.8.1</version>
+            <version>${gson.version}</version>
         </dependency>
 
         <!-- Framework of tests -->
@@ -216,7 +226,7 @@
 
         <!-- opencsv (CSV lib) -->
         <dependency>
-            <groupId>net.sf.opencsv</groupId>
+            <groupId>com.opencsv</groupId>
             <artifactId>opencsv</artifactId>
             <version>${opencsv.version}</version>
         </dependency>
@@ -333,16 +343,7 @@
                     <groupId>org.javassist</groupId>
                     <artifactId>javassist</artifactId>
                 </exclusion>
-                <exclusion>
-                    <groupId>xml-apis</groupId>
-                    <artifactId>xml-apis</artifactId>
-                </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>xml-apis</groupId>
-            <artifactId>xml-apis</artifactId>
-            <version>${xml-apis.version}</version>
         </dependency>
 
     </dependencies>
