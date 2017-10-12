@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
 import org.ini4j.Ini;
 import org.ini4j.InvalidFileFormatException;
 import org.joda.time.DateTime;
@@ -23,6 +22,8 @@ import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import cucumber.api.Scenario;
 import noraui.application.Application;
@@ -59,7 +60,7 @@ public class Context {
     /**
      * Specific logger.
      */
-    private static final Logger logger = Logger.getLogger(Context.class);
+    private static final Logger logger = LoggerFactory.getLogger(Context.class);
 
     public static final String STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME = BrowserSteps.class.getCanonicalName();
     public static final String GO_TO_URL_METHOD_NAME = "goToUrl";
@@ -517,7 +518,7 @@ public class Context {
                     props.load(in);
                 }
             } catch (final IOException e) {
-                logger.error(e);
+                logger.error("error initPropertiesFile", e);
             }
             logger.info(String.format(Messages.getMessage(CONTEXT_LOADED_PROPERTIES_FILE), propertiesFileName, props));
             return props;
@@ -548,7 +549,7 @@ public class Context {
                 iniFiles.put(applicationKey, ini);
             }
         } catch (final InvalidFileFormatException e) {
-            logger.error(e);
+            logger.error("error initApplicationDom", e);
         } catch (final IOException e) {
             logger.error(String.format(Messages.getMessage(CONTEXT_APP_INI_FILE_NOT_FOUND), applicationKey), e);
         }

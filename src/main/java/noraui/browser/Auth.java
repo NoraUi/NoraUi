@@ -3,9 +3,10 @@ package noraui.browser;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import org.apache.log4j.Logger;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.JavascriptExecutor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import noraui.exception.TechnicalException;
 import noraui.utils.Context;
@@ -13,9 +14,12 @@ import noraui.utils.Messages;
 
 public class Auth {
 
-    private static final String WRONG_URI_SYNTAX = "WRONG_URI_SYNTAX";
+    /**
+     * Specific logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(Auth.class);
 
-    private static final Logger logger = Logger.getLogger(Auth.class);
+    private static final String WRONG_URI_SYNTAX = "WRONG_URI_SYNTAX";
 
     public static final String SESSION_COOKIE = "cookie";
 

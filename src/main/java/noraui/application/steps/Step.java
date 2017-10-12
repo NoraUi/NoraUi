@@ -21,7 +21,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -33,6 +32,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import cucumber.api.CucumberOptions;
 import cucumber.runtime.java.StepDefAnnotation;
@@ -56,7 +57,10 @@ import noraui.utils.Utilities;
 
 public class Step implements IStep {
 
-    protected final Logger loggerStep = Logger.getLogger(Step.class.getClass());
+    /**
+     * Specific logger
+     */
+    protected static final Logger logger = LoggerFactory.getLogger(Step.class);
 
     protected Step() {
     }
@@ -204,7 +208,7 @@ public class Step implements IStep {
                         pageElement.getPage().getCallBack());
             }
         } else {
-            loggerStep.debug("Empty data provided. No need to update text. If you want clear data, you need use: \"I clear text in ...\"");
+            logger.debug("Empty data provided. No need to update text. If you want clear data, you need use: \"I clear text in ...\"");
         }
     }
 
@@ -452,19 +456,19 @@ public class Step implements IStep {
      *             if the scenario encounters a functional error
      */
     protected void updateDateValidated(PageElement pageElement, String dateType, String date) throws TechnicalException, FailureException {
-        loggerStep.debug(String.format("updateDateValidated with elementName=%s, dateType=%s and date=%s", pageElement.toString(), dateType, date));
+        logger.debug(String.format("updateDateValidated with elementName=%s, dateType=%s and date=%s", pageElement.toString(), dateType, date));
         DateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT);
         Date today = Calendar.getInstance().getTime();
         try {
             Date valideDate = formatter.parse(date);
             if ("any".equals(dateType)) {
-                loggerStep.debug("update Date with any date: " + date);
+                logger.debug("update Date with any date: " + date);
                 updateText(pageElement, date);
             } else if (formatter.format(today).equals(date) && ("future".equals(dateType) || "today".equals(dateType))) {
-                loggerStep.debug("update Date with today");
+                logger.debug("update Date with today");
                 updateText(pageElement, date);
             } else if (valideDate.after(Calendar.getInstance().getTime()) && ("future".equals(dateType) || "future_strict".equals(dateType))) {
-                loggerStep.debug("update Date with a date after today: " + date);
+                logger.debug("update Date with a date after today: " + date);
                 updateText(pageElement, date);
             } else {
                 new Result.Failure<>(date, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNEXPECTED_DATE), Messages.getMessage(Messages.DATE_GREATER_THAN_TODAY)), true,
@@ -492,7 +496,7 @@ public class Step implements IStep {
      *             if the scenario encounters a functional error
      */
     protected void saveElementValue(String field, Page page) throws TechnicalException, FailureException {
-        loggerStep.debug(String.format("saveValueInStep: %s in %s.", field, page.getApplication()));
+        logger.debug(String.format("saveValueInStep: %s in %s.", field, page.getApplication()));
         saveElementValue(field, page.getPageKey() + field, page);
     }
 
@@ -514,7 +518,7 @@ public class Step implements IStep {
      *             if the scenario encounters a functional error
      */
     protected void saveElementValue(String field, String targetKey, Page page) throws TechnicalException, FailureException {
-        loggerStep.debug(String.format("saveValueInStep: %s to %s in %s.", field, targetKey, page.getApplication()));
+        logger.debug(String.format("saveValueInStep: %s to %s in %s.", field, targetKey, page.getApplication()));
         String txt = "";
         try {
             WebElement elem = Utilities.findElement(page, field);
@@ -736,11 +740,11 @@ public class Step implements IStep {
      *            is a list of authorized activities
      */
     protected void displayMessageAtTheBeginningOfMethod(String methodName, String act, String concernedActivity, List<String> concernedActivities) {
-        loggerStep.debug(String.format("%s %s: %s with %d concernedActivity(ies)", act, methodName, concernedActivity, concernedActivities.size()));
+        logger.debug(String.format("%s %s: %s with %d concernedActivity(ies)", act, methodName, concernedActivity, concernedActivities.size()));
         int i = 0;
         for (String activity : concernedActivities) {
             i++;
-            loggerStep.debug(String.format("  activity N°%d=%s", i, activity));
+            logger.debug(String.format("  activity N°%d=%s", i, activity));
         }
     }
 
@@ -755,11 +759,11 @@ public class Step implements IStep {
      *            is a list of authorized activities
      */
     protected void displayMessageAtTheBeginningOfMethod(String methodName, String act, List<String> concernedActivities) {
-        loggerStep.debug(String.format("%s: %s with %d concernedActivity(ies)", act, methodName, concernedActivities.size()));
+        logger.debug(String.format("%s: %s with %d concernedActivity(ies)", act, methodName, concernedActivities.size()));
         int i = 0;
         for (String activity : concernedActivities) {
             i++;
-            loggerStep.debug(String.format("  activity N°%d=%s", i, activity));
+            logger.debug(String.format("  activity N°%d=%s", i, activity));
         }
     }
 
@@ -772,17 +776,17 @@ public class Step implements IStep {
      *            is a list of concerned elements (example: authorized activities)
      */
     protected void displayConcernedElementsAtTheBeginningOfMethod(String methodName, List<String> concernedElements) {
-        loggerStep.debug(String.format("%s: with %d concernedElements", methodName, concernedElements.size()));
+        logger.debug(String.format("%s: with %d concernedElements", methodName, concernedElements.size()));
         int i = 0;
         for (String element : concernedElements) {
             i++;
-            loggerStep.debug(String.format("  element N°%d=%s", i, element));
+            logger.debug(String.format("  element N°%d=%s", i, element));
         }
     }
 
     private void displayMessageAtTheBeginningOfMethod(String message, String element, String application) throws TechnicalException {
         try {
-            loggerStep.debug(Messages.format(message, element, application));
+            logger.debug(Messages.format(message, element, application));
         } catch (Exception te) {
             throw new TechnicalException("Technical problem in the code Messages.formatMessage(String templateMessage, String... args) in NoraUi.", te);
         }

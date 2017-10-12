@@ -3,8 +3,9 @@ package noraui.application.page;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import noraui.exception.Callbacks.Callback;
 import noraui.exception.TechnicalException;
@@ -13,11 +14,14 @@ import noraui.utils.Messages;
 
 public abstract class Page implements IPage {
 
+    /**
+     * Specific logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(Page.class);
+
     private static final String PAGE_UNABLE_TO_RETRIEVE = "PAGE_UNABLE_TO_RETRIEVE";
 
     private static String pagesPackage = Page.class.getPackage().getName() + '.';
-
-    private static Logger logger = Logger.getLogger(Page.class.getName());
 
     private static ArrayList<Page> instances = new ArrayList<>();
 
@@ -102,7 +106,7 @@ public abstract class Page implements IPage {
                 try {
                     p = (PageElement) f.get(this);
                 } catch (IllegalArgumentException | IllegalAccessException e) {
-                    logger.error(e);
+                    logger.error("error getPageElementByKey", e);
                     return null;
                 }
                 if (key.equals(p.getKey())) {

@@ -1,8 +1,9 @@
 package noraui.application.steps.logogame;
 
-import org.apache.log4j.Logger;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
@@ -28,7 +29,10 @@ import noraui.utils.Utilities;
 
 public class LogoGameSteps extends Step {
 
-    private static Logger logger = Logger.getLogger(LogoGameSteps.class.getName());
+    /**
+     * Specific logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(LogoGameSteps.class);
 
     private LogoGamePage logoGamePage;
 

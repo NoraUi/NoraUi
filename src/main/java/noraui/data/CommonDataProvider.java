@@ -5,9 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import noraui.annotation.Column;
 import noraui.exception.TechnicalException;
@@ -16,7 +17,10 @@ import noraui.utils.Messages;
 
 public abstract class CommonDataProvider implements DataProvider {
 
-    protected static final Logger logger = Logger.getLogger(CommonDataProvider.class);
+    /**
+     * Specific logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(CommonDataProvider.class);
 
     protected String dataInPath;
     protected String dataOutPath;

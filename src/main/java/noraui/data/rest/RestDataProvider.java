@@ -2,6 +2,8 @@ package noraui.data.rest;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -16,6 +18,11 @@ import noraui.exception.data.WebServicesException;
 import noraui.utils.Messages;
 
 public class RestDataProvider extends CommonDataProvider implements DataInputProvider, DataOutputProvider {
+
+    /**
+     * Specific logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(RestDataProvider.class);
 
     private static final String REST_DATA_PROVIDER_USED = "REST_DATA_PROVIDER_USED";
     private static final String REST_DATA_PROVIDER_WRITING_IN_REST_WS_ERROR_MESSAGE = "REST_DATA_PROVIDER_WRITING_IN_REST_WS_ERROR_MESSAGE";

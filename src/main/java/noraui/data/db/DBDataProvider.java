@@ -13,6 +13,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import noraui.data.CommonDataProvider;
 import noraui.data.DataInputProvider;
 import noraui.exception.TechnicalException;
@@ -21,6 +24,11 @@ import noraui.utils.Constants;
 import noraui.utils.Messages;
 
 public class DBDataProvider extends CommonDataProvider implements DataInputProvider {
+
+    /**
+     * Specific logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(DBDataProvider.class);
 
     private static final String DB_DATA_PROVIDER_USED = "DB_DATA_PROVIDER_USED";
     private static final String DATABASE_ERROR_FORBIDDEN_WORDS_IN_QUERY = "DATABASE_ERROR_FORBIDDEN_WORDS_IN_QUERY";

@@ -12,6 +12,9 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 import noraui.data.CommonDataProvider;
@@ -23,6 +26,11 @@ import noraui.exception.data.WrongDataFileFormatException;
 import noraui.utils.Messages;
 
 public class CsvDataProvider extends CommonDataProvider implements DataInputProvider, DataOutputProvider {
+
+    /**
+     * Specific logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(CsvDataProvider.class);
 
     public static final String CSV_TYPE = "csv";
     public static final char CSV_CHAR_SEPARATOR = ';';

@@ -3,6 +3,9 @@ package noraui.data.gherkin;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import noraui.data.CommonDataProvider;
 import noraui.data.DataInputProvider;
 import noraui.exception.TechnicalException;
@@ -18,6 +21,11 @@ import noraui.utils.Messages;
  * @author nhallouin
  */
 public class InputGherkinDataProvider extends CommonDataProvider implements DataInputProvider {
+
+    /**
+     * Specific logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(InputGherkinDataProvider.class);
 
     private static final String GHERKIN_INPUT_DATA_PROVIDER_USED = "GHERKIN_INPUT_DATA_PROVIDER_USED";
 

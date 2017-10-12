@@ -5,7 +5,8 @@ import java.util.List;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import noraui.cucumber.annotation.Conditioned;
 import noraui.gherkin.GherkinStepCondition;
@@ -14,8 +15,12 @@ import noraui.utils.Messages;
 
 public class ConditionedInterceptor implements MethodInterceptor {
 
+    /**
+     * Specific logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(ConditionedInterceptor.class);
+
     private static final String SKIPPED_DUE_TO_CONDITIONS = "SKIPPED_DUE_TO_CONDITIONS";
-    private static Logger logger = Logger.getLogger(ConditionedInterceptor.class.getName());
 
     /**
      * {@inheritDoc}

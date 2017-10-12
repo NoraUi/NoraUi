@@ -3,7 +3,8 @@ package noraui.cucumber.module;
 import static com.google.inject.matcher.Matchers.annotatedWith;
 import static com.google.inject.matcher.Matchers.any;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
@@ -16,7 +17,10 @@ import noraui.cucumber.interceptor.StepInterceptor;
 
 public class NoraUiModule implements Module {
 
-    private static Logger logger = Logger.getLogger(NoraUiModule.class.getName());
+    /**
+     * Specific logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(NoraUiModule.class);
 
     /**
      * {@inheritDoc}

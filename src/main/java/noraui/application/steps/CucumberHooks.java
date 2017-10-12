@@ -2,9 +2,10 @@ package noraui.application.steps;
 
 import java.util.Collection;
 
-import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Seconds;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
@@ -18,7 +19,10 @@ import noraui.utils.Messages;
 
 public class CucumberHooks {
 
-    private static final Logger logger = Logger.getLogger(CucumberHooks.class);
+    /**
+     * Specific logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(CucumberHooks.class);
     private static final String PROGRESS_MESSAGE = "PROGRESS_MESSAGE";
     private static final String SUCCESS_MESSAGE_BY_DEFAULT = "SUCCESS_MESSAGE_BY_DEFAULT";
 

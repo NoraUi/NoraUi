@@ -4,15 +4,20 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import noraui.utils.Context;
 import noraui.utils.Messages;
 
 public class Counter {
 
+    /**
+     * Specific logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(Counter.class);
+
     private static final String COUNTER_USAGE_WARNING_MESSAGE = "COUNTER_USAGE_WARNING_MESSAGE";
-    private static final Logger logger = Logger.getLogger(Counter.class);
 
     private Counter() {
     }

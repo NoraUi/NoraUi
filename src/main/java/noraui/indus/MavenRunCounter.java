@@ -12,7 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import noraui.data.DataIndex;
 import noraui.data.DataUtils;
@@ -25,7 +26,10 @@ import noraui.utils.Messages;
 
 public class MavenRunCounter {
 
-    private static Logger logger = Logger.getLogger(MavenRunCounter.class.getName());
+    /**
+     * Specific logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(MavenRunCounter.class);
 
     public static final String Z_MANAGER = "zManager";
 
@@ -208,7 +212,7 @@ public class MavenRunCounter {
                 countWithoutModel(nbStep, result, indexData);
             }
         } catch (final Exception te) {
-            logger.error(te);
+            logger.error("error countNbCasFailuresAndSkipped", te);
         }
         return result;
     }

@@ -13,14 +13,18 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import noraui.utils.Constants;
 import noraui.utils.Context;
 
 public class GherkinFactory {
 
-    private static final Logger logger = Logger.getLogger(GherkinFactory.class);
+    /**
+     * Specific logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(GherkinFactory.class);
 
     private static final String DATA = "#DATA";
     private static final String DATA_END = "#END";
@@ -61,7 +65,7 @@ public class GherkinFactory {
                 }
             }
         } catch (IOException e) {
-            logger.error(e);
+            logger.error("error injectDataInGherkinExamples", e);
         }
     }
 
@@ -84,7 +88,7 @@ public class GherkinFactory {
             return (examples.length > 2) ? Arrays.copyOfRange(examples, 1, examples.length - 1) : new String[] {};
 
         } catch (IOException e) {
-            logger.error(e);
+            logger.error("error getExamples", e);
         }
         return new String[] {};
     }

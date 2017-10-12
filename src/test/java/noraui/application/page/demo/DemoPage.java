@@ -2,8 +2,9 @@ package noraui.application.page.demo;
 
 import static noraui.utils.Context.DEMO_KEY;
 
-import org.apache.log4j.Logger;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import noraui.application.page.Page;
 import noraui.exception.Callbacks;
@@ -12,7 +13,10 @@ import noraui.utils.Utilities;
 
 public class DemoPage extends Page {
 
-    private static Logger logger = Logger.getLogger(DemoPage.class.getName());
+    /**
+     * Specific logger
+     */
+    protected static final Logger logger = LoggerFactory.getLogger(DemoPage.class);
 
     public final PageElement bigTitle = new PageElement("-big_title", "This is a demo for NORAUI (Non-Regression Automation for User Interfaces).");
     public final PageElement inputSelect = new PageElement("-input_select_field", "Input Select field");

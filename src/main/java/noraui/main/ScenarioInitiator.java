@@ -8,7 +8,8 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import noraui.data.DataUtils;
 import noraui.exception.TechnicalException;
@@ -20,9 +21,12 @@ import noraui.utils.Messages;
 
 public class ScenarioInitiator {
 
-    public static final String SCENARIO_INITIATOR_ERROR_EMPTY_FILE = "SCENARIO_INITIATOR_ERROR_EMPTY_FILE";
+    /**
+     * Specific logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(ScenarioInitiator.class);
 
-    private static final Logger logger = Logger.getLogger(ScenarioInitiator.class);
+    public static final String SCENARIO_INITIATOR_ERROR_EMPTY_FILE = "SCENARIO_INITIATOR_ERROR_EMPTY_FILE";
     private static final String SCENARIO_INITIATOR_ERROR_UNABLE_TO_GET_TAGS = "SCENARIO_INITIATOR_ERROR_UNABLE_TO_GET_TAGS";
     private static final String SCENARIO_INITIATOR_USAGE = "SCENARIO_INITIATOR_USAGE";
     private static final String SCENARIO_INITIATOR_INJECT_WITHOUT_MODEL = "SCENARIO_INITIATOR_INJECT_WITHOUT_MODEL";
@@ -38,7 +42,7 @@ public class ScenarioInitiator {
             processInjection(scenarioName);
         } else {
             logger.warn(Messages.getMessage(SCENARIO_INITIATOR_USAGE));
-            
+
             String cucumberOptions = System.getProperty("cucumber.options");
             if (cucumberOptions != null && cucumberOptions.contains("--tags")) {
                 Matcher matcher = Pattern.compile(".*--tags '(.*)'.*").matcher(cucumberOptions);
@@ -69,7 +73,7 @@ public class ScenarioInitiator {
                 injectWithModel(scenarioName, model);
             }
         } catch (final Exception e) {
-            logger.error(e);
+            logger.error("error processInjection", e);
         }
     }
 

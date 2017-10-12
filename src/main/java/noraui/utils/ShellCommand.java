@@ -6,17 +6,21 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import noraui.exception.TechnicalException;
 
 public class ShellCommand {
 
+    /**
+     * Specific logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(ShellCommand.class);
+
     private static final String SHELL_RUNNING_COMMAND = "SHELL_RUNNING_COMMAND";
     private final String command;
     private final String[] parameters;
-
-    private final Logger logger = Logger.getLogger(ShellCommand.class.getClass());
 
     public ShellCommand(String command, String... parameters) {
         this.command = command;

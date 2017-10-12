@@ -1,11 +1,19 @@
 package noraui.data.excel;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import noraui.exception.TechnicalException;
 import noraui.exception.data.EmptyDataFileContentException;
 import noraui.exception.data.WrongDataFileFormatException;
 import noraui.utils.Messages;
 
 public class InputExcelDataProvider extends ExcelDataProvider {
+
+    /**
+     * Specific logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(InputExcelDataProvider.class);
 
     private static final String EXCEL_INPUT_DATA_PROVIDER_USED = "EXCEL_INPUT_DATA_PROVIDER_USED";
 

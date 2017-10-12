@@ -4,7 +4,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import noraui.exception.Callbacks.Callback;
 import noraui.utils.Context;
@@ -19,7 +20,7 @@ public class Callbacks extends HashMap<String, Callback> {
     /**
      * Specific logger
      */
-    private static final Logger logger = Logger.getLogger(Callback.class);
+    private static final Logger logger = LoggerFactory.getLogger(Callback.class);
 
     public static final String CLOSE_WINDOW_AND_SWITCH_TO_DEMO_HOME = "CLOSE_WINDOW_AND_SWITCH_TO_DEMO_HOME";
     public static final String CLOSE_WINDOW_AND_SWITCH_TO_LOGOGAME_HOME = "CLOSE_WINDOW_AND_SWITCH_TO_LOGOGAME_HOME";
@@ -65,7 +66,7 @@ public class Callbacks extends HashMap<String, Callback> {
                 this.method = objectClass.getDeclaredMethod(strMethod, paramClasses);
                 this.parameters = parameters;
             } catch (Exception e) {
-                logger.error(e);
+                logger.error("error Callback", e);
             }
         }
 
@@ -76,9 +77,9 @@ public class Callbacks extends HashMap<String, Callback> {
             try {
                 method.invoke(objectClass.newInstance(), parameters);
             } catch (InvocationTargetException ite) {
-                logger.error(ite.getTargetException(), ite);
+                logger.error("error InvocationTargetException", ite.getTargetException(), ite);
             } catch (Exception e) {
-                logger.error(e);
+                logger.error("error call", e);
             }
         }
     }

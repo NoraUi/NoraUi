@@ -1,6 +1,7 @@
 package noraui.cucumber.injector;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -15,7 +16,10 @@ import noraui.exception.TechnicalException;
 
 public class NoraUiInjectorSource implements InjectorSource {
 
-    private static final Logger logger = Logger.getLogger(NoraUiInjectorSource.class.getName());
+    /**
+     * Specific logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(NoraUiInjectorSource.class.getName());
 
     /**
      * {@inheritDoc}

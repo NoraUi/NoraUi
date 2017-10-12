@@ -2,8 +2,9 @@ package noraui.exception;
 
 import java.util.Optional;
 
-import org.apache.log4j.Logger;
 import org.junit.Assert;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import noraui.exception.Callbacks.Callback;
 import noraui.utils.Context;
@@ -26,8 +27,13 @@ public abstract class Result {
     }
 
     public static class Success<O> extends Result {
+
+        /**
+         * Specific logger
+         */
+        private static final Logger logger = LoggerFactory.getLogger(Success.class);
+
         private final O object;
-        private static final Logger logger = Logger.getLogger(Success.class.getName());
 
         /**
          * @param object
@@ -53,8 +59,13 @@ public abstract class Result {
     }
 
     public static class Warning<O> extends Result {
+
+        /**
+         * Specific logger
+         */
+        private static final Logger logger = LoggerFactory.getLogger(Warning.class);
+
         private final O object;
-        private static final Logger logger = Logger.getLogger(Warning.class.getName());
 
         /**
          * @param object
@@ -95,8 +106,13 @@ public abstract class Result {
     }
 
     public static class Failure<O> extends Result {
+
+        /**
+         * Specific logger
+         */
+        private static final Logger logger = LoggerFactory.getLogger(Failure.class);
+
         private final O error;
-        private static final Logger logger = Logger.getLogger(Failure.class.getName());
 
         /**
          * @param error
