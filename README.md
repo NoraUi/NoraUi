@@ -16,8 +16,8 @@ See [change log](https://noraui.github.io/changelog.txt) for details
 
 * -Dcucumber.options="--tags '@tag1 or @tag2 or @tag3 or @tag4'"
 * NoraUi use Oracle Jdbc Driver
-1. if you use Oracle Db provider, configure your env with OTN: Sample(https://github.com/sgrillon14/MavenSampleOracleJdbc)
-2. if you do not use Oracle Db provider, remove com.oracle.jdbc:ojdbc8 dependency
+1. if you use Oracle Db provider, add com.oracle.jdbc:ojdbc8 dependency and configure your env with OTN: Sample(https://github.com/sgrillon14/MavenSampleOracleJdbc)
+2. if you do not use Oracle Db provider (default)
 
 # Supported languages
 

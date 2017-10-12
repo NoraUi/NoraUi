@@ -12,7 +12,8 @@ import java.lang.reflect.Modifier;
 import org.junit.Assert;
 import org.junit.Test;
 
-import au.com.bytecode.opencsv.CSVReader;
+import com.opencsv.CSVReader;
+
 import noraui.exception.TechnicalException;
 import noraui.utils.Messages;
 
