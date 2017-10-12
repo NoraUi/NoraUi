@@ -18,14 +18,12 @@ import cucumber.metrics.annotation.regulator.SpeedRegulators;
 import cucumber.metrics.annotation.time.Time;
 import noraui.application.model.demo.Article;
 import noraui.application.model.demo.Articles;
-import noraui.application.page.Page;
 import noraui.application.page.demo.DemoPage;
 import noraui.application.steps.Step;
 import noraui.cucumber.annotation.Conditioned;
 import noraui.cucumber.annotation.RetryOnFailure;
 import noraui.exception.FailureException;
 import noraui.exception.Result;
-import noraui.exception.TechnicalException;
 import noraui.gherkin.GherkinStepCondition;
 import noraui.utils.Messages;
 

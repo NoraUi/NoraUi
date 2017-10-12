@@ -1,10 +1,12 @@
 package noraui.application.page;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import noraui.application.page.demo.DemoPage;
+import noraui.cucumber.injector.NoraUiInjector;
 import noraui.cucumber.injector.NoraUiInjectorSource;
 import noraui.exception.TechnicalException;
 
@@ -15,6 +17,11 @@ public class PageUT {
     @Before
     public void setUp() {
         new NoraUiInjectorSource().getInjector();
+    }
+
+    @After
+    public void tearDown() {
+        NoraUiInjector.resetInjector();
     }
 
     @Test

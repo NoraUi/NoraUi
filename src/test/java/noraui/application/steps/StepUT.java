@@ -3,6 +3,7 @@ package noraui.application.steps;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,6 +11,7 @@ import org.junit.Test;
 import noraui.application.page.Page;
 import noraui.application.page.Page.PageElement;
 import noraui.application.page.demo.DemoPage;
+import noraui.cucumber.injector.NoraUiInjector;
 import noraui.cucumber.injector.NoraUiInjectorSource;
 import noraui.cucumber.interceptor.ConditionedInterceptor;
 import noraui.exception.TechnicalException;
@@ -20,8 +22,8 @@ import noraui.utils.Messages;
 
 public class StepUT {
 
-    public static final String  DEMO_PAGE_NAME = "demo.DemoPage";
-    
+    public static final String DEMO_PAGE_NAME = "demo.DemoPage";
+
     private Step step;
     private ConditionedInterceptor ci;
     private GherkinStepCondition gherkinCondition;
@@ -38,6 +40,11 @@ public class StepUT {
         gherkinCondition = new GherkinStepCondition();
         conditions = new ArrayList<>();
         new NoraUiInjectorSource().getInjector();
+    }
+
+    @After
+    public void tearDown() {
+        NoraUiInjector.resetInjector();
     }
 
     @Test

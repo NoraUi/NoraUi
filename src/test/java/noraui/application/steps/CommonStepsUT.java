@@ -2,6 +2,7 @@ package noraui.application.steps;
 
 import java.util.ArrayList;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,10 +13,9 @@ import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import com.google.inject.Inject;
-
 import cucumber.api.Scenario;
 import noraui.application.page.Page;
+import noraui.cucumber.injector.NoraUiInjector;
 import noraui.cucumber.injector.NoraUiInjectorSource;
 import noraui.exception.FailureException;
 import noraui.exception.TechnicalException;
@@ -29,10 +29,15 @@ import noraui.utils.Utilities;
 public class CommonStepsUT {
 
     private CommonSteps s = null;
-    
+
     @Before
     public void setUp() {
         new NoraUiInjectorSource().getInjector();
+    }
+
+    @After
+    public void tearDown() {
+        NoraUiInjector.resetInjector();
     }
 
     @Test
