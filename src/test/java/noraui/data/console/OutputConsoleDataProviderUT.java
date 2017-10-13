@@ -58,16 +58,16 @@ public class OutputConsoleDataProviderUT {
     }
 }
 
-class TestAppender<ILoggingEvent> extends AppenderBase<ILoggingEvent> {
+class TestAppender<E> extends AppenderBase<E> {
 
-    private final List<ILoggingEvent> log = new ArrayList<>();
+    private final List<E> log = new ArrayList<>();
 
-    public List<ILoggingEvent> getLog() {
+    public List<E> getLog() {
         return new ArrayList<>(log);
     }
 
     @Override
-    protected void append(ILoggingEvent arg0) {
+    protected void append(E arg0) {
         log.add(arg0);
     }
 
