@@ -104,12 +104,11 @@ public class MavenRunCounter {
             failures += counter.getFailures();
             skipped += counter.getSkipped();
             scenarios += counter.getNbCas();
-            logger.info("Scenario: " + counter.getScenarioName() + " => step: " + counter.getNbStep() + " and cases: " + counter.getNbCas() + " -->  runs: " + counter.getRun() + ", failures: "
-                    + counter.getFailures() + ", errors: 0 and skips: " + counter.getSkipped());
+            logger.info("Scenario: {} => step: {} and cases: {} -->  runs: , failures: , errors: 0 and skips: {}", counter.getScenarioName(), counter.getNbStep(), counter.getNbCas(), counter.getRun(),
+                    counter.getFailures(), counter.getSkipped());
         }
-        logger.info("[" + type + "] > <EXPECTED_RESULTS_1>" + scenarios + " Scenarios (" + failures + " failed, " + (scenarios - failures) + " passed)</EXPECTED_RESULTS_1>");
-        logger.info("[" + type + "] > <EXPECTED_RESULTS_2>" + (run - scenarios) + " Steps (" + failures + " failed, " + skipped + " skipped, " + (run - scenarios - failures - skipped)
-                + " passed)</EXPECTED_RESULTS_2>");
+        logger.info("[{}] > <EXPECTED_RESULTS_1>{} Scenarios ({} failed, {} passed)</EXPECTED_RESULTS_1>", type, scenarios, failures, (scenarios - failures));
+        logger.info("[{}] > <EXPECTED_RESULTS_2>{} Steps ({} failed, {} skipped, {} passed)</EXPECTED_RESULTS_2>", (run - scenarios), failures, skipped, (run - scenarios - failures - skipped));
     }
 
     public static List<String> listFilesForFolder(final List<String> versionControlSystemsBlacklist, final File folder) {
