@@ -7,8 +7,6 @@ import java.util.Set;
 
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import noraui.annotation.Column;
 import noraui.exception.TechnicalException;
