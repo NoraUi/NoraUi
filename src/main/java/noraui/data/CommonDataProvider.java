@@ -17,11 +17,6 @@ import noraui.utils.Messages;
 
 public abstract class CommonDataProvider implements DataProvider {
 
-    /**
-     * Specific logger
-     */
-    private static final Logger logger = LoggerFactory.getLogger(CommonDataProvider.class);
-
     protected String dataInPath;
     protected String dataOutPath;
     protected List<DataIndex> indexData;
