@@ -108,7 +108,7 @@ public class MavenRunCounter {
                     counter.getFailures(), counter.getSkipped());
         }
         logger.info("[{}] > <EXPECTED_RESULTS_1>{} Scenarios ({} failed, {} passed)</EXPECTED_RESULTS_1>", type, scenarios, failures, (scenarios - failures));
-        logger.info("[{}] > <EXPECTED_RESULTS_2>{} Steps ({} failed, {} skipped, {} passed)</EXPECTED_RESULTS_2>", (run - scenarios), failures, skipped, (run - scenarios - failures - skipped));
+        logger.info("[{}] > <EXPECTED_RESULTS_2>{} Steps ({} failed, {} skipped, {} passed)</EXPECTED_RESULTS_2>", type, (run - scenarios), failures, skipped, (run - scenarios - failures - skipped));
     }
 
     public static List<String> listFilesForFolder(final List<String> versionControlSystemsBlacklist, final File folder) {
