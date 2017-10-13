@@ -56,7 +56,7 @@ public class Callbacks extends HashMap<String, Callback> {
          */
         public Callback(String strClass, String strMethod, Object... parameters) {
             try {
-                logger.debug("ExceptionCallback with full name of class: " + strClass);
+                logger.debug("ExceptionCallback with full name of class: {}", strClass);
                 this.objectClass = Class.forName(strClass);
 
                 Class<?>[] paramClasses = new Class<?>[parameters.length];
@@ -77,7 +77,7 @@ public class Callbacks extends HashMap<String, Callback> {
             try {
                 method.invoke(objectClass.newInstance(), parameters);
             } catch (InvocationTargetException ite) {
-                logger.error("error InvocationTargetException", ite.getTargetException(), ite);
+                logger.error("error InvocationTargetException", ite);
             } catch (Exception e) {
                 logger.error("error call", e);
             }

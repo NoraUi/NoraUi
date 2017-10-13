@@ -28,7 +28,7 @@ public class CucumberHooks {
 
     @Before()
     public static void setUpScenario(Scenario scenario) throws TechnicalException {
-        logger.debug("setUpScenario " + scenario.getName() + " scenario.");
+        logger.debug("setUpScenario {} scenario.", scenario.getName());
 
         if (Context.getCurrentScenarioData() == 0) {
             // Retrieve Excel filename to read
@@ -53,9 +53,9 @@ public class CucumberHooks {
 
     @After()
     public static void tearDown(Scenario scenario) {
-        logger.debug("tearDown " + scenario.getName() + " scenario.");
-        logger.debug("Context.getCurrentScenarioData()=" + Context.getCurrentScenarioData());
-        logger.debug("ExcelFactory.getNbLines()=" + Context.getDataInputProvider().getNbGherkinExample());
+        logger.debug("tearDown {} scenario.", scenario.getName());
+        logger.debug("Context.getCurrentScenarioData()={}", Context.getCurrentScenarioData());
+        logger.debug("ExcelFactory.getNbLines()={}", Context.getDataInputProvider().getNbGherkinExample());
         printProgressBuild(scenario);
         if (Context.getCurrentScenarioData() >= Context.getDataInputProvider().getNbGherkinExample()) {
             logger.debug("Go to next feature");

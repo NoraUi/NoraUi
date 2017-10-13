@@ -85,14 +85,14 @@ public abstract class Result {
                 Context.getDataOutputProvider().writeWarningResult(Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData()).getIndexes().get(nid),
                         Messages.getMessage(Messages.WARNING_MESSAGE_DEFAULT) + message);
             } catch (final TechnicalException e) {
-                logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), e);
+                logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE), e);
             }
             if (!Context.scenarioHasWarning()) {
                 Context.addWarning();
                 Context.scenarioHasWarning(true);
             }
             if (takeScreenshot) {
-                logger.debug("Current scenario is " + Context.getCurrentScenario());
+                logger.debug("Current scenario is {}", Context.getCurrentScenario());
                 Utilities.takeScreenshot(Context.getCurrentScenario());
             }
             Context.getCurrentScenario().write(Messages.getMessage(Messages.WARNING_MESSAGE_DEFAULT) + message);
@@ -177,7 +177,7 @@ public abstract class Result {
                         Context.getDataOutputProvider().writeWarningResult(line, Messages.getMessage(Messages.NOT_RUN_MESSAGE));
                     }
                 } catch (final TechnicalException e) {
-                    logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), e);
+                    logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE), e);
                 }
             }
             Context.addFailure();
@@ -186,7 +186,7 @@ public abstract class Result {
                 Context.scenarioHasWarning(false);
             }
             if (takeScreenshot) {
-                logger.debug("Current scenario is " + Context.getCurrentScenario());
+                logger.debug("Current scenario is {}", Context.getCurrentScenario());
                 Utilities.takeScreenshot(Context.getCurrentScenario());
             }
             if (callback != null) {

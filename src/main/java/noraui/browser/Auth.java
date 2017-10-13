@@ -143,7 +143,7 @@ public class Auth {
                     String cookieDomain = new URI(domainUrl).getHost().replaceAll("self.", "");
                     String cookiePath = cookieStr.substring(indexPath + 6);
                     getInstance().authCookie = new Cookie.Builder(cookieName, cookieValue).domain(cookieDomain).path(cookiePath).build();
-                    logger.debug("New cookie created: " + cookieName + "=" + cookieValue + " on domain " + cookieDomain + cookiePath);
+                    logger.debug("New cookie created: {}={} on domain {}{}", cookieName, cookieValue, cookieDomain + cookiePath);
                 }
             } catch (URISyntaxException e) {
                 throw new TechnicalException(Messages.getMessage(WRONG_URI_SYNTAX), e);

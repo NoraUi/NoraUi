@@ -102,7 +102,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
                 ResultSet rs = statement.executeQuery(sqlRequest);) {
             return rs.last() ? rs.getRow() + 1 : 0;
         } catch (final SQLException e) {
-            logger.error("getNbLines()" + e.getMessage(), e);
+            logger.error("error getNbLines()", e);
             return 0;
         }
     }
@@ -131,7 +131,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
             }
             return rs.getString(column);
         } catch (final SQLException e) {
-            logger.error("readValue(" + column + ", " + line + ")" + e.getMessage(), e);
+            logger.error("error readValue({}, {})", column, line, e);
             return "";
         }
     }
@@ -167,7 +167,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
             }
             return ret;
         } catch (final SQLException e) {
-            logger.debug("In DBDataProvider, is it a catch used for tested end of data. readLine(" + line + ", " + readResult + ")" + e.getMessage(), e);
+            logger.debug("In DBDataProvider, is it a catch used for tested end of data. readLine({}, {})", line, readResult, e);
             return null;
         }
     }

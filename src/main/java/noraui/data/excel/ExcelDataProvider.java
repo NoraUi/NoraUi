@@ -72,7 +72,7 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
      */
     @Override
     public void writeFailedResult(int line, String value) throws TechnicalException {
-        logger.debug("writeFailedResult => line:" + line + " value:" + value);
+        logger.debug("writeFailedResult => line:{} value:{}", line, value);
         writeValue(resultColumnName, line, value, styleFailed);
     }
 
@@ -81,13 +81,13 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
      */
     @Override
     public void writeSuccessResult(int line) throws TechnicalException {
-        logger.debug("writeSuccessResult => line:" + line);
+        logger.debug("writeSuccessResult => line:{}", line);
         writeValue(resultColumnName, line, Messages.getMessage(Messages.SUCCESS_MESSAGE), styleSuccess);
     }
 
     @Override
     public void writeWarningResult(int line, String value) throws TechnicalException {
-        logger.debug("writeWarningResult => line:" + line);
+        logger.debug("writeWarningResult => line:{}", line);
         writeValue(resultColumnName, line, value, styleWarning);
     }
 
@@ -96,7 +96,7 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
      */
     @Override
     public void writeDataResult(String column, int line, String value) throws TechnicalException {
-        logger.debug("writeDataResult => column: " + column + " line:" + line + " value:" + value);
+        logger.debug("writeDataResult => column:{} line:{} value:{}", column, line, value);
         writeValue(column, line, value, null);
     }
 
@@ -248,7 +248,7 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
      * @param style
      */
     private void writeValue(String column, int line, String value, CellStyle style) {
-        logger.debug("Writing: " + value + " at line " + line + " in column '" + column + "'");
+        logger.debug("Writing: [{}] at line [{}] in column [{}]", value, line, column);
         final int colIndex = columns.indexOf(column);
         final Sheet sheet = workbook.getSheetAt(0);
         final Row row = sheet.getRow(line);
@@ -269,7 +269,7 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
     private String readCell(Cell cell) {
         String txt = "";
         if (cell != null) {
-            logger.debug("readCellByType with type: " + cell.getCellType());
+            logger.debug("readCellByType with type: {}" + cell.getCellType());
             txt = readCellByType(cell, cell.getCellType());
         }
         return txt.trim();
@@ -293,17 +293,17 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
                     break;
                 case Cell.CELL_TYPE_STRING:
                     txt = String.valueOf(cell.getRichStringCellValue());
-                    logger.debug("CELL_TYPE_STRING: " + txt);
+                    logger.debug("CELL_TYPE_STRING: {}", txt);
                     break;
                 case Cell.CELL_TYPE_FORMULA:
                     txt = readCellByType(cell, cell.getCachedFormulaResultType());
-                    logger.debug("CELL_TYPE_FORMULA: " + txt);
+                    logger.debug("CELL_TYPE_FORMULA: {}", txt);
                     break;
                 case Cell.CELL_TYPE_BLANK:
                     logger.debug("CELL_TYPE_BLANK (we do nothing)");
                     break;
                 default:
-                    logger.error(String.format(EXCEL_DATA_PROVIDER_WRONG_CELL_TYPE_ERROR_MESSAGE, type));
+                    logger.error(EXCEL_DATA_PROVIDER_WRONG_CELL_TYPE_ERROR_MESSAGE, type);
                     break;
             }
         }
@@ -319,10 +319,10 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
         if (DateUtil.isCellDateFormatted(cell)) {
             final DateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT);
             txt = String.valueOf(formatter.format(cell.getDateCellValue()));
-            logger.debug("CELL_TYPE_NUMERIC (date): " + txt);
+            logger.debug("CELL_TYPE_NUMERIC (date): {}", txt);
         } else {
             txt = String.valueOf(cell.getNumericCellValue());
-            logger.debug("CELL_TYPE_NUMERIC: " + txt);
+            logger.debug("CELL_TYPE_NUMERIC: {}", txt);
         }
         return txt;
     }
@@ -331,7 +331,7 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
         try (FileOutputStream fileOut = new FileOutputStream(dataOutPath + scenarioName + "." + this.dataOutExtension);) {
             workbook.write(fileOut);
         } catch (final IOException e) {
-            logger.error(Messages.getMessage(EXCEL_DATA_PROVIDER_SAVE_FILE_ERROR_MESSAGE) + e);
+            logger.error(Messages.getMessage(EXCEL_DATA_PROVIDER_SAVE_FILE_ERROR_MESSAGE), e);
         }
     }
 

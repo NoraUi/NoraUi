@@ -38,23 +38,23 @@ public class OutputConsoleDataProvider extends CommonDataProvider implements Dat
 
     @Override
     public void writeFailedResult(int line, String value) throws TechnicalException {
-        logger.error(String.format(Messages.getMessage(OUTPUT_CONSOLE_DATA_PROVIDER_FAILED_AT_LINE), line, value));
+        logger.error(Messages.getMessage(OUTPUT_CONSOLE_DATA_PROVIDER_FAILED_AT_LINE), line, value);
     }
 
     @Override
     public void writeWarningResult(int line, String value) throws TechnicalException {
-        logger.warn(String.format(Messages.getMessage(OUTPUT_CONSOLE_DATA_PROVIDER_WARNING_AT_LINE), line, value));
+        logger.warn(Messages.getMessage(OUTPUT_CONSOLE_DATA_PROVIDER_WARNING_AT_LINE), line, value);
     }
 
     @Override
     public void writeSuccessResult(int line) throws TechnicalException {
-        logger.info(String.format(Messages.getMessage(OUTPUT_CONSOLE_DATA_PROVIDER_SUCCESS_AT_LINE), line));
+        logger.info(Messages.getMessage(OUTPUT_CONSOLE_DATA_PROVIDER_SUCCESS_AT_LINE), line);
 
     }
 
     @Override
     public void writeDataResult(String column, int line, String value) throws TechnicalException {
-        logger.info(String.format(Messages.getMessage(OUTPUT_CONSOLE_DATA_PROVIDER_RESULT_AT_LINE), line, column, value));
+        logger.info(Messages.getMessage(OUTPUT_CONSOLE_DATA_PROVIDER_RESULT_AT_LINE), line, column, value);
     }
 
 }

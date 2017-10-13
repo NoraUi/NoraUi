@@ -456,19 +456,19 @@ public class Step implements IStep {
      *             if the scenario encounters a functional error
      */
     protected void updateDateValidated(PageElement pageElement, String dateType, String date) throws TechnicalException, FailureException {
-        logger.debug(String.format("updateDateValidated with elementName=%s, dateType=%s and date=%s", pageElement.toString(), dateType, date));
+        logger.debug("updateDateValidated with elementName={}, dateType={} and date={}", pageElement.toString(), dateType, date);
         DateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT);
         Date today = Calendar.getInstance().getTime();
         try {
             Date valideDate = formatter.parse(date);
             if ("any".equals(dateType)) {
-                logger.debug("update Date with any date: " + date);
+                logger.debug("update Date with any date: {}", date);
                 updateText(pageElement, date);
             } else if (formatter.format(today).equals(date) && ("future".equals(dateType) || "today".equals(dateType))) {
                 logger.debug("update Date with today");
                 updateText(pageElement, date);
             } else if (valideDate.after(Calendar.getInstance().getTime()) && ("future".equals(dateType) || "future_strict".equals(dateType))) {
-                logger.debug("update Date with a date after today: " + date);
+                logger.debug("update Date with a date after today: {}", date);
                 updateText(pageElement, date);
             } else {
                 new Result.Failure<>(date, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNEXPECTED_DATE), Messages.getMessage(Messages.DATE_GREATER_THAN_TODAY)), true,
@@ -496,7 +496,7 @@ public class Step implements IStep {
      *             if the scenario encounters a functional error
      */
     protected void saveElementValue(String field, Page page) throws TechnicalException, FailureException {
-        logger.debug(String.format("saveValueInStep: %s in %s.", field, page.getApplication()));
+        logger.debug("saveValueInStep: {} in {}.", field, page.getApplication());
         saveElementValue(field, page.getPageKey() + field, page);
     }
 
@@ -518,7 +518,7 @@ public class Step implements IStep {
      *             if the scenario encounters a functional error
      */
     protected void saveElementValue(String field, String targetKey, Page page) throws TechnicalException, FailureException {
-        logger.debug(String.format("saveValueInStep: %s to %s in %s.", field, targetKey, page.getApplication()));
+        logger.debug("saveValueInStep: {} to {} in {}.", field, targetKey, page.getApplication());
         String txt = "";
         try {
             WebElement elem = Utilities.findElement(page, field);
@@ -740,11 +740,11 @@ public class Step implements IStep {
      *            is a list of authorized activities
      */
     protected void displayMessageAtTheBeginningOfMethod(String methodName, String act, String concernedActivity, List<String> concernedActivities) {
-        logger.debug(String.format("%s %s: %s with %d concernedActivity(ies)", act, methodName, concernedActivity, concernedActivities.size()));
+        logger.debug("{} {}: {} with {} concernedActivity(ies)", act, methodName, concernedActivity, concernedActivities.size());
         int i = 0;
         for (String activity : concernedActivities) {
             i++;
-            logger.debug(String.format("  activity N°%d=%s", i, activity));
+            logger.debug("  activity N°{}={}", i, activity);
         }
     }
 
@@ -759,11 +759,11 @@ public class Step implements IStep {
      *            is a list of authorized activities
      */
     protected void displayMessageAtTheBeginningOfMethod(String methodName, String act, List<String> concernedActivities) {
-        logger.debug(String.format("%s: %s with %d concernedActivity(ies)", act, methodName, concernedActivities.size()));
+        logger.debug("{}: {} with {} concernedActivity(ies)", act, methodName, concernedActivities.size());
         int i = 0;
         for (String activity : concernedActivities) {
             i++;
-            logger.debug(String.format("  activity N°%d=%s", i, activity));
+            logger.debug("  activity N°{}={}", i, activity);
         }
     }
 
@@ -776,11 +776,11 @@ public class Step implements IStep {
      *            is a list of concerned elements (example: authorized activities)
      */
     protected void displayConcernedElementsAtTheBeginningOfMethod(String methodName, List<String> concernedElements) {
-        logger.debug(String.format("%s: with %d concernedElements", methodName, concernedElements.size()));
+        logger.debug("{}: with {} concernedElements", methodName, concernedElements.size());
         int i = 0;
         for (String element : concernedElements) {
             i++;
-            logger.debug(String.format("  element N°%d=%s", i, element));
+            logger.debug("  element N°{}={}", i, element);
         }
     }
 

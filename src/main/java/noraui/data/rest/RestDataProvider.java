@@ -89,7 +89,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
      */
     @Override
     public void writeFailedResult(int line, String value) {
-        logger.debug(String.format("Write Failed result => line:%d value:%s", line, value));
+        logger.debug("Write Failed result => line:{} value:{}", line, value);
         writeValue(resultColumnName, line, value);
     }
 
@@ -98,7 +98,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
      */
     @Override
     public void writeSuccessResult(int line) {
-        logger.debug(String.format("Write Success result => line:%d", line));
+        logger.debug("Write Success result => line:{}", line);
         writeValue(resultColumnName, line, Messages.getMessage(Messages.SUCCESS_MESSAGE));
     }
 
@@ -107,7 +107,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
      */
     @Override
     public void writeWarningResult(int line, String value) throws TechnicalException {
-        logger.debug(String.format("Write Warning result => line:%d value:%s", line, value));
+        logger.debug("Write Warning result => line:{} value:{}", line, value);
         writeValue(resultColumnName, line, value);
     }
 
@@ -116,7 +116,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
      */
     @Override
     public void writeDataResult(String column, int line, String value) {
-        logger.debug(String.format("Write Data result => column:%s line:%d value:%s", column, line, value));
+        logger.debug("Write Data result => column:{} line:{} value:{}", column, line, value);
         writeValue(column, line, value);
     }
 
@@ -138,7 +138,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
      */
     @Override
     public String[] readLine(int line, boolean readResult) {
-        logger.debug("readLine at line " + line);
+        logger.debug("readLine at line {}", line);
         final String uri = this.norauiWebServicesApi + scenarioName + LINE + line;
         final Row row = restTemplate.getForObject(uri, DataModel.class).getRows().get(0);
         final List<String> l = row.getColumns();
@@ -158,17 +158,17 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
     }
 
     private void writeValue(String column, int line, String value) {
-        logger.debug("Writing: " + value + " at line " + line + " in column '" + column + "'");
+        logger.debug("Writing: [{}] at line [{}] in column [{}]", value, line, column);
         final int colIndex = columns.indexOf(column);
         final String uri = this.norauiWebServicesApi + scenarioName + COLUMN + colIndex + LINE + line;
         final DataModel dataModel = restTemplate.patchForObject(uri, value, DataModel.class);
         if (resultColumnName.equals(column)) {
             if (value.equals(dataModel.getRows().get(line - 1).getResult())) {
-                logger.error(String.format(Messages.getMessage(REST_DATA_PROVIDER_WRITING_IN_REST_WS_ERROR_MESSAGE), column, line, value));
+                logger.error(Messages.getMessage(REST_DATA_PROVIDER_WRITING_IN_REST_WS_ERROR_MESSAGE), column, line, value);
             }
         } else {
             if (value.equals(dataModel.getRows().get(line - 1).getColumns().get(colIndex - 1))) {
-                logger.error(String.format(Messages.getMessage(REST_DATA_PROVIDER_WRITING_IN_REST_WS_ERROR_MESSAGE), column, line, value));
+                logger.error(Messages.getMessage(REST_DATA_PROVIDER_WRITING_IN_REST_WS_ERROR_MESSAGE), column, line, value);
             }
         }
     }

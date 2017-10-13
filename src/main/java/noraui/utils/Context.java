@@ -456,7 +456,7 @@ public class Context {
             try {
                 initDataId(scenarioName);
             } catch (final TechnicalException te) {
-                logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + te.getMessage(), te);
+                logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE), te);
             }
         }
         getInstance().scenarioName = scenarioName;
@@ -512,15 +512,15 @@ public class Context {
             final Properties props = new Properties();
             try {
                 if (in == null) {
-                    logger.error(String.format(Messages.getMessage(CONTEXT_PROPERTIES_FILE_NOT_FOUND), propertiesFileName));
+                    logger.error(Messages.getMessage(CONTEXT_PROPERTIES_FILE_NOT_FOUND), propertiesFileName);
                 } else {
-                    logger.info(String.format(Messages.getMessage(CONTEXT_READING_PROPERTIES_FILE), propertiesFileName));
+                    logger.info(Messages.getMessage(CONTEXT_READING_PROPERTIES_FILE), propertiesFileName);
                     props.load(in);
                 }
             } catch (final IOException e) {
                 logger.error("error initPropertiesFile", e);
             }
-            logger.info(String.format(Messages.getMessage(CONTEXT_LOADED_PROPERTIES_FILE), propertiesFileName, props));
+            logger.info(Messages.getMessage(CONTEXT_LOADED_PROPERTIES_FILE), propertiesFileName, props);
             return props;
         }
         return null;
@@ -532,7 +532,7 @@ public class Context {
         }
         final String p = propertyFile.getProperty(key);
         if (p == null) {
-            logger.error(key + Messages.getMessage(NOT_SET_LABEL));
+            logger.error("{}{}", key, Messages.getMessage(NOT_SET_LABEL));
         }
         return p;
     }
@@ -551,7 +551,7 @@ public class Context {
         } catch (final InvalidFileFormatException e) {
             logger.error("error initApplicationDom", e);
         } catch (final IOException e) {
-            logger.error(String.format(Messages.getMessage(CONTEXT_APP_INI_FILE_NOT_FOUND), applicationKey), e);
+            logger.error(Messages.getMessage(CONTEXT_APP_INI_FILE_NOT_FOUND), applicationKey, e);
         }
     }
 
@@ -645,10 +645,10 @@ public class Context {
         final String property = propertyFile.getProperty(key);
         int p = 0;
         if (property == null) {
-            logger.error(key + Messages.getMessage(NOT_SET_LABEL));
+            logger.error("{}{}", key, Messages.getMessage(NOT_SET_LABEL));
         } else {
             p = Integer.parseInt(property);
-            logger.info(key + " = " + p);
+            logger.info("{} = {}", key, p);
         }
         return p;
     }
@@ -750,7 +750,7 @@ public class Context {
                 }
             }
         } catch (final Exception e) {
-            logger.error(Messages.getMessage(CONTEXT_ERROR_WHEN_PLUGING_DATA_PROVIDER) + e);
+            logger.error(Messages.getMessage(CONTEXT_ERROR_WHEN_PLUGING_DATA_PROVIDER), e);
         }
     }
 }

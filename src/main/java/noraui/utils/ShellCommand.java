@@ -46,7 +46,7 @@ public class ShellCommand {
             }
             return p.waitFor();
         } catch (IOException | InterruptedException e) {
-            logger.error(e.getMessage(), e);
+            logger.error("error ShellCommand run", e);
             Thread.currentThread().interrupt();
             throw new TechnicalException(e.getMessage(), e);
         }

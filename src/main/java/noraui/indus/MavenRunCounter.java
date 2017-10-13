@@ -53,12 +53,12 @@ public class MavenRunCounter {
                             if (sCurrentLine.startsWith("Given") || sCurrentLine.startsWith("Then") || sCurrentLine.startsWith("When") || sCurrentLine.startsWith("And")
                                     || sCurrentLine.startsWith("But") || sCurrentLine.startsWith("Alors") || sCurrentLine.startsWith("Et") || sCurrentLine.startsWith("Lorsqu")
                                     || sCurrentLine.startsWith("Mais") || sCurrentLine.startsWith("Quand") || sCurrentLine.startsWith("Soit")) {
-                                logger.error(Messages.getMessage(Messages.SCENARIO_ERROR_MESSAGE_ILLEGAL_TAB_FORMAT) + " : " + sCurrentLine);
+                                logger.error("{} : {}", Messages.getMessage(Messages.SCENARIO_ERROR_MESSAGE_ILLEGAL_TAB_FORMAT), sCurrentLine);
                             }
                         }
                     }
                 } catch (final IOException e) {
-                    logger.error("IOException error: " + e);
+                    logger.error("IOException error: ", e);
                 }
                 countNbCasFailuresAndSkipped(scenarioName, counter, nbStep);
                 result.add(counter);
@@ -211,8 +211,8 @@ public class MavenRunCounter {
             } else {
                 countWithoutModel(nbStep, result, indexData);
             }
-        } catch (final Exception te) {
-            logger.error("error countNbCasFailuresAndSkipped", te);
+        } catch (final Exception e) {
+            logger.error("error countNbCasFailuresAndSkipped", e);
         }
         return result;
     }

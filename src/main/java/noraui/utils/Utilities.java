@@ -46,8 +46,8 @@ public class Utilities {
      */
     public static String getSelectorValue(String applicationKey, String code, Object... args) {
         String selector = "";
-        logger.debug("getLocator with this application key : " + applicationKey);
-        logger.debug("getLocator with this locator file : " + Context.iniFiles.get(applicationKey));
+        logger.debug("getLocator with this application key : {}", applicationKey);
+        logger.debug("getLocator with this locator file : {}", Context.iniFiles.get(applicationKey));
         final Ini ini = Context.iniFiles.get(applicationKey);
 
         final Map<String, String> section = ini.get(code);
@@ -82,8 +82,8 @@ public class Utilities {
      */
     public static By getLocator(String applicationKey, String code, Object... args) {
         By locator = null;
-        logger.debug("getLocator with this application key : " + applicationKey);
-        logger.debug("getLocator with this locator file : " + Context.iniFiles.get(applicationKey));
+        logger.debug("getLocator with this application key : {}", applicationKey);
+        logger.debug("getLocator with this locator file : {}", Context.iniFiles.get(applicationKey));
         final Ini ini = Context.iniFiles.get(applicationKey);
 
         final Map<String, String> section = ini.get(code);
@@ -257,7 +257,7 @@ public class Utilities {
             final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
             scenario.embed(screenshot, "image/png");
         } else {
-            logger.warn(String.format(Messages.getMessage(UTILITIES_ERROR_TAKING_SCREENSHOT), Context.getBrowser()));
+            logger.warn(Messages.getMessage(UTILITIES_ERROR_TAKING_SCREENSHOT), Context.getBrowser());
         }
     }
 
