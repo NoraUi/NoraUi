@@ -86,7 +86,7 @@
         <sonar-maven-plugin.version>3.3.0.603</sonar-maven-plugin.version>
         <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
         <sonar.sources>${project.basedir}/src/main/java/</sonar.sources>
-        <sonar.junit.reportsPath>${project.testresult.directory}/surefire-reports</sonar.junit.reportsPath>
+        <sonar.junit.reportPaths>${project.build.directory}/surefire-reports</sonar.junit.reportPaths>
         <sonar.tests>${project.basedir}/src/test/</sonar.tests>
         <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
         <sonar.exclusions>**/cucumber/**/*,**/*Exception.*,**/annotation/**/*,**/noraui/model/**/*,**/noraui/data/rest/Row.java</sonar.exclusions>
