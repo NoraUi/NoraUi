@@ -5,6 +5,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -34,12 +36,8 @@ public class LogoGameSteps extends Step {
      */
     private static final Logger logger = LoggerFactory.getLogger(LogoGameSteps.class);
 
+    @Inject
     private LogoGamePage logoGamePage;
-
-    public LogoGameSteps() throws TechnicalException {
-        super();
-        this.logoGamePage = (LogoGamePage) Page.getInstance(LogoGamePage.class);
-    }
 
     @Alors("Le portail LOGOGAME est affiché")
     @Then("The LOGOGAME portal is displayed")

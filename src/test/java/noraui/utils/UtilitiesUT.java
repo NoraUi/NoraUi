@@ -2,22 +2,33 @@ package noraui.utils;
 
 import java.util.HashMap;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import noraui.Runner;
+import noraui.application.page.Page;
 import noraui.application.page.demo.DemoPage;
+import noraui.cucumber.injector.NoraUiInjector;
+import noraui.cucumber.injector.NoraUiInjectorSource;
+import noraui.exception.TechnicalException;
 
 public class UtilitiesUT {
 
-    Utilities utilities;
+    public static final String DEMO_PAGE_NAME = "demo.DemoPage";
+
     DemoPage demoPage;
 
     @Before
-    public void setUp() {
-        utilities = new Utilities();
-        demoPage = new DemoPage();
+    public void setUp() throws TechnicalException {
+        new NoraUiInjectorSource().getInjector();
+        demoPage = (DemoPage) Page.getInstance(DEMO_PAGE_NAME);
+    }
+
+    @After
+    public void tearDown() {
+        NoraUiInjector.resetInjector();
     }
 
     @Test
