@@ -12,7 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import noraui.data.DataIndex;
 import noraui.data.DataUtils;
@@ -25,7 +26,10 @@ import noraui.utils.Messages;
 
 public class MavenRunCounter {
 
-    private static Logger logger = Logger.getLogger(MavenRunCounter.class.getName());
+    /**
+     * Specific logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(MavenRunCounter.class);
 
     public static final String Z_MANAGER = "zManager";
 
@@ -49,12 +53,12 @@ public class MavenRunCounter {
                             if (sCurrentLine.startsWith("Given") || sCurrentLine.startsWith("Then") || sCurrentLine.startsWith("When") || sCurrentLine.startsWith("And")
                                     || sCurrentLine.startsWith("But") || sCurrentLine.startsWith("Alors") || sCurrentLine.startsWith("Et") || sCurrentLine.startsWith("Lorsqu")
                                     || sCurrentLine.startsWith("Mais") || sCurrentLine.startsWith("Quand") || sCurrentLine.startsWith("Soit")) {
-                                logger.error(Messages.getMessage(Messages.SCENARIO_ERROR_MESSAGE_ILLEGAL_TAB_FORMAT) + " : " + sCurrentLine);
+                                logger.error("{} : {}", Messages.getMessage(Messages.SCENARIO_ERROR_MESSAGE_ILLEGAL_TAB_FORMAT), sCurrentLine);
                             }
                         }
                     }
                 } catch (final IOException e) {
-                    logger.error("IOException error: " + e);
+                    logger.error("IOException error: ", e);
                 }
                 countNbCasFailuresAndSkipped(scenarioName, counter, nbStep);
                 result.add(counter);
@@ -100,12 +104,11 @@ public class MavenRunCounter {
             failures += counter.getFailures();
             skipped += counter.getSkipped();
             scenarios += counter.getNbCas();
-            logger.info("Scenario: " + counter.getScenarioName() + " => step: " + counter.getNbStep() + " and cases: " + counter.getNbCas() + " -->  runs: " + counter.getRun() + ", failures: "
-                    + counter.getFailures() + ", errors: 0 and skips: " + counter.getSkipped());
+            logger.info("Scenario: {} => step: {} and cases: {} -->  runs: , failures: , errors: 0 and skips: {}", counter.getScenarioName(), counter.getNbStep(), counter.getNbCas(), counter.getRun(),
+                    counter.getFailures(), counter.getSkipped());
         }
-        logger.info("[" + type + "] > <EXPECTED_RESULTS_1>" + scenarios + " Scenarios (" + failures + " failed, " + (scenarios - failures) + " passed)</EXPECTED_RESULTS_1>");
-        logger.info("[" + type + "] > <EXPECTED_RESULTS_2>" + (run - scenarios) + " Steps (" + failures + " failed, " + skipped + " skipped, " + (run - scenarios - failures - skipped)
-                + " passed)</EXPECTED_RESULTS_2>");
+        logger.info("[{}] > <EXPECTED_RESULTS_1>{} Scenarios ({} failed, {} passed)</EXPECTED_RESULTS_1>", type, scenarios, failures, (scenarios - failures));
+        logger.info("[{}] > <EXPECTED_RESULTS_2>{} Steps ({} failed, {} skipped, {} passed)</EXPECTED_RESULTS_2>", type, (run - scenarios), failures, skipped, (run - scenarios - failures - skipped));
     }
 
     public static List<String> listFilesForFolder(final List<String> versionControlSystemsBlacklist, final File folder) {
@@ -207,8 +210,8 @@ public class MavenRunCounter {
             } else {
                 countWithoutModel(nbStep, result, indexData);
             }
-        } catch (final Exception te) {
-            logger.error(te);
+        } catch (final Exception e) {
+            logger.error("error MavenRunCounter.countNbCasFailuresAndSkipped()", e);
         }
         return result;
     }

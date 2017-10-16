@@ -7,7 +7,8 @@ import java.util.regex.Pattern;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import cucumber.runtime.java.StepDefAnnotation;
 import javassist.Modifier;
@@ -16,7 +17,10 @@ import noraui.exception.FailureException;
 
 public class StepInterceptor implements MethodInterceptor {
 
-    private static Logger logger = Logger.getLogger(StepInterceptor.class.getName());
+    /**
+     * Specific logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(StepInterceptor.class);
 
     /**
      * {@inheritDoc}

@@ -1,8 +1,9 @@
 package noraui.application.steps.logogame;
 
-import org.apache.log4j.Logger;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
@@ -30,7 +31,10 @@ import noraui.utils.Utilities;
 
 public class LogoGameSteps extends Step {
 
-    private static Logger logger = Logger.getLogger(LogoGameSteps.class.getName());
+    /**
+     * Specific logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(LogoGameSteps.class);
 
     @Inject
     private LogoGamePage logoGamePage;
@@ -134,7 +138,7 @@ public class LogoGameSteps extends Step {
                 Context.getCurrentScenario().write("score is:\n" + message.getText());
                 Context.getDataOutputProvider().writeDataResult("score", Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData()).getIndexes().get(0), message.getText());
             } catch (TechnicalException e) {
-                logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), e);
+                logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE), e);
             }
         } catch (Exception e) {
             new Result.Failure<>(e.getMessage(), "", true, logoGamePage.getCallBack());

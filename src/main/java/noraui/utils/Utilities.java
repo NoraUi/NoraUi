@@ -10,7 +10,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nullable;
 
-import org.apache.log4j.Logger;
 import org.ini4j.Ini;
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -19,6 +18,8 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import cucumber.api.Scenario;
 import noraui.application.page.Page;
@@ -30,7 +31,7 @@ public class Utilities {
     /**
      * Specific logger
      */
-    private static final Logger logger = Logger.getLogger(Utilities.class);
+    private static final Logger logger = LoggerFactory.getLogger(Utilities.class);
 
     private static final String UTILITIES_ERROR_TAKING_SCREENSHOT = "UTILITIES_ERROR_TAKING_SCREENSHOT";
 
@@ -45,8 +46,8 @@ public class Utilities {
      */
     public static String getSelectorValue(String applicationKey, String code, Object... args) {
         String selector = "";
-        logger.debug("getLocator with this application key : " + applicationKey);
-        logger.debug("getLocator with this locator file : " + Context.iniFiles.get(applicationKey));
+        logger.debug("getLocator with this application key : {}", applicationKey);
+        logger.debug("getLocator with this locator file : {}", Context.iniFiles.get(applicationKey));
         final Ini ini = Context.iniFiles.get(applicationKey);
 
         final Map<String, String> section = ini.get(code);
@@ -81,8 +82,8 @@ public class Utilities {
      */
     public static By getLocator(String applicationKey, String code, Object... args) {
         By locator = null;
-        logger.debug("getLocator with this application key : " + applicationKey);
-        logger.debug("getLocator with this locator file : " + Context.iniFiles.get(applicationKey));
+        logger.debug("getLocator with this application key : {}", applicationKey);
+        logger.debug("getLocator with this locator file : {}", Context.iniFiles.get(applicationKey));
         final Ini ini = Context.iniFiles.get(applicationKey);
 
         final Map<String, String> section = ini.get(code);
@@ -256,7 +257,7 @@ public class Utilities {
             final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
             scenario.embed(screenshot, "image/png");
         } else {
-            logger.warn(String.format(Messages.getMessage(UTILITIES_ERROR_TAKING_SCREENSHOT), Context.getBrowser()));
+            logger.warn(Messages.getMessage(UTILITIES_ERROR_TAKING_SCREENSHOT), Context.getBrowser());
         }
     }
 
@@ -353,7 +354,6 @@ public class Utilities {
                         try {
                             element = driver.findElement(b);
                         } catch (final Exception e) {
-                            logger.debug(e);
                             continue;
                         }
                     }

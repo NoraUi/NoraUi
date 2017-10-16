@@ -2,8 +2,9 @@ package noraui.exception;
 
 import java.util.Optional;
 
-import org.apache.log4j.Logger;
 import org.junit.Assert;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import noraui.exception.Callbacks.Callback;
 import noraui.utils.Context;
@@ -26,8 +27,13 @@ public abstract class Result {
     }
 
     public static class Success<O> extends Result {
+
+        /**
+         * Specific logger
+         */
+        private static final Logger logger = LoggerFactory.getLogger(Success.class);
+
         private final O object;
-        private static final Logger logger = Logger.getLogger(Success.class.getName());
 
         /**
          * @param object
@@ -53,8 +59,13 @@ public abstract class Result {
     }
 
     public static class Warning<O> extends Result {
+
+        /**
+         * Specific logger
+         */
+        private static final Logger logger = LoggerFactory.getLogger(Warning.class);
+
         private final O object;
-        private static final Logger logger = Logger.getLogger(Warning.class.getName());
 
         /**
          * @param object
@@ -74,14 +85,14 @@ public abstract class Result {
                 Context.getDataOutputProvider().writeWarningResult(Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData()).getIndexes().get(nid),
                         Messages.getMessage(Messages.WARNING_MESSAGE_DEFAULT) + message);
             } catch (final TechnicalException e) {
-                logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), e);
+                logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE), e);
             }
             if (!Context.scenarioHasWarning()) {
                 Context.addWarning();
                 Context.scenarioHasWarning(true);
             }
             if (takeScreenshot) {
-                logger.debug("Current scenario is " + Context.getCurrentScenario());
+                logger.debug("Current scenario is {}", Context.getCurrentScenario());
                 Utilities.takeScreenshot(Context.getCurrentScenario());
             }
             Context.getCurrentScenario().write(Messages.getMessage(Messages.WARNING_MESSAGE_DEFAULT) + message);
@@ -95,8 +106,13 @@ public abstract class Result {
     }
 
     public static class Failure<O> extends Result {
+
+        /**
+         * Specific logger
+         */
+        private static final Logger logger = LoggerFactory.getLogger(Failure.class);
+
         private final O error;
-        private static final Logger logger = Logger.getLogger(Failure.class.getName());
 
         /**
          * @param error
@@ -161,7 +177,7 @@ public abstract class Result {
                         Context.getDataOutputProvider().writeWarningResult(line, Messages.getMessage(Messages.NOT_RUN_MESSAGE));
                     }
                 } catch (final TechnicalException e) {
-                    logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), e);
+                    logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE), e);
                 }
             }
             Context.addFailure();
@@ -170,7 +186,7 @@ public abstract class Result {
                 Context.scenarioHasWarning(false);
             }
             if (takeScreenshot) {
-                logger.debug("Current scenario is " + Context.getCurrentScenario());
+                logger.debug("Current scenario is {}", Context.getCurrentScenario());
                 Utilities.takeScreenshot(Context.getCurrentScenario());
             }
             if (callback != null) {

@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
-import org.apache.log4j.Logger;
 import org.openqa.selenium.Proxy.ProxyType;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
@@ -19,6 +18,8 @@ import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import noraui.exception.TechnicalException;
 import noraui.utils.Context;
@@ -29,7 +30,10 @@ import noraui.utils.Utilities.SystemArchitecture;
 
 public class DriverFactory {
 
-    private static Logger logger = Logger.getLogger(DriverFactory.class);
+    /**
+     * Specific logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(DriverFactory.class);
 
     /** Default web drivers implicit wait **/
     public static final long IMPLICIT_WAIT = 500;
@@ -61,7 +65,7 @@ public class DriverFactory {
             try {
                 driver = generateWebDriver(driverName);
             } catch (final TechnicalException e) {
-                logger.error(e.getMessage());
+                logger.error("error DriverFactory.getDriver()", e);
             }
         } else {
             driver = drivers.get(driverName);

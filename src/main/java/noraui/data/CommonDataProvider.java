@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 
@@ -15,8 +14,6 @@ import noraui.model.Model;
 import noraui.utils.Messages;
 
 public abstract class CommonDataProvider implements DataProvider {
-
-    protected static final Logger logger = Logger.getLogger(CommonDataProvider.class);
 
     protected String dataInPath;
     protected String dataOutPath;

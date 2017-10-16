@@ -371,7 +371,7 @@ public class CommonSteps extends Step {
     @Quand("Je clique sur '(.*)-(.*)'[\\.|\\?]")
     @When("I click on '(.*)-(.*)'[\\.|\\?]")
     public void clickOn(String page, String toClick, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
-        loggerStep.debug(page + " clickOn: " + toClick);
+        logger.debug("{} clickOn: {}", page, toClick);
         clickOn(Page.getInstance(page).getPageElementByKey('-' + toClick));
     }
 
@@ -394,7 +394,7 @@ public class CommonSteps extends Step {
     @Quand("Je clique via js sur '(.*)-(.*)'[\\.|\\?]")
     @When("I click by js on '(.*)-(.*)'[\\.|\\?]")
     public void clickOnByJs(String page, String toClick, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
-        loggerStep.debug(page + " clickOnByJs: " + toClick);
+        logger.debug("{} clickOnByJs: {}", page, toClick);
         clickOnByJs(Page.getInstance(page).getPageElementByKey('-' + toClick));
     }
 
@@ -417,7 +417,7 @@ public class CommonSteps extends Step {
     @Quand("Je clique via js sur xpath '(.*)' de '(.*)' page[\\.|\\?]")
     @When("I click by js on xpath '(.*)' from '(.*)' page[\\.|\\?]")
     public void clickOnXpathByJs(String xpath, String page, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
-        loggerStep.debug("clickOnByJs with xpath " + xpath + " on " + page + " page");
+        logger.debug("clickOnByJs with xpath {} on {} page", xpath, page);
         clickOnByJs(Page.getInstance(page), xpath);
     }
 

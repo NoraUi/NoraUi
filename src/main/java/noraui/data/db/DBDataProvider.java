@@ -13,6 +13,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import noraui.data.CommonDataProvider;
 import noraui.data.DataInputProvider;
 import noraui.exception.TechnicalException;
@@ -21,6 +24,11 @@ import noraui.utils.Constants;
 import noraui.utils.Messages;
 
 public class DBDataProvider extends CommonDataProvider implements DataInputProvider {
+
+    /**
+     * Specific logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(DBDataProvider.class);
 
     private static final String DB_DATA_PROVIDER_USED = "DB_DATA_PROVIDER_USED";
     private static final String DATABASE_ERROR_FORBIDDEN_WORDS_IN_QUERY = "DATABASE_ERROR_FORBIDDEN_WORDS_IN_QUERY";
@@ -94,7 +102,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
                 ResultSet rs = statement.executeQuery(sqlRequest);) {
             return rs.last() ? rs.getRow() + 1 : 0;
         } catch (final SQLException e) {
-            logger.error("getNbLines()" + e.getMessage(), e);
+            logger.error("error DBDataProvider.getNbLines()", e);
             return 0;
         }
     }
@@ -123,7 +131,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
             }
             return rs.getString(column);
         } catch (final SQLException e) {
-            logger.error("readValue(" + column + ", " + line + ")" + e.getMessage(), e);
+            logger.error("error DBDataProvider.readValue({}, {})", column, line, e);
             return "";
         }
     }
@@ -159,7 +167,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
             }
             return ret;
         } catch (final SQLException e) {
-            logger.debug("In DBDataProvider, is it a catch used for tested end of data. readLine(" + line + ", " + readResult + ")" + e.getMessage(), e);
+            logger.debug("In DBDataProvider, this catch aims for testing the end of provided data. DBDataProvider.readLine({}, {})", line, readResult, e);
             return null;
         }
     }

@@ -12,6 +12,9 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 
@@ -24,6 +27,11 @@ import noraui.exception.data.WrongDataFileFormatException;
 import noraui.utils.Messages;
 
 public class CsvDataProvider extends CommonDataProvider implements DataInputProvider, DataOutputProvider {
+
+    /**
+     * Specific logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(CsvDataProvider.class);
 
     public static final String CSV_TYPE = "csv";
     public static final char CSV_CHAR_SEPARATOR = ';';
@@ -69,7 +77,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
      */
     @Override
     public void writeFailedResult(int line, String value) {
-        logger.debug(String.format("WriteFailedResult => line:%d value:%s", line, value));
+        logger.debug("WriteFailedResult => line:{} value:{}", line, value);
         writeValue(resultColumnName, line, value);
     }
 
@@ -78,7 +86,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
      */
     @Override
     public void writeSuccessResult(int line) {
-        logger.debug(String.format("Write Success result => line:%d", line));
+        logger.debug("Write Success result => line:{}", line);
         writeValue(resultColumnName, line, Messages.getMessage(Messages.SUCCESS_MESSAGE));
     }
 
@@ -87,7 +95,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
      */
     @Override
     public void writeWarningResult(int line, String value) throws TechnicalException {
-        logger.debug(String.format("writeWarningResult => line:%d value:%s", line, value));
+        logger.debug("writeWarningResult => line:{} value:{}", line, value);
         writeValue(resultColumnName, line, value);
     }
 
@@ -96,7 +104,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
      */
     @Override
     public void writeDataResult(String column, int line, String value) {
-        logger.debug(String.format("writeDataResult => column:%s line:%d value:%s", column, line, value));
+        logger.debug("writeDataResult => column:{} line:{} value:{}", column, line, value);
         writeValue(column, line, value);
     }
 
@@ -119,7 +127,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
      */
     @Override
     public String[] readLine(int line, boolean readResult) {
-        logger.debug("readLine at line " + line);
+        logger.debug("readLine at line {}", line);
         try {
             CSVReader reader = openInputData();
             List<String[]> a = reader.readAll();
@@ -137,7 +145,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
                 return ret;
             }
         } catch (IOException e) {
-            logger.error("readLine " + e);
+            logger.error("error CsvDataProvider.readLine()", e);
             return null;
         }
     }
@@ -162,7 +170,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
     }
 
     private void writeValue(String column, int line, String value) {
-        logger.debug("Writing: " + value + " at line " + line + " in column '" + column + "'");
+        logger.debug("Writing: [{}] at line [{}] in column [{}]", value, line, column);
         int colIndex = columns.indexOf(column);
         CSVReader reader;
         try {
@@ -172,7 +180,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
             reader.close();
             writeValue(column, line, value, csvBody);
         } catch (IOException e1) {
-            logger.error(String.format(Messages.getMessage(CSV_DATA_PROVIDER_WRITING_IN_CSV_ERROR_MESSAGE), column, line, value), e1);
+            logger.error(Messages.getMessage(CSV_DATA_PROVIDER_WRITING_IN_CSV_ERROR_MESSAGE), column, line, value, e1);
         }
     }
 
@@ -181,7 +189,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
             writer.writeAll(csvBody);
             writer.flush();
         } catch (IOException e) {
-            logger.error(String.format(Messages.getMessage(CSV_DATA_PROVIDER_WRITING_IN_CSV_ERROR_MESSAGE), column, line, value), e);
+            logger.error(Messages.getMessage(CSV_DATA_PROVIDER_WRITING_IN_CSV_ERROR_MESSAGE), column, line, value, e);
         }
     }
 

@@ -2,9 +2,10 @@ package noraui.application.steps;
 
 import java.util.Collection;
 
-import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Seconds;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
@@ -18,13 +19,16 @@ import noraui.utils.Messages;
 
 public class CucumberHooks {
 
-    private static final Logger logger = Logger.getLogger(CucumberHooks.class);
+    /**
+     * Specific logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(CucumberHooks.class);
     private static final String PROGRESS_MESSAGE = "PROGRESS_MESSAGE";
     private static final String SUCCESS_MESSAGE_BY_DEFAULT = "SUCCESS_MESSAGE_BY_DEFAULT";
 
     @Before()
     public static void setUpScenario(Scenario scenario) throws TechnicalException {
-        logger.debug("setUpScenario " + scenario.getName() + " scenario.");
+        logger.debug("setUpScenario {} scenario.", scenario.getName());
 
         if (Context.getCurrentScenarioData() == 0) {
             // Retrieve Excel filename to read
@@ -49,9 +53,9 @@ public class CucumberHooks {
 
     @After()
     public static void tearDown(Scenario scenario) {
-        logger.debug("tearDown " + scenario.getName() + " scenario.");
-        logger.debug("Context.getCurrentScenarioData()=" + Context.getCurrentScenarioData());
-        logger.debug("ExcelFactory.getNbLines()=" + Context.getDataInputProvider().getNbGherkinExample());
+        logger.debug("tearDown {} scenario.", scenario.getName());
+        logger.debug("Context.getCurrentScenarioData()={}", Context.getCurrentScenarioData());
+        logger.debug("ExcelFactory.getNbLines()={}", Context.getDataInputProvider().getNbGherkinExample());
         printProgressBuild(scenario);
         if (Context.getCurrentScenarioData() >= Context.getDataInputProvider().getNbGherkinExample()) {
             logger.debug("Go to next feature");

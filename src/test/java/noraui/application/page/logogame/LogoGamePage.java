@@ -2,8 +2,9 @@ package noraui.application.page.logogame;
 
 import static noraui.utils.Context.LOGOGAME_KEY;
 
-import org.apache.log4j.Logger;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Singleton;
 
@@ -15,7 +16,10 @@ import noraui.utils.Utilities;
 @Singleton
 public class LogoGamePage extends Page {
 
-    private static Logger logger = Logger.getLogger(LogoGamePage.class.getName());
+    /**
+     * Specific logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(LogoGamePage.class);
 
     public final PageElement bigTitle = new PageElement("-big-title", "Logo Game");
     public final PageElement amazonElement = new PageElement("-amazonElement", "Input Text Amazon");

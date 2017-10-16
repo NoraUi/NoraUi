@@ -5,13 +5,14 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.AppenderSkeleton;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.apache.log4j.spi.LoggingEvent;
 import org.junit.Assert;
 import org.junit.Test;
+import org.slf4j.LoggerFactory;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.AppenderBase;
 import noraui.exception.TechnicalException;
 import noraui.utils.Messages;
 
@@ -30,11 +31,13 @@ public class OutputConsoleDataProviderUT {
         outputConsoleDataProvider.prepare("hello");
         Assert.assertTrue(true);
 
-        final TestAppender appender = new TestAppender();
-        final Logger logger = Logger.getRootLogger();
+        Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+
+        final TestAppender<ILoggingEvent> appender = new TestAppender<>();
+        appender.start();
         logger.addAppender(appender);
         outputConsoleDataProvider.writeFailedResult(1, "UT Failed Message");
-        List<LoggingEvent> log = appender.getLog();
+        List<ILoggingEvent> log = appender.getLog();
         Assert.assertEquals(Level.ERROR, log.get(0).getLevel());
         Assert.assertTrue(log.get(0).getMessage().toString().endsWith(String.format(Messages.getMessage("OUTPUT_CONSOLE_DATA_PROVIDER_FAILED_AT_LINE"), 1, "UT Failed Message")));
 
@@ -55,24 +58,17 @@ public class OutputConsoleDataProviderUT {
     }
 }
 
-class TestAppender extends AppenderSkeleton {
-    private final List<LoggingEvent> log = new ArrayList<>();
+class TestAppender<E> extends AppenderBase<E> {
 
-    @Override
-    public boolean requiresLayout() {
-        return false;
-    }
+    private final List<E> log = new ArrayList<>();
 
-    @Override
-    protected void append(final LoggingEvent loggingEvent) {
-        log.add(loggingEvent);
-    }
-
-    @Override
-    public void close() {
-    }
-
-    public List<LoggingEvent> getLog() {
+    public List<E> getLog() {
         return new ArrayList<>(log);
     }
+
+    @Override
+    protected void append(E arg0) {
+        log.add(arg0);
+    }
+
 }
