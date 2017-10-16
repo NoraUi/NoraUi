@@ -82,12 +82,12 @@ public class CucumberHooks {
             postStar.append(" ");
         }
         postStar.append("*");
-        logger.info(star.toString());
-        logger.info(postStar.toString());
-        logger.info(String.format(message, scenario.getSourceTagNames(), Context.getCurrentScenarioData(), Context.getDataInputProvider().getNbGherkinExample(), Context.getNbFailure(),
-                Context.getNbWarning(), remainingTime));
-        logger.info(postStar.toString());
-        logger.info(star.toString());
+        logger.info("{}", star.toString());
+        logger.info("{}", postStar.toString());
+        logger.info(message, scenario.getSourceTagNames(), Context.getCurrentScenarioData(), Context.getDataInputProvider().getNbGherkinExample(), Context.getNbFailure(), Context.getNbWarning(),
+                remainingTime);
+        logger.info("{}", postStar.toString());
+        logger.info("{}", star.toString());
     }
 
     protected static int getRemainingTime() {
