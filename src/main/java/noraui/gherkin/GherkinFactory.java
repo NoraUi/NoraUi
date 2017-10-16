@@ -65,7 +65,7 @@ public class GherkinFactory {
                 }
             }
         } catch (IOException e) {
-            logger.error("error injectDataInGherkinExamples", e);
+            logger.error("error GherkinFactory.injectDataInGherkinExamples()", e);
         }
     }
 
@@ -88,7 +88,7 @@ public class GherkinFactory {
             return (examples.length > 2) ? Arrays.copyOfRange(examples, 1, examples.length - 1) : new String[] {};
 
         } catch (IOException e) {
-            logger.error("error getExamples", e);
+            logger.error("error GherkinFactory.getExamples()", e);
         }
         return new String[] {};
     }

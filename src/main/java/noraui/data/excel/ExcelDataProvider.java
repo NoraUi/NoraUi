@@ -303,7 +303,7 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
                     logger.debug("CELL_TYPE_BLANK (we do nothing)");
                     break;
                 default:
-                    logger.error(EXCEL_DATA_PROVIDER_WRONG_CELL_TYPE_ERROR_MESSAGE, type);
+                    logger.error(Messages.getMessage(EXCEL_DATA_PROVIDER_WRONG_CELL_TYPE_ERROR_MESSAGE), type);
                     break;
             }
         }

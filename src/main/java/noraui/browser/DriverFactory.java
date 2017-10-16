@@ -65,7 +65,7 @@ public class DriverFactory {
             try {
                 driver = generateWebDriver(driverName);
             } catch (final TechnicalException e) {
-                logger.error("error getDriver", e);
+                logger.error("error DriverFactory.getDriver()", e);
             }
         } else {
             driver = drivers.get(driverName);

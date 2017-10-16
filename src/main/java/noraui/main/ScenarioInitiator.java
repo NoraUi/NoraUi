@@ -73,7 +73,7 @@ public class ScenarioInitiator {
                 injectWithModel(scenarioName, model);
             }
         } catch (final Exception e) {
-            logger.error("error processInjection", e);
+            logger.error("error ScenarioInitiator.processInjection()", e);
         }
     }
 

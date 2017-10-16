@@ -518,7 +518,7 @@ public class Context {
                     props.load(in);
                 }
             } catch (final IOException e) {
-                logger.error("error initPropertiesFile", e);
+                logger.error("error Context.initPropertiesFile()", e);
             }
             logger.info(Messages.getMessage(CONTEXT_LOADED_PROPERTIES_FILE), propertiesFileName, props);
             return props;
@@ -549,7 +549,7 @@ public class Context {
                 iniFiles.put(applicationKey, ini);
             }
         } catch (final InvalidFileFormatException e) {
-            logger.error("error initApplicationDom", e);
+            logger.error("error Context.initApplicationDom()", e);
         } catch (final IOException e) {
             logger.error(Messages.getMessage(CONTEXT_APP_INI_FILE_NOT_FOUND), applicationKey, e);
         }

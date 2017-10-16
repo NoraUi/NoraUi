@@ -106,7 +106,7 @@ public abstract class Page implements IPage {
                 try {
                     p = (PageElement) f.get(this);
                 } catch (IllegalArgumentException | IllegalAccessException e) {
-                    logger.error("error getPageElementByKey", e);
+                    logger.error("error Page.getPageElementByKey()", e);
                     return null;
                 }
                 if (key.equals(p.getKey())) {

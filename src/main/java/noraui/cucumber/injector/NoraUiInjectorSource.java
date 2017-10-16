@@ -30,7 +30,7 @@ public class NoraUiInjectorSource implements InjectorSource {
         try {
             NoraUiInjector.createInjector(injector);
         } catch (TechnicalException e) {
-            logger.error("error getInjector", e);
+            logger.error("error NoraUiInjectorSource.getInjector()", e);
         }
         return injector;
     }

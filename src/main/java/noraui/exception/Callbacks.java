@@ -66,7 +66,7 @@ public class Callbacks extends HashMap<String, Callback> {
                 this.method = objectClass.getDeclaredMethod(strMethod, paramClasses);
                 this.parameters = parameters;
             } catch (Exception e) {
-                logger.error("error Callback", e);
+                logger.error("error Callback()", e);
             }
         }
 
@@ -79,7 +79,7 @@ public class Callbacks extends HashMap<String, Callback> {
             } catch (InvocationTargetException ite) {
                 logger.error("error InvocationTargetException", ite);
             } catch (Exception e) {
-                logger.error("error call", e);
+                logger.error("error Callback.call()", e);
             }
         }
     }

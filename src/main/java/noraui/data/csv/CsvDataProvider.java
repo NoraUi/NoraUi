@@ -14,8 +14,10 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
+
 import noraui.data.CommonDataProvider;
 import noraui.data.DataInputProvider;
 import noraui.data.DataOutputProvider;
@@ -143,7 +145,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
                 return ret;
             }
         } catch (IOException e) {
-            logger.error("error readLine ", e);
+            logger.error("error CsvDataProvider.readLine()", e);
             return null;
         }
     }
