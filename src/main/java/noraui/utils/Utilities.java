@@ -338,7 +338,7 @@ public class Utilities {
 
         public static SystemArchitecture getCurrentSystemArchitecture() {
             final String currentArchitecture = System.getProperties().getProperty("os.arch");
-            logger.info("os.arch: " + currentArchitecture);
+            logger.info("os.arch: {}", currentArchitecture);
             return getSystemArchitecture(currentArchitecture);
         }
 

@@ -456,7 +456,7 @@ public class Step implements IStep {
      *             if the scenario encounters a functional error
      */
     protected void updateDateValidated(PageElement pageElement, String dateType, String date) throws TechnicalException, FailureException {
-        logger.debug("updateDateValidated with elementName={}, dateType={} and date={}", pageElement.toString(), dateType, date);
+        logger.debug("updateDateValidated with elementName={}, dateType={} and date={}", pageElement, dateType, date);
         DateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT);
         Date today = Calendar.getInstance().getTime();
         try {
@@ -786,7 +786,7 @@ public class Step implements IStep {
 
     private void displayMessageAtTheBeginningOfMethod(String message, String element, String application) throws TechnicalException {
         try {
-            logger.debug(Messages.format(message, element, application));
+            logger.debug(message, element, application);
         } catch (Exception te) {
             throw new TechnicalException("Technical problem in the code Messages.formatMessage(String templateMessage, String... args) in NoraUi.", te);
         }

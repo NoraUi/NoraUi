@@ -16,6 +16,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
@@ -189,17 +190,17 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
 
         styleSuccess = workbook.createCellStyle();
         final Font fontSuccess = workbook.createFont();
-        fontSuccess.setColor(HSSFColor.GREEN.index);
+        fontSuccess.setColor(HSSFColor.HSSFColorPredefined.GREEN.getIndex());
         styleSuccess.setFont(fontSuccess);
 
         styleFailed = workbook.createCellStyle();
         final Font fontFailed = workbook.createFont();
-        fontFailed.setColor(HSSFColor.RED.index);
+        fontFailed.setColor(HSSFColor.HSSFColorPredefined.RED.getIndex());
         styleFailed.setFont(fontFailed);
 
         styleWarning = workbook.createCellStyle();
         final Font fontWarning = workbook.createFont();
-        fontWarning.setColor(HSSFColor.ORANGE.index);
+        fontWarning.setColor(HSSFColor.HSSFColorPredefined.ORANGE.getIndex());
         styleWarning.setFont(fontWarning);
     }
 
@@ -269,8 +270,8 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
     private String readCell(Cell cell) {
         String txt = "";
         if (cell != null) {
-            logger.debug("readCellByType with type: {}" + cell.getCellType());
-            txt = readCellByType(cell, cell.getCellType());
+            logger.debug("readCellByType with type: {}" + cell.getCellTypeEnum());
+            txt = readCellByType(cell, cell.getCellTypeEnum());
         }
         return txt.trim();
     }
@@ -284,22 +285,22 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
      *            CELL_TYPE_FORMULA can be CELL_TYPE_NUMERIC, CELL_TYPE_NUMERIC(date) or CELL_TYPE_STRING
      * @return a string with the data (evalued if CELL_TYPE_FORMULA)
      */
-    private String readCellByType(Cell cell, int type) {
+    private String readCellByType(Cell cell, CellType type) {
         String txt = "";
         if (cell != null) {
             switch (type) {
-                case Cell.CELL_TYPE_NUMERIC:
+                case NUMERIC:
                     txt = dateOrNumberProcessing(cell);
                     break;
-                case Cell.CELL_TYPE_STRING:
+                case STRING:
                     txt = String.valueOf(cell.getRichStringCellValue());
                     logger.debug("CELL_TYPE_STRING: {}", txt);
                     break;
-                case Cell.CELL_TYPE_FORMULA:
-                    txt = readCellByType(cell, cell.getCachedFormulaResultType());
+                case FORMULA:
+                    txt = readCellByType(cell, cell.getCachedFormulaResultTypeEnum());
                     logger.debug("CELL_TYPE_FORMULA: {}", txt);
                     break;
-                case Cell.CELL_TYPE_BLANK:
+                case BLANK:
                     logger.debug("CELL_TYPE_BLANK (we do nothing)");
                     break;
                 default:

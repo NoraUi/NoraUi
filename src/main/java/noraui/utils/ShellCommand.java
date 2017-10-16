@@ -31,7 +31,7 @@ public class ShellCommand {
         final Runtime rt = Runtime.getRuntime();
         final List<String> cmdList = new ArrayList<>();
         cmdList.add(command);
-        logger.info(String.format(Messages.getMessage(SHELL_RUNNING_COMMAND), command));
+        logger.info(Messages.getMessage(SHELL_RUNNING_COMMAND), command);
         for (final String param : parameters) {
             logger.info(param);
             cmdList.add(param);

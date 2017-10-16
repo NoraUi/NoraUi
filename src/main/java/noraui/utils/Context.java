@@ -280,7 +280,7 @@ public class Context {
 
     }
 
-    public synchronized void initializeRobot(Class clazz) {
+    public synchronized void initializeRobot(Class<?> clazz) {
         logger.info("Context > initializeRobot() with " + clazz.getCanonicalName());
         // set browser: phantom, ie or chrome
         browser = setProperty(BROWSER_KEY, applicationProperties);
@@ -696,7 +696,7 @@ public class Context {
         } else {
             currentLocale = Locale.getDefault();
         }
-        logger.info(String.format(Messages.getMessage(CONTEXT_LOCALE_USED), currentLocale));
+        logger.info(Messages.getMessage(CONTEXT_LOCALE_USED), currentLocale);
     }
 
     private void plugDataProvider(Properties applicationProperties) {

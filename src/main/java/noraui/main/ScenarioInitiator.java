@@ -37,7 +37,7 @@ public class ScenarioInitiator {
         logger.info("Working Directory is '" + System.getProperty("user.dir") + "'");
         logger.info("ScenarioInitiator > start()");
         if (args != null && args.length == 1 && !"@TOSPECIFY".equals(args[0])) {
-            logger.info("# " + args[0]);
+            logger.info("# {}", args[0]);
             final String scenarioName = args[0];
             processInjection(scenarioName);
         } else {
@@ -66,10 +66,10 @@ public class ScenarioInitiator {
             Context.getDataInputProvider().prepare(scenarioName);
             final Class<Model> model = Context.getDataInputProvider().getModel(Context.getModelPackages());
             if (model == null) {
-                logger.info(String.format(Messages.getMessage(SCENARIO_INITIATOR_INJECT_WITHOUT_MODEL), scenarioName));
+                logger.info(Messages.getMessage(SCENARIO_INITIATOR_INJECT_WITHOUT_MODEL), scenarioName);
                 injectWithoutModel(scenarioName);
             } else {
-                logger.info(String.format(Messages.getMessage(SCENARIO_INITIATOR_INJECT_WITH_MODEL), scenarioName, model.getSimpleName()));
+                logger.info(Messages.getMessage(SCENARIO_INITIATOR_INJECT_WITH_MODEL), scenarioName, model.getSimpleName());
                 injectWithModel(scenarioName, model);
             }
         } catch (final Exception e) {

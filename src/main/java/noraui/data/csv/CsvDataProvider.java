@@ -15,7 +15,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
 import com.opencsv.CSVWriter;
 
 import noraui.data.CommonDataProvider;
@@ -35,6 +37,9 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
 
     public static final String CSV_TYPE = "csv";
     public static final char CSV_CHAR_SEPARATOR = ';';
+    public static final char CSV_CHAR_QUOTE = Character.MIN_VALUE;
+    public static final char CSV_CHAR_ESCAPE = '\\';
+    public static final String CSV_CHAR_LINEEND = "\n";
     public static final String CSV_SEPARATOR = String.valueOf(CSV_CHAR_SEPARATOR);
     private static final String CSV_DATA_PROVIDER_USED = "CSV_DATA_PROVIDER_USED";
     private static final String CSV_DATA_PROVIDER_WRITING_IN_CSV_ERROR_MESSAGE = "CSV_DATA_PROVIDER_WRITING_IN_CSV_ERROR_MESSAGE";
@@ -185,7 +190,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
     }
 
     private void writeValue(String column, int line, String value, List<String[]> csvBody) {
-        try (CSVWriter writer = new CSVWriter(new FileWriter(new File(dataOutPath + scenarioName + "." + CSV_TYPE)), CSV_CHAR_SEPARATOR);) {
+        try (CSVWriter writer = new CSVWriter(new FileWriter(new File(dataOutPath + scenarioName + "." + CSV_TYPE)), CSV_CHAR_SEPARATOR, CSV_CHAR_QUOTE, CSV_CHAR_ESCAPE, CSV_CHAR_LINEEND);) {
             writer.writeAll(csvBody);
             writer.flush();
         } catch (IOException e) {
@@ -194,11 +199,13 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
     }
 
     private CSVReader openInputData() throws FileNotFoundException, UnsupportedEncodingException {
-        return new CSVReader(new InputStreamReader(new FileInputStream(dataInPath + scenarioName + "." + CSV_TYPE), DEFAULT_ENDODING), CSV_CHAR_SEPARATOR);
+        return new CSVReaderBuilder(new InputStreamReader(new FileInputStream(dataInPath + scenarioName + "." + CSV_TYPE), DEFAULT_ENDODING))
+                .withCSVParser(new CSVParserBuilder().withSeparator(CSV_CHAR_SEPARATOR).build()).build();
     }
 
     private CSVReader openOutputData() throws FileNotFoundException, UnsupportedEncodingException {
-        return new CSVReader(new InputStreamReader(new FileInputStream(dataOutPath + scenarioName + "." + CSV_TYPE), DEFAULT_ENDODING), CSV_CHAR_SEPARATOR);
+        return new CSVReaderBuilder(new InputStreamReader(new FileInputStream(dataOutPath + scenarioName + "." + CSV_TYPE), DEFAULT_ENDODING))
+                .withCSVParser(new CSVParserBuilder().withSeparator(CSV_CHAR_SEPARATOR).build()).build();
     }
 
 }
