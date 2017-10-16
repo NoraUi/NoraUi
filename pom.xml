@@ -86,7 +86,7 @@
         <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
         <sonar.sources>${project.basedir}/src/main/java/</sonar.sources>
         <!--sonar.junit.reportsPath>${project.build.directory}/surefire-reports</sonar.junit.reportsPath-->
-        <sonar.surefire.reportPaths>${project.build.directory}/surefire-reports</sonar.surefire.reportPaths>
+        <sonar.surefire.reportPaths>${project.build.directory}/surefire-reports/junit</sonar.surefire.reportPaths>
         <sonar.jacoco.reportPaths>${project.testresult.directory}/coverage/jacoco/jacoco.exec</sonar.jacoco.reportPaths>
         <sonar.tests>${project.basedir}/src/test/</sonar.tests>
         <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
