@@ -5,11 +5,14 @@ import static noraui.utils.Context.DEMO_KEY;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import com.google.inject.Singleton;
+
 import noraui.application.page.Page;
 import noraui.exception.Callbacks;
 import noraui.utils.Context;
 import noraui.utils.Utilities;
 
+@Singleton
 public class DemoPage extends Page {
 
     private static Logger logger = Logger.getLogger(DemoPage.class.getName());

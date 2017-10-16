@@ -28,4 +28,8 @@ public class NoraUiInjector {
         }
     }
 
+    public static void resetInjector() {
+        noraUiInjectorSource = null;
+    }
+
 }

@@ -3,6 +3,7 @@ package noraui.application.steps;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,6 +11,8 @@ import org.junit.Test;
 import noraui.application.page.Page;
 import noraui.application.page.Page.PageElement;
 import noraui.application.page.demo.DemoPage;
+import noraui.cucumber.injector.NoraUiInjector;
+import noraui.cucumber.injector.NoraUiInjectorSource;
 import noraui.cucumber.interceptor.ConditionedInterceptor;
 import noraui.exception.TechnicalException;
 import noraui.gherkin.GherkinConditionedLoopedStep;
@@ -18,6 +21,8 @@ import noraui.utils.Context;
 import noraui.utils.Messages;
 
 public class StepUT {
+
+    public static final String DEMO_PAGE_NAME = "demo.DemoPage";
 
     private Step step;
     private ConditionedInterceptor ci;
@@ -34,6 +39,12 @@ public class StepUT {
         ci = new ConditionedInterceptor();
         gherkinCondition = new GherkinStepCondition();
         conditions = new ArrayList<>();
+        new NoraUiInjectorSource().getInjector();
+    }
+
+    @After
+    public void tearDown() {
+        NoraUiInjector.resetInjector();
     }
 
     @Test
@@ -285,7 +296,7 @@ public class StepUT {
     @Test
     public void testFormatMessage() {
         try {
-            final DemoPage demoPage = (DemoPage) Page.getInstance(DemoPage.class);
+            final DemoPage demoPage = (DemoPage) Page.getInstance(DEMO_PAGE_NAME);
             final PageElement pageElement = demoPage.getPageElementByKey("-input_select_field");
             final String a = Messages.format("Message %s in %s.", pageElement, demoPage.getApplication());
             Assert.assertEquals("", "Message Input Select field in demo.", a);
@@ -297,7 +308,7 @@ public class StepUT {
     @Test
     public void testFormatMessage2() {
         try {
-            final DemoPage demoPage = (DemoPage) Page.getInstance(DemoPage.class);
+            final DemoPage demoPage = (DemoPage) Page.getInstance(DEMO_PAGE_NAME);
             final PageElement pageElement = demoPage.getPageElementByKey("-submit");
             final String a = Messages.format("Message %s in %s.", pageElement, demoPage.getApplication());
             Assert.assertEquals("", "Message Submit button in demo.", a);
@@ -309,7 +320,7 @@ public class StepUT {
     @Test
     public void testFormatMessageNullPageElement() {
         try {
-            final DemoPage demoPage = (DemoPage) Page.getInstance(DemoPage.class);
+            final DemoPage demoPage = (DemoPage) Page.getInstance(DEMO_PAGE_NAME);
             final PageElement pageElement = demoPage.getPageElementByKey("fake");
             Messages.format("Message %s in %s.", pageElement, demoPage.getApplication());
         } catch (final TechnicalException e) {
@@ -320,7 +331,7 @@ public class StepUT {
     @Test
     public void testFormatMessageNullMessage() {
         try {
-            final DemoPage demoPage = (DemoPage) Page.getInstance(DemoPage.class);
+            final DemoPage demoPage = (DemoPage) Page.getInstance(DEMO_PAGE_NAME);
             final PageElement pageElement = demoPage.getPageElementByKey("-input");
             Messages.format(null, pageElement, demoPage.getApplication());
         } catch (final TechnicalException e) {
@@ -331,7 +342,7 @@ public class StepUT {
     @Test
     public void testFormatMessageNotValidMessage() {
         try {
-            final DemoPage demoPage = (DemoPage) Page.getInstance(DemoPage.class);
+            final DemoPage demoPage = (DemoPage) Page.getInstance(DEMO_PAGE_NAME);
             final PageElement pageElement = demoPage.getPageElementByKey("-input");
             Messages.format("Message %s in %s.%s", pageElement, demoPage.getApplication());
         } catch (final TechnicalException e) {
@@ -342,7 +353,7 @@ public class StepUT {
     @Test
     public void testFormatMessageNotValid2Message() {
         try {
-            final DemoPage demoPage = (DemoPage) Page.getInstance(DemoPage.class);
+            final DemoPage demoPage = (DemoPage) Page.getInstance(DEMO_PAGE_NAME);
             final PageElement pageElement = demoPage.getPageElementByKey("-input");
             Messages.format("Message %s.", pageElement, demoPage.getApplication());
         } catch (final TechnicalException e) {

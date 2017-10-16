@@ -4,6 +4,8 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import com.google.inject.Inject;
+
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -30,12 +32,8 @@ public class LogoGameSteps extends Step {
 
     private static Logger logger = Logger.getLogger(LogoGameSteps.class.getName());
 
+    @Inject
     private LogoGamePage logoGamePage;
-
-    public LogoGameSteps() throws TechnicalException {
-        super();
-        this.logoGamePage = (LogoGamePage) Page.getInstance(LogoGamePage.class);
-    }
 
     @Alors("Le portail LOGOGAME est affiché")
     @Then("The LOGOGAME portal is displayed")

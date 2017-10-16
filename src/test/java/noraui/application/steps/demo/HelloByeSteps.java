@@ -6,6 +6,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
+import com.google.inject.Inject;
+
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.fr.Alors;
@@ -16,14 +18,12 @@ import cucumber.metrics.annotation.regulator.SpeedRegulators;
 import cucumber.metrics.annotation.time.Time;
 import noraui.application.model.demo.Article;
 import noraui.application.model.demo.Articles;
-import noraui.application.page.Page;
 import noraui.application.page.demo.DemoPage;
 import noraui.application.steps.Step;
 import noraui.cucumber.annotation.Conditioned;
 import noraui.cucumber.annotation.RetryOnFailure;
 import noraui.exception.FailureException;
 import noraui.exception.Result;
-import noraui.exception.TechnicalException;
 import noraui.gherkin.GherkinStepCondition;
 import noraui.utils.Messages;
 
@@ -31,12 +31,8 @@ public class HelloByeSteps extends Step {
 
     private static Logger logger = Logger.getLogger(HelloByeSteps.class.getName());
 
+    @Inject
     private DemoPage demoPage;
-
-    public HelloByeSteps() throws TechnicalException {
-        super();
-        this.demoPage = (DemoPage) Page.getInstance(DemoPage.class);
-    }
 
     @Alors("Le portail DEMO est affiché.")
     @Then("The DEMO portal is displayed.")
