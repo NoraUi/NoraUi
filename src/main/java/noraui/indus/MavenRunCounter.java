@@ -98,6 +98,9 @@ public class MavenRunCounter {
         int failures = 0;
         int skipped = 0;
         int scenarios = 0;
+        int passed = 0;
+        StringBuilder expectedResults1 = new StringBuilder(100);
+        StringBuilder expectedResults2 = new StringBuilder(100);
         Collections.sort(counters, new Counter(""));
         for (final MavenRunCounter.Counter counter : counters) {
             run += counter.getRun();
@@ -107,8 +110,31 @@ public class MavenRunCounter {
             logger.info("Scenario: {} => step: {} and cases: {} -->  runs: , failures: , errors: 0 and skips: {}", counter.getScenarioName(), counter.getNbStep(), counter.getNbCas(), counter.getRun(),
                     counter.getFailures(), counter.getSkipped());
         }
-        logger.info("[{}] > <EXPECTED_RESULTS_1>{} Scenarios ({} failed, {} passed)</EXPECTED_RESULTS_1>", type, scenarios, failures, (scenarios - failures));
-        logger.info("[{}] > <EXPECTED_RESULTS_2>{} Steps ({} failed, {} skipped, {} passed)</EXPECTED_RESULTS_2>", type, (run - scenarios), failures, skipped, (run - scenarios - failures - skipped));
+        expectedResults1.append("[").append(type).append("] > <EXPECTED_RESULTS_1>");
+        expectedResults1.append(scenarios).append(" Scenarios (");
+        if (failures > 0) {
+            expectedResults1.append(failures).append(" failed,");
+        }
+        passed = scenarios - failures;
+        if (passed > 0) {
+            expectedResults2.append(passed).append(" passed");
+        }
+        expectedResults1.append(")</EXPECTED_RESULTS_1>");
+        logger.info(expectedResults1.toString());
+        expectedResults2.append("[").append(type).append("] > <EXPECTED_RESULTS_2>");
+        expectedResults2.append(run - scenarios).append(" Steps (");
+        if (failures > 0) {
+            expectedResults2.append(failures).append(" failed,");
+        }
+        if (skipped > 0) {
+            expectedResults2.append(skipped).append(" skipped,");
+        }
+        passed = run - scenarios - failures - skipped;
+        if (passed > 0) {
+            expectedResults2.append(passed).append(" passed");
+        }
+        expectedResults2.append(")</EXPECTED_RESULTS_2>");
+        logger.info(expectedResults2.toString());
     }
 
     public static List<String> listFilesForFolder(final List<String> versionControlSystemsBlacklist, final File folder) {
