@@ -98,6 +98,8 @@ public class MavenRunCounter {
         int failures = 0;
         int skipped = 0;
         int scenarios = 0;
+        StringBuilder expectedResults1 = new StringBuilder(100);
+        StringBuilder expectedResults2 = new StringBuilder(100);
         Collections.sort(counters, new Counter(""));
         for (final MavenRunCounter.Counter counter : counters) {
             run += counter.getRun();
@@ -107,8 +109,8 @@ public class MavenRunCounter {
             logger.info("Scenario: {} => step: {} and cases: {} -->  runs: , failures: , errors: 0 and skips: {}", counter.getScenarioName(), counter.getNbStep(), counter.getNbCas(), counter.getRun(),
                     counter.getFailures(), counter.getSkipped());
         }
-        logger.info("[{}] > <EXPECTED_RESULTS_1>{} Scenarios ({} failed, {} passed)</EXPECTED_RESULTS_1>", type, scenarios, failures, (scenarios - failures));
-        logger.info("[{}] > <EXPECTED_RESULTS_2>{} Steps ({} failed, {} skipped, {} passed)</EXPECTED_RESULTS_2>", type, (run - scenarios), failures, skipped, (run - scenarios - failures - skipped));
+        logger.info(generateExpected1(type, failures, scenarios));
+        logger.info(generateExpected2(type, run, failures, skipped, scenarios));
     }
 
     public static List<String> listFilesForFolder(final List<String> versionControlSystemsBlacklist, final File folder) {
@@ -125,6 +127,46 @@ public class MavenRunCounter {
             }
         }
         return files;
+    }
+    
+    protected String generateExpected2(String type, int run, int failures, int skipped, int scenarios) {
+        StringBuilder expectedResults2 = new StringBuilder(100);
+        int passed;
+        expectedResults2.append("[").append(type).append("] > <EXPECTED_RESULTS_2>");
+        expectedResults2.append(run - scenarios).append(" Steps (");
+        if (failures > 0) {
+            expectedResults2.append(failures).append(" failed, ");
+            expectedResults2.append(skipped).append(" skipped, ");
+        }
+        passed = run - scenarios - failures - skipped;
+        if (passed > 0) {
+            expectedResults2.append(passed).append(" passed");
+        } else {
+            if (failures == 0) {
+                expectedResults2.deleteCharAt(expectedResults2.length() - 1);
+            }
+        }
+        expectedResults2.append(")</EXPECTED_RESULTS_2>");
+        return expectedResults2.toString();
+    }
+
+    protected String generateExpected1(String type, int failures, int scenarios) {
+        StringBuilder expectedResults1 = new StringBuilder(100);
+        int passed;
+        expectedResults1.append("[").append(type).append("] > <EXPECTED_RESULTS_1>");
+        expectedResults1.append(scenarios).append(" Scenarios (");
+        if (failures > 0) {
+            expectedResults1.append(failures).append(" failed, ");
+        }
+        passed = scenarios - failures;
+        if (passed > 0) {
+            expectedResults1.append(passed).append(" passed");
+        } else {
+            expectedResults1.deleteCharAt(expectedResults1.length() - 1);
+            expectedResults1.deleteCharAt(expectedResults1.length() - 1);
+        }
+        expectedResults1.append(")</EXPECTED_RESULTS_1>");
+        return expectedResults1.toString();
     }
 
     public class Counter implements Comparator<Counter> {
