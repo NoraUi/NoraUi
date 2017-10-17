@@ -150,7 +150,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
     private void initColumns() throws EmptyDataFileContentException {
         final String uri = this.norauiWebServicesApi + scenarioName + "/columns";
         columns = restTemplate.getForObject(uri, DataModel.class).getColumns();
-        resultColumnName = AUTHORIZED_NAMES_FOR_RESULT_COLUMN.get(0);
+        resultColumnName = ResultColumnNames.getAuthorizedNames().get(0);
         columns.add(resultColumnName);
         if (columns.size() < 2) {
             throw new EmptyDataFileContentException(Messages.getMessage(EmptyDataFileContentException.EMPTY_DATA_FILE_CONTENT_ERROR_MESSAGE));

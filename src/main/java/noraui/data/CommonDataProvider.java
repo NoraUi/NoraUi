@@ -2,6 +2,7 @@ package noraui.data;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -111,7 +112,6 @@ public abstract class CommonDataProvider implements DataProvider {
     /**
      * {@inheritDoc}
      */
-
     @Override
     public String getResultColumnName() {
         return resultColumnName;
@@ -122,11 +122,24 @@ public abstract class CommonDataProvider implements DataProvider {
      */
     @Override
     public boolean isResultColumnNameAuthorized(String name) {
-        return AUTHORIZED_NAMES_FOR_RESULT_COLUMN.contains(name);
+        return ResultColumnNames.AUTHORIZED_NAMES.contains(name);
     }
 
     private Set<Class<?>> getClasses(String packageName) {
         return new Reflections(packageName, new SubTypesScanner(false)).getSubTypesOf(Object.class);
+    }
+
+    /**
+     * Class that manages available column names used in Data Providers.
+     * 
+     * @author Nicolas HALLOUIN
+     */
+    protected static class ResultColumnNames {
+        private final static List<String> AUTHORIZED_NAMES = new ArrayList<>(Arrays.asList("Résultat", "Result"));
+
+        public static List<String> getAuthorizedNames() {
+            return AUTHORIZED_NAMES;
+        }
     }
 
 }

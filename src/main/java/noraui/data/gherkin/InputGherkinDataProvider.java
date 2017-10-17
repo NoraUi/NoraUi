@@ -122,7 +122,7 @@ public class InputGherkinDataProvider extends CommonDataProvider implements Data
         }
         resultColumnName = columns.get(columns.size() - 1);
         if (!isResultColumnNameAuthorized(resultColumnName)) {
-            resultColumnName = AUTHORIZED_NAMES_FOR_RESULT_COLUMN.get(0);
+            resultColumnName = ResultColumnNames.getAuthorizedNames().get(0);
         }
     }
 }

@@ -170,7 +170,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
         }
         resultColumnName = columns.get(columns.size() - 1);
         if (!isResultColumnNameAuthorized(resultColumnName)) {
-            throw new WrongDataFileFormatException(String.format(Messages.getMessage(WrongDataFileFormatException.WRONG_RESULT_COLUMN_NAME_ERROR_MESSAGE), AUTHORIZED_NAMES_FOR_RESULT_COLUMN));
+            throw new WrongDataFileFormatException(String.format(Messages.getMessage(WrongDataFileFormatException.WRONG_RESULT_COLUMN_NAME_ERROR_MESSAGE), ResultColumnNames.getAuthorizedNames()));
         }
     }
 

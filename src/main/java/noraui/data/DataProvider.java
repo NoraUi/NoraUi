@@ -1,9 +1,8 @@
 package noraui.data;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import noraui.data.CommonDataProvider.ResultColumnNames;
 import noraui.exception.TechnicalException;
 import noraui.model.Model;
 
@@ -12,8 +11,6 @@ public interface DataProvider {
     enum type {
         EXCEL, CSV, DB, REST, GHERKIN, CONSOLE
     }
-
-    final List<String> AUTHORIZED_NAMES_FOR_RESULT_COLUMN = new ArrayList<>(Arrays.asList("Résultat", "Result"));
 
     void prepare(String scenario) throws TechnicalException;
 
@@ -70,7 +67,7 @@ public interface DataProvider {
     public String getResultColumnName();
 
     /**
-     * Returns true if the given column name is part of authorized column names. See {@link AUTHORIZED_NAMES_FOR_RESULT_COLUMN}.
+     * Returns true if the given column name is part of authorized column names. See {@link ResultColumnNames} class.
      *
      * @param name
      *            the name to check
@@ -78,4 +75,5 @@ public interface DataProvider {
      *         true if the name is authorized, false otherwise
      */
     public boolean isResultColumnNameAuthorized(String name);
+
 }
