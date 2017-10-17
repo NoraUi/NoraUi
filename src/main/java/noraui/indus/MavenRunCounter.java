@@ -98,8 +98,6 @@ public class MavenRunCounter {
         int failures = 0;
         int skipped = 0;
         int scenarios = 0;
-        StringBuilder expectedResults1 = new StringBuilder(100);
-        StringBuilder expectedResults2 = new StringBuilder(100);
         Collections.sort(counters, new Counter(""));
         for (final MavenRunCounter.Counter counter : counters) {
             run += counter.getRun();
@@ -109,8 +107,8 @@ public class MavenRunCounter {
             logger.info("Scenario: {} => step: {} and cases: {} -->  runs: , failures: , errors: 0 and skips: {}", counter.getScenarioName(), counter.getNbStep(), counter.getNbCas(), counter.getRun(),
                     counter.getFailures(), counter.getSkipped());
         }
-        logger.info(generateExpected1(type, failures, scenarios));
-        logger.info(generateExpected2(type, run, failures, skipped, scenarios));
+        logger.info("{}", generateExpected1(type, failures, scenarios));
+        logger.info("{}", generateExpected2(type, run, failures, skipped, scenarios));
     }
 
     public static List<String> listFilesForFolder(final List<String> versionControlSystemsBlacklist, final File folder) {
@@ -128,7 +126,7 @@ public class MavenRunCounter {
         }
         return files;
     }
-    
+
     protected String generateExpected2(String type, int run, int failures, int skipped, int scenarios) {
         StringBuilder expectedResults2 = new StringBuilder(100);
         int passed;

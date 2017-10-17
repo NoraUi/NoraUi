@@ -131,11 +131,14 @@ public abstract class CommonDataProvider implements DataProvider {
 
     /**
      * Class that manages available column names used in Data Providers.
-     * 
+     *
      * @author Nicolas HALLOUIN
      */
     protected static class ResultColumnNames {
-        private final static List<String> AUTHORIZED_NAMES = new ArrayList<>(Arrays.asList("Résultat", "Result"));
+        private static final List<String> AUTHORIZED_NAMES = new ArrayList<>(Arrays.asList("Résultat", "Result"));
+
+        private ResultColumnNames() {
+        }
 
         public static List<String> getAuthorizedNames() {
             return AUTHORIZED_NAMES;
