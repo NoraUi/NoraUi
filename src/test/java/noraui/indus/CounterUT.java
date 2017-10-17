@@ -1,10 +1,11 @@
 package noraui.indus;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 public class CounterUT {
-    
-        @Test
+
+    @Test
     public void generateExpected1() {
         MavenRunCounter mrc = new MavenRunCounter();
         Assert.assertEquals("[Excel] > <EXPECTED_RESULTS_1>8 Scenarios (6 failed, 2 passed)</EXPECTED_RESULTS_1>", mrc.generateExpected1("Excel", 6, 8));
