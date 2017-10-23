@@ -91,8 +91,6 @@ public class Context {
     private static final String NOT_SET_LABEL = "NOT_SET_LABEL";
     private static final String CONTEXT_PROPERTIES_FILE_NOT_FOUND = "CONTEXT_PROPERTIES_FILE_NOT_FOUND";
     private static final String CONTEXT_APP_INI_FILE_NOT_FOUND = "CONTEXT_APP_INI_FILE_NOT_FOUND";
-    private static final String CONTEXT_READING_PROPERTIES_FILE = "CONTEXT_READING_PROPERTIES_FILE";
-    private static final String CONTEXT_LOADED_PROPERTIES_FILE = "CONTEXT_LOADED_PROPERTIES_FILE";
     private static final String CONTEXT_LOCALE_USED = "CONTEXT_LOCALE_USED";
     private static final String CONTEXT_ERROR_WHEN_PLUGING_DATA_PROVIDER = "CONTEXT_ERROR_WHEN_PLUGING_DATA_PROVIDER";
     private static Properties scenariosProperties = null;
@@ -514,13 +512,13 @@ public class Context {
                 if (in == null) {
                     logger.error(Messages.getMessage(CONTEXT_PROPERTIES_FILE_NOT_FOUND), propertiesFileName);
                 } else {
-                    logger.info(Messages.getMessage(CONTEXT_READING_PROPERTIES_FILE), propertiesFileName);
+                    logger.info("Reading properties file ({}).", propertiesFileName);
                     props.load(in);
                 }
             } catch (final IOException e) {
                 logger.error("error Context.initPropertiesFile()", e);
             }
-            logger.info(Messages.getMessage(CONTEXT_LOADED_PROPERTIES_FILE), propertiesFileName, props);
+            logger.info("Loaded properties from {} = {}.", propertiesFileName, props);
             return props;
         }
         return null;

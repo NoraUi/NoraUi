@@ -1,6 +1,8 @@
 package noraui.utils;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -9,9 +11,10 @@ import noraui.exception.TechnicalException;
 
 public class Messages {
 
-    private static ResourceBundle messagesBundle = null;
+    private static Map<String, ResourceBundle> messagesBundles = new HashMap<String, ResourceBundle>();
 
     private static final String FAIL_MESSAGE_FORMAT_STRING = "FAIL_MESSAGE_FORMAT_STRING";
+    private static final String DEFAULT_BUNDLE = "messages";
 
     /**
      * Success message
@@ -98,14 +101,38 @@ public class Messages {
         }
     }
 
+    /**
+     * Gets a message by key using the default resources bundle ('i18n/messages').
+     *
+     * @param key
+     *            The key of the message to retrieve.
+     * @return
+     *         The String content of the message.
+     */
     public static String getMessage(String key) {
-        if (messagesBundle == null) {
+        return getMessage(key, DEFAULT_BUNDLE);
+    }
+
+    /**
+     * Gets a message by key using the resources bundle given in parameters.
+     *
+     * @param key
+     *            The key of the message to retrieve.
+     * @param bundle
+     *            The resource bundle to use.
+     * @return
+     *         The String content of the message.
+     */
+    public static String getMessage(String key, String bundle) {
+        if (!messagesBundles.containsKey(bundle)) {
             if (Context.getLocale() == null) {
-                return ResourceBundle.getBundle("i18n/messages", Locale.getDefault()).getString(key);
+                messagesBundles.put(bundle, ResourceBundle.getBundle("i18n/" + bundle, Locale.getDefault()));
+            } else {
+                messagesBundles.put(bundle, ResourceBundle.getBundle("i18n/" + bundle, Context.getLocale()));
             }
-            messagesBundle = ResourceBundle.getBundle("i18n/messages", Context.getLocale());
+
         }
-        return messagesBundle.getString(key);
+        return messagesBundles.get(bundle).getString(key);
     }
 
     /**

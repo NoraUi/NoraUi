@@ -10,6 +10,7 @@ import org.openqa.selenium.Proxy.ProxyType;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.logging.LogType;
@@ -42,6 +43,7 @@ public class DriverFactory {
     public static final String IE = "ie";
     public static final String CHROME = "chrome";
     public static final String HTMLUNIT = "htmlunit";
+    public static final String FIREFOX = "firefox";
     public static final String DEFAULT_DRIVER = PHANTOM;
 
     /** Selenium drivers. **/
@@ -170,6 +172,33 @@ public class DriverFactory {
     }
 
     /**
+     * Generate a firefox webdriver.
+     *
+     * @return a firefox webdriver
+     * @throws TechnicalException
+     *             if an error occured when Webdriver setExecutable to true.
+     */
+    private WebDriver generateFirefoxDriver() throws TechnicalException {
+        logger.info("Driver firefox");
+        final String pathWebdriver = DriverFactory.getPath(Driver.FIREFOX);
+        if (!new File(pathWebdriver).setExecutable(true)) {
+            throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_WEBDRIVER_SET_EXECUTABLE));
+        }
+        final DesiredCapabilities capabilities = DesiredCapabilities.firefox();
+        capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
+        capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
+        final LoggingPreferences logPrefs = new LoggingPreferences();
+        logPrefs.enable(LogType.BROWSER, Level.ALL);
+        capabilities.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
+        if (Context.getProxy().getProxyType() != ProxyType.UNSPECIFIED && Context.getProxy().getProxyType() != ProxyType.AUTODETECT) {
+            capabilities.setCapability(CapabilityType.PROXY, Context.getProxy());
+        }
+
+        System.setProperty(Driver.FIREFOX.getDriverName(), pathWebdriver);
+        return new FirefoxDriver(capabilities);
+    }
+
+    /**
      * Generate a htmlunit webdriver.
      *
      * @return a htmlunit webdriver
@@ -202,6 +231,8 @@ public class DriverFactory {
             driver = generateGoogleChromeDriver();
         } else if (HTMLUNIT.equals(driverName)) {
             driver = generateHtmlUnitDriver();
+        } else if (FIREFOX.equals(driverName)) {
+            driver = generateFirefoxDriver();
         } else {
             driver = generatePhantomJsDriver();
         }
@@ -221,13 +252,15 @@ public class DriverFactory {
             format = Utilities.setProperty(Context.getWebdriversProperties(currentDriver.driverName), "src/test/resources/drivers/%s/phantomjs/%s/phantomjs%s");
         } else if ("webdriver.chrome.driver".equals(currentDriver.driverName)) {
             format = Utilities.setProperty(Context.getWebdriversProperties(currentDriver.driverName), "src/test/resources/drivers/%s/googlechrome/%s/chromedriver%s");
+        } else if ("webdriver.gecko.driver".equals(currentDriver.driverName)) {
+            format = Utilities.setProperty(Context.getWebdriversProperties(currentDriver.driverName), "src/test/resources/drivers/%s/firefox/%s/geckodriver%s");
         }
         return String.format(format, currentOperatingSystem.getOperatingSystemDir(), SystemArchitecture.getCurrentSystemArchitecture().getSystemArchitectureName(),
                 currentOperatingSystem.getSuffixBinary());
     }
 
     public enum Driver {
-        IE("webdriver.ie.driver"), PHANTOMJS("phantomjs.binary.path"), CHROME("webdriver.chrome.driver");
+        IE("webdriver.ie.driver"), PHANTOMJS("phantomjs.binary.path"), CHROME("webdriver.chrome.driver"), FIREFOX("webdriver.gecko.driver");
         private String driverName;
 
         Driver(String driverName) {

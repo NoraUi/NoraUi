@@ -717,7 +717,8 @@
                                 <cucumber.options>${cucumber.options}</cucumber.options>
                                 <phantomjs.binary.path>src/test/resources/drivers/%s/phantomjs/%s/phantomjs%s</phantomjs.binary.path>
                                 <webdriver.ie.driver>src/test/resources/drivers/%s/internetexplorer/%s/IEDriverServer%s</webdriver.ie.driver>
-                                <webdriver.chrome.driver>src/test/resources/drivers/%s/googlechrome/%s/chromedriver.exe</webdriver.chrome.driver>
+                                <webdriver.chrome.driver>src/test/resources/drivers/%s/googlechrome/%s/chromedriver%s</webdriver.chrome.driver>
+                                <webdriver.gecko.driver>src/test/resources/drivers/%s/firefox/%s/geckodriver%s</webdriver.gecko.driver>
                                 <SpeedRegulator.annotation.enable>false</SpeedRegulator.annotation.enable>
                                 <SpeedRegulators.annotation.enable>false</SpeedRegulators.annotation.enable>
                                 <Time.annotation.enable>false</Time.annotation.enable>
