@@ -17,6 +17,7 @@ import com.sun.net.httpserver.HttpServer;
 
 import noraui.Runner;
 import noraui.browser.steps.BrowserSteps;
+import noraui.exception.TechnicalException;
 import noraui.utils.Context;
 
 @SuppressWarnings("restriction")
@@ -26,7 +27,7 @@ public class AuthUT {
     private TestServer testServer = new TestServer();
 
     @Before
-    public void prepare() {
+    public void prepare() throws TechnicalException {
         testServer.start();
         Context.getInstance().initializeEnv("demoExcel.properties");
         Context.getInstance().initializeRobot(Runner.class);
