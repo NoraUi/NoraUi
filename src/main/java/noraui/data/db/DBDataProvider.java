@@ -46,8 +46,8 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
         this.password = password;
         try {
             if (types.MYSQL.toString().equals(type)) {
-                Class.forName("com.mysql.jdbc.Driver");
-                this.connectionUrl = "jdbc:mysql://" + hostname + ":" + port + "/" + database;
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                this.connectionUrl = "jdbc:mysql://" + hostname + ":" + port + "/" + database + "?useSSL=false&serverTimezone=UTC";
             } else if (types.ORACLE.toString().equals(type)) {
                 Class.forName("oracle.jdbc.OracleDriver");
                 this.connectionUrl = "jdbc:oracle:thin:@" + hostname + ":" + port + ":" + database;
@@ -192,6 +192,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
         } catch (final SQLException e) {
             throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), e);
         }
+        resultColumnName = ResultColumnNames.getAuthorizedNames().get(0);
     }
 
     protected static void sqlSanitized4readOnly(String sqlInput) throws TechnicalException {
