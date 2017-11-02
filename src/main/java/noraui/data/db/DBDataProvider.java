@@ -35,7 +35,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
         this.password = password;
         try {
             if (types.MYSQL.toString().equals(type)) {
-                Class.forName("com.mysql.jdbc.Driver");
+                Class.forName("com.mysql.cj.jdbc.Driver");
                 this.connectionUrl = "jdbc:mysql://" + hostname + ":" + port + "/" + database;
             } else if (types.ORACLE.toString().equals(type)) {
                 Class.forName("oracle.jdbc.OracleDriver");
