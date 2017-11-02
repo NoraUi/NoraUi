@@ -183,6 +183,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
         } catch (SQLException e) {
             throw new TechnicalException(TechnicalException.TECHNICAL_ERROR_MESSAGE + e.getMessage(), e);
         }
+        resultColumnName = ResultColumnNames.getAuthorizedNames().get(0);
     }
 
     protected static void sqlSanitized4readOnly(String sqlInput) throws TechnicalException {
