@@ -11,7 +11,7 @@ import noraui.exception.TechnicalException;
 
 public class Messages {
 
-    private static Map<String, ResourceBundle> messagesBundles = new HashMap<String, ResourceBundle>();
+    private static Map<String, ResourceBundle> messagesBundles = new HashMap<>();
 
     private static final String FAIL_MESSAGE_FORMAT_STRING = "FAIL_MESSAGE_FORMAT_STRING";
     private static final String DEFAULT_BUNDLE = "messages";
