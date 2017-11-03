@@ -14,6 +14,7 @@ import cucumber.runtime.java.StepDefAnnotation;
 import javassist.Modifier;
 import noraui.cucumber.annotation.RetryOnFailure;
 import noraui.exception.FailureException;
+import noraui.utils.Context;
 
 public class StepInterceptor implements MethodInterceptor {
 
@@ -33,6 +34,12 @@ public class StepInterceptor implements MethodInterceptor {
         Annotation[] annotations = m.getAnnotations();
         if (annotations.length > 0) {
             Annotation stepAnnotation = annotations[annotations.length - 1];
+            for (Annotation a : annotations) {
+                if (a.annotationType().getName().startsWith("cucumber.api.java." + Context.getLocale().getLanguage())) {
+                    stepAnnotation = a;
+                    break;
+                }
+            }
             if (stepAnnotation.annotationType().isAnnotationPresent(StepDefAnnotation.class)) {
                 Matcher matcher = Pattern.compile("value=(.*)\\)").matcher(stepAnnotation.toString());
                 if (matcher.find()) {

@@ -135,6 +135,7 @@ public abstract class CommonDataProvider implements DataProvider {
      * @author Nicolas HALLOUIN
      */
     protected static class ResultColumnNames {
+        public static final String RESULT_COLUMN_NAME = "RESULT_COLUMN_NAME";
         private static final List<String> AUTHORIZED_NAMES = new ArrayList<>(Arrays.asList("Résultat", "Result"));
 
         private ResultColumnNames() {
