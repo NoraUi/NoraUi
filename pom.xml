@@ -49,7 +49,7 @@
         <cucumber.options>--tags @TOSPECIFY</cucumber.options>
         <jenkinsresourcespath>src/test/resources</jenkinsresourcespath>
         <excelfilename>@TOSPECIFY</excelfilename>
-        <cucumber.version>2.0.1</cucumber.version>
+        <cucumber.version>2.1.0</cucumber.version>
         <selenium.version>3.5.3</selenium.version>
         <phantomjsdriver.version>1.4.3</phantomjsdriver.version>
         <htmlunit.version>2.27</htmlunit.version>
@@ -139,13 +139,7 @@
         <dependency>
             <groupId>com.github.noraui</groupId>
             <artifactId>cucumber-metrics</artifactId>
-            <version>${cucumber.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.google.guava</groupId>
-                    <artifactId>guava</artifactId>
-                </exclusion>
-            </exclusions>
+            <version>${cucumber.version}.R2</version>
         </dependency>
 
         <!-- Framework selenium for parsing Web HTML DOM -->
