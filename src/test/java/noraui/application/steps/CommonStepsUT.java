@@ -32,6 +32,7 @@ public class CommonStepsUT {
 
     @Before
     public void setUp() {
+        NoraUiInjector.resetInjector();
         new NoraUiInjectorSource().getInjector();
     }
 

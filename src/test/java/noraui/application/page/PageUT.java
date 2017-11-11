@@ -16,6 +16,7 @@ public class PageUT {
 
     @Before
     public void setUp() {
+        NoraUiInjector.resetInjector();
         new NoraUiInjectorSource().getInjector();
     }
 

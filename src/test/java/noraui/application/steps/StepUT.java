@@ -39,6 +39,7 @@ public class StepUT {
         ci = new ConditionedInterceptor();
         gherkinCondition = new GherkinStepCondition();
         conditions = new ArrayList<>();
+        NoraUiInjector.resetInjector();
         new NoraUiInjectorSource().getInjector();
     }
 

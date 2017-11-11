@@ -22,6 +22,7 @@ public class UtilitiesUT {
 
     @Before
     public void setUp() throws TechnicalException {
+        NoraUiInjector.resetInjector();
         new NoraUiInjectorSource().getInjector();
         demoPage = (DemoPage) Page.getInstance(DEMO_PAGE_NAME);
     }
