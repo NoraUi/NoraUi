@@ -519,7 +519,7 @@
                                     <goal>java</goal>
                                 </goals>
                                 <configuration>
-                                    <mainClass>noraui.indus.Counter</mainClass>
+                                    <mainClass>com.github.noraui.indus.Counter</mainClass>
                                     <arguments>
                                         <argument>Excel</argument>
                                     </arguments>
@@ -538,7 +538,7 @@
                                     <goal>java</goal>
                                 </goals>
                                 <configuration>
-                                    <mainClass>noraui.indus.Counter</mainClass>
+                                    <mainClass>com.github.noraui.indus.Counter</mainClass>
                                     <arguments>
                                         <argument>Csv</argument>
                                     </arguments>
@@ -557,7 +557,7 @@
                                     <goal>java</goal>
                                 </goals>
                                 <configuration>
-                                    <mainClass>noraui.indus.Counter</mainClass>
+                                    <mainClass>com.github.noraui.indus.Counter</mainClass>
                                     <arguments>
                                         <argument>RestJson</argument>
                                     </arguments>
@@ -576,7 +576,7 @@
                                     <goal>java</goal>
                                 </goals>
                                 <configuration>
-                                    <mainClass>noraui.indus.Counter</mainClass>
+                                    <mainClass>com.github.noraui.indus.Counter</mainClass>
                                     <arguments>
                                         <argument>Gherkin</argument>
                                     </arguments>
@@ -649,7 +649,7 @@
                                     <goal>java</goal>
                                 </goals>
                                 <configuration>
-                                    <mainClass>noraui.main.ScenarioInitiatorRunner</mainClass>
+                                    <mainClass>com.github.noraui.main.ScenarioInitiatorRunner</mainClass>
                                     <cleanupDaemonThreads>false</cleanupDaemonThreads>
                                     <arguments>
                                         <argument>${excelfilename}</argument>
