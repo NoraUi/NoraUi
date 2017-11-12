@@ -115,7 +115,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
      */
     @Override
     public String readValue(String column, int line) throws TechnicalException {
-        logger.info("readValue: column:[{}] and line:[{}] ", column, line);
+        logger.debug("readValue: column:[{}] and line:[{}] ", column, line);
         String sqlRequest;
         try {
             final Path file = Paths.get(dataInPath + scenarioName + ".sql");
