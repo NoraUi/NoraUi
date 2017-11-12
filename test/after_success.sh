@@ -11,9 +11,5 @@ if [ "$TRAVIS_REPO_SLUG" == 'NoraUi/NoraUi' ] && [ "$TRAVIS_BRANCH" == 'master' 
         echo "******** Starting deploy snapshot"
         mvn clean deploy -Psnapshot --settings test/mvnsettings.xml -DskipTests=true
         exit $?
-    else
-        echo "******** Starting deploy release"
-        mvn clean deploy -Prelease --settings test/mvnsettings.xml -DskipTests=true
-        exit $?
     fi
 fi

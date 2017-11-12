@@ -9,15 +9,17 @@ Non-Regression Automation for User Interfaces
 
 # News 
 See [change log](https://noraui.github.io/changelog.txt) for details
-* 2017-09-??: NoraUi [3.0.0] is in progress.
+* 2017-12-29: NoraUi [3.1.0] is in progress.
+* 2017-11-12: NoraUi [3.0.0] is released.
 * 2017-09-21: NoraUi [2.6.3] is released.
 
 # How to migrate from [2.x.x] to [3.x.x]
 
 * -Dcucumber.options="--tags '@tag1 or @tag2 or @tag3 or @tag4'"
 * NoraUi use Oracle Jdbc Driver
-1. if you use Oracle Db provider, add com.oracle.jdbc:ojdbc8 dependency and configure your env with OTN: Sample(https://github.com/sgrillon14/MavenSampleOracleJdbc)
-2. if you do not use Oracle Db provider (default)
+1. if you use Oracle Db provider, use com.oracle.jdbc:ojdbc8 dependency and configure your env with OTN: Sample(https://github.com/sgrillon14/MavenSampleOracleJdbc) (default)
+2. if you do not use Oracle Db provider, remove com.oracle.jdbc:ojdbc8 dependency
+* Change all "noraui" import to "com.github.noraui"
 
 # Supported languages
 
@@ -57,7 +59,7 @@ SNAPSHOT:
 <dependency>
     <groupId>com.github.noraui</groupId>
     <artifactId>noraui</artifactId>
-    <version>3.0.0-SNAPSHOT</version>
+    <version>3.0.1-SNAPSHOT</version>
 </dependency>
 ```
 
