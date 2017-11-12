@@ -17,7 +17,6 @@ import cucumber.metrics.annotation.time.Time;
 import cucumber.metrics.annotation.time.TimeValue;
 import noraui.application.model.logogame.Logo;
 import noraui.application.model.logogame.Logos;
-import noraui.application.page.Page;
 import noraui.application.page.logogame.LogoGamePage;
 import noraui.application.steps.Step;
 import noraui.application.work.logogame.ProhibitedBrands;
@@ -42,8 +41,8 @@ public class LogoGameSteps extends Step {
     @Alors("Le portail LOGOGAME est affiché")
     @Then("The LOGOGAME portal is displayed")
     public void checkDemoPortalPage() throws FailureException {
-        if (!logoGamePage.checkPage()) {
-            new Result.Failure<>("LOGOGAME", Messages.getMessage(Messages.FAIL_MESSAGE_UNKNOWN_CREDENTIALS), true, logoGamePage.getCallBack());
+        if (!this.logoGamePage.checkPage()) {
+            new Result.Failure<>("LOGOGAME", Messages.getMessage(Messages.FAIL_MESSAGE_UNKNOWN_CREDENTIALS), true, this.logoGamePage.getCallBack());
         }
     }
 
@@ -52,9 +51,9 @@ public class LogoGameSteps extends Step {
     @Then("I play with 'amazon'")
     public void playAmazon() throws FailureException {
         try {
-            updateText(logoGamePage.amazonElement, "amazon");
+            updateText(this.logoGamePage.amazonElement, "amazon");
         } catch (TechnicalException e) {
-            new Result.Failure<>("LOGOGAME", Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), true, logoGamePage.getCallBack());
+            new Result.Failure<>("LOGOGAME", Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), true, this.logoGamePage.getCallBack());
         }
     }
 
@@ -64,9 +63,9 @@ public class LogoGameSteps extends Step {
     public void addRandomBrand(@TimeValue("nb") int nb) throws FailureException {
         for (int i = 0; i < nb; i++) {
             try {
-                clickOn(logoGamePage.addButton);
+                clickOn(this.logoGamePage.addButton);
             } catch (TechnicalException e) {
-                new Result.Failure<>("LOGOGAME", Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), true, logoGamePage.getCallBack());
+                new Result.Failure<>("LOGOGAME", Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), true, this.logoGamePage.getCallBack());
             }
         }
     }
@@ -74,7 +73,7 @@ public class LogoGameSteps extends Step {
     @Et("Je vérifie le message d'alerte")
     @And("I check alert message")
     public void checkAlertMessage() throws TechnicalException, FailureException {
-        checkText(logoGamePage.alertMessage, "There are no more logos available");
+        checkText(this.logoGamePage.alertMessage, "There are no more logos available");
     }
 
     /**
@@ -109,9 +108,9 @@ public class LogoGameSteps extends Step {
             Logo logo = logos.get(i);
             logo.setNid(i);
             try {
-                WebElement element = getDriver().findElement(Utilities.getLocator(logoGamePage.brandElement, logo.getBrand(), logo.getBrand()));
+                WebElement element = getDriver().findElement(Utilities.getLocator(this.logoGamePage.brandElement, logo.getBrand(), logo.getBrand()));
                 if (element != null) {
-                    updateText(logoGamePage.brandElement, logo.getBrand(), null, logo.getBrand(), logo.getBrand());
+                    updateText(this.logoGamePage.brandElement, logo.getBrand(), null, logo.getBrand(), logo.getBrand());
                 }
             } catch (Exception e) {
                 new Result.Warning<>(logo.getBrand(), Messages.format("Brand « %s » does not exist.", logo.getBrand()), true, logo.getNid());
@@ -123,9 +122,9 @@ public class LogoGameSteps extends Step {
     @Then("I valide in LOGOGAME")
     public void valid() throws FailureException {
         try {
-            clickOn(logoGamePage.validateButton);
+            clickOn(this.logoGamePage.validateButton);
         } catch (TechnicalException e) {
-            new Result.Failure<>("LOGOGAME", Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), true, logoGamePage.getCallBack());
+            new Result.Failure<>("LOGOGAME", Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), true, this.logoGamePage.getCallBack());
         }
     }
 
@@ -133,7 +132,7 @@ public class LogoGameSteps extends Step {
     @Then("I save score")
     public void saveScore() throws FailureException {
         try {
-            WebElement message = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(logoGamePage.scoreMessage)));
+            WebElement message = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(this.logoGamePage.scoreMessage)));
             try {
                 Context.getCurrentScenario().write("score is:\n" + message.getText());
                 Context.getDataOutputProvider().writeDataResult("score", Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData()).getIndexes().get(0), message.getText());
@@ -141,7 +140,7 @@ public class LogoGameSteps extends Step {
                 logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE), e);
             }
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), "", true, logoGamePage.getCallBack());
+            new Result.Failure<>(e.getMessage(), "", true, this.logoGamePage.getCallBack());
         }
     }
 

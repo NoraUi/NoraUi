@@ -42,7 +42,7 @@ public class HelloByeSteps extends Step {
     @Then("The DEMO portal is displayed.")
     public void checkDemoPortalPage() throws FailureException {
         if (!demoPage.checkPage()) {
-            new Result.Failure<>("DEMO", Messages.getMessage(Messages.FAIL_MESSAGE_UNKNOWN_CREDENTIALS), true, demoPage.getCallBack());
+            new Result.Failure<>("DEMO", Messages.getMessage(Messages.FAIL_MESSAGE_UNKNOWN_CREDENTIALS), true, this.demoPage.getCallBack());
         }
     }
 
@@ -76,7 +76,7 @@ public class HelloByeSteps extends Step {
     @Given("me a error if '(.*)' is Paris.")
     public void error(String city) throws FailureException {
         if ("Paris".equals(city)) {
-            new Result.Failure<>(city, "The city is Paris!!", true, demoPage.getCallBack());
+            new Result.Failure<>(city, "The city is Paris!!", true, this.demoPage.getCallBack());
         }
     }
 
@@ -87,7 +87,7 @@ public class HelloByeSteps extends Step {
         articles.deserialize(jsonArticles);
         for (Article article : articles) {
             if ("anonymous".equals(article.getAuthor())) {
-                new Result.Failure<>("anonymous", "anonymous is prohibited in demo blog!!", true, demoPage.getCallBack());
+                new Result.Failure<>("anonymous", "anonymous is prohibited in demo blog!!", true, this.demoPage.getCallBack());
             } else {
                 logger.info("> " + blog);
                 logger.info("    > " + article.getTitle() + ": " + article.getText());

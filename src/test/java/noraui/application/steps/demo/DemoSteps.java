@@ -6,7 +6,6 @@ import com.google.inject.Inject;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.fr.Alors;
-import noraui.application.page.Page;
 import noraui.application.page.demo.DemoPage;
 import noraui.application.steps.Step;
 import noraui.exception.FailureException;
@@ -20,9 +19,9 @@ public class DemoSteps extends Step {
     @Alors("Je mets à jour les checkboxes et vérifie la liste radio 'DEMO_HOME(.*)' avec '(.*)':")
     @Then("I update checkboxes and check radio list 'DEMO_HOME(.*)' with '(.*)':")
     public void selectCheckbox(String elementKey, String valueKey, Map<String, Boolean> values) throws TechnicalException, FailureException {
-        selectCheckbox(demoPage.getPageElementByKey(elementKey), true);
-        selectCheckbox(demoPage.getPageElementByKey(elementKey), valueKey, values);
-        checkRadioList(demoPage.getPageElementByKey(elementKey), valueKey);
+        selectCheckbox(this.demoPage.getPageElementByKey(elementKey), true);
+        selectCheckbox(this.demoPage.getPageElementByKey(elementKey), valueKey, values);
+        checkRadioList(this.demoPage.getPageElementByKey(elementKey), valueKey);
     }
 
 }
