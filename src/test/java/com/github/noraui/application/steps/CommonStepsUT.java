@@ -14,7 +14,6 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.github.noraui.application.page.Page;
-import com.github.noraui.application.steps.CommonSteps;
 import com.github.noraui.cucumber.injector.NoraUiInjector;
 import com.github.noraui.cucumber.injector.NoraUiInjectorSource;
 import com.github.noraui.exception.FailureException;
@@ -50,7 +49,7 @@ public class CommonStepsUT {
         PowerMockito.doNothing().when(Utilities.class);
         Utilities.takeScreenshot(Matchers.any(Scenario.class));
 
-        Page.setPageMainPackage("noraui.application.page.");
+        Page.setPageMainPackage("com.github.noraui.application.page.");
 
         // run test
         s = new CommonSteps();
