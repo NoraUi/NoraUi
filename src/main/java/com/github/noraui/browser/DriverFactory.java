@@ -11,6 +11,7 @@ import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
@@ -169,6 +170,9 @@ public class DriverFactory {
         }
         System.setProperty(Driver.CHROME.getDriverName(), pathWebdriver);
         ChromeDriverService service = new ChromeDriverService.Builder().withWhitelistedIps("").withVerbose(false).build();
+        ChromeOptions chromeOptions = new ChromeOptions();
+        chromeOptions.setBinary("/home/jenkins/tools/chromium/58.0.3029.96/chrome-linux/chrome");
+        capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
         return new ChromeDriver(service, capabilities);
     }
 
