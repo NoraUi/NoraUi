@@ -10,6 +10,7 @@ import org.openqa.selenium.Proxy.ProxyType;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
@@ -166,9 +167,9 @@ public class DriverFactory {
         if (Context.getProxy().getProxyType() != ProxyType.UNSPECIFIED && Context.getProxy().getProxyType() != ProxyType.AUTODETECT) {
             capabilities.setCapability(CapabilityType.PROXY, Context.getProxy());
         }
-
         System.setProperty(Driver.CHROME.getDriverName(), pathWebdriver);
-        return new ChromeDriver(capabilities);
+        ChromeDriverService service = new ChromeDriverService.Builder().withWhitelistedIps("").withVerbose(false).build();
+        return new ChromeDriver(service, capabilities);
     }
 
     /**
