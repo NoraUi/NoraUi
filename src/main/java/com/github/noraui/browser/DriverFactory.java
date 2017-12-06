@@ -156,6 +156,7 @@ public class DriverFactory {
     private WebDriver generateGoogleChromeDriver() throws TechnicalException {
         logger.info("Driver chrome");
         final String pathWebdriver = DriverFactory.getPath(Driver.CHROME);
+        logger.info("Webdriver Path is {}.", pathWebdriver);
         if (!new File(pathWebdriver).setExecutable(true)) {
             throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_WEBDRIVER_SET_EXECUTABLE));
         }
@@ -169,11 +170,30 @@ public class DriverFactory {
             capabilities.setCapability(CapabilityType.PROXY, Context.getProxy());
         }
         System.setProperty(Driver.CHROME.getDriverName(), pathWebdriver);
-        ChromeDriverService service = new ChromeDriverService.Builder().withWhitelistedIps("").withVerbose(false).build();
-        ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.setBinary("/home/jenkins/tools/chromium/58.0.3029.96/chrome-linux/chrome");
-        capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
-        return new ChromeDriver(service, capabilities);
+
+        targetBrowserBinaryPathManager(capabilities);
+
+        String withWhitelistedIps = Context.getWebdriversProperties("withWhitelistedIps");
+        if (withWhitelistedIps != null && !"".equals(withWhitelistedIps)) {
+            ChromeDriverService service = new ChromeDriverService.Builder().withWhitelistedIps(withWhitelistedIps).withVerbose(false).build();
+            return new ChromeDriver(service, capabilities);
+        } else {
+            return new ChromeDriver(capabilities);
+        }
+    }
+
+    /**
+     * Set the target browser binary path in chromeOptions if exist in configuration.
+     * 
+     * @param capabilities is global DesiredCapabilities
+     */
+    private void targetBrowserBinaryPathManager(final DesiredCapabilities capabilities) {
+        String targetBrowserBinaryPath = Context.getWebdriversProperties("targetBrowserBinaryPath");
+        if (targetBrowserBinaryPath != null && !"".equals(targetBrowserBinaryPath)) {
+            ChromeOptions chromeOptions = new ChromeOptions();
+            chromeOptions.setBinary(targetBrowserBinaryPath);
+            capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
+        }
     }
 
     /**

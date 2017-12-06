@@ -204,7 +204,7 @@ public class Utilities {
      * @return a {link java.lang.String} with the value not null.
      */
     public static String setProperty(String value, String defValue) {
-        if (value != null) {
+        if (value != null && !"".equals(value)) {
             return value;
         }
         return defValue;

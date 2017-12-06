@@ -44,8 +44,8 @@ import com.github.noraui.data.excel.OutputExcelDataProvider;
 import com.github.noraui.data.gherkin.InputGherkinDataProvider;
 import com.github.noraui.data.rest.RestDataProvider;
 import com.github.noraui.exception.Callbacks;
-import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.exception.Callbacks.Callback;
+import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.ScenarioRegistry;
 import com.github.noraui.main.ScenarioInitiator;
 import com.github.noraui.model.Model;
@@ -269,7 +269,7 @@ public class Context {
         resourcesPath = System.getProperty("resourcespath");
 
         // set list of model packages
-        modelPackages = setProperty(MODEL_PACKAGES, applicationProperties);
+        modelPackages = getProperty(MODEL_PACKAGES, applicationProperties);
 
         plugDataProvider(applicationProperties);
 
@@ -282,7 +282,7 @@ public class Context {
     public synchronized void initializeRobot(Class<?> clazz) throws TechnicalException {
         logger.info("Context > initializeRobot() with " + clazz.getCanonicalName());
         // set browser: phantom, ie or chrome
-        browser = setProperty(BROWSER_KEY, applicationProperties);
+        browser = getProperty(BROWSER_KEY, applicationProperties);
 
         // set Webdriver file: src/test/resources/drivers/...
         initializeWebdriversProperties(Thread.currentThread().getContextClassLoader());
@@ -291,34 +291,34 @@ public class Context {
         timeout = setIntProperty(TIMEOUT_KEY, applicationProperties);
 
         // set version of selectors used to deliver several versions
-        selectorsVersion = setProperty(SELECTORS_VERSION, applicationProperties);
+        selectorsVersion = getProperty(SELECTORS_VERSION, applicationProperties);
 
         // proxies configuration
         proxy = new Proxy();
         proxy.setAutodetect(true);
-        final String httpProxy = setProperty(HTTP_PROXY, applicationProperties);
+        final String httpProxy = getProperty(HTTP_PROXY, applicationProperties);
         if (httpProxy != null && !"".equals(httpProxy)) {
             proxy.setAutodetect(false);
             proxy.setHttpProxy(httpProxy);
         }
 
-        final String httpsProxy = setProperty(HTTPS_PROXY, applicationProperties);
+        final String httpsProxy = getProperty(HTTPS_PROXY, applicationProperties);
         if (httpsProxy != null && !"".equals(httpsProxy)) {
             proxy.setAutodetect(false);
             proxy.setSslProxy(httpsProxy);
         }
 
-        final String noProxy = setProperty(NO_PROXY, applicationProperties);
+        final String noProxy = getProperty(NO_PROXY, applicationProperties);
         if (noProxy != null && !"".equals(noProxy)) {
             proxy.setAutodetect(false);
             proxy.setNoProxy(noProxy);
         }
 
         // authentication mode configuration
-        Auth.setAuthenticationType(setProperty(AUTH_TYPE, applicationProperties));
+        Auth.setAuthenticationType(getProperty(AUTH_TYPE, applicationProperties));
 
         // stacktrace configuration
-        displayStackTrace = "true".equals(setProperty(DISPLAY_STACK_TRACE, applicationProperties));
+        displayStackTrace = "true".equals(getProperty(DISPLAY_STACK_TRACE, applicationProperties));
 
         // init driver callbacks
         exceptionCallbacks.put(Callbacks.RESTART_WEB_DRIVER, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, RESTART_WEB_DRIVER_METHOD_NAME);
@@ -327,9 +327,9 @@ public class Context {
 
         // init applications
         initApplicationDom(clazz.getClassLoader(), selectorsVersion, DEMO_KEY);
-        applications.put(DEMO_KEY, new Application(DEMO_HOME, setProperty(DEMO_KEY, applicationProperties) + "/index.html"));
+        applications.put(DEMO_KEY, new Application(DEMO_HOME, getProperty(DEMO_KEY, applicationProperties) + "/index.html"));
         initApplicationDom(clazz.getClassLoader(), selectorsVersion, LOGOGAME_KEY);
-        applications.put(LOGOGAME_KEY, new Application(LOGOGAME_HOME, setProperty(LOGOGAME_KEY, applicationProperties) + "/index.html"));
+        applications.put(LOGOGAME_KEY, new Application(LOGOGAME_HOME, getProperty(LOGOGAME_KEY, applicationProperties) + "/index.html"));
 
         // read and init all cucumber methods
         cucumberMethods = Step.getAllCucumberMethods(clazz);
@@ -525,7 +525,7 @@ public class Context {
         return null;
     }
 
-    public static String setProperty(String key, Properties propertyFile) {
+    public static String getProperty(String key, Properties propertyFile) {
         if (propertyFile == null) {
             return null;
         }
@@ -555,7 +555,7 @@ public class Context {
     }
 
     public static String getScenarioProperty(String key) {
-        return setProperty(key, scenariosProperties);
+        return getProperty(key, scenariosProperties);
     }
 
     public static void initializeScenarioProperties(ClassLoader loader) {
@@ -563,7 +563,7 @@ public class Context {
     }
 
     public static String getWebdriversProperties(String key) {
-        return setProperty(key, webdriversProperties);
+        return getProperty(key, webdriversProperties);
     }
 
     public static void initializeWebdriversProperties(ClassLoader loader) {
@@ -684,7 +684,7 @@ public class Context {
     }
 
     private void initializeLocale() {
-        final String locale = setProperty(LOCALE, applicationProperties);
+        final String locale = getProperty(LOCALE, applicationProperties);
         if (locale != null && !"".equals(locale)) {
             final String[] localeParts = locale.split("_");
             if (localeParts.length == 2) {
@@ -700,8 +700,8 @@ public class Context {
 
     private void plugDataProvider(Properties applicationProperties) {
         try {
-            final String dataIn = setProperty("dataProvider.in.type", applicationProperties);
-            final String dataOut = setProperty("dataProvider.out.type", applicationProperties);
+            final String dataIn = getProperty("dataProvider.in.type", applicationProperties);
+            final String dataOut = getProperty("dataProvider.out.type", applicationProperties);
 
             // plug input provider
             if (DataProvider.type.EXCEL.toString().equals(dataIn)) {
@@ -709,12 +709,12 @@ public class Context {
             } else if (DataProvider.type.CSV.toString().equals(dataIn)) {
                 dataInputProvider = new CsvDataProvider();
             } else if (DataProvider.type.DB.toString().equals(dataIn)) {
-                dataInputProvider = new DBDataProvider(setProperty("dataProvider.db.type", applicationProperties), setProperty("dataProvider.db.user", applicationProperties),
-                        setProperty("dataProvider.db.password", applicationProperties), setProperty("dataProvider.db.hostname", applicationProperties),
-                        setProperty("dataProvider.db.port", applicationProperties), setProperty("dataProvider.db.name", applicationProperties));
+                dataInputProvider = new DBDataProvider(getProperty("dataProvider.db.type", applicationProperties), getProperty("dataProvider.db.user", applicationProperties),
+                        getProperty("dataProvider.db.password", applicationProperties), getProperty("dataProvider.db.hostname", applicationProperties),
+                        getProperty("dataProvider.db.port", applicationProperties), getProperty("dataProvider.db.name", applicationProperties));
             } else if (DataProvider.type.REST.toString().equals(dataIn)) {
-                dataInputProvider = new RestDataProvider(setProperty("dataProvider.rest.type", applicationProperties), setProperty("dataProvider.rest.hostname", applicationProperties),
-                        setProperty("dataProvider.rest.port", applicationProperties));
+                dataInputProvider = new RestDataProvider(getProperty("dataProvider.rest.type", applicationProperties), getProperty("dataProvider.rest.hostname", applicationProperties),
+                        getProperty("dataProvider.rest.port", applicationProperties));
             } else if (DataProvider.type.GHERKIN.toString().equals(dataIn)) {
                 dataInputProvider = new InputGherkinDataProvider();
             } else {
@@ -736,8 +736,8 @@ public class Context {
                 if (dataInputProvider instanceof RestDataProvider) {
                     dataOutputProvider = (RestDataProvider) dataInputProvider;
                 } else {
-                    dataOutputProvider = new RestDataProvider(setProperty("dataProvider.rest.type", applicationProperties), setProperty("dataProvider.rest.hostname", applicationProperties),
-                            setProperty("dataProvider.rest.port", applicationProperties));
+                    dataOutputProvider = new RestDataProvider(getProperty("dataProvider.rest.type", applicationProperties), getProperty("dataProvider.rest.hostname", applicationProperties),
+                            getProperty("dataProvider.rest.port", applicationProperties));
                 }
             } else if (DataProvider.type.CONSOLE.toString().equals(dataOut)) {
                 dataOutputProvider = new OutputConsoleDataProvider();
