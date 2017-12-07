@@ -92,6 +92,7 @@
         <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
         <sonar.exclusions>**/cucumber/**/*,**/*Exception.*,**/annotation/**/*,**/noraui/model/**/*,**/noraui/data/rest/Row.java</sonar.exclusions>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <javadoc.opts>-Xdoclint:none</javadoc.opts>
     </properties>
 
     <repositories>
@@ -389,6 +390,9 @@
                         <goals>
                             <goal>jar</goal>
                         </goals>
+                        <configuration>
+                            <additionalparam>${javadoc.opts}</additionalparam>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -494,6 +498,7 @@
                         <artifactId>maven-javadoc-plugin</artifactId>
                         <version>${maven-javadoc-plugin.version}</version>
                         <configuration>
+                            <additionalparam>${javadoc.opts}</additionalparam>
                             <aggregate>true</aggregate>
                             <stylesheetfile>${basedir}/src/test/resources/dev/stylesheet.css</stylesheetfile>
                         </configuration>
