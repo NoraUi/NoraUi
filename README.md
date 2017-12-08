@@ -5,7 +5,7 @@ Non-Regression Automation for User Interfaces
 
 [Public website for NoraUi (Non-Regression Automation for User Interfaces)](https://noraui.github.io/).
 
-[![Javadocs](https://javadoc.io/badge/com.github.noraui/noraui.svg)](https://noraui.github.io/NoraUi)
+[![Javadocs](https://img.shields.io/badge/javadoc-3.0.1-brightgreen.svg)](https://noraui.github.io/NoraUi)
 
 # News 
 See [change log](https://noraui.github.io/changelog.txt) for details
