@@ -42,7 +42,6 @@ public class ScenarioInitiator {
             processInjection(scenarioName);
         } else {
             logger.warn(Messages.getMessage(SCENARIO_INITIATOR_USAGE));
-
             String cucumberOptions = System.getProperty("cucumber.options");
             if (cucumberOptions != null && cucumberOptions.contains("--tags")) {
                 Matcher matcher = Pattern.compile(".*--tags '(.*)'.*").matcher(cucumberOptions);
@@ -54,7 +53,6 @@ public class ScenarioInitiator {
                         }
                     }
                 }
-
             } else {
                 logger.error(Messages.getMessage(SCENARIO_INITIATOR_ERROR_UNABLE_TO_GET_TAGS));
             }
