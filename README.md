@@ -20,6 +20,7 @@ See [change log](https://noraui.github.io/changelog.txt) for details
 1. if you use Oracle Db provider, use com.oracle.jdbc:ojdbc8 dependency and configure your env with OTN: Sample(https://github.com/sgrillon14/MavenSampleOracleJdbc) (default)
 2. if you do not use Oracle Db provider, remove com.oracle.jdbc:ojdbc8 dependency
 * Change all "noraui" import to "com.github.noraui"
+* Change com.github.noraui.browser.DriverFactory#setProperty(String key, Properties propertyFile) to com.github.noraui.browser.DriverFactory#getProperty(String key, Properties propertyFile)
 
 # Supported languages
 
