@@ -324,16 +324,17 @@ public class Step implements IStep {
      *             if the scenario encounters a functional error
      */
     protected void checkText(PageElement pageElement, String textOrKey) throws TechnicalException, FailureException {
-        WebElement inputText = null;
+        WebElement webElement = null;
         String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
         try {
-            inputText = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
+            webElement = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
         } catch (Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
         }
-        if (inputText == null || !value.equals(inputText.getText())) {
-            new Result.Failure<>(inputText == null ? null : inputText.getText(),
-                    Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE), pageElement, value, pageElement.getPage().getApplication()), true,
+        String innerText = webElement == null ? null : webElement.getText();
+        logger.info("checkText expected [{}] and find [{}].", value, innerText);
+        if (!value.equals(innerText)) {
+            new Result.Failure<>(innerText, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE), pageElement, value, pageElement.getPage().getApplication()), true,
                     pageElement.getPage().getCallBack());
         }
     }
