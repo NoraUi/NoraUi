@@ -77,6 +77,9 @@ public class Messages {
     public static final String FAIL_MESSAGE_ALERT_NOT_FOUND = "FAIL_MESSAGE_ALERT_NOT_FOUND";
     public static final String FAIL_MESSAGE_ALERT_FOUND = "FAIL_MESSAGE_ALERT_FOUND";
     public static final String FAIL_MESSAGE_UNABLE_TO_WRITE_MESSAGE_IN_RESULT_FILE = "FAIL_MESSAGE_UNABLE_TO_WRITE_MESSAGE_IN_RESULT_FILE";
+    public static final String FAIL_MESSAGE_DOWNLOADED_FILE_NOT_FOUND = "FAIL_MESSAGE_DOWNLOADED_FILE_NOT_FOUND";
+    public static final String FAIL_MESSAGE_FILE_NOT_FOUND = "FAIL_MESSAGE_FILE_NOT_FOUND";
+    public static final String FAIL_MESSAGE_FILE_NOT_MATCHES = "FAIL_MESSAGE_FILE_NOT_MATCHES";
 
     /**
      * Format given message with provided arguments
