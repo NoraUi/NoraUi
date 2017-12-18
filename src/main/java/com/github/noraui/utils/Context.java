@@ -69,6 +69,7 @@ public class Context {
     public static final String HTTP_PROXY = "http_proxy";
     public static final String HTTPS_PROXY = "https_proxy";
     public static final String NO_PROXY = "no_proxy";
+    public static final String HEADLESS = "headless";
     public static final String LOCALE = "locale";
     public static final String AUTH_TYPE = "authentication";
     public static final String DISPLAY_STACK_TRACE = "display.stacktrace";
@@ -191,6 +192,11 @@ public class Context {
      * Is stacktrace displayed ?
      */
     private boolean displayStackTrace;
+
+    /**
+     * Is headless mode enable ?
+     */
+    private boolean isHeadless;
 
     /**
      * Instance of DataInputProvider
@@ -319,6 +325,9 @@ public class Context {
 
         // stacktrace configuration
         displayStackTrace = "true".equals(getProperty(DISPLAY_STACK_TRACE, applicationProperties));
+
+        // enable browser headless mode ?
+        isHeadless = "true".equals(getProperty(HEADLESS, applicationProperties));
 
         // init driver callbacks
         exceptionCallbacks.put(Callbacks.RESTART_WEB_DRIVER, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, RESTART_WEB_DRIVER_METHOD_NAME);
@@ -588,6 +597,10 @@ public class Context {
 
     public static boolean isStackTraceDisplayed() {
         return getInstance().displayStackTrace;
+    }
+
+    public static boolean isHeadless() {
+        return getInstance().isHeadless;
     }
 
     public static String getModelPackages() {

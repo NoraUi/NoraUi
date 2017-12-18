@@ -30,6 +30,7 @@ public class DemoPage extends Page {
     public final PageElement noExistElement = new PageElement("-noExistElement", "no exist element");
     public final PageElement message = new PageElement("-message", "message");
     public final PageElement xpathContainPercentChar = new PageElement("-xpathContainPercentChar");
+    public final PageElement changeValueButton = new PageElement("-changeValueButton");
 
     private static final String TITLE_PAGE = "NoraUi Demo";
 

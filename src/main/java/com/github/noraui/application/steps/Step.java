@@ -264,7 +264,7 @@ public class Step implements IStep {
      * @param pageElement
      *            Is target element
      * @param textOrKey
-     *            Is the new data (text or text in context (after a save))
+     *            Is the data to check (text or text in context (after a save))
      * @return true or false
      * @throws FailureException
      *             if the scenario encounters a functional error
@@ -281,7 +281,35 @@ public class Step implements IStep {
     }
 
     /**
-     * Check mandatory text field.
+     * Expects that an element contains expected value.
+     *
+     * @param pageElement
+     *            Is target element
+     * @param textOrKey
+     *            Is the expected data (text or text in context (after a save))
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     * @throws TechnicalException
+     */
+    protected void expectText(PageElement pageElement, String textOrKey) throws FailureException, TechnicalException {
+        WebElement element = null;
+        String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
+        try {
+            element = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
+        } catch (Exception e) {
+            new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
+        }
+        try {
+            Context.waitUntil(ExpectSteps.textToBeEqualsToExpectedValue(Utilities.getLocator(pageElement), value));
+        } catch (Exception e) {
+            new Result.Failure<>(element.getText(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE), pageElement, value, pageElement.getPage().getApplication()), true,
+                    pageElement.getPage().getCallBack());
+        }
+
+    }
+
+    /**
+     * Checks mandatory text field.
      *
      * @param pageElement
      *            Is concerned element
@@ -331,7 +359,7 @@ public class Step implements IStep {
         } catch (Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
         }
-        if (inputText == null || !value.equals(inputText.getText())) {
+        if (inputText == null || value == null || !value.equals(inputText.getText())) {
             new Result.Failure<>(inputText == null ? null : inputText.getText(),
                     Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE), pageElement, value, pageElement.getPage().getApplication()), true,
                     pageElement.getPage().getCallBack());

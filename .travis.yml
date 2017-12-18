@@ -11,6 +11,8 @@ addons:
   postgresql: "9.4"
   sonarcloud:
     organization: "noraui"
+  firefox: stable
+  chrome: stable
 
 jdk:
 - oraclejdk8
