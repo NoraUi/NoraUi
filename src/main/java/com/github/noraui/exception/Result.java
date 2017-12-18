@@ -49,7 +49,12 @@ public abstract class Result {
             for (final Integer i : Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData()).getIndexes()) {
                 Context.getDataOutputProvider().writeSuccessResult(i);
             }
-            logger.info("{} [{}]", message, success());
+            O s = success();
+            if (s != null) {
+                logger.info("{} [{}]", message, s);
+            } else {
+                logger.info("{}", message);
+            }
         }
 
         public O success() {
@@ -96,7 +101,12 @@ public abstract class Result {
                 Utilities.takeScreenshot(Context.getCurrentScenario());
             }
             Context.getCurrentScenario().write(Messages.getMessage(Messages.WARNING_MESSAGE_DEFAULT) + message);
-            logger.info("{} [{}]", message, warning());
+            O s = warning();
+            if (s != null) {
+                logger.info("{} [{}]", message, s);
+            } else {
+                logger.info("{}", message);
+            }
         }
 
         public O warning() {

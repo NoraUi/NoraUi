@@ -1,12 +1,16 @@
 package com.github.noraui.application.steps;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -32,6 +36,7 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import cucumber.api.java.fr.Alors;
 import cucumber.api.java.fr.Et;
 import cucumber.api.java.fr.Lorsque;
 import cucumber.api.java.fr.Quand;
@@ -39,6 +44,13 @@ import cucumber.metrics.annotation.time.Time;
 import cucumber.metrics.annotation.time.TimeName;
 
 public class CommonSteps extends Step {
+
+    @Conditioned
+    @Lorsque("Je vide le repertoire des téléchargements[\\.|\\?]")
+    @Given("I clean download directory[\\.|\\?]")
+    public void cleanDownloadDirectory(List<GherkinStepCondition> conditions) throws IOException {
+        FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + File.separator + "downloadFiles"));
+    }
 
     /**
      * Waits a time in second.
@@ -55,6 +67,35 @@ public class CommonSteps extends Step {
     @Then("I wait '(.*)' seconds[\\.|\\?]")
     public void wait(int time, List<GherkinStepCondition> conditions) throws InterruptedException {
         Thread.sleep((long) time * 1000);
+    }
+
+    /**
+     * Waits a time in second.
+     *
+     * @param time
+     *            is time to wait
+     * @param conditions
+     *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
+     * @throws InterruptedException
+     *             Exception for the sleep
+     * @throws TechnicalException
+     * @throws FailureException
+     */
+    @Conditioned
+    @Lorsque("J'attends que le fichier nommé '(.*)' soit téléchargé avec un timeout de '(.*)' secondes[\\.|\\?]")
+    @Then("I wait file named '(.*)' to be downloaded with timeout of '(.*)' seconds[\\.|\\?]")
+    public void waitDownloadFile(String file, int timeout, List<GherkinStepCondition> conditions) throws InterruptedException, FailureException, TechnicalException {
+        File f;
+        int nbTry = 0;
+        do {
+            if (nbTry >= timeout) {
+                new Result.Failure<>(file, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_DOWNLOADED_FILE_NOT_FOUND), file), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+            }
+            Thread.sleep(1000);
+            f = new File(System.getProperty("user.dir") + File.separator + "downloadFiles" + File.separator + file);
+            nbTry++;
+        } while (!(f.exists() && !f.isDirectory()));
+        System.out.println("Fichier téléchargé en " + nbTry + "s");
     }
 
     /**
@@ -101,6 +142,20 @@ public class CommonSteps extends Step {
         Context.waitUntil(ExpectedConditions.stalenessOf(we), time);
     }
 
+    @Conditioned
+    @Alors("Le fichier '(.*)' encodé en '(.*)' vérifie '(.*)'[\\.|\\?]")
+    @Then("The file '(.*)' encoded in '(.*)' matches '(.*)'[\\.|\\?]")
+    public void checkFile(String file, String encoding, String regexp, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+        try {
+            Matcher m = Pattern.compile(regexp).matcher(FileUtils.readFileToString(new File(System.getProperty("user.dir") + File.separator + "downloadFiles" + File.separator + file), encoding));
+            if (!m.find()) {
+                new Result.Failure<>(file, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_FILE_NOT_MATCHES), file, regexp), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+            }
+        } catch (IOException e) {
+            new Result.Failure<>(file, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_FILE_NOT_FOUND), file), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+        }
+    }
+
     /**
      * Loop on steps execution for a specific number of times.
      *
@@ -113,7 +168,7 @@ public class CommonSteps extends Step {
      * @param steps
      *            List of steps run in a loop.
      */
-    @Lorsque("Si '(.*)' matche '(.*)', je fais '(.*)' fois:")
+    @Lorsque("Si '(.*)' vérifie '(.*)', je fais '(.*)' fois:")
     @Then("If '(.*)' matches '(.*)', I do '(.*)' times:")
     public void loop(String actual, String expected, int times, List<GherkinConditionedLoopedStep> steps) {
         try {
@@ -143,7 +198,7 @@ public class CommonSteps extends Step {
      * @param conditions
      *            list of steps run in a loop.
      */
-    @Lorsque("Si '(.*)' matche '(.*)', je fais jusqu'à '(.*)' respecte '(.*)' avec '(.*)' essais maxi:")
+    @Lorsque("Si '(.*)' vérifie '(.*)', je fais jusqu'à '(.*)' respecte '(.*)' avec '(.*)' essais maxi:")
     @Then("If '(.*)' matches '(.*)', I do until '(.*)' respects '(.*)' with '(.*)' max tries:")
     public void doUntil(String actual, String expected, String key, String breakCondition, int tries, List<GherkinConditionedLoopedStep> conditions) {
         try {
@@ -175,7 +230,7 @@ public class CommonSteps extends Step {
      * @param conditions
      *            list of steps run in a loop.
      */
-    @Lorsque("Si '(.*)' matche '(.*)', Tant que '(.*)' respecte '(.*)' je fais avec '(.*)' essais maxi:")
+    @Lorsque("Si '(.*)' vérifie '(.*)', Tant que '(.*)' respecte '(.*)' je fais avec '(.*)' essais maxi:")
     @Then("If '(.*)' matches '(.*)', While '(.*)' respects '(.*)' I do with '(.*)' max tries:")
     public void whileDo(String actual, String expected, String key, String breakCondition, int tries, List<GherkinConditionedLoopedStep> conditions) {
         try {

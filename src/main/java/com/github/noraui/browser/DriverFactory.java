@@ -194,13 +194,7 @@ public class DriverFactory {
             capabilities.setCapability(CapabilityType.PROXY, Context.getProxy());
         }
 
-        String targetBrowserBinaryPath = Context.getWebdriversProperties("targetBrowserBinaryPath");
-        if (targetBrowserBinaryPath != null && !"".equals(targetBrowserBinaryPath)) {
-            chromeOptions.setBinary(targetBrowserBinaryPath);
-            capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
-        }
-
-        capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
+        setChromeOptions(capabilities, chromeOptions);
 
         String withWhitelistedIps = Context.getWebdriversProperties("withWhitelistedIps");
         if (withWhitelistedIps != null && !"".equals(withWhitelistedIps)) {
@@ -209,6 +203,28 @@ public class DriverFactory {
         } else {
             return new ChromeDriver(capabilities);
         }
+    }
+
+    /**
+     * Sets the target browser binary path in chromeOptions if it exists in configuration.
+     *
+     * @param capabilities
+     *            The global DesiredCapabilities
+     */
+    private void setChromeOptions(final DesiredCapabilities capabilities, ChromeOptions chromeOptions) {
+
+        // Set custom downloaded file path. When you check content of downloaded file by robot.
+        HashMap<String, Object> chromePrefs = new HashMap<>();
+        chromePrefs.put("download.default_directory", System.getProperty("user.dir") + File.separator + "downloadFiles");
+        chromeOptions.setExperimentalOption("prefs", chromePrefs);
+
+        // Set custom chromium (if you not use default chromium on your target device)
+        String targetBrowserBinaryPath = Context.getWebdriversProperties("targetBrowserBinaryPath");
+        if (targetBrowserBinaryPath != null && !"".equals(targetBrowserBinaryPath)) {
+            chromeOptions.setBinary(targetBrowserBinaryPath);
+        }
+
+        capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
     }
 
     /**
