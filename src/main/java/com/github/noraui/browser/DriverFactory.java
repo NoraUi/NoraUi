@@ -268,6 +268,7 @@ public class DriverFactory {
             firefoxBinary.addCommandLineOptions("--headless");
             firefoxOptions.setBinary(firefoxBinary);
         }
+        firefoxOptions.setLogLevel(Level.OFF);
 
         capabilities.setCapability(FirefoxOptions.FIREFOX_OPTIONS, firefoxOptions);
 
