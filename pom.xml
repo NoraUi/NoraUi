@@ -259,12 +259,13 @@
             <version>${jsr305.version}</version>
         </dependency>
 
-        <!-- database drivers -->
+        <!-- database drivers 
         <dependency>
             <groupId>com.oracle.jdbc</groupId>
             <artifactId>ojdbc8</artifactId>
             <version>${oracle.driver.version}</version>
         </dependency>
+        -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
