@@ -1,10 +1,13 @@
+/**
+ * NoraUi is licensed under the licence GNU AFFERO GENERAL PUBLIC LICENSE
+ * 
+ * @author Nicolas HALLOUIN
+ * @author Stéphane GRILLON
+ */
 package com.github.noraui.indus;
 
 import org.junit.Assert;
 import org.junit.Test;
-
-import com.github.noraui.indus.Counter;
-import com.github.noraui.indus.MavenRunCounter;
 
 public class CounterUT {
 

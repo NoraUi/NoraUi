@@ -1,3 +1,9 @@
+/**
+ * NoraUi is licensed under the licence GNU AFFERO GENERAL PUBLIC LICENSE
+ * 
+ * @author Nicolas HALLOUIN
+ * @author Stéphane GRILLON
+ */
 package com.github.noraui.utils;
 
 import java.util.HashMap;
@@ -12,8 +18,6 @@ import com.github.noraui.application.page.demo.DemoPage;
 import com.github.noraui.cucumber.injector.NoraUiInjector;
 import com.github.noraui.cucumber.injector.NoraUiInjectorSource;
 import com.github.noraui.exception.TechnicalException;
-import com.github.noraui.utils.Context;
-import com.github.noraui.utils.Utilities;
 import com.google.inject.Inject;
 
 public class UtilitiesUT {

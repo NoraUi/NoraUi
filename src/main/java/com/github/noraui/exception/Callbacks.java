@@ -1,3 +1,9 @@
+/**
+ * NoraUi is licensed under the licence GNU AFFERO GENERAL PUBLIC LICENSE
+ * 
+ * @author Nicolas HALLOUIN
+ * @author Stéphane GRILLON
+ */
 package com.github.noraui.exception;
 
 import java.lang.reflect.InvocationTargetException;
@@ -22,8 +28,11 @@ public class Callbacks extends HashMap<String, Callback> {
      */
     private static final Logger logger = LoggerFactory.getLogger(Callback.class);
 
+    @Deprecated
     public static final String CLOSE_WINDOW_AND_SWITCH_TO_DEMO_HOME = "CLOSE_WINDOW_AND_SWITCH_TO_DEMO_HOME";
+    @Deprecated
     public static final String CLOSE_WINDOW_AND_SWITCH_TO_LOGOGAME_HOME = "CLOSE_WINDOW_AND_SWITCH_TO_LOGOGAME_HOME";
+    public static final String CLOSE_WINDOW_AND_SWITCH_TO_COUNTRIES_HOME = "CLOSE_WINDOW_AND_SWITCH_TO_COUNTRIES_HOME";
     public static final String RESTART_WEB_DRIVER = "RESTART_WEB_DRIVER";
 
     public Callbacks() {

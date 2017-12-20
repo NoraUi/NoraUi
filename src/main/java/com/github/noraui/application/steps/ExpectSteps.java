@@ -1,3 +1,9 @@
+/**
+ * NoraUi is licensed under the licence GNU AFFERO GENERAL PUBLIC LICENSE
+ * 
+ * @author Nicolas HALLOUIN
+ * @author Stéphane GRILLON
+ */
 package com.github.noraui.application.steps;
 
 import static com.github.noraui.utils.Constants.VALUE;
@@ -21,8 +27,6 @@ import cucumber.api.java.fr.Et;
 
 /**
  * This class contains Gherkin callable steps that aim for expecting a specific result.
- *
- * @author Nicolas HALLOUIN
  */
 public class ExpectSteps extends Step {
 

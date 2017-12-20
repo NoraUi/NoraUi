@@ -1,3 +1,9 @@
+/**
+ * NoraUi is licensed under the licence GNU AFFERO GENERAL PUBLIC LICENSE
+ * 
+ * @author Nicolas HALLOUIN
+ * @author Stéphane GRILLON
+ */
 package com.github.noraui.application.model.logogame;
 
 import java.util.Collections;
@@ -5,8 +11,6 @@ import java.util.Collections;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.github.noraui.application.model.logogame.Logo;
-import com.github.noraui.application.model.logogame.Logos;
 import com.github.noraui.model.ModelList;
 
 public class LogoUT {
