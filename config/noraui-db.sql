@@ -1,5 +1,5 @@
 CREATE TABLE hello (
-	id int primary key not null,
+    id int primary key not null,
     author text,
     zip text,
     city text,
@@ -18,7 +18,7 @@ INSERT INTO hello VALUES (7, 'Jenkins T7', '35000', '', '', '', '', '');
 INSERT INTO hello VALUES (8, 'Jenkins T8', '', 'Rennes', 'smile', 'smile', '', '');
 
 CREATE TABLE LoginLogout (
-	id int primary key not null,
+    id int primary key not null,
     user text,
     password text
 );
