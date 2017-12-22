@@ -50,7 +50,7 @@ public class CountriesSteps extends Step {
      *             if the scenario encounters a functional error.
      */
     @Then("The COUNTRIES home page is displayed")
-    public void checkGeotrackLoginPage() throws FailureException {
+    public void checkCountriesLoginPage() throws FailureException {
         if (!countriesPage.checkPage()) {
             new Result.Failure<>(countriesPage.getApplication(), Messages.getMessage(Messages.FAIL_MESSAGE_UNKNOWN_CREDENTIALS), true, countriesPage.getCallBack());
         }
@@ -68,7 +68,7 @@ public class CountriesSteps extends Step {
      */
     @Alors("Je me connect sur COUNTRIES avec '(.*)' '(.*)'")
     @Then("I log in to COUNTRIES as '(.*)' '(.*)'")
-    public void logInToGeotrack(String login, String password) throws FailureException {
+    public void logInToCountries(String login, String password) throws FailureException {
         try {
             Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(countriesPage.signInButton)));
             Utilities.findElement(countriesPage.login).sendKeys(login);
@@ -97,7 +97,7 @@ public class CountriesSteps extends Step {
     }
 
     /**
-     * Logout of Geotrack.
+     * Logout of Countries.
      * 
      * @throws FailureException
      *             if the scenario encounters a functional error.
@@ -118,14 +118,14 @@ public class CountriesSteps extends Step {
      * @throws FailureException
      */
     @Then("The COUNTRIES logout page is displayed")
-    public void checkGeotrackLogoutPage() throws FailureException {
+    public void checkCountriesLogoutPage() throws FailureException {
         if (!logoutPage.checkPage()) {
             new Result.Failure<>(logoutPage.getApplication(), Messages.getMessage(Messages.FAIL_MESSAGE_LOGOUT), true, countriesPage.getCallBack());
         }
     }
 
     /**
-     * Log in to GEOTRACK with GeoTrackRobot (login and password in job parameters).
+     * Log in to COUNTRIES with CountriesRobot (login and password in job parameters).
      *
      * @throws FailureException
      *             if the scenario encounters a functional error.
@@ -134,7 +134,7 @@ public class CountriesSteps extends Step {
         String login = Auth.getLogin();
         String password = Auth.getPassword();
         if (!"".equals(login) && !"".equals(password)) {
-            logInToGeotrack(login, password);
+            logInToCountries(login, password);
         }
     }
 
