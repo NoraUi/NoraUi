@@ -44,6 +44,8 @@ java -jar countries-app-sample-0.0.1.jar &
 PIDcountries=$!
 sleep 30
 
+git checkout -b https://github.com/NoraUi/countries-app-sample.git
+
 #
 #
 # start NoraUi part =>
