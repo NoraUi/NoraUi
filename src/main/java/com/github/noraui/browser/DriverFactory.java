@@ -189,7 +189,7 @@ public class DriverFactory {
         capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
         capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
 
-        setLoggingLevel(capabilities, Level.OFF);
+        setLoggingLevel(capabilities, Level.ALL);
 
         if (Context.isHeadless()) {
             chromeOptions.addArguments("--headless");
