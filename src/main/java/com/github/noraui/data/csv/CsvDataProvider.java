@@ -1,3 +1,9 @@
+/**
+ * NoraUi is licensed under the licence GNU AFFERO GENERAL PUBLIC LICENSE
+ * 
+ * @author Nicolas HALLOUIN
+ * @author Stéphane GRILLON
+ */
 package com.github.noraui.data.csv;
 
 import static com.github.noraui.utils.Constants.DEFAULT_ENDODING;

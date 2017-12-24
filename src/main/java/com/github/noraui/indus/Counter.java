@@ -1,3 +1,9 @@
+/**
+ * NoraUi is licensed under the licence GNU AFFERO GENERAL PUBLIC LICENSE
+ * 
+ * @author Nicolas HALLOUIN
+ * @author Stéphane GRILLON
+ */
 package com.github.noraui.indus;
 
 import java.io.File;
@@ -38,6 +44,7 @@ public class Counter {
                 scenarioBlacklist.add("jouerAuJeuDesLogos");
                 scenarioBlacklist.add("playToLogoGame");
             }
+            scenarioBlacklist.add("LoginLogout");
 
             final MavenRunCounter mavenRunCounter = new MavenRunCounter();
             final List<MavenRunCounter.Counter> counters = mavenRunCounter.count(versionControlSystemsBlacklist, scenarioBlacklist, manager, new File(Context.getResourcesPath() + "/steps"));

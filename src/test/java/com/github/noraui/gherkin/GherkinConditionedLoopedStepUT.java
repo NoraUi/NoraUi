@@ -1,9 +1,13 @@
+/**
+ * NoraUi is licensed under the licence GNU AFFERO GENERAL PUBLIC LICENSE
+ * 
+ * @author Nicolas HALLOUIN
+ * @author Stéphane GRILLON
+ */
 package com.github.noraui.gherkin;
 
 import org.junit.Assert;
 import org.junit.Test;
-
-import com.github.noraui.gherkin.GherkinConditionedLoopedStep;
 
 public class GherkinConditionedLoopedStepUT {
 

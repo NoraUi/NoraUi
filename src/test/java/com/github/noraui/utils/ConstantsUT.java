@@ -1,3 +1,9 @@
+/**
+ * NoraUi is licensed under the licence GNU AFFERO GENERAL PUBLIC LICENSE
+ * 
+ * @author Nicolas HALLOUIN
+ * @author Stéphane GRILLON
+ */
 package com.github.noraui.utils;
 
 import java.lang.reflect.Constructor;
@@ -5,8 +11,6 @@ import java.lang.reflect.Modifier;
 
 import org.junit.Assert;
 import org.junit.Test;
-
-import com.github.noraui.utils.Constants;
 
 public class ConstantsUT {
 

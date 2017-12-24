@@ -1,3 +1,9 @@
+/**
+ * NoraUi is licensed under the licence GNU AFFERO GENERAL PUBLIC LICENSE
+ * 
+ * @author Nicolas HALLOUIN
+ * @author Stéphane GRILLON
+ */
 package com.github.noraui.indus;
 
 import java.io.BufferedReader;
@@ -104,8 +110,8 @@ public class MavenRunCounter {
             failures += counter.getFailures();
             skipped += counter.getSkipped();
             scenarios += counter.getNbCas();
-            logger.info("Scenario: {} => step: {} and cases: {} -->  runs: , failures: , errors: 0 and skips: {}", counter.getScenarioName(), counter.getNbStep(), counter.getNbCas(), counter.getRun(),
-                    counter.getFailures(), counter.getSkipped());
+            logger.info("Scenario: {} => step: {} and cases: {} -->  runs: {}, failures: {}, errors: 0 and skips: {}", counter.getScenarioName(), counter.getNbStep(), counter.getNbCas(),
+                    counter.getRun(), counter.getFailures(), counter.getSkipped());
         }
         logger.info("{}", generateExpected1(type, failures, scenarios));
         logger.info("{}", generateExpected2(type, run, failures, skipped, scenarios));

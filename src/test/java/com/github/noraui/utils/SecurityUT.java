@@ -1,3 +1,9 @@
+/**
+ * NoraUi is licensed under the licence GNU AFFERO GENERAL PUBLIC LICENSE
+ * 
+ * @author Nicolas HALLOUIN
+ * @author Stéphane GRILLON
+ */
 package com.github.noraui.utils;
 
 import java.io.File;
@@ -6,7 +12,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.github.noraui.exception.TechnicalException;
-import com.github.noraui.utils.Security;
 
 public class SecurityUT {
 

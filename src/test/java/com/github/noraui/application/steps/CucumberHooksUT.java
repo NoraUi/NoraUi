@@ -1,3 +1,9 @@
+/**
+ * NoraUi is licensed under the licence GNU AFFERO GENERAL PUBLIC LICENSE
+ * 
+ * @author Nicolas HALLOUIN
+ * @author Stéphane GRILLON
+ */
 package com.github.noraui.application.steps;
 
 import static org.mockito.Mockito.when;
@@ -14,7 +20,6 @@ import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import com.github.noraui.application.steps.CucumberHooks;
 import com.github.noraui.data.DataInputProvider;
 import com.github.noraui.data.excel.ExcelDataProvider;
 import com.github.noraui.utils.Context;

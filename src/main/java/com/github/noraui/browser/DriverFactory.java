@@ -1,3 +1,9 @@
+/**
+ * NoraUi is licensed under the licence GNU AFFERO GENERAL PUBLIC LICENSE
+ * 
+ * @author Nicolas HALLOUIN
+ * @author Stéphane GRILLON
+ */
 package com.github.noraui.browser;
 
 import java.io.File;
@@ -262,6 +268,7 @@ public class DriverFactory {
             firefoxBinary.addCommandLineOptions("--headless");
             firefoxOptions.setBinary(firefoxBinary);
         }
+        firefoxOptions.setLogLevel(Level.OFF);
 
         capabilities.setCapability(FirefoxOptions.FIREFOX_OPTIONS, firefoxOptions);
 

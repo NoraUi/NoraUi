@@ -1,3 +1,9 @@
+/**
+ * NoraUi is licensed under the licence GNU AFFERO GENERAL PUBLIC LICENSE
+ * 
+ * @author Nicolas HALLOUIN
+ * @author Stéphane GRILLON
+ */
 package cucumber.runtime;
 
 import static cucumber.util.FixJava.map;
@@ -21,8 +27,6 @@ import gherkin.pickles.PickleTable;
 
 /**
  * This class wait cucumber PR: https://github.com/cucumber/cucumber-jvm/pull/1056
- *
- * @author sgrillon
  */
 public class StepDefinitionMatch extends Match implements DefinitionMatch {
     private final StepDefinition stepDefinition;

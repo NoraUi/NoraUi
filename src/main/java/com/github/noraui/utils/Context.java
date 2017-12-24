@@ -1,3 +1,9 @@
+/**
+ * NoraUi is licensed under the licence GNU AFFERO GENERAL PUBLIC LICENSE
+ * 
+ * @author Nicolas HALLOUIN
+ * @author Stéphane GRILLON
+ */
 package com.github.noraui.utils;
 
 import static com.github.noraui.utils.Constants.DATA_IN;
@@ -80,15 +86,37 @@ public class Context {
 
     /**
      * DEMO
+     * 
+     * @deprecated because use {@link #COUNTRIES_KEY} instead.
      */
+    @Deprecated
     public static final String DEMO_KEY = "demo";
+
+    /**
+     * @deprecated because use {@link #COUNTRIES_HOME} instead.
+     */
+    @Deprecated
     public static final String DEMO_HOME = "DEMO_HOME";
 
     /**
      * LOGOGAME
+     * 
+     * @deprecated because use {@link #COUNTRIES_KEY} instead.
      */
+    @Deprecated
     public static final String LOGOGAME_KEY = "logogame";
+
+    /**
+     * @deprecated because use {@link #COUNTRIES_HOME} instead.
+     */
+    @Deprecated
     public static final String LOGOGAME_HOME = "LOGOGAME_HOME";
+
+    /**
+     * COUNTRIES
+     */
+    public static final String COUNTRIES_KEY = "countries";
+    public static final String COUNTRIES_HOME = "COUNTRIES_HOME";
 
     private static final String NOT_SET_LABEL = "NOT_SET_LABEL";
     private static final String CONTEXT_PROPERTIES_FILE_NOT_FOUND = "CONTEXT_PROPERTIES_FILE_NOT_FOUND";
@@ -333,12 +361,16 @@ public class Context {
         exceptionCallbacks.put(Callbacks.RESTART_WEB_DRIVER, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, RESTART_WEB_DRIVER_METHOD_NAME);
         exceptionCallbacks.put(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_DEMO_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, DEMO_HOME);
         exceptionCallbacks.put(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_LOGOGAME_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, LOGOGAME_HOME);
-
+        exceptionCallbacks.put(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_COUNTRIES_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, COUNTRIES_HOME);
         // init applications
         initApplicationDom(clazz.getClassLoader(), selectorsVersion, DEMO_KEY);
         applications.put(DEMO_KEY, new Application(DEMO_HOME, getProperty(DEMO_KEY, applicationProperties) + "/index.html"));
+
         initApplicationDom(clazz.getClassLoader(), selectorsVersion, LOGOGAME_KEY);
         applications.put(LOGOGAME_KEY, new Application(LOGOGAME_HOME, getProperty(LOGOGAME_KEY, applicationProperties) + "/index.html"));
+
+        initApplicationDom(clazz.getClassLoader(), selectorsVersion, COUNTRIES_KEY);
+        applications.put(COUNTRIES_KEY, new Application(COUNTRIES_HOME, getProperty(COUNTRIES_KEY, applicationProperties) + "/index.html"));
 
         // read and init all cucumber methods
         cucumberMethods = Step.getAllCucumberMethods(clazz);

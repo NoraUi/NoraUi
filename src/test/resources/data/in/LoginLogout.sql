@@ -1,0 +1,1 @@
+(select t.user as "user", t.password as "password", '' as Result from LoginLogout t)

@@ -1,3 +1,9 @@
+/**
+ * NoraUi is licensed under the licence GNU AFFERO GENERAL PUBLIC LICENSE
+ * 
+ * @author Nicolas HALLOUIN
+ * @author Stéphane GRILLON
+ */
 package com.github.noraui.browser;
 
 import java.util.HashMap;
@@ -68,7 +74,7 @@ public class WindowManager {
      */
     public static ExpectedCondition<String> newWindowOpens(final Set<String> currentHandles) {
         return new ExpectedCondition<String>() {
-            
+
             /**
              * {@inheritDoc}
              */
@@ -95,7 +101,7 @@ public class WindowManager {
      */
     public static ExpectedCondition<Boolean> clickCanBeDoneWithoutAlertOnElement(final WebElement element) {
         return new ExpectedCondition<Boolean>() {
-            
+
             /**
              * {@inheritDoc}
              */

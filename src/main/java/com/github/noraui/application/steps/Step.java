@@ -1,3 +1,9 @@
+/**
+ * NoraUi is licensed under the licence GNU AFFERO GENERAL PUBLIC LICENSE
+ * 
+ * @author Nicolas HALLOUIN
+ * @author Stéphane GRILLON
+ */
 package com.github.noraui.application.steps;
 
 import static com.github.noraui.utils.Constants.ALERT_KEY;
@@ -25,7 +31,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -924,8 +929,7 @@ public class Step implements IStep {
      */
     protected String getLastConsoleAlertMessage() {
         String msg;
-        LogEntries logEntries = getDriver().manage().logs().get(LogType.BROWSER);
-        List<LogEntry> l = logEntries.getAll();
+        List<LogEntry> l = getDriver().manage().logs().get(LogType.BROWSER).getAll();
         for (int i = l.size() - 1; i >= 0; i--) {
             if (l.get(i).getMessage().contains(ALERT_KEY)) {
                 msg = l.get(i).getMessage();

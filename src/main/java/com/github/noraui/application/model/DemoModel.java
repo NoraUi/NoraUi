@@ -1,3 +1,9 @@
+/**
+ * NoraUi is licensed under the licence GNU AFFERO GENERAL PUBLIC LICENSE
+ * 
+ * @author Nicolas HALLOUIN
+ * @author Stéphane GRILLON
+ */
 package com.github.noraui.application.model;
 
 import com.github.noraui.model.Model;
@@ -5,6 +11,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public abstract class DemoModel implements Model {
+
     /**
      * {@inheritDoc}
      */

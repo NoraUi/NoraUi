@@ -1,3 +1,9 @@
+/**
+ * NoraUi is licensed under the licence GNU AFFERO GENERAL PUBLIC LICENSE
+ * 
+ * @author Nicolas HALLOUIN
+ * @author Stéphane GRILLON
+ */
 package com.github.noraui.data.csv;
 
 import static com.github.noraui.utils.Constants.DATA_IN;
@@ -12,7 +18,6 @@ import java.lang.reflect.Modifier;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.github.noraui.data.csv.CsvDataProvider;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.utils.Messages;
 import com.opencsv.CSVReader;

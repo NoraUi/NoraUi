@@ -1,10 +1,14 @@
+/**
+ * NoraUi is licensed under the licence GNU AFFERO GENERAL PUBLIC LICENSE
+ * 
+ * @author Nicolas HALLOUIN
+ * @author Stéphane GRILLON
+ */
 package com.github.noraui.main;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.github.noraui.main.ScenarioInitiator;
-import com.github.noraui.main.ScenarioInitiatorRunner;
 import com.github.noraui.utils.Context;
 
 public class ScenarioInitiatorUT {
