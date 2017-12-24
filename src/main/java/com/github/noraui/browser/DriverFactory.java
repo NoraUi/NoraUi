@@ -110,7 +110,7 @@ public class DriverFactory {
         capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
         capabilities.setJavascriptEnabled(true);
 
-        setLoggingLevel(capabilities, Level.ALL);
+        setLoggingLevel(capabilities);
 
         // Proxy configuration
         String proxy = "";
@@ -149,7 +149,7 @@ public class DriverFactory {
         capabilities.setCapability("disable-popup-blocking", true);
         capabilities.setJavascriptEnabled(true);
 
-        setLoggingLevel(capabilities, Level.ALL);
+        setLoggingLevel(capabilities);
 
         // Proxy configuration
         if (Context.getProxy().getProxyType() != ProxyType.UNSPECIFIED && Context.getProxy().getProxyType() != ProxyType.AUTODETECT) {
@@ -183,7 +183,7 @@ public class DriverFactory {
         capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
         capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
 
-        setLoggingLevel(capabilities, Level.OFF);
+        setLoggingLevel(capabilities);
 
         if (Context.isHeadless()) {
             chromeOptions.addArguments("--headless");
@@ -251,7 +251,7 @@ public class DriverFactory {
         capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
         capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
 
-        setLoggingLevel(capabilities, Level.OFF);
+        setLoggingLevel(capabilities);
 
         // Proxy configuration
         if (Context.getProxy().getProxyType() != ProxyType.UNSPECIFIED && Context.getProxy().getProxyType() != ProxyType.AUTODETECT) {
@@ -281,7 +281,7 @@ public class DriverFactory {
         capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
         capabilities.setJavascriptEnabled(true);
 
-        setLoggingLevel(capabilities, Level.OFF);
+        setLoggingLevel(capabilities);
 
         // Proxy configuration
         if (Context.getProxy().getProxyType() != ProxyType.UNSPECIFIED && Context.getProxy().getProxyType() != ProxyType.AUTODETECT) {
@@ -329,14 +329,14 @@ public class DriverFactory {
      * @param level
      *            The logging level
      */
-    private void setLoggingLevel(DesiredCapabilities caps, Level level) {
+    private void setLoggingLevel(DesiredCapabilities caps) {
         final LoggingPreferences logPrefs = new LoggingPreferences();
-        logPrefs.enable(LogType.BROWSER, level);
-        logPrefs.enable(LogType.CLIENT, level);
-        logPrefs.enable(LogType.DRIVER, level);
-        logPrefs.enable(LogType.PERFORMANCE, level);
-        logPrefs.enable(LogType.PROFILER, level);
-        logPrefs.enable(LogType.SERVER, level);
+        logPrefs.enable(LogType.BROWSER, Level.ALL);
+        logPrefs.enable(LogType.CLIENT, Level.OFF);
+        logPrefs.enable(LogType.DRIVER, Level.OFF);
+        logPrefs.enable(LogType.PERFORMANCE, Level.OFF);
+        logPrefs.enable(LogType.PROFILER, Level.OFF);
+        logPrefs.enable(LogType.SERVER, Level.OFF);
         caps.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
     }
 

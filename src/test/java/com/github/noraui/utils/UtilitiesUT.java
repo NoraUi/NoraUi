@@ -12,8 +12,6 @@ import com.github.noraui.application.page.demo.DemoPage;
 import com.github.noraui.cucumber.injector.NoraUiInjector;
 import com.github.noraui.cucumber.injector.NoraUiInjectorSource;
 import com.github.noraui.exception.TechnicalException;
-import com.github.noraui.utils.Context;
-import com.github.noraui.utils.Utilities;
 import com.google.inject.Inject;
 
 public class UtilitiesUT {
@@ -24,7 +22,7 @@ public class UtilitiesUT {
     @Before
     public void setUp() throws TechnicalException {
         NoraUiInjector.resetInjector();
-        new NoraUiInjectorSource().getInjector();
+        new NoraUiInjectorSource().getInjector().injectMembers(this);
     }
 
     @After
