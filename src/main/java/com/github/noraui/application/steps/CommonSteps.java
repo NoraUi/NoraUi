@@ -55,6 +55,7 @@ public class CommonSteps extends Step {
     @Lorsque("Je vide le repertoire des téléchargements[\\.|\\?]")
     @Given("I clean download directory[\\.|\\?]")
     public void cleanDownloadDirectory(List<GherkinStepCondition> conditions) throws IOException {
+        FileUtils.forceMkdir(new File(System.getProperty("user.dir") + File.separator + "downloadFiles"));
         FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + File.separator + "downloadFiles"));
     }
 
