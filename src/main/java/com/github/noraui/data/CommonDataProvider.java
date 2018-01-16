@@ -14,6 +14,8 @@ import java.util.Set;
 
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.github.noraui.annotation.Column;
 import com.github.noraui.exception.TechnicalException;
@@ -21,7 +23,7 @@ import com.github.noraui.model.Model;
 import com.github.noraui.utils.Messages;
 
 public abstract class CommonDataProvider implements DataProvider {
-    
+
     /**
      * Specific logger
      */
