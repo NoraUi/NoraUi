@@ -80,10 +80,10 @@ public abstract class CommonDataProvider implements DataProvider {
                     Set<Class<?>> returnedClasses;
                     logger.info("packages length is {}", packages.length);
                     for (String p : packages) {
-                        returnedClasses = getClasses(p);
-                        logger.info("package [{}] return {} classes", p, returnedClasses.size());
                         returnedClasses = getClasses("com.github.noraui.application.model");
                         logger.info("package [{}] return {} classes", "com.github.noraui.application.model", returnedClasses.size());
+                        returnedClasses = getClasses(p);
+                        logger.info("package [{}] return {} classes", p, returnedClasses.size());
                         for (Class<?> c : returnedClasses) {
                             if (Model.class.isAssignableFrom(c)) {
                                 boolean mappingOK = false;
