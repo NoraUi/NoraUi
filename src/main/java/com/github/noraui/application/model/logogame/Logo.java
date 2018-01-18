@@ -63,10 +63,7 @@ public class Logo extends DemoModel implements Comparable<Logo> {
      */
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (brand == null ? 0 : brand.hashCode());
-        return result;
+        return 31 + (brand == null ? 0 : brand.hashCode());
     }
 
     /**

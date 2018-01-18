@@ -120,7 +120,7 @@ public class CountriesSteps extends Step {
     @Then("The COUNTRIES logout page is displayed")
     public void checkCountriesLogoutPage() throws FailureException {
         if (!logoutPage.checkPage()) {
-            new Result.Failure<>(logoutPage.getApplication(), Messages.getMessage(Messages.FAIL_MESSAGE_LOGOUT), true, countriesPage.getCallBack());
+            new Result.Failure<>(logoutPage.getApplication(), Messages.getMessage(Messages.FAIL_MESSAGE_LOGOUT), true, logoutPage.getCallBack());
         }
     }
 

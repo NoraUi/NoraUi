@@ -14,6 +14,8 @@ import java.util.Set;
 
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.github.noraui.annotation.Column;
 import com.github.noraui.exception.TechnicalException;
@@ -21,6 +23,11 @@ import com.github.noraui.model.Model;
 import com.github.noraui.utils.Messages;
 
 public abstract class CommonDataProvider implements DataProvider {
+
+    /**
+     * Specific logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(CommonDataProvider.class);
 
     protected String dataInPath;
     protected String dataOutPath;
@@ -73,8 +80,12 @@ public abstract class CommonDataProvider implements DataProvider {
             try {
                 if (packages.length > 0) {
                     Set<Class<?>> returnedClasses;
+                    logger.info("packages length is {}", packages.length);
                     for (String p : packages) {
+                        returnedClasses = getClasses("com.github.noraui.application.model");
+                        logger.info("package [{}] return {} classes", "com.github.noraui.application.model", returnedClasses.size());
                         returnedClasses = getClasses(p);
+                        logger.info("package [{}] return {} classes", p, returnedClasses.size());
                         for (Class<?> c : returnedClasses) {
                             if (Model.class.isAssignableFrom(c)) {
                                 boolean mappingOK = false;
