@@ -20,6 +20,8 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.github.noraui.application.page.Page;
 import com.github.noraui.application.page.Page.PageElement;
@@ -50,6 +52,11 @@ import cucumber.metrics.annotation.time.Time;
 import cucumber.metrics.annotation.time.TimeName;
 
 public class CommonSteps extends Step {
+
+    /**
+     * Specific logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(CommonSteps.class);
 
     @Conditioned
     @Lorsque("Je vide le repertoire des téléchargements[\\.|\\?]")
@@ -102,7 +109,7 @@ public class CommonSteps extends Step {
             f = new File(System.getProperty("user.dir") + File.separator + "downloadFiles" + File.separator + file);
             nbTry++;
         } while (!(f.exists() && !f.isDirectory()));
-        System.out.println("Fichier téléchargé en " + nbTry + "s");
+        logger.debug("File downloaded in {} seconds.", nbTry);
     }
 
     /**
