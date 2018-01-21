@@ -16,6 +16,8 @@ public class Constants {
 
     public static final String DEFAULT_ENDODING = "UTF-8";
 
+    public static final String USER_DIR = "user.dir";
+
     public static final String IS_CONNECTED_REGISTRY_KEY = "AUTH-isConnected";
 
     public static final String DATA_IN = "/data/in/";

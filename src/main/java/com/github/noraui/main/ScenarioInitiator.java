@@ -6,6 +6,8 @@
  */
 package com.github.noraui.main;
 
+import static com.github.noraui.utils.Constants.USER_DIR;
+
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +42,7 @@ public class ScenarioInitiator {
     private static final String SCENARIO_INITIATOR_ERROR_ON_INJECTING_MODEL = "SCENARIO_INITIATOR_ERROR_ON_INJECTING_MODEL";
 
     public void start(String[] args) {
-        logger.info("Working Directory is '" + System.getProperty("user.dir") + "'");
+        logger.info("Working Directory is '" + System.getProperty(USER_DIR) + "'");
         logger.info("ScenarioInitiator > start()");
         if (args != null && args.length == 1 && !"@TOSPECIFY".equals(args[0])) {
             logger.info("# {}", args[0]);

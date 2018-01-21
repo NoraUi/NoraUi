@@ -6,6 +6,9 @@
  */
 package com.github.noraui.browser;
 
+import static com.github.noraui.application.steps.CommonSteps.DOWNLOAD_FILES_FOLDER;
+import static com.github.noraui.utils.Constants.USER_DIR;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -221,7 +224,7 @@ public class DriverFactory {
 
         // Set custom downloaded file path. When you check content of downloaded file by robot.
         HashMap<String, Object> chromePrefs = new HashMap<>();
-        chromePrefs.put("download.default_directory", System.getProperty("user.dir") + File.separator + "downloadFiles");
+        chromePrefs.put("download.default_directory", System.getProperty(USER_DIR) + File.separator + DOWNLOAD_FILES_FOLDER);
         chromeOptions.setExperimentalOption("prefs", chromePrefs);
 
         // Set custom chromium (if you not use default chromium on your target device)

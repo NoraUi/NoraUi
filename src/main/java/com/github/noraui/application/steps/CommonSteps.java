@@ -6,6 +6,8 @@
  */
 package com.github.noraui.application.steps;
 
+import static com.github.noraui.utils.Constants.USER_DIR;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -58,12 +60,14 @@ public class CommonSteps extends Step {
      */
     private static final Logger logger = LoggerFactory.getLogger(CommonSteps.class);
 
+    public static final String DOWNLOAD_FILES_FOLDER = "downloadFiles";
+
     @Conditioned
     @Lorsque("Je vide le repertoire des téléchargements[\\.|\\?]")
     @Given("I clean download directory[\\.|\\?]")
     public void cleanDownloadDirectory(List<GherkinStepCondition> conditions) throws IOException {
-        FileUtils.forceMkdir(new File(System.getProperty("user.dir") + File.separator + "downloadFiles"));
-        FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + File.separator + "downloadFiles"));
+        FileUtils.forceMkdir(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOAD_FILES_FOLDER));
+        FileUtils.cleanDirectory(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOAD_FILES_FOLDER));
     }
 
     /**
@@ -106,7 +110,7 @@ public class CommonSteps extends Step {
                 new Result.Failure<>(file, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_DOWNLOADED_FILE_NOT_FOUND), file), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
             }
             Thread.sleep(1000);
-            f = new File(System.getProperty("user.dir") + File.separator + "downloadFiles" + File.separator + file);
+            f = new File(System.getProperty(USER_DIR) + File.separator + DOWNLOAD_FILES_FOLDER + File.separator + file);
             nbTry++;
         } while (!(f.exists() && !f.isDirectory()));
         logger.debug("File downloaded in {} seconds.", nbTry);
@@ -161,7 +165,7 @@ public class CommonSteps extends Step {
     @Then("The file '(.*)' encoded in '(.*)' matches '(.*)'[\\.|\\?]")
     public void checkFile(String file, String encoding, String regexp, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         try {
-            Matcher m = Pattern.compile(regexp).matcher(FileUtils.readFileToString(new File(System.getProperty("user.dir") + File.separator + "downloadFiles" + File.separator + file), encoding));
+            Matcher m = Pattern.compile(regexp).matcher(FileUtils.readFileToString(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOAD_FILES_FOLDER + File.separator + file), encoding));
             if (!m.find()) {
                 new Result.Failure<>(file, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_FILE_NOT_MATCHES), file, regexp), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
             }
