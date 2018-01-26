@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nullable;
 
-import org.apache.commons.io.FileUtils
+import org.apache.commons.io.FileUtils;
 import org.ini4j.Ini;
 import org.junit.Assert;
 import org.openqa.selenium.By;
