@@ -26,7 +26,7 @@ import cucumber.api.java.fr.Et;
 public class ScreenSteps extends Step {
 
     /**
-     * Specific logger
+     * Specific logger.
      */
     private static final Logger logger = LoggerFactory.getLogger(ScreenSteps.class);
 
