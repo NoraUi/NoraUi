@@ -134,7 +134,10 @@ Feature: hello (Function to validate the environment.)
     
     When I click on 'demo.DemoPage-changeValueButton'.
     Then I expect to have 'demo.DemoPage-changeValueButton' with the text 'My value has changed'.
-    
+
+    And I take a screenshot.
+    And I save a screenshot in 'myScreenshot-<id>'.
+
     And I go back to 'DEMO_HOME'        
 
   Examples:
