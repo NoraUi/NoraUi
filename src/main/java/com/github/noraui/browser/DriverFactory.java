@@ -171,14 +171,12 @@ public class DriverFactory {
     /**
      * Generates a chrome webdriver.
      *
-     * @param headlessMode
-     *            Enable headless mode ?
      * @return
      *         A chrome webdriver
      * @throws TechnicalException
      *             if an error occured when Webdriver setExecutable to true.
      */
-    private WebDriver generateGoogleChromeDriver(boolean headlessMode) throws TechnicalException {
+    private WebDriver generateGoogleChromeDriver() throws TechnicalException {
         final String pathWebdriver = DriverFactory.getPath(Driver.CHROME);
         if (!new File(pathWebdriver).setExecutable(true)) {
             throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_WEBDRIVER_SET_EXECUTABLE));
@@ -316,7 +314,7 @@ public class DriverFactory {
         if (IE.equals(driverName)) {
             driver = generateIEDriver();
         } else if (CHROME.equals(driverName)) {
-            driver = generateGoogleChromeDriver(false);
+            driver = generateGoogleChromeDriver();
         } else if (HTMLUNIT.equals(driverName)) {
             driver = generateHtmlUnitDriver();
         } else if (FIREFOX.equals(driverName)) {
