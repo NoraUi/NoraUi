@@ -307,7 +307,8 @@ public class Step implements IStep {
         try {
             Context.waitUntil(ExpectSteps.textToBeEqualsToExpectedValue(Utilities.getLocator(pageElement), value));
         } catch (Exception e) {
-            new Result.Failure<>(element == null ? null : element.getText(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE), pageElement, value, pageElement.getPage().getApplication()), true,
+            new Result.Failure<>(element == null ? null : element.getText(),
+                    Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE), pageElement, value, pageElement.getPage().getApplication()), true,
                     pageElement.getPage().getCallBack());
         }
 

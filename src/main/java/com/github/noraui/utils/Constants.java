@@ -23,6 +23,8 @@ public class Constants {
     public static final String DATA_IN = "/data/in/";
     public static final String DATA_OUT = "/data/out/";
 
+    public static final String DOWNLOAD_FILES_FOLDER = "downloadFiles";
+
     /**
      * Private constructor
      */

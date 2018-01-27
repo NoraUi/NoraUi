@@ -50,7 +50,11 @@ git clone --bare https://github.com/NoraUi/countries-app-sample.git
 # start NoraUi part =>
 cd $(dirname $0)
 cd ..
-mvn -e -U clean org.jacoco:jacoco-maven-plugin:prepare-agent package javadoc:javadoc sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=noraui -Dsonar.login=$SONAR_TOKEN -Dcucumber.options="--tags '@hello or @bonjour or @blog or @playToLogoGame or @jouerAuJeuDesLogos'" -PscenarioInitiator,javadoc,unit-tests --settings test/mvnsettings.xml -Dmaven.test.failure.ignore=true
+if [ "$TRAVIS_REPO_SLUG" == 'NoraUi/NoraUi' ] && [ "$TRAVIS_BRANCH" == 'master' ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ]; then
+    mvn -e -U clean org.jacoco:jacoco-maven-plugin:prepare-agent package javadoc:javadoc sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=noraui -Dsonar.login=$SONAR_TOKEN -Dcucumber.options="--tags '@hello or @bonjour or @blog or @playToLogoGame or @jouerAuJeuDesLogos'" -PscenarioInitiator,javadoc,unit-tests --settings test/mvnsettings.xml -Dmaven.test.failure.ignore=true
+else
+    mvn -e -U clean package javadoc:javadoc -Dcucumber.options="--tags '@hello or @bonjour or @blog or @playToLogoGame or @jouerAuJeuDesLogos'" -PscenarioInitiator,javadoc,unit-tests --settings test/mvnsettings.xml -Dmaven.test.failure.ignore=true
+fi
 
 #
 # kill Web Services (REST)
@@ -70,13 +74,8 @@ curl -s "https://api.travis-ci.org/jobs/${TRAVIS_JOB_ID}/log.txt?deansi=true" > 
 nb_failure=$(sed -n ":;s/BUILD FAILURE//p;t" nonaui.log | sed -n '$=')
 if [ "$nb_failure" != "" ]; then
     echo "******** BUILD FAILURE find $nb_failure time in build"
-    
-    # patch for run any PR. (in PR case, the commiter do not have any sonar licence).
-    sonar_governance=$(sed -n ":;s/Failed to execute goal org.sonarsource.scanner.maven:sonar-maven-plugin:\(.*\):sonar \(default-cli\) on project noraui: No license for governance//p;t" nonaui.log | sed -n '$=')
-    if [ "$sonar_governance" == "" ]; then
-        echo "******** BUILD FAILURE find $nb_failure time in build"
-        exit 255
-    fi
+    echo "******** BUILD FAILURE find $nb_failure time in build"
+    exit 255
 fi
 
 echo "***************************************************"

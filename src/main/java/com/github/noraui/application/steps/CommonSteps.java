@@ -6,6 +6,7 @@
  */
 package com.github.noraui.application.steps;
 
+import static com.github.noraui.utils.Constants.DOWNLOAD_FILES_FOLDER;
 import static com.github.noraui.utils.Constants.USER_DIR;
 
 import java.io.File;
