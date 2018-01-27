@@ -63,6 +63,12 @@ public class CommonSteps extends Step {
 
     public static final String DOWNLOAD_FILES_FOLDER = "downloadFiles";
 
+    /**
+     * @param conditions
+     *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
+     * @throws IOException
+     *             if file or directory is wrong.
+     */
     @Conditioned
     @Lorsque("Je vide le repertoire des téléchargements[\\.|\\?]")
     @Given("I clean download directory[\\.|\\?]")
