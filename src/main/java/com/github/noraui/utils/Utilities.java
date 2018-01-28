@@ -287,7 +287,7 @@ public class Utilities {
         } else {
             logger.warn(Messages.getMessage(UTILITIES_ERROR_TAKING_SCREENSHOT), Context.getBrowser());
         }
-    }    
+    }
 
     public enum OperatingSystem {
 

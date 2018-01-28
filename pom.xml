@@ -116,13 +116,13 @@
             <layout>default</layout>
         </repository>
     </repositories>
-    
+
     <pluginRepositories>
-		<pluginRepository>
-			<id>maven.oracle.com</id>
-			<url>https://maven.oracle.com</url>
-		</pluginRepository>
-	</pluginRepositories>
+        <pluginRepository>
+            <id>maven.oracle.com</id>
+            <url>https://maven.oracle.com</url>
+        </pluginRepository>
+    </pluginRepositories>
 
     <dependencies>
 
@@ -234,6 +234,20 @@
             <version>${springframework.version}</version>
         </dependency>
 
+        <!-- javax.mail -->
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.0</version>
+        </dependency>
+
+        <!-- jsoup -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.11.2</version>
+        </dependency>
+
         <!-- powermock & mockito -->
         <dependency>
             <groupId>org.powermock</groupId>
@@ -260,11 +274,11 @@
         </dependency>
 
         <!-- database drivers -->
-        <!--dependency>
-            <groupId>com.oracle.jdbc</groupId>
-            <artifactId>ojdbc8</artifactId>
-            <version>${oracle.driver.version}</version>
-        </dependency-->
+        <!-- <dependency> -->
+        <!-- <groupId>com.oracle.jdbc</groupId> -->
+        <!-- <artifactId>ojdbc8</artifactId> -->
+        <!-- <version>${oracle.driver.version}</version> -->
+        <!-- </dependency> -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
@@ -305,30 +319,30 @@
             <artifactId>j2objc-annotations</artifactId>
             <version>${j2objc-annotations.version}</version>
         </dependency>
-        
-        <!-- logback -->
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-core</artifactId>
-			<version>${logback.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>${logback.version}</version>
-		</dependency>
 
-		<!-- slf4j -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>${slf4j.version}</version>
-		</dependency>
+        <!-- logback -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+
+        <!-- slf4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
 
         <!-- javassist -->
         <dependency>
