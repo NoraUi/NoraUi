@@ -87,6 +87,8 @@ public class Messages {
     public static final String FAIL_MESSAGE_FILE_NOT_FOUND = "FAIL_MESSAGE_FILE_NOT_FOUND";
     public static final String FAIL_MESSAGE_FILE_NOT_MATCHES = "FAIL_MESSAGE_FILE_NOT_MATCHES";
     public static final String FAIL_MESSAGE_UPLOADING_FILE = "FAIL_MESSAGE_UPLOADING_FILE";
+    public static final String FAIL_MESSAGE_MAIL_ACTIVATION = "FAIL_MESSAGE_MAIL_ACTIVATION";
+
 
     /**
      * Format given message with provided arguments

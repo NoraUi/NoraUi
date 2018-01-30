@@ -1,6 +1,6 @@
 /**
  * NoraUi is licensed under the licence GNU AFFERO GENERAL PUBLIC LICENSE
- * 
+ *
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
@@ -88,7 +88,7 @@ public class CommonSteps extends Step {
     @Lorsque("J'attends l'invisibilité de '(.*)-(.*)' avec un timeout de '(.*)' secondes[\\.|\\?]")
     @Then("I wait invisibility of '(.*)-(.*)' with timeout of '(.*)' seconds[\\.|\\?]")
     public void waitInvisibilityOf(String page, String element, int time, List<GherkinStepCondition> conditions) throws TechnicalException {
-        WebElement we = Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + element));
+        final WebElement we = Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + element));
         Context.waitUntil(ExpectedConditions.invisibilityOf(we), time);
     }
 
@@ -110,10 +110,9 @@ public class CommonSteps extends Step {
     @Lorsque("J'attends la diparition de '(.*)-(.*)' avec un timeout de '(.*)' secondes[\\.|\\?]")
     @Then("I wait staleness of '(.*)-(.*)' with timeout of '(.*)' seconds[\\.|\\?]")
     public void waitStalenessOf(String page, String element, int time, List<GherkinStepCondition> conditions) throws TechnicalException {
-        WebElement we = Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + element));
+        final WebElement we = Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + element));
         Context.waitUntil(ExpectedConditions.stalenessOf(we), time);
     }
-
 
     /**
      * Loops on steps execution for a specific number of times.
@@ -136,7 +135,7 @@ public class CommonSteps extends Step {
                     runAllStepsInLoop(steps);
                 }
             }
-        } catch (TechnicalException e) {
+        } catch (final TechnicalException e) {
             throw new AssertError(Messages.getMessage(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE) + e.getMessage());
         }
     }
@@ -168,7 +167,7 @@ public class CommonSteps extends Step {
                     runAllStepsInLoop(conditions);
                 } while (!Pattern.compile(breakCondition).matcher(Context.getValue(key) == null ? "" : Context.getValue(key)).find() && i <= tries);
             }
-        } catch (TechnicalException e) {
+        } catch (final TechnicalException e) {
             throw new AssertError(Messages.getMessage(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE) + e.getMessage());
         }
     }
@@ -200,7 +199,7 @@ public class CommonSteps extends Step {
                     runAllStepsInLoop(conditions);
                 }
             }
-        } catch (TechnicalException e) {
+        } catch (final TechnicalException e) {
             throw new AssertError(Messages.getMessage(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE) + e.getMessage());
         }
     }
@@ -227,7 +226,7 @@ public class CommonSteps extends Step {
     @Given("I check that (.*) '(.*)' is not empty[\\.|\\?]")
     public void checkNotEmpty(String data, @TimeName("textOrKey") String textOrKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         if (!"".equals(data)) {
-            String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
+            final String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
             if ("".equals(value)) {
                 new Result.Failure<>(textOrKey, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_EMPTY_DATA), data), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
             }
@@ -248,14 +247,14 @@ public class CommonSteps extends Step {
     @Lorsque("Je vérifie les champs obligatoires:")
     @Given("I check mandatory fields:")
     public void checkMandatoryFields(Map<String, String> mandatoryFields) throws TechnicalException, FailureException {
-        List<String> errors = new ArrayList<>();
-        for (Entry<String, String> element : mandatoryFields.entrySet()) {
+        final List<String> errors = new ArrayList<>();
+        for (final Entry<String, String> element : mandatoryFields.entrySet()) {
             if ("".equals(element.getValue())) {
                 errors.add(element.getKey());
             }
         }
         if (!errors.isEmpty()) {
-            StringBuilder errorMessage = new StringBuilder();
+            final StringBuilder errorMessage = new StringBuilder();
             int index = errorMessage.length();
             for (int j = 0; j < errors.size(); j++) {
                 errorMessage.append(Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_EMPTY_DATA), errors.get(j)));
@@ -328,14 +327,14 @@ public class CommonSteps extends Step {
             if (value == null) {
                 value = "";
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, Page.getInstance(page).getCallBack());
         }
         Context.getCurrentScenario().write(Messages.format("Value of %s is: %s\n", field, value));
-        for (Integer line : Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData()).getIndexes()) {
+        for (final Integer line : Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData()).getIndexes()) {
             try {
                 Context.getDataOutputProvider().writeDataResult(targetColumn, line, value);
-            } catch (TechnicalException e) {
+            } catch (final TechnicalException e) {
                 new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_WRITE_MESSAGE_IN_RESULT_FILE), targetColumn), true,
                         Page.getInstance(page).getCallBack());
             }
@@ -456,22 +455,22 @@ public class CommonSteps extends Step {
     @Quand("Je clique sur '(.*)-(.*)' et passe sur '(.*)' de type fenêtre[\\.|\\?]")
     @When("I click on '(.*)-(.*)' and switch to '(.*)' window[\\.|\\?]")
     public void clickOnAndSwitchWindow(String page, String toClick, String windowKey, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
-        String wKey = Page.getInstance(page).getApplication() + Page.getInstance(windowKey).getPageKey();
-        String handleToSwitch = Context.getWindows().get(wKey);
+        final String wKey = Page.getInstance(page).getApplication() + Page.getInstance(windowKey).getPageKey();
+        final String handleToSwitch = Context.getWindows().get(wKey);
         if (handleToSwitch != null) {
             Context.getDriver().switchTo().window(handleToSwitch);
             Context.getDriver().manage().window().maximize();
             Context.setMainWindow(windowKey);
         } else {
             try {
-                Set<String> initialWindows = getDriver().getWindowHandles();
+                final Set<String> initialWindows = getDriver().getWindowHandles();
                 clickOn(Page.getInstance(page).getPageElementByKey('-' + toClick));
-                String newWindowHandle = Context.waitUntil(WindowManager.newWindowOpens(initialWindows));
+                final String newWindowHandle = Context.waitUntil(WindowManager.newWindowOpens(initialWindows));
                 Context.addWindow(wKey, newWindowHandle);
                 getDriver().switchTo().window(newWindowHandle);
                 Context.getDriver().manage().window().maximize();
                 Context.setMainWindow(newWindowHandle);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_SWITCH_WINDOW), windowKey), true, Page.getInstance(page).getCallBack());
             }
             if (!Page.getInstance(windowKey).checkPage()) {
@@ -504,9 +503,9 @@ public class CommonSteps extends Step {
     @Quand("Je mets à jour la date '(.*)-(.*)' avec une '(.*)' date '(.*)'[\\.|\\?]")
     @When("I update date '(.*)-(.*)' with a '(.*)' date '(.*)'[\\.|\\?]")
     public void updateDate(String page, String elementName, String dateType, String dateOrKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
-        String date = Context.getValue(dateOrKey) != null ? Context.getValue(dateOrKey) : dateOrKey;
+        final String date = Context.getValue(dateOrKey) != null ? Context.getValue(dateOrKey) : dateOrKey;
         if (!"".equals(date)) {
-            PageElement pageElement = Page.getInstance(page).getPageElementByKey('-' + elementName);
+            final PageElement pageElement = Page.getInstance(page).getPageElementByKey('-' + elementName);
             if (date.matches(Constants.DATE_FORMAT_REG_EXP)) {
                 updateDateValidated(pageElement, dateType, date);
             } else {
@@ -607,7 +606,7 @@ public class CommonSteps extends Step {
     @Lorsque("Je vérifie le champ obligatoire '(.*)-(.*)' de type '(.*)'[\\.|\\?]")
     @Then("I check mandatory field '(.*)-(.*)' of type '(.*)'[\\.|\\?]")
     public void checkMandatoryField(String page, String fieldName, String type, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
-        PageElement pageElement = Page.getInstance(page).getPageElementByKey('-' + fieldName);
+        final PageElement pageElement = Page.getInstance(page).getPageElementByKey('-' + fieldName);
         if ("text".equals(type)) {
             if (!checkMandatoryTextField(pageElement)) {
                 new Result.Failure<>(pageElement, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_EMPTY_MANDATORY_FIELD), pageElement, pageElement.getPage().getApplication()), true,
@@ -773,8 +772,8 @@ public class CommonSteps extends Step {
     @And("I check message '(.*)' on alert")
     public void checkAlertInLogs(String messageOrKey) throws TechnicalException, FailureException {
         if (DriverFactory.CHROME.equals(Context.getBrowser()) || DriverFactory.PHANTOM.equals(Context.getBrowser())) {
-            String message = Context.getValue(messageOrKey) != null ? Context.getValue(messageOrKey) : messageOrKey;
-            String msg = getLastConsoleAlertMessage();
+            final String message = Context.getValue(messageOrKey) != null ? Context.getValue(messageOrKey) : messageOrKey;
+            final String msg = getLastConsoleAlertMessage();
             if (msg == null || !msg.equals(message)) {
                 new Result.Failure<>(msg, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_NOT_FOUND_ON_ALERT), message), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
             }

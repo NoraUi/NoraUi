@@ -1,11 +1,16 @@
 /**
  * NoraUi is licensed under the licence GNU AFFERO GENERAL PUBLIC LICENSE
- * 
+ *
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
 package com.github.noraui.utils;
 
+import static com.github.noraui.utils.Constants.DOWNLOADED_FILES_FOLDER;
+import static com.github.noraui.utils.Constants.USER_DIR;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -16,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nullable;
 
+import org.apache.commons.io.FileUtils;
 import org.ini4j.Ini;
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -263,6 +269,21 @@ public class Utilities {
         if (!DriverFactory.HTMLUNIT.equals(Context.getBrowser())) {
             final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
             scenario.embed(screenshot, "image/png");
+        } else {
+            logger.warn(Messages.getMessage(UTILITIES_ERROR_TAKING_SCREENSHOT), Context.getBrowser());
+        }
+    }
+
+    /**
+     * Indicates a driver that can capture a screenshot and store it in different ways.
+     *
+     * @throws IOException
+     */
+    public static void saveScreenshot(String screenName) throws IOException {
+        if (!DriverFactory.HTMLUNIT.equals(Context.getBrowser())) {
+            final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
+            FileUtils.forceMkdir(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
+            FileUtils.writeByteArrayToFile(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + screenName + ".jpg"), screenshot);
         } else {
             logger.warn(Messages.getMessage(UTILITIES_ERROR_TAKING_SCREENSHOT), Context.getBrowser());
         }
