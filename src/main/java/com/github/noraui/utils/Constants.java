@@ -1,6 +1,6 @@
 /**
  * NoraUi is licensed under the licence GNU AFFERO GENERAL PUBLIC LICENSE
- * 
+ *
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
@@ -22,6 +22,8 @@ public class Constants {
 
     public static final String DATA_IN = "/data/in/";
     public static final String DATA_OUT = "/data/out/";
+
+    public static final String DOWNLOADED_FILES_FOLDER = "downloadFiles";
 
     /**
      * Private constructor

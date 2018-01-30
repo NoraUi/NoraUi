@@ -1,12 +1,12 @@
 /**
  * NoraUi is licensed under the licence GNU AFFERO GENERAL PUBLIC LICENSE
- * 
+ *
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
 package com.github.noraui.browser;
 
-import static com.github.noraui.application.steps.CommonSteps.DOWNLOAD_FILES_FOLDER;
+import static com.github.noraui.utils.Constants.DOWNLOADED_FILES_FOLDER;
 import static com.github.noraui.utils.Constants.USER_DIR;
 
 import java.io.File;
@@ -205,9 +205,9 @@ public class DriverFactory {
 
         setChromeOptions(capabilities, chromeOptions);
 
-        String withWhitelistedIps = Context.getWebdriversProperties("withWhitelistedIps");
+        final String withWhitelistedIps = Context.getWebdriversProperties("withWhitelistedIps");
         if (withWhitelistedIps != null && !"".equals(withWhitelistedIps)) {
-            ChromeDriverService service = new ChromeDriverService.Builder().withWhitelistedIps(withWhitelistedIps).withVerbose(false).build();
+            final ChromeDriverService service = new ChromeDriverService.Builder().withWhitelistedIps(withWhitelistedIps).withVerbose(false).build();
             return new ChromeDriver(service, capabilities);
         } else {
             return new ChromeDriver(capabilities);
@@ -223,12 +223,12 @@ public class DriverFactory {
     private void setChromeOptions(final DesiredCapabilities capabilities, ChromeOptions chromeOptions) {
 
         // Set custom downloaded file path. When you check content of downloaded file by robot.
-        HashMap<String, Object> chromePrefs = new HashMap<>();
-        chromePrefs.put("download.default_directory", System.getProperty(USER_DIR) + File.separator + DOWNLOAD_FILES_FOLDER);
+        final HashMap<String, Object> chromePrefs = new HashMap<>();
+        chromePrefs.put("download.default_directory", System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER);
         chromeOptions.setExperimentalOption("prefs", chromePrefs);
 
         // Set custom chromium (if you not use default chromium on your target device)
-        String targetBrowserBinaryPath = Context.getWebdriversProperties("targetBrowserBinaryPath");
+        final String targetBrowserBinaryPath = Context.getWebdriversProperties("targetBrowserBinaryPath");
         if (targetBrowserBinaryPath != null && !"".equals(targetBrowserBinaryPath)) {
             chromeOptions.setBinary(targetBrowserBinaryPath);
         }

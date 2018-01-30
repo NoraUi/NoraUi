@@ -1,6 +1,6 @@
 /**
  * NoraUi is licensed under the licence GNU AFFERO GENERAL PUBLIC LICENSE
- * 
+ *
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
@@ -86,6 +86,7 @@ public class Messages {
     public static final String FAIL_MESSAGE_DOWNLOADED_FILE_NOT_FOUND = "FAIL_MESSAGE_DOWNLOADED_FILE_NOT_FOUND";
     public static final String FAIL_MESSAGE_FILE_NOT_FOUND = "FAIL_MESSAGE_FILE_NOT_FOUND";
     public static final String FAIL_MESSAGE_FILE_NOT_MATCHES = "FAIL_MESSAGE_FILE_NOT_MATCHES";
+    public static final String FAIL_MESSAGE_UPLOADING_FILE = "FAIL_MESSAGE_UPLOADING_FILE";
 
     /**
      * Format given message with provided arguments

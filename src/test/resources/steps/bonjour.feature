@@ -32,6 +32,10 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
 
     Lorsque moi un chat, s'il vous plaît, meilleures salutations '<author>'.
     
+    Quand J'utilise l'élément 'demo.DemoPage-file_input_text_field' pour uploader le fichier 'test.txt'.
+    Et Je clique sur 'demo.DemoPage-send'.
+    Alors Je vérifie le texte 'demo.DemoPage-input_text_field' avec 'test.txt'.
+    
     Quand Je clarifie le texte dans 'demo.DemoPage-input_text_field'.
     Quand Je mets à jour le texte 'demo.DemoPage-input_text_field' avec '<author>'.
     Quand Je mets à jour le texte 'demo.DemoPage-input_text_field' et entre ENTRER avec '<author>'.

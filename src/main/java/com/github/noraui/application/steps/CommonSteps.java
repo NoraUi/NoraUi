@@ -6,19 +6,13 @@
  */
 package com.github.noraui.application.steps;
 
-import static com.github.noraui.utils.Constants.USER_DIR;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -46,7 +40,6 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import cucumber.api.java.fr.Alors;
 import cucumber.api.java.fr.Et;
 import cucumber.api.java.fr.Lorsque;
 import cucumber.api.java.fr.Quand;
@@ -59,16 +52,6 @@ public class CommonSteps extends Step {
      * Specific logger
      */
     private static final Logger logger = LoggerFactory.getLogger(CommonSteps.class);
-
-    public static final String DOWNLOAD_FILES_FOLDER = "downloadFiles";
-
-    @Conditioned
-    @Lorsque("Je vide le repertoire des téléchargements[\\.|\\?]")
-    @Given("I clean download directory[\\.|\\?]")
-    public void cleanDownloadDirectory(List<GherkinStepCondition> conditions) throws IOException {
-        FileUtils.forceMkdir(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOAD_FILES_FOLDER));
-        FileUtils.cleanDirectory(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOAD_FILES_FOLDER));
-    }
 
     /**
      * Waits a time in second.
@@ -88,36 +71,7 @@ public class CommonSteps extends Step {
     }
 
     /**
-     * Waits a time in second.
-     *
-     * @param time
-     *            is time to wait
-     * @param conditions
-     *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
-     * @throws InterruptedException
-     *             Exception for the sleep
-     * @throws TechnicalException
-     * @throws FailureException
-     */
-    @Conditioned
-    @Lorsque("J'attends que le fichier nommé '(.*)' soit téléchargé avec un timeout de '(.*)' secondes[\\.|\\?]")
-    @Then("I wait file named '(.*)' to be downloaded with timeout of '(.*)' seconds[\\.|\\?]")
-    public void waitDownloadFile(String file, int timeout, List<GherkinStepCondition> conditions) throws InterruptedException, FailureException, TechnicalException {
-        File f;
-        int nbTry = 0;
-        do {
-            if (nbTry >= timeout) {
-                new Result.Failure<>(file, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_DOWNLOADED_FILE_NOT_FOUND), file), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
-            }
-            Thread.sleep(1000);
-            f = new File(System.getProperty(USER_DIR) + File.separator + DOWNLOAD_FILES_FOLDER + File.separator + file);
-            nbTry++;
-        } while (!(f.exists() && !f.isDirectory()));
-        logger.debug("File downloaded in {} seconds.", nbTry);
-    }
-
-    /**
-     * Wait invisibility of element with timeout of x seconds.
+     * Waits invisibility of element with timeout of x seconds.
      *
      * @param page
      *            The concerned page of field
@@ -139,7 +93,7 @@ public class CommonSteps extends Step {
     }
 
     /**
-     * Wait staleness of element with timeout of x seconds.
+     * Waits staleness of element with timeout of x seconds.
      *
      * @param page
      *            The concerned page of field
@@ -160,22 +114,9 @@ public class CommonSteps extends Step {
         Context.waitUntil(ExpectedConditions.stalenessOf(we), time);
     }
 
-    @Conditioned
-    @Alors("Le fichier '(.*)' encodé en '(.*)' vérifie '(.*)'[\\.|\\?]")
-    @Then("The file '(.*)' encoded in '(.*)' matches '(.*)'[\\.|\\?]")
-    public void checkFile(String file, String encoding, String regexp, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
-        try {
-            Matcher m = Pattern.compile(regexp).matcher(FileUtils.readFileToString(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOAD_FILES_FOLDER + File.separator + file), encoding));
-            if (!m.find()) {
-                new Result.Failure<>(file, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_FILE_NOT_MATCHES), file, regexp), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
-            }
-        } catch (IOException e) {
-            new Result.Failure<>(file, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_FILE_NOT_FOUND), file), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
-        }
-    }
 
     /**
-     * Loop on steps execution for a specific number of times.
+     * Loops on steps execution for a specific number of times.
      *
      * @param actual
      *            actual value for global condition.
@@ -201,7 +142,7 @@ public class CommonSteps extends Step {
     }
 
     /**
-     * Do steps execution until a given condition is unverified.
+     * Does steps execution until a given condition is unverified.
      *
      * @param actual
      *            actual value for global condition.
@@ -233,7 +174,7 @@ public class CommonSteps extends Step {
     }
 
     /**
-     * While a given condition is verified, do steps execution.
+     * While a given condition is verified, does steps execution.
      *
      * @param actual
      *            actual value for global condition.

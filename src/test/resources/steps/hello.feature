@@ -30,6 +30,10 @@ Feature: hello (Function to validate the environment.)
         |city|<city>|
 			  
     Given me a cat, please. Best Regards '<author>'.
+    
+    When I use 'demo.DemoPage-file_input_text_field' element to upload 'test.txt' file.
+    And I click on 'demo.DemoPage-send'.
+    Then I check text 'demo.DemoPage-input_text_field' with 'test.txt'.
 		
     When I clear text in 'demo.DemoPage-input_text_field'.
     When I update text 'demo.DemoPage-input_text_field' with '<author>'.
