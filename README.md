@@ -43,7 +43,7 @@ Does NoraUi not support your language? Please help us with a PR!
 [![SonarCloud Vulnerabilities](https://sonarcloud.io/api/badges/measure?key=com.github.noraui%3Anoraui&metric=vulnerabilities)](https://sonarcloud.io/component_measures/metric/security_rating/list?id=com.github.noraui%3Anoraui)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ee5c5b13365d4de5ba6b1ec4f8b984d2)](https://www.codacy.com/app/noraui/NoraUi?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=NoraUi/NoraUi&amp;utm_campaign=Badge_Grade)
 
-# Contributors
+# :octocat: Contributors
 
 [![GitHub contributors](https://img.shields.io/github/contributors/NoraUi/NoraUi.svg)](https://github.com/NoraUi/NoraUi/graphs/contributors)
 [![GitHub closed pull requests](https://img.shields.io/github/issues-pr/NoraUi/NoraUi.svg)](https://github.com/NoraUi/NoraUi/pulls)
