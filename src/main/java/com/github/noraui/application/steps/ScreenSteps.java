@@ -40,7 +40,7 @@ public class ScreenSteps extends Step {
     @Et("Je prends une capture d'écran[\\.|\\?]")
     @And("I take a screenshot[\\.|\\?]")
     public void takeScreenshot(List<GherkinStepCondition> conditions) {
-        logger.debug("Current scenario is {}", Context.getCurrentScenario());
+        logger.debug("I take a screenshot in [{}] scenario.", Context.getCurrentScenario());
         Utilities.takeScreenshot(Context.getCurrentScenario());
     }
 
@@ -56,8 +56,34 @@ public class ScreenSteps extends Step {
     @Et("Je sauvegarde une capture d'écran dans '(.*)'[\\.|\\?]")
     @And("I save a screenshot in '(.*)'[\\.|\\?]")
     public void saveScreenshot(String screenName, List<GherkinStepCondition> conditions) throws IOException {
-        logger.debug("Current scenario is {}", Context.getCurrentScenario());
+        logger.debug("I save a screenshot in [{}.jpg]", screenName);
         Utilities.saveScreenshot(screenName);
+    }
+
+    /**
+     * Save a screenshot of one element only and add to DOWNLOAD_FILES_FOLDER folder.
+     *
+     * @param page
+     *            The concerned page of field
+     * @param element
+     *            is key of PageElement concerned
+     * @param conditions
+     *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
+     * @throws IOException
+     *             if file or directory is wrong.
+     * @throws TechnicalException
+     * @throws FailureException
+     */
+    @Conditioned
+    @Et("Je sauvegarde une capture d'écran de '(.*)-(.*)' dans '(.*)'[\\.|\\?]")
+    @And("I save a screenshot of '(.*)-(.*)' in '(.*)'[\\.|\\?]")
+    public void saveWebElementInScreenshot(String page, String element, String screenName, List<GherkinStepCondition> conditions) throws IOException, FailureException, TechnicalException {
+        logger.debug("I save a screenshot of [{}-{}] in [{}.jpg]", page, element, screenName);
+        try {
+            Utilities.saveScreenshot(screenName, Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + element)))));
+        } catch (Exception e) {
+            new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, Page.getInstance(page).getCallBack());
+        }
     }
 
 }
