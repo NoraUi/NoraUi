@@ -141,6 +141,7 @@ Feature: hello (Function to validate the environment.)
 
     And I take a screenshot.
     And I save a screenshot in 'myScreenshot-<id>'.
+    And I save a screenshot of 'demo.DemoPage-changeValueButton' in 'changeValueButton<id>'.
 
     And I go back to 'DEMO_HOME'        
 
