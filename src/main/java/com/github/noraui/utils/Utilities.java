@@ -302,7 +302,7 @@ public class Utilities {
     public static void saveScreenshot(String screenName, WebElement element) throws IOException {
         if (!DriverFactory.HTMLUNIT.equals(Context.getBrowser())) {
             final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
-            FileUtils.forceMkdir(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOAD_FILES_FOLDER));
+            FileUtils.forceMkdir(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
 
             InputStream in = new ByteArrayInputStream(screenshot);
             BufferedImage fullImg = ImageIO.read(in);
@@ -316,7 +316,7 @@ public class Utilities {
 
             // Crop the entire page screenshot to get only element screenshot
             BufferedImage eleScreenshot = fullImg.getSubimage(point.getX(), point.getY(), eleWidth, eleHeight);
-            ImageIO.write(eleScreenshot, "jpg", new File(System.getProperty(USER_DIR) + File.separator + DOWNLOAD_FILES_FOLDER + File.separator + screenName + ".jpg"));
+            ImageIO.write(eleScreenshot, "jpg", new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + screenName + ".jpg"));
         } else {
             logger.warn(Messages.getMessage(UTILITIES_ERROR_TAKING_SCREENSHOT), Context.getBrowser());
         }
