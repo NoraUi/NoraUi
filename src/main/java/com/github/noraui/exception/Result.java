@@ -13,9 +13,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.noraui.exception.Callbacks.Callback;
+import com.github.noraui.service.ScreenService;
+import com.github.noraui.service.impl.ScreenServiceImpl;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
-import com.github.noraui.utils.Utilities;
 
 public abstract class Result {
 
@@ -76,6 +77,8 @@ public abstract class Result {
          */
         private static final Logger logger = LoggerFactory.getLogger(Warning.class);
 
+        private ScreenService screenService = new ScreenServiceImpl();
+
         private final O object;
 
         /**
@@ -104,7 +107,7 @@ public abstract class Result {
             }
             if (takeScreenshot) {
                 logger.debug("Current scenario is {}", Context.getCurrentScenario());
-                Utilities.takeScreenshot(Context.getCurrentScenario());
+                screenService.takeScreenshot(Context.getCurrentScenario());
             }
             Context.getCurrentScenario().write(Messages.getMessage(Messages.WARNING_MESSAGE_DEFAULT) + message);
             O s = warning();
@@ -128,6 +131,8 @@ public abstract class Result {
          */
         private static final Logger logger = LoggerFactory.getLogger(Failure.class);
 
+        private ScreenService screenService = new ScreenServiceImpl();
+
         private final O error;
 
         /**
@@ -150,7 +155,6 @@ public abstract class Result {
             this.nid = nid;
             this.takeScreenshot = takeScreenshot;
             this.callback = callback;
-
             throw new FailureException(this);
         }
 
@@ -172,7 +176,6 @@ public abstract class Result {
             this.nid = 1;
             this.takeScreenshot = takeScreenshot;
             this.callback = callback;
-
             throw new FailureException(this);
         }
 
@@ -203,7 +206,7 @@ public abstract class Result {
             }
             if (takeScreenshot) {
                 logger.debug("Current scenario is {}", Context.getCurrentScenario());
-                Utilities.takeScreenshot(Context.getCurrentScenario());
+                screenService.takeScreenshot(Context.getCurrentScenario());
             }
             if (callback != null) {
                 callback.call();

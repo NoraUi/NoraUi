@@ -6,14 +6,6 @@
  */
 package com.github.noraui.utils;
 
-import static com.github.noraui.utils.Constants.DOWNLOADED_FILES_FOLDER;
-import static com.github.noraui.utils.Constants.USER_DIR;
-
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -23,15 +15,10 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nullable;
-import javax.imageio.ImageIO;
 
-import org.apache.commons.io.FileUtils;
 import org.ini4j.Ini;
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -42,16 +29,12 @@ import com.github.noraui.application.page.Page;
 import com.github.noraui.application.page.Page.PageElement;
 import com.github.noraui.browser.DriverFactory;
 
-import cucumber.api.Scenario;
-
 public class Utilities {
 
     /**
      * Specific logger
      */
     private static final Logger logger = LoggerFactory.getLogger(Utilities.class);
-
-    private static final String UTILITIES_ERROR_TAKING_SCREENSHOT = "UTILITIES_ERROR_TAKING_SCREENSHOT";
 
     /**
      * @param applicationKey
@@ -262,64 +245,6 @@ public class Utilities {
      */
     public static boolean isElementPresent(By element) {
         return isElementPresentAndGetFirstOne(element) != null;
-    }
-
-    /**
-     * Indicates a driver that can capture a screenshot and store it in different ways.
-     *
-     * @param scenario
-     *            is instance of {link cucumber.api.Scenario}
-     */
-    public static void takeScreenshot(Scenario scenario) {
-        if (!DriverFactory.HTMLUNIT.equals(Context.getBrowser())) {
-            final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
-            scenario.embed(screenshot, "image/png");
-        } else {
-            logger.warn(Messages.getMessage(UTILITIES_ERROR_TAKING_SCREENSHOT), Context.getBrowser());
-        }
-    }
-
-    /**
-     * Indicates a driver that can capture a screenshot and store it in different ways.
-     *
-     * @throws IOException
-     */
-    public static void saveScreenshot(String screenName) throws IOException {
-        if (!DriverFactory.HTMLUNIT.equals(Context.getBrowser())) {
-            final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
-            FileUtils.forceMkdir(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
-            FileUtils.writeByteArrayToFile(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + screenName + ".jpg"), screenshot);
-        } else {
-            logger.warn(Messages.getMessage(UTILITIES_ERROR_TAKING_SCREENSHOT), Context.getBrowser());
-        }
-    }
-
-    /**
-     * Indicates a driver that can capture a screenshot of one element only and store it in different ways.
-     * 
-     * @throws IOException
-     */
-    public static void saveScreenshot(String screenName, WebElement element) throws IOException {
-        if (!DriverFactory.HTMLUNIT.equals(Context.getBrowser())) {
-            final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
-            FileUtils.forceMkdir(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
-
-            InputStream in = new ByteArrayInputStream(screenshot);
-            BufferedImage fullImg = ImageIO.read(in);
-
-            // Get the location of element on the page
-            Point point = element.getLocation();
-
-            // Get width and height of the element
-            int eleWidth = element.getSize().getWidth();
-            int eleHeight = element.getSize().getHeight();
-
-            // Crop the entire page screenshot to get only element screenshot
-            BufferedImage eleScreenshot = fullImg.getSubimage(point.getX(), point.getY(), eleWidth, eleHeight);
-            ImageIO.write(eleScreenshot, "jpg", new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + screenName + ".jpg"));
-        } else {
-            logger.warn(Messages.getMessage(UTILITIES_ERROR_TAKING_SCREENSHOT), Context.getBrowser());
-        }
     }
 
     public enum OperatingSystem {

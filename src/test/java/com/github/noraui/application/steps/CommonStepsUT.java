@@ -13,7 +13,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -27,8 +26,6 @@ import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.GherkinStepCondition;
 import com.github.noraui.utils.Messages;
 import com.github.noraui.utils.Utilities;
-
-import cucumber.api.Scenario;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.management.*")
@@ -53,7 +50,7 @@ public class CommonStepsUT {
         // prepare mock
         PowerMockito.spy(Utilities.class);
         PowerMockito.doNothing().when(Utilities.class);
-        Utilities.takeScreenshot(Matchers.any(Scenario.class));
+        // Utilities.takeScreenshot(Matchers.any(Scenario.class));
 
         Page.setPageMainPackage("com.github.noraui.application.page.");
 
