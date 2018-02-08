@@ -380,7 +380,7 @@ public class StepUT {
             step.runAllStepsInLoop(steps);
             Assert.fail("TechnicalException should have been thrown");
         } catch (final TechnicalException e) {
-            Assert.assertEquals(e.getMessage(), String.format(Messages.getMessage("TECHNICAL_ERROR_STEP_UNDEFINED"), "I wait '4' seconds."));
+            Assert.assertEquals(String.format(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_STEP_UNDEFINED), "I wait '4' seconds."), e.getMessage());
         }
     }
 
