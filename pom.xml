@@ -283,11 +283,11 @@
         </dependency>
 
         <!-- database drivers -->
-        <!--dependency>
+        <dependency>
             <groupId>com.oracle.jdbc</groupId>
             <artifactId>ojdbc8</artifactId>
             <version>${oracle.driver.version}</version>
-        </dependency-->
+        </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
