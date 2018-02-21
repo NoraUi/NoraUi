@@ -107,25 +107,7 @@
             <id>sonatype-releases</id>
             <url>https://oss.sonatype.org/content/repositories/releases</url>
         </repository>
-        <repository>
-            <id>maven.oracle.com</id>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <url>https://maven.oracle.com</url>
-            <layout>default</layout>
-        </repository>
     </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>maven.oracle.com</id>
-            <url>https://maven.oracle.com</url>
-        </pluginRepository>
-    </pluginRepositories>
 
     <dependencies>
 
@@ -283,11 +265,6 @@
         </dependency>
 
         <!-- database drivers -->
-        <dependency>
-            <groupId>com.oracle.jdbc</groupId>
-            <artifactId>ojdbc8</artifactId>
-            <version>${oracle.driver.version}</version>
-        </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
@@ -450,7 +427,49 @@
     </build>
 
     <profiles>
-
+        <profile>
+            <id>default-profile</id>
+            <activation>
+                <property>
+                    <name>!pullrequest</name>
+                </property>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>maven.oracle.com</id>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                    <url>https://maven.oracle.com</url>
+                    <layout>default</layout>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>maven.oracle.com</id>
+                    <url>https://maven.oracle.com</url>
+                </pluginRepository>
+            </pluginRepositories>
+            <dependencies>
+                <!-- database drivers -->
+                <dependency>
+                    <groupId>com.oracle.jdbc</groupId>
+                    <artifactId>ojdbc8</artifactId>
+                    <version>${oracle.driver.version}</version>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>exclude-profile</id>
+            <activation>
+                <property>
+                    <name>pullrequest</name>
+                </property>
+            </activation>
+        </profile>
         <profile>
             <id>snapshot</id>
             <pluginRepositories>
