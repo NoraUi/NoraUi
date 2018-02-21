@@ -322,7 +322,8 @@ public class DriverFactory {
         } else {
             driver = generatePhantomJsDriver();
         }
-        driver.manage().window().maximize();
+        // As a workaround: NoraUi specify window size manually, e.g. window_size: 1920 x 1080 (instead of .window().maximize()).
+        driver.manage().window().setSize(new Dimension(1920, 1080));
         driver.manage().timeouts().implicitlyWait(IMPLICIT_WAIT, TimeUnit.MILLISECONDS);
         drivers.put(driverName, driver);
         return driver;
