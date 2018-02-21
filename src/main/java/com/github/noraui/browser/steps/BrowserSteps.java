@@ -303,7 +303,8 @@ public class BrowserSteps {
         String handleToSwitch = Context.getWindows().get(windowKey);
         if (handleToSwitch != null) {
             Context.getDriver().switchTo().window(handleToSwitch);
-            Context.getDriver().manage().window().maximize();
+            // As a workaround: NoraUi specify window size manually, e.g. window_size: 1920 x 1080 (instead of .window().maximize()).
+            Context.getDriver().manage().window().setSize(new Dimension(1920, 1080));
             Context.setMainWindow(windowKey);
         } else {
             new Result.Failure<>(windowKey, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_SWITCH_WINDOW), windowKey), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
