@@ -17,7 +17,10 @@ addons:
 jdk:
 - oraclejdk8
 
-before_install:
+before_script:
+- "export DISPLAY=:99.0"
+- "sh -e /etc/init.d/xvfb start"
+- sleep 3 # give xvfb some time to start
 - chmod +x test/run.sh
 - chmod +x test/after_success.sh
 - psql -c 'create database noraui owner travis;' -U postgres
