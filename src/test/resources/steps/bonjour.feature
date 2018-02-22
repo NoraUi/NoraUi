@@ -6,6 +6,10 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
     Lorsque Je vérifie que author '<author>' n'est pas vide.
     Lorsque Je vérifie que city '<city>' n'est pas vide.
     
+    Lorsque Je commence la capture vidéo dans 'hello'?
+        |key|expected|actual|
+        |id|1|<id>|
+    
     Lorsque Je vérifie les champs obligatoires:
         |author|<author>|
         |city|<city>|
@@ -139,7 +143,11 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
 
     Quand Je clique sur 'demo.DemoPage-changeValueButton'.
     Alors Je m'attends à avoir 'demo.DemoPage-changeValueButton' avec le texte 'My value has changed'.
-        
+
+    Et Je stop la capture vidéo?
+        |key|expected|actual|
+        |id|1|<id>|
+
     Et Je retourne vers 'DEMO_HOME'
 
   Exemples:

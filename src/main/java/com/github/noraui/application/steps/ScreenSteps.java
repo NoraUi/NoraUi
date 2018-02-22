@@ -125,7 +125,7 @@ public class ScreenSteps extends Step {
      * @throws IOException
      */
     @Conditioned
-    @Et("J'arrête la capture vidéo[\\.|\\?]")
+    @Et("Je stop la capture vidéo[\\.|\\?]")
     @And("I stop video capture[\\.|\\?]")
     public void stopVideoCapture(List<GherkinStepCondition> conditions) throws IOException {
         logger.debug("I stop video capture.");

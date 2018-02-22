@@ -5,6 +5,10 @@ Feature: hello (Function to validate the environment.)
     Given I check that author '<author>' is not empty.
     Given I check that city '<city>' is not empty.
     
+    Given I start video capture in 'hello'?
+        |key|expected|actual|
+        |id|1|<id>|
+    
     Given I check mandatory fields:
         |author|<author>|
         |city|<city>|
@@ -142,6 +146,10 @@ Feature: hello (Function to validate the environment.)
     And I take a screenshot.
     And I save a screenshot in 'myScreenshot-<id>'.
     And I save a screenshot of 'demo.DemoPage-changeValueButton' in 'changeValueButton<id>'.
+    
+    Given I stop video capture?
+        |key|expected|actual|
+        |id|1|<id>|
 
     And I go back to 'DEMO_HOME'        
 
