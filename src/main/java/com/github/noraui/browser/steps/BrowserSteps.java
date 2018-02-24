@@ -106,7 +106,7 @@ public class BrowserSteps {
      * Switch window when the scenario contain more one windows (one more application for example).
      *
      * @param windowKey
-     *            the key of window (popup, ...) Example: OSCAR.
+     *            the key of window (popup, ...) Example: GEOBEER.
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
@@ -293,7 +293,7 @@ public class BrowserSteps {
 
     /**
      * @param windowKey
-     *            the key of window (popup, ...) Example: OSCAR.
+     *            the key of window (popup, ...) Example: GEOBEER.
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_SWITCH_WINDOW} message (with screenshot, with exception)
