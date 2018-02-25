@@ -155,6 +155,7 @@ public abstract class Result {
             this.nid = nid;
             this.takeScreenshot = takeScreenshot;
             this.callback = callback;
+
             throw new FailureException(this);
         }
 
@@ -176,6 +177,7 @@ public abstract class Result {
             this.nid = 1;
             this.takeScreenshot = takeScreenshot;
             this.callback = callback;
+
             throw new FailureException(this);
         }
 
