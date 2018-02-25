@@ -13,6 +13,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -24,8 +25,12 @@ import com.github.noraui.cucumber.injector.NoraUiInjectorSource;
 import com.github.noraui.exception.FailureException;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.GherkinStepCondition;
+import com.github.noraui.service.ScreenService;
 import com.github.noraui.utils.Messages;
 import com.github.noraui.utils.Utilities;
+import com.google.inject.Inject;
+
+import cucumber.api.Scenario;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.management.*")
@@ -33,6 +38,9 @@ import com.github.noraui.utils.Utilities;
 public class CommonStepsUT {
 
     private CommonSteps s = null;
+
+    @Inject
+    private ScreenService screenService;
 
     @Before
     public void setUp() {
@@ -50,7 +58,7 @@ public class CommonStepsUT {
         // prepare mock
         PowerMockito.spy(Utilities.class);
         PowerMockito.doNothing().when(Utilities.class);
-        // Utilities.takeScreenshot(Matchers.any(Scenario.class));
+        screenService.takeScreenshot(Matchers.any(Scenario.class));
 
         Page.setPageMainPackage("com.github.noraui.application.page.");
 
