@@ -1,5 +1,5 @@
 /**
- * NoraUi is licensed under the licence GNU AFFERO GENERAL PUBLIC LICENSE
+ * NoraUi is licensed under the license GNU AFFERO GENERAL PUBLIC LICENSE
  * 
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
@@ -21,7 +21,7 @@ public interface ScreenService {
      * @param scenario
      *            is instance of {link cucumber.api.Scenario}
      */
-    public void takeScreenshot(Scenario scenario);
+    void takeScreenshot(Scenario scenario);
 
     /**
      * Indicates a driver that can capture a screenshot and store it in different ways.
@@ -31,7 +31,7 @@ public interface ScreenService {
      * @throws IOException
      *             if file or directory is wrong.
      */
-    public void saveScreenshot(String screenName) throws IOException;
+    void saveScreenshot(String screenName) throws IOException;
 
     /**
      * Indicates a driver that can capture a screenshot of one element only and store it in different ways.
@@ -43,7 +43,7 @@ public interface ScreenService {
      * @throws IOException
      *             if file or directory is wrong.
      */
-    public void saveScreenshot(String screenName, WebElement element) throws IOException;
+    void saveScreenshot(String screenName, WebElement element) throws IOException;
 
     /**
      * Start video capture with screenName.avi in DOWNLOAD_FILES_FOLDER folder.
@@ -55,7 +55,7 @@ public interface ScreenService {
      * @throws AWTException
      *             if configuration video file is wrong.
      */
-    public void startVideoCapture(String screenName) throws IOException, AWTException;
+    void startVideoCapture(String screenName) throws IOException, AWTException;
 
     /**
      * Stop video capture in DOWNLOAD_FILES_FOLDER folder..
@@ -63,6 +63,6 @@ public interface ScreenService {
      * @throws IOException
      *             if file or directory is wrong.
      */
-    public void stopVideoCapture() throws IOException;
+    void stopVideoCapture() throws IOException;
 
 }
