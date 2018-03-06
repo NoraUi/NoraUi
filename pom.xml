@@ -60,7 +60,7 @@
         <springframework.version>5.0.0.RELEASE</springframework.version>
         <javax.mail.version>1.6.0</javax.mail.version>
         <jsoup.version>1.11.2</jsoup.version>
-        <screen-recorder.version>0.7.7</screen-recorder.version>
+        <screen-recorder.version>0.7.7.0</screen-recorder.version>
         <powermock.version>1.7.3</powermock.version>
         <jsr305.version>3.0.2</jsr305.version>
         <oracle.driver.version>12.2.0.1</oracle.driver.version>
@@ -234,8 +234,8 @@
         </dependency>
         
         <dependency>
-            <groupId>org.monte</groupId>
-            <artifactId>screen-recorder</artifactId>
+            <groupId>com.github.stephenc.monte</groupId>
+            <artifactId>monte-screen-recorder</artifactId>
             <version>${screen-recorder.version}</version>
         </dependency>
 
