@@ -137,6 +137,9 @@ public class Utilities {
      * @return a {@link org.openqa.selenium.By} object (xpath, id, link ...)
      */
     public static By getLocator(PageElement element, Object... args) {
+        logger.debug("getLocator [{}]", element.getPage().getApplication());
+        logger.debug("getLocator [{}]", element.getPage().getPageKey());
+        logger.debug("getLocator [{}]", element.getKey());
         return getLocator(element.getPage().getApplication(), element.getPage().getPageKey() + element.getKey(), args);
     }
 
