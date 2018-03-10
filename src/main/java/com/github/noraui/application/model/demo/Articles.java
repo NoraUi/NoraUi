@@ -46,6 +46,9 @@ public class Articles extends DemosModel<Article> implements ModelList {
         final Gson gson = builder.create();
 
         List<Article> list = gson.fromJson(jsonString, listType);
+        for (int i = 0; i < list.size(); i++) {
+            list.get(i).setNid(i + 1);
+        }
         this.addAll(list);
     }
 
@@ -79,6 +82,19 @@ public class Articles extends DemosModel<Article> implements ModelList {
             result.add(article.getNid());
         }
         return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder s = new StringBuilder();
+        s.append("[");
+        for (Article article : this) {
+            s.append(article.toString());
+            s.append(",");
+        }
+        s.deleteCharAt(s.length());
+        s.append("]");
+        return s.toString();
     }
 
 }

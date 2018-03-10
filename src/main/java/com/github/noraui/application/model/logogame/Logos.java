@@ -78,8 +78,8 @@ public class Logos extends DemosModel<Logo> implements ModelList {
     @Override
     public List<Integer> getIds() {
         List<Integer> result = new ArrayList<>();
-        for (Logo article : this) {
-            result.add(article.getNid());
+        for (Logo logo : this) {
+            result.add(logo.getNid());
         }
         return result;
     }

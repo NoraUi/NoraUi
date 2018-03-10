@@ -115,6 +115,11 @@ public class Article extends DemoModel implements Comparable<Article> {
         return ((Integer) this.note).compareTo(other.note);
     }
 
+    @Override
+    public String toString() {
+        return "{nid:" + nid + ", title:\"" + title + "\", text:\"" + text + "\", author:\"" + author + "\", note:\"" + note + "\"}";
+    }
+
     public Integer getNid() {
         return nid;
     }
