@@ -914,8 +914,8 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Quand("Je passe au cadre '(.*)'[\\.|\\?]")
-    @When("I switch to '(.*)' frame[\\.|\\?]")
+    @Quand("Je passe au cadre '(.*)-(.*)'[\\.|\\?]")
+    @When("I switch to '(.*)-(.*)' frame[\\.|\\?]")
     public void switchFrame(String page, String elementName, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         switchFrame(Page.getInstance(page).getPageElementByKey('-' + elementName));
     }
