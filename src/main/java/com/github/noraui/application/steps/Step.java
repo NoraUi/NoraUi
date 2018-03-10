@@ -55,11 +55,12 @@ import com.github.noraui.exception.Result;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.GherkinConditionedLoopedStep;
 import com.github.noraui.gherkin.GherkinStepCondition;
+import com.github.noraui.service.UserNameService;
 import com.github.noraui.utils.Constants;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
-import com.github.noraui.utils.NameUtilities;
 import com.github.noraui.utils.Utilities;
+import com.google.inject.Inject;
 
 import cucumber.api.CucumberOptions;
 import cucumber.runtime.java.StepDefAnnotation;
@@ -70,6 +71,9 @@ public class Step implements IStep {
      * Specific logger
      */
     protected static final Logger logger = LoggerFactory.getLogger(Step.class);
+
+    @Inject
+    private UserNameService userNameService;
 
     protected Step() {
     }
@@ -870,7 +874,7 @@ public class Step implements IStep {
     private void setDropDownValue(PageElement element, String text) throws TechnicalException, FailureException {
         final WebElement select = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(element)));
         final Select dropDown = new Select(select);
-        final int index = NameUtilities.findOptionByIgnoreCaseText(text, dropDown);
+        final int index = userNameService.findOptionByIgnoreCaseText(text, dropDown);
         if (index != -1) {
             dropDown.selectByIndex(index);
         } else {
