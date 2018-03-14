@@ -69,7 +69,7 @@ public class MailSteps extends Step {
      *            example: imap.gmail.com
      * @param mailUser
      *            login of mail box
-     * @param mailHost
+     * @param mailPassword
      *            password of mail box
      * @param firstCssQuery
      *            the first matching element
