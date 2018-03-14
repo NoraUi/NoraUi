@@ -146,7 +146,9 @@ Feature: hello (Function to validate the environment.)
     And I take a screenshot.
     And I save a screenshot in 'myScreenshot-<id>'.
     And I save a screenshot of 'demo.DemoPage-changeValueButton' in 'changeValueButton<id>'.
-    
+
+    And I update text 'demo.DemoPage-input_text_field' with ramdom match 'noraui[a-zA-Z0-9]{6}'.
+
     Given I stop video capture?
         |key|expected|actual|
         |id|1|<id>|

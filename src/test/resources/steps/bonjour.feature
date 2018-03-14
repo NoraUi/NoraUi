@@ -144,6 +144,8 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
     Quand Je clique sur 'demo.DemoPage-changeValueButton'.
     Alors Je m'attends à avoir 'demo.DemoPage-changeValueButton' avec le texte 'My value has changed'.
 
+    Et Je mets à jour le texte 'demo.DemoPage-input_text_field' avec une valeur aléatoire qui vérifie 'noraui[a-zA-Z0-9]{6}'.
+
     Et Je stop la capture vidéo?
         |key|expected|actual|
         |id|1|<id>|
