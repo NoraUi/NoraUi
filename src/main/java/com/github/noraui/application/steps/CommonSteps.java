@@ -36,6 +36,7 @@ import com.github.noraui.utils.Constants;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 import com.github.noraui.utils.Utilities;
+import com.mifmif.common.regex.Generex;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
@@ -563,6 +564,30 @@ public class CommonSteps extends Step {
     @When("I update text '(.*)-(.*)' with '(.*)'[\\.|\\?]")
     public void updateText(String page, String elementName, String textOrKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         updateText(Page.getInstance(page).getPageElementByKey('-' + elementName), textOrKey);
+    }
+
+    /**
+     * Update a html input text with a random text.
+     * 
+     * @param page
+     *            The concerned page of elementName
+     * @param elementName
+     *            Is target element
+     * @param randRegex
+     *            Is the new data (random value generated and match with randRegex)
+     * @param conditions
+     *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
+     * @throws TechnicalException
+     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_ERROR_ON_INPUT} message (with screenshot, no exception)
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     */
+    @Conditioned
+    @Quand("Je mets à jour le texte '(.*)-(.*)' avec une valeur aléatoire qui vérifie '(.*)'[\\.|\\?]")
+    @When("I update text '(.*)-(.*)' with ramdom match '(.*)'[\\.|\\?]")
+    public void updateTextWithRamdomValueMatchRegexp(String page, String elementName, String randRegex, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+        updateText(Page.getInstance(page).getPageElementByKey('-' + elementName), new Generex(randRegex).random());
     }
 
     /**

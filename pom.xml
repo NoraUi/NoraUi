@@ -57,6 +57,7 @@
         <ini4j.version>0.5.4</ini4j.version>
         <poi.version>3.17</poi.version>
         <opencsv.version>4.0</opencsv.version>
+        <generex.version>1.0.2</generex.version>
         <springframework.version>5.0.0.RELEASE</springframework.version>
         <javax.mail.version>1.6.0</javax.mail.version>
         <jsoup.version>1.11.2</jsoup.version>
@@ -210,6 +211,13 @@
             <groupId>com.opencsv</groupId>
             <artifactId>opencsv</artifactId>
             <version>${opencsv.version}</version>
+        </dependency>
+        
+         <!-- generex (regex generator) -->
+        <dependency>
+            <groupId>com.github.mifmif</groupId>
+            <artifactId>generex</artifactId>
+            <version>${generex.version}</version>
         </dependency>
 
         <!-- springframework/spring-web -->
