@@ -74,7 +74,7 @@ public class ExpectSteps extends Step {
                 try {
                     WebElement element = driver.findElement(locator);
                     if (element != null && value != null) {
-                        return !((element.getAttribute(VALUE) == null || !value.equals(element.getAttribute(VALUE).trim())) && !value.equals(element.getText()));
+                        return !((element.getAttribute(VALUE) == null || !value.equals(element.getAttribute(VALUE).trim())) && !value.equals(element.getText().replaceAll("\n", "")));
                     }
                 } catch (Exception e) {
                 }
