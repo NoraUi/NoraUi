@@ -42,6 +42,23 @@ public class Scenario {
     }
 
     /**
+     * Remove old scenario to your robot.
+     * Sample if you add google: -f 3 -s loginSample -d "Scenario that sample." -a google --verbose
+     * 
+     * @param scenarioName
+     * @param description
+     * @param applicationName
+     * @param noraRobotName
+     * @param verbose
+     */
+    public void remove(String scenarioName, String description, String applicationName, String noraRobotName, boolean verbose) {
+        System.out.println("Remove a old scenario named [" + scenarioName + "] on [" + applicationName + "] application with this description: " + description);
+        // removeScenarioInData(scenarioName, noraRobotName, verbose);
+        // removeScenarioInEnvPropertiesFile(scenarioName, verbose);
+        // removeScenarioFeature(scenarioName, description, applicationName, verbose);
+    }
+
+    /**
      * @param scenarioName
      * @param verbose
      */

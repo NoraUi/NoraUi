@@ -44,6 +44,28 @@ public class Application {
     }
 
     /**
+     * Remove target application to your robot.
+     * Sample if you add google: -f 4 -a google -u http://www.google.com --verbose
+     * 
+     * @param applicationName
+     * @param url
+     * @param robotContext
+     * @param noraRobotName
+     * @param verbose
+     */
+    public void remove(String applicationName, String url, Class<?> robotContext, String noraRobotName, boolean verbose) {
+        System.out.println("Remove application named [" + applicationName + "] with this url: " + url);
+        // removeApplicationPages(applicationName, noraRobotName, robotContext, verbose);
+        // removeApplicationSteps(applicationName, noraRobotName, robotContext, verbose);
+        // removeApplicationContext(robotContext, applicationName, verbose);
+        // removeApplicationSelector(applicationName, verbose);
+        // removeApplicationInPropertiesFile(applicationName, noraRobotName, verbose);
+        // removeApplicationInEnvPropertiesFile(applicationName, url, "ci", verbose);
+        // removeApplicationInEnvPropertiesFile(applicationName, url, "dev", verbose);
+        // removeApplicationInEnvPropertiesFile(applicationName, url, "prod", verbose);
+    }
+
+    /**
      * @param applicationName
      * @param noraRobotName
      * @param robotContext
