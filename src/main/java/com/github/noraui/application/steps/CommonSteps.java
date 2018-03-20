@@ -485,6 +485,28 @@ public class CommonSteps extends Step {
     }
 
     /**
+     * Simulates the mouse over a html element
+     *
+     * @param page
+     *            The concerned page of elementName
+     * @param elementName
+     *            Is target element
+     * @param conditions
+     *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
+     * @throws TechnicalException
+     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_PASS_OVER_ELEMENT} message (with screenshot, no exception)
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     */
+    @Conditioned
+    @Quand("Je passe au dessus de '(.*)-(.*)'[\\.|\\?]")
+    @When("I pass over '(.*)-(.*)'[\\.|\\?]")
+    public void passOver(String page, String elementName, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+        passOver(Page.getInstance(page).getPageElementByKey('-' + elementName));
+    }
+
+    /**
      * Update a html input text with a date.
      *
      * @param page
@@ -568,7 +590,7 @@ public class CommonSteps extends Step {
 
     /**
      * Update a html input text with a random text.
-     * 
+     *
      * @param page
      *            The concerned page of elementName
      * @param elementName
