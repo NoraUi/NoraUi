@@ -28,16 +28,15 @@ public class Application {
      * @param applicationName
      * @param url
      * @param robotContext
-     * @param noraRobotName
      * @param verbose
      */
-    public void add(String applicationName, String url, Class<?> robotContext, String noraRobotName, boolean verbose) {
+    public void add(String applicationName, String url, Class<?> robotContext, boolean verbose) {
         System.out.println("Add a new application named [" + applicationName + "] with this url: " + url);
-        addApplicationPages(applicationName, noraRobotName, robotContext, verbose);
-        addApplicationSteps(applicationName, noraRobotName, robotContext, verbose);
+        addApplicationPages(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), robotContext, verbose);
+        addApplicationSteps(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), robotContext, verbose);
         addApplicationContext(robotContext, applicationName, verbose);
         addApplicationSelector(applicationName, verbose);
-        addApplicationInPropertiesFile(applicationName, noraRobotName, verbose);
+        addApplicationInPropertiesFile(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), verbose);
         addApplicationInEnvPropertiesFile(applicationName, url, "ci", verbose);
         addApplicationInEnvPropertiesFile(applicationName, url, "dev", verbose);
         addApplicationInEnvPropertiesFile(applicationName, url, "prod", verbose);
@@ -55,14 +54,14 @@ public class Application {
      */
     public void remove(String applicationName, String url, Class<?> robotContext, String noraRobotName, boolean verbose) {
         System.out.println("Remove application named [" + applicationName + "] with this url: " + url);
-        // removeApplicationPages(applicationName, noraRobotName, robotContext, verbose);
-        // removeApplicationSteps(applicationName, noraRobotName, robotContext, verbose);
-        // removeApplicationContext(robotContext, applicationName, verbose);
-        // removeApplicationSelector(applicationName, verbose);
-        // removeApplicationInPropertiesFile(applicationName, noraRobotName, verbose);
-        // removeApplicationInEnvPropertiesFile(applicationName, url, "ci", verbose);
-        // removeApplicationInEnvPropertiesFile(applicationName, url, "dev", verbose);
-        // removeApplicationInEnvPropertiesFile(applicationName, url, "prod", verbose);
+        removeApplicationPages(applicationName, noraRobotName, robotContext, verbose);
+        removeApplicationSteps(applicationName, noraRobotName, robotContext, verbose);
+        removeApplicationContext(robotContext, applicationName, verbose);
+        removeApplicationSelector(applicationName, verbose);
+        removeApplicationInPropertiesFile(applicationName, noraRobotName, verbose);
+        removeApplicationInEnvPropertiesFile(applicationName, url, "ci", verbose);
+        removeApplicationInEnvPropertiesFile(applicationName, url, "dev", verbose);
+        removeApplicationInEnvPropertiesFile(applicationName, url, "prod", verbose);
     }
 
     /**
@@ -78,7 +77,7 @@ public class Application {
                 + ".java";
         StringBuilder sb = new StringBuilder();
         sb.append("/**").append(System.lineSeparator());
-        sb.append(" * " + noraRobotName + " generated free by NoraUi Oraganization https://github.com/NoraUi").append(System.lineSeparator());
+        sb.append(" * " + noraRobotName + " generated free by NoraUi Organization https://github.com/NoraUi").append(System.lineSeparator());
         sb.append(" * " + noraRobotName + " is licensed under the license BSD.").append(System.lineSeparator());
         sb.append(" * ").append(System.lineSeparator());
         sb.append(" * CAUTION: " + noraRobotName + " use NoraUi library. This project is licensed under the license GNU AFFERO GENERAL PUBLIC LICENSE").append(System.lineSeparator());
@@ -151,14 +150,36 @@ public class Application {
      * @param robotContext
      * @param verbose
      */
-    private void addApplicationSteps(String applicationName, String noraRobotName, Class<?> robotContext, boolean verbose) {
+    private void removeApplicationPages(String applicationName, String noraRobotName, Class<?> robotContext, boolean verbose) {
         String pagePath = "src" + File.separator + "main" + File.separator + "java" + File.separator
+                + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("utils", "application/pages/" + applicationName).replaceAll("/", Matcher.quoteReplacement(File.separator))
+                        .replaceAll(robotContext.getSimpleName(), applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "Page")
+                + ".java";
+        try {
+            FileUtils.forceDelete(new File(pagePath));
+            if (verbose) {
+                System.out.println(pagePath + " removed with success.");
+            }
+        } catch (IOException e) {
+            System.err.println("IOException " + e);
+            System.exit(1);
+        }
+    }
+
+    /**
+     * @param applicationName
+     * @param noraRobotName
+     * @param robotContext
+     * @param verbose
+     */
+    private void addApplicationSteps(String applicationName, String noraRobotName, Class<?> robotContext, boolean verbose) {
+        String stepsPath = "src" + File.separator + "main" + File.separator + "java" + File.separator
                 + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("utils", "application/steps/" + applicationName).replaceAll("/", Matcher.quoteReplacement(File.separator))
                         .replaceAll(robotContext.getSimpleName(), applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "Steps")
                 + ".java";
         StringBuilder sb = new StringBuilder();
         sb.append("/**").append(System.lineSeparator());
-        sb.append(" * " + noraRobotName + " generated free by NoraUi Oraganization https://github.com/NoraUi").append(System.lineSeparator());
+        sb.append(" * " + noraRobotName + " generated free by NoraUi Organization https://github.com/NoraUi").append(System.lineSeparator());
         sb.append(" * " + noraRobotName + " is licensed under the license BSD.").append(System.lineSeparator());
         sb.append(" * ").append(System.lineSeparator());
         sb.append(" * CAUTION: " + noraRobotName + " use NoraUi library. This project is licensed under the license GNU AFFERO GENERAL PUBLIC LICENSE").append(System.lineSeparator());
@@ -196,12 +217,34 @@ public class Application {
         sb.append("").append(System.lineSeparator());
         sb.append("}").append(System.lineSeparator());
         try {
-            FileUtils.forceMkdir(new File(pagePath.substring(0, pagePath.lastIndexOf(File.separator))));
-            File newSelector = new File(pagePath);
+            FileUtils.forceMkdir(new File(stepsPath.substring(0, stepsPath.lastIndexOf(File.separator))));
+            File newSelector = new File(stepsPath);
             if (!newSelector.exists()) {
                 Files.asCharSink(newSelector, Charsets.UTF_8).write(sb.toString());
             }
         } catch (Exception e) {
+            System.err.println("IOException " + e);
+            System.exit(1);
+        }
+    }
+
+    /**
+     * @param applicationName
+     * @param noraRobotName
+     * @param robotContext
+     * @param verbose
+     */
+    private void removeApplicationSteps(String applicationName, String noraRobotName, Class<?> robotContext, boolean verbose) {
+        String stepsPath = "src" + File.separator + "main" + File.separator + "java" + File.separator
+                + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("utils", "application/steps/" + applicationName).replaceAll("/", Matcher.quoteReplacement(File.separator))
+                        .replaceAll(robotContext.getSimpleName(), applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "Steps")
+                + ".java";
+        try {
+            FileUtils.forceDelete(new File(stepsPath));
+            if (verbose) {
+                System.out.println(stepsPath + " removed with success.");
+            }
+        } catch (IOException e) {
             System.err.println("IOException " + e);
             System.exit(1);
         }
@@ -213,6 +256,25 @@ public class Application {
      * @param verbose
      */
     private void addApplicationContext(Class<?> robotContext, String applicationName, boolean verbose) {
+        manageApplicationContext(true, robotContext, applicationName, verbose);
+    }
+
+    /**
+     * @param robotContext
+     * @param applicationName
+     * @param verbose
+     */
+    private void removeApplicationContext(Class<?> robotContext, String applicationName, boolean verbose) {
+        manageApplicationContext(false, robotContext, applicationName, verbose);
+    }
+
+    /**
+     * @param addMode
+     * @param robotContext
+     * @param applicationName
+     * @param verbose
+     */
+    private void manageApplicationContext(boolean addMode, Class<?> robotContext, String applicationName, boolean verbose) {
         String contextPath = "src" + File.separator + "main" + File.separator + "java" + File.separator
                 + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("/", Matcher.quoteReplacement(File.separator)) + ".java";
         if (verbose) {
@@ -249,55 +311,57 @@ public class Application {
                     }
                     sb.append(line);
                     sb.append(System.lineSeparator());
-                    if ("    // applications".equals(line)) {
-                        sb.append("    public static final String " + applicationName.toUpperCase() + "_KEY = \"" + applicationName + "\";");
-                        sb.append(System.lineSeparator());
-                        sb.append("    public static final String " + applicationName.toUpperCase() + "_HOME = \"" + applicationName.toUpperCase() + "_HOME\";");
-                        sb.append(System.lineSeparator());
-                        sb.append("    private String " + applicationName + "Home; // " + applicationName.toUpperCase() + " home url");
-                        sb.append(System.lineSeparator());
-                    }
-                    if ("    // targets".equals(line)) {
-                        sb.append("    public static final String GO_TO_" + applicationName.toUpperCase() + "_HOME = \"GO_TO_" + applicationName.toUpperCase() + "_HOME\";");
-                        sb.append(System.lineSeparator());
-                        sb.append("    public static final String CLOSE_WINDOW_AND_SWITCH_TO_" + applicationName.toUpperCase() + "_HOME = \"CLOSE_WINDOW_AND_SWITCH_TO_" + applicationName.toUpperCase()
-                                + "_HOME\";");
-                        sb.append(System.lineSeparator());
-                        sb.append("    public static final String CLOSE_ALL_WINDOWS_AND_SWITCH_TO_" + applicationName.toUpperCase() + "_HOME = \"CLOSE_ALL_WINDOWS_AND_SWITCH_TO_"
-                                + applicationName.toUpperCase() + "_HOME\";");
-                        sb.append(System.lineSeparator());
-                    }
-                    if ("        // Urls configuration".equals(line)) {
-                        sb.append("        " + applicationName + "Home = getProperty(" + applicationName.toUpperCase() + "_KEY, applicationProperties);");
-                        sb.append(System.lineSeparator());
-                    }
-                    if ("        // Selectors configuration".equals(line)) {
-                        sb.append("        initApplicationDom(clazz.getClassLoader(), selectorsVersion, " + applicationName.toUpperCase() + "_KEY);");
-                        sb.append(System.lineSeparator());
-                    }
-                    if ("        // Exception Callbacks".equals(line)) {
-                        sb.append("        exceptionCallbacks.put(GO_TO_" + applicationName.toUpperCase() + "_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, "
-                                + applicationName.toUpperCase() + "_HOME);");
-                        sb.append(System.lineSeparator());
-                        sb.append("        exceptionCallbacks.put(CLOSE_WINDOW_AND_SWITCH_TO_" + applicationName.toUpperCase()
-                                + "_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, \"closeWindowAndSwitchTo\", " + applicationName.toUpperCase() + "_KEY, " + applicationName.toUpperCase()
-                                + "_HOME);");
-                        sb.append(System.lineSeparator());
-                        sb.append("        exceptionCallbacks.put(CLOSE_ALL_WINDOWS_AND_SWITCH_TO_" + applicationName.toUpperCase()
-                                + "_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, \"closeAllWindowsAndSwitchTo\", " + applicationName.toUpperCase() + "_KEY);");
-                        sb.append(System.lineSeparator());
-                    }
-                    if ("        // applications mapping".equals(line)) {
-                        sb.append("        applications.put(" + applicationName.toUpperCase() + "_KEY, new Application(" + applicationName.toUpperCase() + "_HOME, " + applicationName + "Home));");
-                        sb.append(System.lineSeparator());
-                    }
-                    if ("    // home getters".equals(line)) {
-                        sb.append("    public String get" + applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "Home() {");
-                        sb.append(System.lineSeparator());
-                        sb.append("        return " + applicationName + "Home;");
-                        sb.append(System.lineSeparator());
-                        sb.append("    }");
-                        sb.append(System.lineSeparator());
+                    if (addMode) {
+                        if ("    // applications".equals(line)) {
+                            sb.append("    public static final String " + applicationName.toUpperCase() + "_KEY = \"" + applicationName + "\";");
+                            sb.append(System.lineSeparator());
+                            sb.append("    public static final String " + applicationName.toUpperCase() + "_HOME = \"" + applicationName.toUpperCase() + "_HOME\";");
+                            sb.append(System.lineSeparator());
+                            sb.append("    private String " + applicationName + "Home; // " + applicationName.toUpperCase() + " home url");
+                            sb.append(System.lineSeparator());
+                        }
+                        if ("    // targets".equals(line)) {
+                            sb.append("    public static final String GO_TO_" + applicationName.toUpperCase() + "_HOME = \"GO_TO_" + applicationName.toUpperCase() + "_HOME\";");
+                            sb.append(System.lineSeparator());
+                            sb.append("    public static final String CLOSE_WINDOW_AND_SWITCH_TO_" + applicationName.toUpperCase() + "_HOME = \"CLOSE_WINDOW_AND_SWITCH_TO_"
+                                    + applicationName.toUpperCase() + "_HOME\";");
+                            sb.append(System.lineSeparator());
+                            sb.append("    public static final String CLOSE_ALL_WINDOWS_AND_SWITCH_TO_" + applicationName.toUpperCase() + "_HOME = \"CLOSE_ALL_WINDOWS_AND_SWITCH_TO_"
+                                    + applicationName.toUpperCase() + "_HOME\";");
+                            sb.append(System.lineSeparator());
+                        }
+                        if ("        // Urls configuration".equals(line)) {
+                            sb.append("        " + applicationName + "Home = getProperty(" + applicationName.toUpperCase() + "_KEY, applicationProperties);");
+                            sb.append(System.lineSeparator());
+                        }
+                        if ("        // Selectors configuration".equals(line)) {
+                            sb.append("        initApplicationDom(clazz.getClassLoader(), selectorsVersion, " + applicationName.toUpperCase() + "_KEY);");
+                            sb.append(System.lineSeparator());
+                        }
+                        if ("        // Exception Callbacks".equals(line)) {
+                            sb.append("        exceptionCallbacks.put(GO_TO_" + applicationName.toUpperCase() + "_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, "
+                                    + applicationName.toUpperCase() + "_HOME);");
+                            sb.append(System.lineSeparator());
+                            sb.append("        exceptionCallbacks.put(CLOSE_WINDOW_AND_SWITCH_TO_" + applicationName.toUpperCase()
+                                    + "_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, \"closeWindowAndSwitchTo\", " + applicationName.toUpperCase() + "_KEY, " + applicationName.toUpperCase()
+                                    + "_HOME);");
+                            sb.append(System.lineSeparator());
+                            sb.append("        exceptionCallbacks.put(CLOSE_ALL_WINDOWS_AND_SWITCH_TO_" + applicationName.toUpperCase()
+                                    + "_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, \"closeAllWindowsAndSwitchTo\", " + applicationName.toUpperCase() + "_KEY);");
+                            sb.append(System.lineSeparator());
+                        }
+                        if ("        // applications mapping".equals(line)) {
+                            sb.append("        applications.put(" + applicationName.toUpperCase() + "_KEY, new Application(" + applicationName.toUpperCase() + "_HOME, " + applicationName + "Home));");
+                            sb.append(System.lineSeparator());
+                        }
+                        if ("    // home getters".equals(line)) {
+                            sb.append("    public String get" + applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "Home() {");
+                            sb.append(System.lineSeparator());
+                            sb.append("        return " + applicationName + "Home;");
+                            sb.append(System.lineSeparator());
+                            sb.append("    }");
+                            sb.append(System.lineSeparator());
+                        }
                     }
                 }
                 line = br.readLine();
@@ -342,7 +406,44 @@ public class Application {
      * @param applicationName
      * @param verbose
      */
+    private void removeApplicationSelector(String applicationName, boolean verbose) {
+        String selectorsPath = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "selectors";
+        try {
+            FileUtils.forceDelete(new File(selectorsPath));
+            if (verbose) {
+                System.out.println(selectorsPath + " removed with success.");
+            }
+        } catch (IOException e) {
+            System.err.println("IOException " + e);
+            System.exit(1);
+        }
+    }
+
+    /**
+     * @param applicationName
+     * @param noraRobotName
+     * @param verbose
+     */
     private void addApplicationInPropertiesFile(String applicationName, String noraRobotName, boolean verbose) {
+        manageApplicationInPropertiesFile(true, applicationName, noraRobotName, verbose);
+    }
+
+    /**
+     * @param applicationName
+     * @param noraRobotName
+     * @param verbose
+     */
+    private void removeApplicationInPropertiesFile(String applicationName, String noraRobotName, boolean verbose) {
+        manageApplicationInPropertiesFile(false, applicationName, noraRobotName, verbose);
+    }
+
+    /**
+     * @param addMode
+     * @param applicationName
+     * @param noraRobotName
+     * @param verbose
+     */
+    private void manageApplicationInPropertiesFile(boolean addMode, String applicationName, String noraRobotName, boolean verbose) {
         String propertiesfilePath = "src" + File.separator + "main" + File.separator + "resources" + File.separator + noraRobotName + ".properties";
         if (verbose) {
             System.out.println("Add application named [" + applicationName + "] in this properties file: " + propertiesfilePath + "]");
@@ -354,7 +455,7 @@ public class Application {
                 if (!(applicationName + "=${" + applicationName + "}").equals(line)) {
                     sb.append(line);
                     sb.append(System.lineSeparator());
-                    if ("# application list".equals(line)) {
+                    if (addMode && "# application list".equals(line)) {
                         sb.append(applicationName + "=${" + applicationName + "}");
                         sb.append(System.lineSeparator());
                     }
@@ -379,6 +480,27 @@ public class Application {
      * @param verbose
      */
     private void addApplicationInEnvPropertiesFile(String applicationName, String url, String env, boolean verbose) {
+        manageApplicationInEnvPropertiesFile(true, applicationName, url, env, verbose);
+    }
+
+    /**
+     * @param applicationName
+     * @param url
+     * @param env
+     * @param verbose
+     */
+    private void removeApplicationInEnvPropertiesFile(String applicationName, String url, String env, boolean verbose) {
+        manageApplicationInEnvPropertiesFile(false, applicationName, url, env, verbose);
+    }
+
+    /**
+     * @param addMode
+     * @param applicationName
+     * @param url
+     * @param env
+     * @param verbose
+     */
+    private void manageApplicationInEnvPropertiesFile(boolean addMode, String applicationName, String url, String env, boolean verbose) {
         String propertiesfilePath = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "environments" + File.separator + env + ".properties";
         if (verbose) {
             System.out.println("Add application named [" + applicationName + "] in this properties file: " + propertiesfilePath + "]");
@@ -390,7 +512,7 @@ public class Application {
                 if (!line.startsWith(applicationName + "=")) {
                     sb.append(line);
                     sb.append(System.lineSeparator());
-                    if ("# application list".equals(line)) {
+                    if (addMode && "# application list".equals(line)) {
                         sb.append(applicationName + "=" + url);
                         sb.append(System.lineSeparator());
                     }

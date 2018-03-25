@@ -14,6 +14,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -46,16 +47,26 @@ public class Scenario {
      * Sample if you add google: -f 3 -s loginSample -d "Scenario that sample." -a google --verbose
      * 
      * @param scenarioName
-     * @param description
-     * @param applicationName
      * @param noraRobotName
      * @param verbose
      */
-    public void remove(String scenarioName, String description, String applicationName, String noraRobotName, boolean verbose) {
-        System.out.println("Remove a old scenario named [" + scenarioName + "] on [" + applicationName + "] application with this description: " + description);
-        // removeScenarioInData(scenarioName, noraRobotName, verbose);
-        // removeScenarioInEnvPropertiesFile(scenarioName, verbose);
-        // removeScenarioFeature(scenarioName, description, applicationName, verbose);
+    public void remove(String scenarioName, String noraRobotName, boolean verbose) {
+        System.out.println("Remove a scenario named [" + scenarioName + "].");
+        removeScenarioInData(scenarioName, noraRobotName, verbose);
+        removeScenarioInEnvPropertiesFile(scenarioName, verbose);
+        removeScenarioFeature(scenarioName, verbose);
+    }
+
+    private void removeScenarioInData(String scenarioName, String noraRobotName, boolean verbose) {
+        String propertiesfilePath = "src" + File.separator + "main" + File.separator + "resources" + File.separator + noraRobotName + ".properties";
+
+        String dataProviderIn = getDataProvider("in", propertiesfilePath);
+        System.out.println("dataProvider.in.type is [" + dataProviderIn + "]");
+        removeScenarioInData("in", scenarioName, dataProviderIn, verbose);
+
+        String dataProviderOut = getDataProvider("out", propertiesfilePath);
+        System.out.println("dataProvider.out.type is [" + dataProviderOut + "]");
+        removeScenarioInData("out", scenarioName, dataProviderOut, verbose);
     }
 
     /**
@@ -67,11 +78,11 @@ public class Scenario {
 
         String dataProviderIn = getDataProvider("in", propertiesfilePath);
         System.out.println("dataProvider.in.type is [" + dataProviderIn + "]");
-        addScenarioInData("in", scenarioName, dataProviderIn);
+        addScenarioInData("in", scenarioName, dataProviderIn, verbose);
 
         String dataProviderOut = getDataProvider("out", propertiesfilePath);
         System.out.println("dataProvider.out.type is [" + dataProviderOut + "]");
-        addScenarioInData("out", scenarioName, dataProviderOut);
+        addScenarioInData("out", scenarioName, dataProviderOut, verbose);
     }
 
     /**
@@ -79,25 +90,58 @@ public class Scenario {
      * @param scenarioName
      * @param dataProviderIn
      */
-    private void addScenarioInData(String type, String scenarioName, String dataProviderIn) {
-        if ("CSV".equals(dataProviderIn)) {
+    private void addScenarioInData(String type, String scenarioName, String dataProvider, boolean verbose) {
+        if ("CSV".equals(dataProvider)) {
             String csvPath = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "data" + File.separator + type + File.separator + scenarioName + ".csv";
             File newCsvfile = new File(csvPath);
             if (!newCsvfile.exists()) {
                 addCsvFile(newCsvfile);
             }
-        } else if ("DB".equals(dataProviderIn)) {
+        } else if ("DB".equals(dataProvider)) {
             String excelPath = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "data" + File.separator + type + File.separator + scenarioName + ".sql";
             File sqlFile = new File(excelPath);
             if (!sqlFile.exists()) {
                 addSqlFile(scenarioName, sqlFile);
             }
-        } else if ("EXCEL".equals(dataProviderIn)) {
+        } else if ("EXCEL".equals(dataProvider)) {
             String excelPath = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "data" + File.separator + type + File.separator + scenarioName + ".xlsx";
             File newExcelFile = new File(excelPath);
             if (!newExcelFile.exists()) {
                 addXlsxFile(scenarioName, excelPath);
             }
+        } else if (verbose) {
+            System.out.println("CLI do not add your data provider (" + dataProvider + "). CLI add only CSV, DB and EXCEL.");
+        }
+    }
+
+    /**
+     * @param type
+     * @param scenarioName
+     * @param dataProviderIn
+     */
+    private void removeScenarioInData(String type, String scenarioName, String dataProvider, boolean verbose) {
+        try {
+            String datafilePath = "";
+            if ("CSV".equals(dataProvider)) {
+                datafilePath = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "data" + File.separator + type + File.separator + scenarioName + ".csv";
+            } else if ("DB".equals(dataProvider)) {
+                datafilePath = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "data" + File.separator + type + File.separator + scenarioName + ".sql";
+            } else if ("EXCEL".equals(dataProvider)) {
+                datafilePath = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "data" + File.separator + type + File.separator + scenarioName + ".xlsx";
+            }
+            if (!"".equals(datafilePath)) {
+                FileUtils.forceDelete(new File(datafilePath));
+                if (verbose) {
+                    System.out.println(datafilePath + " removed with success.");
+                }
+            } else {
+                if (verbose) {
+                    System.out.println("CLI do not remove your data provider (" + dataProvider + "). CLI remove only CSV, DB and EXCEL.");
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("IOException " + e);
+            System.exit(1);
         }
     }
 
@@ -222,6 +266,32 @@ public class Scenario {
         }
     }
 
+    private void removeScenarioInEnvPropertiesFile(String scenarioName, boolean verbose) {
+        String propertiesfilePath = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "scenarios.properties";
+        if (verbose) {
+            System.out.println("Remove scenario named [" + scenarioName + "] in scenario.properties.");
+        }
+        try (BufferedReader br = new BufferedReader(new FileReader(propertiesfilePath))) {
+            StringBuilder sb = new StringBuilder();
+            String line = br.readLine();
+            while (line != null) {
+                if (!(scenarioName + "=/steps/scenarios/").equals(line)) {
+                    sb.append(line);
+                    sb.append(System.lineSeparator());
+                }
+                line = br.readLine();
+            }
+            FileWriter fw = new FileWriter(propertiesfilePath);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(sb.toString().substring(0, sb.toString().length() - System.lineSeparator().length()));
+            bw.flush();
+            bw.close();
+        } catch (IOException e) {
+            System.err.println("IOException " + e);
+            System.exit(1);
+        }
+    }
+
     /**
      * @param scenarioName
      * @param description
@@ -252,6 +322,19 @@ public class Scenario {
             File newFeature = new File(newFeaturePath);
             if (!newFeature.exists()) {
                 Files.asCharSink(newFeature, Charsets.UTF_8).write(sb.toString());
+            }
+        } catch (Exception e) {
+            System.err.println("IOException " + e);
+            System.exit(1);
+        }
+    }
+
+    private void removeScenarioFeature(String scenarioName, boolean verbose) {
+        String featurePath = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "steps" + File.separator + "scenarios" + File.separator + scenarioName + ".feature";
+        try {
+            FileUtils.forceDelete(new File(featurePath));
+            if (verbose) {
+                System.out.println(featurePath + " removed with success.");
             }
         } catch (Exception e) {
             System.err.println("IOException " + e);
