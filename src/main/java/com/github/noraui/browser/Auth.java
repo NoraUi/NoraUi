@@ -10,7 +10,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import org.openqa.selenium.Cookie;
-import org.openqa.selenium.JavascriptExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -159,20 +158,13 @@ public class Auth {
     }
 
     /**
-     * Loads authentication cookie in the current web browsers. The way is different for phantomjs.
+     * Loads authentication cookie in the current web browsers.
      *
      * @param browser
      *            the name of the current browser
      */
     public static void loadAuthentication(String browser) {
-        if (DriverFactory.PHANTOM.equals(browser)) {
-            JavascriptExecutor js = (JavascriptExecutor) Context.getDriver();
-            js.executeScript("document.cookie = \"" + getInstance().authCookie.getName() + "=" + getInstance().authCookie.getValue() + ";path=" + getInstance().authCookie.getPath() + ";domain="
-                    + getInstance().authCookie.getDomain() + "\"");
-        } else {
-            Context.getDriver().manage().addCookie(getInstance().authCookie);
-        }
-
+        Context.getDriver().manage().addCookie(getInstance().authCookie);
     }
 
     /**

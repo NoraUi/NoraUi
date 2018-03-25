@@ -25,12 +25,9 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
@@ -53,12 +50,10 @@ public class DriverFactory {
     /** Default web drivers implicit wait **/
     public static final long IMPLICIT_WAIT = 500;
 
-    public static final String PHANTOM = "phantom";
     public static final String IE = "ie";
     public static final String CHROME = "chrome";
-    public static final String HTMLUNIT = "htmlunit";
     public static final String FIREFOX = "firefox";
-    public static final String DEFAULT_DRIVER = PHANTOM;
+    public static final String DEFAULT_DRIVER = CHROME;
 
     /** Selenium drivers. **/
     private final Map<String, WebDriver> drivers;
@@ -97,39 +92,6 @@ public class DriverFactory {
             wd.quit();
         }
         drivers.clear();
-    }
-
-    /**
-     * Generates a phantomJs webdriver.
-     *
-     * @return
-     *         A phantomJs webdriver
-     * @throws TechnicalException
-     *             if an error occured when Webdriver setExecutable to true.
-     */
-    private WebDriver generatePhantomJsDriver() throws TechnicalException {
-        final String pathWebdriver = DriverFactory.getPath(Driver.PHANTOMJS);
-        if (!new File(pathWebdriver).setExecutable(true)) {
-            throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_WEBDRIVER_SET_EXECUTABLE));
-        }
-        logger.info("Generating Phantomjs driver ({}) ...", pathWebdriver);
-
-        final DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_PAGE_CUSTOMHEADERS_PREFIX + "Accept-Language", "fr-FR");
-        capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, pathWebdriver);
-        capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
-        capabilities.setJavascriptEnabled(true);
-
-        setLoggingLevel(capabilities);
-
-        // Proxy configuration
-        String proxy = "";
-        if (Context.getProxy().getProxyType() != ProxyType.UNSPECIFIED && Context.getProxy().getProxyType() != ProxyType.AUTODETECT) {
-            proxy = Context.getProxy().getHttpProxy();
-        }
-        capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS,
-                new String[] { "--proxy=" + proxy, "--web-security=no", "--ignore-ssl-errors=true", "--ssl-protocol=tlsv1", "--webdriver-loglevel=NONE" });
-        return new PhantomJSDriver(capabilities);
     }
 
     /**
@@ -278,30 +240,8 @@ public class DriverFactory {
     }
 
     /**
-     * Generates a htmlunit webdriver.
-     *
-     * @return
-     *         A htmlunit webdriver
-     */
-    private WebDriver generateHtmlUnitDriver() {
-        logger.info("Generating HtmlUnit driver...");
-        final DesiredCapabilities capabilities = DesiredCapabilities.htmlUnit();
-        capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
-        capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
-        capabilities.setJavascriptEnabled(true);
-
-        setLoggingLevel(capabilities);
-
-        // Proxy configuration
-        if (Context.getProxy().getProxyType() != ProxyType.UNSPECIFIED && Context.getProxy().getProxyType() != ProxyType.AUTODETECT) {
-            capabilities.setCapability(CapabilityType.PROXY, Context.getProxy());
-        }
-        return new HtmlUnitDriver(capabilities);
-    }
-
-    /**
      * Generates a selenium webdriver following a name given in parameter.
-     * By default a phantomJS driver is generated.
+     * By default a chrome driver is generated.
      *
      * @param driverName
      *            The name of the web driver to generate
@@ -316,12 +256,10 @@ public class DriverFactory {
             driver = generateIEDriver();
         } else if (CHROME.equals(driverName)) {
             driver = generateGoogleChromeDriver();
-        } else if (HTMLUNIT.equals(driverName)) {
-            driver = generateHtmlUnitDriver();
         } else if (FIREFOX.equals(driverName)) {
             driver = generateFirefoxDriver();
         } else {
-            driver = generatePhantomJsDriver();
+            driver = generateGoogleChromeDriver();
         }
         // As a workaround: NoraUi specify window size manually, e.g. window_size: 1920 x 1080 (instead of .window().maximize()).
         driver.manage().window().setSize(new Dimension(1920, 1080));
@@ -363,8 +301,6 @@ public class DriverFactory {
         String format = "";
         if ("webdriver.ie.driver".equals(currentDriver.driverName)) {
             format = Utilities.setProperty(Context.getWebdriversProperties(currentDriver.driverName), "src/test/resources/drivers/%s/internetexplorer/%s/IEDriverServer%s");
-        } else if ("phantomjs.binary.path".equals(currentDriver.driverName)) {
-            format = Utilities.setProperty(Context.getWebdriversProperties(currentDriver.driverName), "src/test/resources/drivers/%s/phantomjs/%s/phantomjs%s");
         } else if ("webdriver.chrome.driver".equals(currentDriver.driverName)) {
             format = Utilities.setProperty(Context.getWebdriversProperties(currentDriver.driverName), "src/test/resources/drivers/%s/googlechrome/%s/chromedriver%s");
         } else if ("webdriver.gecko.driver".equals(currentDriver.driverName)) {
@@ -380,7 +316,7 @@ public class DriverFactory {
      * @author Nicolas HALLOUIN
      */
     public enum Driver {
-        IE("webdriver.ie.driver"), PHANTOMJS("phantomjs.binary.path"), CHROME("webdriver.chrome.driver"), FIREFOX("webdriver.gecko.driver");
+        IE("webdriver.ie.driver"), CHROME("webdriver.chrome.driver"), FIREFOX("webdriver.gecko.driver");
         private String driverName;
 
         Driver(String driverName) {

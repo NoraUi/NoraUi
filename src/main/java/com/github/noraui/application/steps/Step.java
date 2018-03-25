@@ -6,7 +6,6 @@
  */
 package com.github.noraui.application.steps;
 
-// import static com.github.noraui.utils.Constants.ALERT_KEY;
 import static com.github.noraui.utils.Constants.DOWNLOADED_FILES_FOLDER;
 import static com.github.noraui.utils.Constants.USER_DIR;
 import static com.github.noraui.utils.Constants.VALUE;
@@ -965,27 +964,15 @@ public class Step implements IStep {
     }
 
     /**
-     * CAUTION: This check do not work with IE: https://github.com/SeleniumHQ/selenium/issues/468
-     * CAUTION: This feature is not supported by HtmlUnit web driver
-     *
      * @return a String with the message of Alert, return null if no alert message.
      */
-    // protected String getLastConsoleAlertMessage() {
-    // String msg;
-    // final List<LogEntry> l = getDriver().manage().logs().get(LogType.BROWSER).getAll();
-    // for (int i = l.size() - 1; i >= 0; i--) {
-    // if (l.get(i).getMessage().contains(ALERT_KEY)) {
-    // msg = l.get(i).getMessage();
-    // return msg.substring(msg.indexOf('"') + 1, msg.length() - 1).replace(ALERT_KEY, "").replace(" (:", "");
-    // }
-    // }
-    // return null;
-    // }
-
     protected String getAlertMessage() {
+        String msg = null;
         Alert alert = getDriver().switchTo().alert();
-        String msg = alert.getText();
-        alert.accept();
+        if (alert != null) {
+            msg = alert.getText();
+            alert.accept();
+        }
         return msg;
     }
 
