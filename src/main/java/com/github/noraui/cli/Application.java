@@ -12,6 +12,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 
 import org.apache.commons.io.FileUtils;
@@ -20,6 +24,26 @@ import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 
 public class Application {
+
+    /**
+     * @return
+     */
+    public List<String> get() {
+        List<String> applications = new ArrayList<>();
+        String selectorsPath = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "selectors";
+        String[] versions = new File(selectorsPath).list();
+        for (String version : versions) {
+            applications.addAll(Arrays.asList(new File(selectorsPath + File.separator + version).list()));
+        }
+        TreeSet<String> hs = new TreeSet<>();
+        hs.addAll(applications);
+        applications.clear();
+        applications.addAll(hs);
+        for (int i = 0; i < applications.size(); i++) {
+            applications.set(i, applications.get(i).replaceAll(".ini", ""));
+        }
+        return applications;
+    }
 
     /**
      * Add new target application to your robot.
@@ -49,19 +73,18 @@ public class Application {
      * @param applicationName
      * @param url
      * @param robotContext
-     * @param noraRobotName
      * @param verbose
      */
-    public void remove(String applicationName, String url, Class<?> robotContext, String noraRobotName, boolean verbose) {
-        System.out.println("Remove application named [" + applicationName + "] with this url: " + url);
-        removeApplicationPages(applicationName, noraRobotName, robotContext, verbose);
-        removeApplicationSteps(applicationName, noraRobotName, robotContext, verbose);
+    public void remove(String applicationName, Class<?> robotContext, boolean verbose) {
+        System.out.println("Remove application named [" + applicationName + "]");
+        removeApplicationPages(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), robotContext, verbose);
+        removeApplicationSteps(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), robotContext, verbose);
         removeApplicationContext(robotContext, applicationName, verbose);
         removeApplicationSelector(applicationName, verbose);
-        removeApplicationInPropertiesFile(applicationName, noraRobotName, verbose);
-        removeApplicationInEnvPropertiesFile(applicationName, url, "ci", verbose);
-        removeApplicationInEnvPropertiesFile(applicationName, url, "dev", verbose);
-        removeApplicationInEnvPropertiesFile(applicationName, url, "prod", verbose);
+        removeApplicationInPropertiesFile(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), verbose);
+        removeApplicationInEnvPropertiesFile(applicationName, "ci", verbose);
+        removeApplicationInEnvPropertiesFile(applicationName, "dev", verbose);
+        removeApplicationInEnvPropertiesFile(applicationName, "prod", verbose);
     }
 
     /**
@@ -382,16 +405,15 @@ public class Application {
      * @param verbose
      */
     private void addApplicationSelector(String applicationName, boolean verbose) {
-        File selectors = new File("src" + File.separator + "main" + File.separator + "resources" + File.separator + "selectors");
-        String[] versions = selectors.list();
+        String selectorsPath = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "selectors";
+        String[] versions = new File(selectorsPath).list();
         StringBuilder sb = new StringBuilder();
         sb.append("[" + applicationName.toUpperCase() + "_HOM-pageElementSample]");
         sb.append(System.lineSeparator());
         sb.append("xpath=//*[@id='page-element-sample']");
         try {
             for (String version : versions) {
-                File newSelector = new File(
-                        "src" + File.separator + "main" + File.separator + "resources" + File.separator + "selectors" + File.separator + version + File.separator + applicationName + ".ini");
+                File newSelector = new File(selectorsPath + File.separator + version + File.separator + applicationName + ".ini");
                 if (!newSelector.exists()) {
                     Files.asCharSink(newSelector, Charsets.UTF_8).write(sb.toString());
                 }
@@ -408,10 +430,13 @@ public class Application {
      */
     private void removeApplicationSelector(String applicationName, boolean verbose) {
         String selectorsPath = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "selectors";
+        String[] versions = new File(selectorsPath).list();
         try {
-            FileUtils.forceDelete(new File(selectorsPath));
-            if (verbose) {
-                System.out.println(selectorsPath + " removed with success.");
+            for (String version : versions) {
+                FileUtils.forceDelete(new File(selectorsPath + File.separator + version + File.separator + applicationName + ".ini"));
+                if (verbose) {
+                    System.out.println(selectorsPath + " removed with success.");
+                }
             }
         } catch (IOException e) {
             System.err.println("IOException " + e);
@@ -489,8 +514,8 @@ public class Application {
      * @param env
      * @param verbose
      */
-    private void removeApplicationInEnvPropertiesFile(String applicationName, String url, String env, boolean verbose) {
-        manageApplicationInEnvPropertiesFile(false, applicationName, url, env, verbose);
+    private void removeApplicationInEnvPropertiesFile(String applicationName, String env, boolean verbose) {
+        manageApplicationInEnvPropertiesFile(false, applicationName, "", env, verbose);
     }
 
     /**

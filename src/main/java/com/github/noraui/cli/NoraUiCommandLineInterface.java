@@ -1,10 +1,21 @@
 package com.github.noraui.cli;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
 public class NoraUiCommandLineInterface {
+
+    Application application;
+    Scenario scenario;
+    Model model;
+
+    public NoraUiCommandLineInterface() {
+        application = new Application();
+        scenario = new Scenario();
+        model = new Model();
+    }
 
     /**
      * @param context
@@ -170,7 +181,7 @@ public class NoraUiCommandLineInterface {
         } else if (featureCode == 3) {
             addModel(applicationName, modelName, fields, results, robotContext, verbose, input, interactiveMode);
         } else if (featureCode == 4) {
-            removeApplication(applicationName, url, robotContext, verbose, input, interactiveMode);
+            removeApplication(applicationName, robotContext, verbose, input, interactiveMode);
         } else if (featureCode == 5) {
             removeScenario(scenarioName, robotContext.getSimpleName().replaceAll("Context", ""), verbose, input, interactiveMode);
         } else if (featureCode == 6) {
@@ -180,7 +191,6 @@ public class NoraUiCommandLineInterface {
 
     private void addApplication(String applicationName, String url, Class<?> context, boolean verbose, Scanner input, boolean interactiveMode) {
         if (interactiveMode && (applicationName == null || "".equals(applicationName) || url == null || "".equals(url))) {
-            Application application = new Application();
             if (applicationName == null || "".equals(applicationName)) {
                 System.out.println("Enter application name:");
                 applicationName = input.nextLine();
@@ -197,7 +207,6 @@ public class NoraUiCommandLineInterface {
 
     private void addScenario(String applicationName, String scenarioName, String description, String robotName, boolean verbose, Scanner input, boolean interactiveMode) {
         if (interactiveMode && (scenarioName == null || "".equals(scenarioName) || description == null || "".equals(description) || applicationName == null || "".equals(applicationName))) {
-            Scenario scenario = new Scenario();
             if (scenarioName == null || "".equals(scenarioName)) {
                 System.out.println("Enter scenario name:");
                 scenarioName = input.nextLine();
@@ -207,8 +216,14 @@ public class NoraUiCommandLineInterface {
                 description = input.nextLine();
             }
             if (applicationName == null || "".equals(applicationName)) {
-                System.out.println("Enter application name:");
-                applicationName = input.nextLine();
+                List<String> appList = application.get();
+                System.out.println("Enter index application number:");
+                for (int i = 0; i < appList.size(); i++) {
+                    System.out.println("    " + (i + 1) + ") " + appList.get(i));
+                }
+                int appCode = input.nextInt();
+                input.nextLine();
+                applicationName = appList.get(appCode - 1);
             }
             scenario.add(scenarioName, description, applicationName, robotName, verbose);
         } else {
@@ -218,10 +233,15 @@ public class NoraUiCommandLineInterface {
 
     private void addModel(String applicationName, String modelName, String fields, String results, Class<?> robotContext, boolean verbose, Scanner input, boolean interactiveMode) {
         if (interactiveMode && (applicationName == null || "".equals(applicationName) || modelName == null || "".equals(modelName) || fields == null || "".equals(fields))) {
-            Model model = new Model();
             if (applicationName == null || "".equals(applicationName)) {
-                System.out.println("Enter application name:");
-                applicationName = input.nextLine();
+                List<String> appList = application.get();
+                System.out.println("Enter index application number:");
+                for (int i = 0; i < appList.size(); i++) {
+                    System.out.println("    " + (i + 1) + ") " + appList.get(i));
+                }
+                int appCode = input.nextInt();
+                input.nextLine();
+                applicationName = appList.get(appCode - 1);
             }
             if (modelName == null || "".equals(modelName)) {
                 System.out.println("Enter model name:");
@@ -241,18 +261,19 @@ public class NoraUiCommandLineInterface {
         }
     }
 
-    private void removeApplication(String applicationName, String url, Class<?> robotContext, boolean verbose, Scanner input, boolean interactiveMode) {
-        if (interactiveMode && (applicationName == null || "".equals(applicationName) || url == null || "".equals(url))) {
-            Application application = new Application();
+    private void removeApplication(String applicationName, Class<?> robotContext, boolean verbose, Scanner input, boolean interactiveMode) {
+        if (interactiveMode && (applicationName == null || "".equals(applicationName))) {
             if (applicationName == null || "".equals(applicationName)) {
-                System.out.println("Enter application name:");
-                applicationName = input.nextLine();
+                List<String> appList = application.get();
+                System.out.println("Enter index application number:");
+                for (int i = 0; i < appList.size(); i++) {
+                    System.out.println("    " + (i + 1) + ") " + appList.get(i));
+                }
+                int appCode = input.nextInt();
+                input.nextLine();
+                applicationName = appList.get(appCode - 1);
             }
-            if (url == null || "".equals(url)) {
-                System.out.println("Enter url:");
-                url = input.nextLine();
-            }
-            application.remove(applicationName, url, robotContext, "NoraRobot", verbose);
+            application.remove(applicationName, robotContext, verbose);
         } else {
             System.err.println("When interactiveMode is false, you need use -a and -u");
         }
@@ -260,7 +281,6 @@ public class NoraUiCommandLineInterface {
 
     private void removeScenario(String scenarioName, String robotName, boolean verbose, Scanner input, boolean interactiveMode) {
         if (interactiveMode && (scenarioName == null || "".equals(scenarioName))) {
-            Scenario scenario = new Scenario();
             if (scenarioName == null || "".equals(scenarioName)) {
                 System.out.println("Enter scenario name:");
                 scenarioName = input.nextLine();
@@ -273,14 +293,25 @@ public class NoraUiCommandLineInterface {
 
     private void removeModel(String applicationName, String modelName, Class<?> robotContext, boolean verbose, Scanner input, boolean interactiveMode) {
         if (interactiveMode && (applicationName == null || "".equals(applicationName) || modelName == null || "".equals(modelName))) {
-            Model model = new Model();
             if (applicationName == null || "".equals(applicationName)) {
-                System.out.println("Enter application name:");
-                applicationName = input.nextLine();
+                List<String> appList = model.getApplications(robotContext);
+                System.out.println("Enter index application number:");
+                for (int i = 0; i < appList.size(); i++) {
+                    System.out.println("    " + (i + 1) + ") " + appList.get(i));
+                }
+                int appCode = input.nextInt();
+                input.nextLine();
+                applicationName = appList.get(appCode - 1);
             }
             if (modelName == null || "".equals(modelName)) {
-                System.out.println("Enter model name:");
-                modelName = input.nextLine();
+                List<String> modelList = model.getModels(applicationName, robotContext);
+                System.out.println("Enter index model number:");
+                for (int i = 0; i < modelList.size(); i++) {
+                    System.out.println("    " + (i + 1) + ") " + modelList.get(i));
+                }
+                int modelCode = input.nextInt();
+                input.nextLine();
+                modelName = modelList.get(modelCode - 1);
             }
             model.remove(applicationName, modelName, robotContext, verbose);
         } else {
