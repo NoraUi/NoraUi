@@ -192,7 +192,7 @@ public class Context {
     private WebDriverWait webDriverCustomWait;
 
     /**
-     * browser: phantom, ie or chrome.
+     * browser: chrome, firefox or ie.
      */
     private String browser;
 
@@ -315,7 +315,7 @@ public class Context {
 
     public synchronized void initializeRobot(Class<?> clazz) throws TechnicalException {
         logger.info("Context > initializeRobot() with " + clazz.getCanonicalName());
-        // set browser: phantom, ie or chrome
+        // set browser: chrome,firefox or ie
         browser = getProperty(BROWSER_KEY, applicationProperties);
 
         // set Webdriver file: src/test/resources/drivers/...

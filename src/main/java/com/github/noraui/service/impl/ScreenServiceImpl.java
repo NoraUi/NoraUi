@@ -63,8 +63,6 @@ public class ScreenServiceImpl implements ScreenService {
      */
     private static final Logger logger = LoggerFactory.getLogger(Utilities.class);
 
-    private static final String UTILITIES_ERROR_TAKING_SCREENSHOT = "UTILITIES_ERROR_TAKING_SCREENSHOT";
-
     private ScreenRecorder screenRecorder;
 
     /**
@@ -72,12 +70,8 @@ public class ScreenServiceImpl implements ScreenService {
      */
     @Override
     public void takeScreenshot(Scenario scenario) {
-        if (!DriverFactory.HTMLUNIT.equals(Context.getBrowser())) {
-            final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
-            scenario.embed(screenshot, "image/png");
-        } else {
-            logger.warn(Messages.getMessage(UTILITIES_ERROR_TAKING_SCREENSHOT), Context.getBrowser());
-        }
+        final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
+        scenario.embed(screenshot, "image/png");
     }
 
     /**
@@ -85,13 +79,9 @@ public class ScreenServiceImpl implements ScreenService {
      */
     @Override
     public void saveScreenshot(String screenName) throws IOException {
-        if (!DriverFactory.HTMLUNIT.equals(Context.getBrowser())) {
             final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
             FileUtils.forceMkdir(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
             FileUtils.writeByteArrayToFile(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + screenName + ".jpg"), screenshot);
-        } else {
-            logger.warn(Messages.getMessage(UTILITIES_ERROR_TAKING_SCREENSHOT), Context.getBrowser());
-        }
     }
 
     /**
@@ -99,7 +89,6 @@ public class ScreenServiceImpl implements ScreenService {
      */
     @Override
     public void saveScreenshot(String screenName, WebElement element) throws IOException {
-        if (!DriverFactory.HTMLUNIT.equals(Context.getBrowser())) {
             final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
             FileUtils.forceMkdir(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
 
@@ -116,9 +105,6 @@ public class ScreenServiceImpl implements ScreenService {
             // Crop the entire page screenshot to get only element screenshot
             BufferedImage eleScreenshot = fullImg.getSubimage(point.getX(), point.getY(), eleWidth, eleHeight);
             ImageIO.write(eleScreenshot, "jpg", new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + screenName + ".jpg"));
-        } else {
-            logger.warn(Messages.getMessage(UTILITIES_ERROR_TAKING_SCREENSHOT), Context.getBrowser());
-        }
     }
 
     /**
