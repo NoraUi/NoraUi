@@ -145,7 +145,12 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
     Alors Je m'attends à avoir 'demo.DemoPage-changeValueButton' avec le texte 'My value has changed'.
 
     Et Je mets à jour le texte 'demo.DemoPage-input_text_field' avec une valeur aléatoire qui vérifie 'noraui[a-zA-Z0-9]{6}'.
-
+    
+    Alors Je clique sur 'demo.DemoPage-navbarDropdownMenuLink'.
+    Et Je passe au dessus de 'demo.DemoPage-navbarDropdownSubMenu'.
+    Et Je passe au dessus de 'demo.DemoPage-navbarDropdownSubSubMenu1'.
+    Et Je clique sur 'demo.DemoPage-navbarDropdownSubSubMenu2'.
+    
     Et Je stop la capture vidéo?
         |key|expected|actual|
         |id|1|<id>|
