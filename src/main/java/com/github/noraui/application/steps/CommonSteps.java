@@ -22,7 +22,6 @@ import org.slf4j.LoggerFactory;
 
 import com.github.noraui.application.page.Page;
 import com.github.noraui.application.page.Page.PageElement;
-import com.github.noraui.browser.DriverFactory;
 import com.github.noraui.browser.WindowManager;
 import com.github.noraui.cucumber.annotation.Conditioned;
 import com.github.noraui.exception.AssertError;
@@ -821,15 +820,15 @@ public class CommonSteps extends Step {
     @Et("Je vérifie le message '(.*)' sur l'alerte")
     @And("I check message '(.*)' on alert")
     public void checkAlertInLogs(String messageOrKey) throws TechnicalException, FailureException {
-        if (DriverFactory.CHROME.equals(Context.getBrowser()) || DriverFactory.PHANTOM.equals(Context.getBrowser())) {
-            final String message = Context.getValue(messageOrKey) != null ? Context.getValue(messageOrKey) : messageOrKey;
-            final String msg = getAlertMessage();
-            if (msg == null || !msg.equals(message)) {
-                new Result.Failure<>(msg, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_NOT_FOUND_ON_ALERT), message), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
-            }
-        } else {
-            Context.getCurrentScenario().write("SKIPPED for " + Context.getBrowser() + " web driver.");
+        // if (DriverFactory.CHROME.equals(Context.getBrowser()) || DriverFactory.PHANTOM.equals(Context.getBrowser())) {
+        final String message = Context.getValue(messageOrKey) != null ? Context.getValue(messageOrKey) : messageOrKey;
+        final String msg = getAlertMessage();
+        if (msg == null || !msg.equals(message)) {
+            new Result.Failure<>(msg, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_NOT_FOUND_ON_ALERT), message), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
+        // } else {
+        // Context.getCurrentScenario().write("SKIPPED for " + Context.getBrowser() + " web driver.");
+        // }
     }
 
     /**
