@@ -6,8 +6,6 @@
  */
 package com.github.noraui.browser.steps;
 
-import static com.github.noraui.utils.Constants.ALERT_KEY;
-
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -248,13 +246,21 @@ public class BrowserSteps {
     private void goToUrl(String pageKey, boolean force) throws TechnicalException, FailureException {
         try {
             String urlToOpen = Context.getUrlByPagekey(pageKey);
+            System.out.println("1 SGR");
             if (urlToOpen != null) {
+                System.out.println("2 SGR");
                 if (force || !Context.getDriver().getCurrentUrl().startsWith(urlToOpen)) {
+                    System.out.println("3 SGR");
                     String windowHandle = Context.getDriver().getWindowHandle();
+                    System.out.println("4 SGR");
                     navigateTo(Context.getApplicationByPagekey(pageKey), urlToOpen, windowHandle);
+                    System.out.println("5 SGR");
                 }
-                ((JavascriptExecutor) Context.getDriver()).executeScript("window.alert = function(msg){console.log('" + ALERT_KEY + "' + msg);};");
+                System.out.println("6 SGR");
+                // ((JavascriptExecutor) Context.getDriver()).executeScript("window.alert = function(msg){console.log('" + ALERT_KEY + "' + msg);};");
+                System.out.println("7 SGR");
             } else {
+                System.out.println("8 SGR");
                 throw new TechnicalException(String.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_OPEN_PAGE), pageKey));
             }
         } catch (Exception e) {
