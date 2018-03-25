@@ -8,7 +8,11 @@ package com.github.noraui.cli;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 
 import org.apache.commons.io.FileUtils;
@@ -18,6 +22,45 @@ import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 
 public class Model {
+
+    /**
+     * @param applicationName
+     * @param robotContext
+     * @return
+     */
+    public List<String> getModels(String applicationName, Class<?> robotContext) {
+        List<String> models = new ArrayList<>();
+        String modelPath = "src" + File.separator + "main" + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/")
+                .replaceAll("utils", "application/model/" + applicationName).replaceAll("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), "");
+        String[] list = new File(modelPath).list();
+        if (list != null) {
+            models.addAll(Arrays.asList(list));
+            for (int i = 0; i < models.size(); i++) {
+                models.set(i, models.get(i).replaceAll(".java", "").toLowerCase());
+            }
+            for (int i = 0; i < models.size(); i++) {
+                if (models.contains(models.get(i) + "s")) {
+                    models.remove(models.get(i) + "s");
+                }
+            }
+        }
+        return models;
+    }
+
+    public List<String> getApplications(Class<?> robotContext) {
+        List<String> applications = new ArrayList<>();
+        String modelPath = "src" + File.separator + "main" + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("utils", "application/model/")
+                .replaceAll("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), "");
+        String[] apps = new File(modelPath.substring(0, modelPath.length() - 1)).list();
+        if (apps != null) {
+            applications.addAll(Arrays.asList(apps));
+            TreeSet<String> hs = new TreeSet<>();
+            hs.addAll(applications);
+            applications.clear();
+            applications.addAll(hs);
+        }
+        return applications;
+    }
 
     /**
      * Add new model for a target application to your robot.
