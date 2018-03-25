@@ -823,7 +823,7 @@ public class CommonSteps extends Step {
     public void checkAlertInLogs(String messageOrKey) throws TechnicalException, FailureException {
         if (DriverFactory.CHROME.equals(Context.getBrowser()) || DriverFactory.PHANTOM.equals(Context.getBrowser())) {
             final String message = Context.getValue(messageOrKey) != null ? Context.getValue(messageOrKey) : messageOrKey;
-            final String msg = getLastConsoleAlertMessage();
+            final String msg = getAlertMessage();
             if (msg == null || !msg.equals(message)) {
                 new Result.Failure<>(msg, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_NOT_FOUND_ON_ALERT), message), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
             }
