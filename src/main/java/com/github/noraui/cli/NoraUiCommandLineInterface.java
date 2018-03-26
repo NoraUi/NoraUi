@@ -207,27 +207,35 @@ public class NoraUiCommandLineInterface {
 
     private void addScenario(String applicationName, String scenarioName, String description, String robotName, boolean verbose, Scanner input, boolean interactiveMode) {
         if (interactiveMode && (scenarioName == null || "".equals(scenarioName) || description == null || "".equals(description) || applicationName == null || "".equals(applicationName))) {
-            if (scenarioName == null || "".equals(scenarioName)) {
+            boolean applicationFinded = false;
+            if (applicationName == null || "".equals(applicationName)) {
+                List<String> appList = application.get();
+                if (appList.size() > 0) {
+                    System.out.println("Enter index application number:");
+                    for (int i = 0; i < appList.size(); i++) {
+                        System.out.println("    " + (i + 1) + ") " + appList.get(i));
+                    }
+                    int appCode = input.nextInt();
+                    input.nextLine();
+                    applicationName = appList.get(appCode - 1);
+                    applicationFinded = true;
+                } else {
+                    System.out.println("You must create an application first.");
+                }
+            }
+            if (applicationFinded && (scenarioName == null || "".equals(scenarioName))) {
                 System.out.println("Enter scenario name:");
                 scenarioName = input.nextLine();
             }
-            if (description == null || "".equals(description)) {
+            if (applicationFinded && (description == null || "".equals(description))) {
                 System.out.println("Enter description:");
                 description = input.nextLine();
             }
-            if (applicationName == null || "".equals(applicationName)) {
-                List<String> appList = application.get();
-                System.out.println("Enter index application number:");
-                for (int i = 0; i < appList.size(); i++) {
-                    System.out.println("    " + (i + 1) + ") " + appList.get(i));
-                }
-                int appCode = input.nextInt();
-                input.nextLine();
-                applicationName = appList.get(appCode - 1);
+            if (applicationFinded) {
+                scenario.add(scenarioName, description, applicationName, robotName, verbose);
             }
-            scenario.add(scenarioName, description, applicationName, robotName, verbose);
         } else {
-            System.err.println("When interactiveMode is false, you need use -s, -d and -a");
+            System.err.println("When interactiveMode is false, you need use -a, -s and -d");
         }
     }
 
@@ -254,6 +262,9 @@ public class NoraUiCommandLineInterface {
             if (results == null || "".equals(results)) {
                 System.out.println("Enter result list:");
                 results = input.nextLine();
+                if ("".equals(results)) {
+                    results = null;
+                }
             }
             model.add(applicationName, modelName, fields, results, robotContext, verbose);
         } else {
@@ -275,7 +286,7 @@ public class NoraUiCommandLineInterface {
             }
             application.remove(applicationName, robotContext, verbose);
         } else {
-            System.err.println("When interactiveMode is false, you need use -a and -u");
+            System.err.println("When interactiveMode is false, you need use -a");
         }
     }
 
@@ -287,7 +298,7 @@ public class NoraUiCommandLineInterface {
             }
             scenario.remove(scenarioName, robotName, verbose);
         } else {
-            System.err.println("When interactiveMode is false, you need use -s, -d and -a");
+            System.err.println("When interactiveMode is false, you need use -s");
         }
     }
 
