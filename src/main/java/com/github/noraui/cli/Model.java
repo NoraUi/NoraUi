@@ -78,9 +78,12 @@ public class Model {
         for (String field : fieldList) {
             System.out.println("field: [" + field + "]");
         }
-        String[] resultList = results.split(" ");
-        for (String result : resultList) {
-            System.out.println("result: [" + result + "]");
+        String[] resultList = new String[0];
+        if (results != null) {
+            resultList = results.split(" ");
+            for (String result : resultList) {
+                System.out.println("result: [" + result + "]");
+            }
         }
         addModel(applicationName, modelName, fieldList, resultList, robotContext, verbose);
         addModels(applicationName, modelName, fieldList, resultList, robotContext, verbose);
