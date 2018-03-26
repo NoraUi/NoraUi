@@ -79,6 +79,7 @@ public class Application {
         System.out.println("Remove application named [" + applicationName + "]");
         removeApplicationPages(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), robotContext, verbose);
         removeApplicationSteps(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), robotContext, verbose);
+        removeApplicationModel(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), robotContext, verbose);
         removeApplicationContext(robotContext, applicationName, verbose);
         removeApplicationSelector(applicationName, verbose);
         removeApplicationInPropertiesFile(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), verbose);
@@ -174,14 +175,12 @@ public class Application {
      * @param verbose
      */
     private void removeApplicationPages(String applicationName, String noraRobotName, Class<?> robotContext, boolean verbose) {
-        String pagePath = "src" + File.separator + "main" + File.separator + "java" + File.separator
-                + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("utils", "application/pages/" + applicationName).replaceAll("/", Matcher.quoteReplacement(File.separator))
-                        .replaceAll(robotContext.getSimpleName(), applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "Page")
-                + ".java";
+        String applicationPagePath = "src" + File.separator + "main" + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/")
+                .replaceAll("utils", "application/pages/" + applicationName).replaceAll("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), "");
         try {
-            FileUtils.forceDelete(new File(pagePath));
+            FileUtils.forceDelete(new File(applicationPagePath));
             if (verbose) {
-                System.out.println(pagePath + " removed with success.");
+                System.out.println(applicationPagePath + " removed with success.");
             }
         } catch (IOException e) {
             System.err.println("IOException " + e);
@@ -258,14 +257,32 @@ public class Application {
      * @param verbose
      */
     private void removeApplicationSteps(String applicationName, String noraRobotName, Class<?> robotContext, boolean verbose) {
-        String stepsPath = "src" + File.separator + "main" + File.separator + "java" + File.separator
-                + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("utils", "application/steps/" + applicationName).replaceAll("/", Matcher.quoteReplacement(File.separator))
-                        .replaceAll(robotContext.getSimpleName(), applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "Steps")
-                + ".java";
+        String applicationStepsPath = "src" + File.separator + "main" + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/")
+                .replaceAll("utils", "application/steps/" + applicationName).replaceAll("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), "");
         try {
-            FileUtils.forceDelete(new File(stepsPath));
+            FileUtils.forceDelete(new File(applicationStepsPath));
             if (verbose) {
-                System.out.println(stepsPath + " removed with success.");
+                System.out.println(applicationStepsPath + " removed with success.");
+            }
+        } catch (IOException e) {
+            System.err.println("IOException " + e);
+            System.exit(1);
+        }
+    }
+
+    /**
+     * @param applicationName
+     * @param noraRobotName
+     * @param robotContext
+     * @param verbose
+     */
+    private void removeApplicationModel(String applicationName, String noraRobotName, Class<?> robotContext, boolean verbose) {
+        String applicationModelPath = "src" + File.separator + "main" + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/")
+                .replaceAll("utils", "application/model/" + applicationName).replaceAll("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), "");
+        try {
+            FileUtils.forceDelete(new File(applicationModelPath));
+            if (verbose) {
+                System.out.println(applicationModelPath + " removed with success.");
             }
         } catch (IOException e) {
             System.err.println("IOException " + e);
