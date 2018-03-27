@@ -19,11 +19,28 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 
-public class Application {
+public class Application extends AbstractNoraUiCli {
+
+    /**
+     * Specific logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(Application.class);
+
+    private String mainPath;
+
+    public Application() {
+        this.mainPath = "src" + File.separator + "main";
+    }
+
+    protected Application(String mainPath) {
+        this.mainPath = mainPath;
+    }
 
     /**
      * @return
@@ -55,7 +72,7 @@ public class Application {
      * @param verbose
      */
     public void add(String applicationName, String url, Class<?> robotContext, boolean verbose) {
-        System.out.println("Add a new application named [" + applicationName + "] with this url: " + url);
+        logger.info("Add a new application named [" + applicationName + "] with this url: " + url);
         addApplicationPages(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), robotContext, verbose);
         addApplicationSteps(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), robotContext, verbose);
         addApplicationContext(robotContext, applicationName, verbose);
@@ -76,7 +93,7 @@ public class Application {
      * @param verbose
      */
     public void remove(String applicationName, Class<?> robotContext, boolean verbose) {
-        System.out.println("Remove application named [" + applicationName + "]");
+        logger.info("Remove application named [" + applicationName + "]");
         removeApplicationPages(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), robotContext, verbose);
         removeApplicationSteps(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), robotContext, verbose);
         removeApplicationModel(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), robotContext, verbose);
@@ -100,12 +117,7 @@ public class Application {
                         .replaceAll(robotContext.getSimpleName(), applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "Page")
                 + ".java";
         StringBuilder sb = new StringBuilder();
-        sb.append("/**").append(System.lineSeparator());
-        sb.append(" * " + noraRobotName + " generated free by NoraUi Organization https://github.com/NoraUi").append(System.lineSeparator());
-        sb.append(" * " + noraRobotName + " is licensed under the license BSD.").append(System.lineSeparator());
-        sb.append(" * ").append(System.lineSeparator());
-        sb.append(" * CAUTION: " + noraRobotName + " use NoraUi library. This project is licensed under the license GNU AFFERO GENERAL PUBLIC LICENSE").append(System.lineSeparator());
-        sb.append(" */").append(System.lineSeparator());
+        sb.append(getJavaClassHeaders(noraRobotName)).append(System.lineSeparator());
         sb.append(robotContext.getPackage().toString().replaceAll("utils", "application.pages." + applicationName) + ";").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
         sb.append("import static " + robotContext.getCanonicalName() + "." + applicationName.toUpperCase() + "_KEY;").append(System.lineSeparator());
@@ -163,7 +175,7 @@ public class Application {
                 Files.asCharSink(newSelector, Charsets.UTF_8).write(sb.toString());
             }
         } catch (Exception e) {
-            System.err.println("IOException " + e);
+            logger.error("IOException " + e);
             System.exit(1);
         }
     }
@@ -180,10 +192,10 @@ public class Application {
         try {
             FileUtils.forceDelete(new File(applicationPagePath));
             if (verbose) {
-                System.out.println(applicationPagePath + " removed with success.");
+                logger.info(applicationPagePath + " removed with success.");
             }
         } catch (IOException e) {
-            System.err.println("IOException " + e);
+            logger.error("IOException " + e);
             System.exit(1);
         }
     }
@@ -200,12 +212,7 @@ public class Application {
                         .replaceAll(robotContext.getSimpleName(), applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "Steps")
                 + ".java";
         StringBuilder sb = new StringBuilder();
-        sb.append("/**").append(System.lineSeparator());
-        sb.append(" * " + noraRobotName + " generated free by NoraUi Organization https://github.com/NoraUi").append(System.lineSeparator());
-        sb.append(" * " + noraRobotName + " is licensed under the license BSD.").append(System.lineSeparator());
-        sb.append(" * ").append(System.lineSeparator());
-        sb.append(" * CAUTION: " + noraRobotName + " use NoraUi library. This project is licensed under the license GNU AFFERO GENERAL PUBLIC LICENSE").append(System.lineSeparator());
-        sb.append(" */").append(System.lineSeparator());
+        sb.append(getJavaClassHeaders(noraRobotName)).append(System.lineSeparator());
         sb.append(robotContext.getPackage().toString().replaceAll("utils", "application.steps." + applicationName) + ";").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
         sb.append("import com.github.noraui.application.steps.Step;").append(System.lineSeparator());
@@ -245,7 +252,7 @@ public class Application {
                 Files.asCharSink(newSelector, Charsets.UTF_8).write(sb.toString());
             }
         } catch (Exception e) {
-            System.err.println("IOException " + e);
+            logger.error("IOException " + e);
             System.exit(1);
         }
     }
@@ -262,10 +269,10 @@ public class Application {
         try {
             FileUtils.forceDelete(new File(applicationStepsPath));
             if (verbose) {
-                System.out.println(applicationStepsPath + " removed with success.");
+                logger.info(applicationStepsPath + " removed with success.");
             }
         } catch (IOException e) {
-            System.err.println("IOException " + e);
+            logger.error("IOException " + e);
             System.exit(1);
         }
     }
@@ -282,10 +289,10 @@ public class Application {
         try {
             FileUtils.forceDelete(new File(applicationModelPath));
             if (verbose) {
-                System.out.println(applicationModelPath + " removed with success.");
+                logger.info(applicationModelPath + " removed with success.");
             }
         } catch (IOException e) {
-            System.err.println("IOException " + e);
+            logger.error("IOException " + e);
             System.exit(1);
         }
     }
@@ -315,10 +322,10 @@ public class Application {
      * @param verbose
      */
     private void manageApplicationContext(boolean addMode, Class<?> robotContext, String applicationName, boolean verbose) {
-        String contextPath = "src" + File.separator + "main" + File.separator + "java" + File.separator
-                + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("/", Matcher.quoteReplacement(File.separator)) + ".java";
+        String contextPath = this.mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("/", Matcher.quoteReplacement(File.separator))
+                + ".java";
         if (verbose) {
-            System.out.println("Add application named [" + applicationName + "] in context.");
+            logger.info("Add application named [" + applicationName + "] in context.");
         }
         try (BufferedReader br = new BufferedReader(new FileReader(contextPath))) {
             StringBuilder sb = new StringBuilder();
@@ -412,7 +419,7 @@ public class Application {
             bw.flush();
             bw.close();
         } catch (IOException e) {
-            System.err.println("IOException " + e);
+            logger.error("IOException " + e);
             System.exit(1);
         }
     }
@@ -422,7 +429,7 @@ public class Application {
      * @param verbose
      */
     private void addApplicationSelector(String applicationName, boolean verbose) {
-        String selectorsPath = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "selectors";
+        String selectorsPath = this.mainPath + File.separator + "resources" + File.separator + "selectors";
         String[] versions = new File(selectorsPath).list();
         StringBuilder sb = new StringBuilder();
         sb.append("[" + applicationName.toUpperCase() + "_HOM-pageElementSample]");
@@ -436,7 +443,7 @@ public class Application {
                 }
             }
         } catch (Exception e) {
-            System.err.println("IOException " + e);
+            logger.error("IOException " + e);
             System.exit(1);
         }
     }
@@ -446,17 +453,17 @@ public class Application {
      * @param verbose
      */
     private void removeApplicationSelector(String applicationName, boolean verbose) {
-        String selectorsPath = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "selectors";
+        String selectorsPath = this.mainPath + File.separator + "resources" + File.separator + "selectors";
         String[] versions = new File(selectorsPath).list();
         try {
             for (String version : versions) {
                 FileUtils.forceDelete(new File(selectorsPath + File.separator + version + File.separator + applicationName + ".ini"));
                 if (verbose) {
-                    System.out.println(selectorsPath + " removed with success.");
+                    logger.info(selectorsPath + " removed with success.");
                 }
             }
         } catch (IOException e) {
-            System.err.println("IOException " + e);
+            logger.error("IOException " + e);
             System.exit(1);
         }
     }
@@ -486,9 +493,9 @@ public class Application {
      * @param verbose
      */
     private void manageApplicationInPropertiesFile(boolean addMode, String applicationName, String noraRobotName, boolean verbose) {
-        String propertiesfilePath = "src" + File.separator + "main" + File.separator + "resources" + File.separator + noraRobotName + ".properties";
+        String propertiesfilePath = this.mainPath + File.separator + "resources" + File.separator + noraRobotName + ".properties";
         if (verbose) {
-            System.out.println("Add application named [" + applicationName + "] in this properties file: " + propertiesfilePath + "]");
+            logger.info("Add application named [" + applicationName + "] in this properties file: " + propertiesfilePath + "]");
         }
         try (BufferedReader br = new BufferedReader(new FileReader(propertiesfilePath))) {
             StringBuilder sb = new StringBuilder();
@@ -510,7 +517,7 @@ public class Application {
             bw.flush();
             bw.close();
         } catch (IOException e) {
-            System.err.println("IOException " + e);
+            logger.error("IOException " + e);
             System.exit(1);
         }
     }
@@ -545,7 +552,7 @@ public class Application {
     private void manageApplicationInEnvPropertiesFile(boolean addMode, String applicationName, String url, String env, boolean verbose) {
         String propertiesfilePath = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "environments" + File.separator + env + ".properties";
         if (verbose) {
-            System.out.println("Add application named [" + applicationName + "] in this properties file: " + propertiesfilePath + "]");
+            logger.info("Add application named [" + applicationName + "] in this properties file: " + propertiesfilePath + "]");
         }
         try (BufferedReader br = new BufferedReader(new FileReader(propertiesfilePath))) {
             StringBuilder sb = new StringBuilder();
@@ -567,7 +574,7 @@ public class Application {
             bw.flush();
             bw.close();
         } catch (IOException e) {
-            System.err.println("IOException " + e);
+            logger.error("IOException " + e);
             System.exit(1);
         }
     }

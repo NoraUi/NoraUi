@@ -19,11 +19,18 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 
 public class Scenario {
+
+    /**
+     * Specific logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(Scenario.class);
 
     /**
      * Add new scenario to your robot.
@@ -36,7 +43,7 @@ public class Scenario {
      * @param verbose
      */
     public void add(String scenarioName, String description, String applicationName, String noraRobotName, boolean verbose) {
-        System.out.println("Add a new scenario named [" + scenarioName + "] on [" + applicationName + "] application with this description: " + description);
+        logger.info("Add a new scenario named [" + scenarioName + "] on [" + applicationName + "] application with this description: " + description);
         addScenarioInData(scenarioName, noraRobotName, verbose);
         addScenarioInEnvPropertiesFile(scenarioName, verbose);
         addScenarioFeature(scenarioName, description, applicationName, verbose);
@@ -51,7 +58,7 @@ public class Scenario {
      * @param verbose
      */
     public void remove(String scenarioName, String noraRobotName, boolean verbose) {
-        System.out.println("Remove a scenario named [" + scenarioName + "].");
+        logger.info("Remove a scenario named [" + scenarioName + "].");
         removeScenarioInData(scenarioName, noraRobotName, verbose);
         removeScenarioInEnvPropertiesFile(scenarioName, verbose);
         removeScenarioFeature(scenarioName, verbose);
@@ -61,11 +68,11 @@ public class Scenario {
         String propertiesfilePath = "src" + File.separator + "main" + File.separator + "resources" + File.separator + noraRobotName + ".properties";
 
         String dataProviderIn = getDataProvider("in", propertiesfilePath);
-        System.out.println("dataProvider.in.type is [" + dataProviderIn + "]");
+        logger.info("dataProvider.in.type is [" + dataProviderIn + "]");
         removeScenarioInData("in", scenarioName, dataProviderIn, verbose);
 
         String dataProviderOut = getDataProvider("out", propertiesfilePath);
-        System.out.println("dataProvider.out.type is [" + dataProviderOut + "]");
+        logger.info("dataProvider.out.type is [" + dataProviderOut + "]");
         removeScenarioInData("out", scenarioName, dataProviderOut, verbose);
     }
 
@@ -77,11 +84,11 @@ public class Scenario {
         String propertiesfilePath = "src" + File.separator + "main" + File.separator + "resources" + File.separator + noraRobotName + ".properties";
 
         String dataProviderIn = getDataProvider("in", propertiesfilePath);
-        System.out.println("dataProvider.in.type is [" + dataProviderIn + "]");
+        logger.info("dataProvider.in.type is [" + dataProviderIn + "]");
         addScenarioInData("in", scenarioName, dataProviderIn, verbose);
 
         String dataProviderOut = getDataProvider("out", propertiesfilePath);
-        System.out.println("dataProvider.out.type is [" + dataProviderOut + "]");
+        logger.info("dataProvider.out.type is [" + dataProviderOut + "]");
         addScenarioInData("out", scenarioName, dataProviderOut, verbose);
     }
 
@@ -110,7 +117,7 @@ public class Scenario {
                 addXlsxFile(scenarioName, excelPath);
             }
         } else if (verbose) {
-            System.out.println("CLI do not add your data provider (" + dataProvider + "). CLI add only CSV, DB and EXCEL.");
+            logger.info("CLI do not add your data provider (" + dataProvider + "). CLI add only CSV, DB and EXCEL.");
         }
     }
 
@@ -132,15 +139,15 @@ public class Scenario {
             if (!"".equals(datafilePath)) {
                 FileUtils.forceDelete(new File(datafilePath));
                 if (verbose) {
-                    System.out.println(datafilePath + " removed with success.");
+                    logger.info(datafilePath + " removed with success.");
                 }
             } else {
                 if (verbose) {
-                    System.out.println("CLI do not remove your data provider (" + dataProvider + "). CLI remove only CSV, DB and EXCEL.");
+                    logger.info("CLI do not remove your data provider (" + dataProvider + "). CLI remove only CSV, DB and EXCEL.");
                 }
             }
         } catch (IOException e) {
-            System.err.println("IOException " + e);
+            logger.error("IOException " + e);
             System.exit(1);
         }
     }
@@ -170,7 +177,7 @@ public class Scenario {
             workbook.write(outputStream);
             workbook.close();
         } catch (IOException e) {
-            System.err.println("IOException " + e);
+            logger.error("IOException " + e);
             System.exit(1);
         }
     }
@@ -186,7 +193,7 @@ public class Scenario {
         try {
             Files.asCharSink(sqlFile, Charsets.UTF_8).write(sb.toString());
         } catch (IOException e) {
-            System.err.println("IOException " + e);
+            logger.error("IOException " + e);
             System.exit(1);
         }
     }
@@ -202,7 +209,7 @@ public class Scenario {
         try {
             Files.asCharSink(newCsvfile, Charsets.UTF_8).write(sb.toString());
         } catch (IOException e) {
-            System.err.println("IOException " + e);
+            logger.error("IOException " + e);
             System.exit(1);
         }
     }
@@ -223,7 +230,7 @@ public class Scenario {
                 line = br.readLine();
             }
         } catch (IOException e) {
-            System.err.println("IOException " + e);
+            logger.error("IOException " + e);
             System.exit(1);
         }
         return dataProvider;
@@ -236,7 +243,7 @@ public class Scenario {
     private void addScenarioInEnvPropertiesFile(String scenarioName, boolean verbose) {
         String propertiesfilePath = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "scenarios.properties";
         if (verbose) {
-            System.out.println("Add scenario named [" + scenarioName + "] in scenario.properties.");
+            logger.info("Add scenario named [" + scenarioName + "] in scenario.properties.");
         }
         try (BufferedReader br = new BufferedReader(new FileReader(propertiesfilePath))) {
             StringBuilder sb = new StringBuilder();
@@ -261,15 +268,19 @@ public class Scenario {
             bw.flush();
             bw.close();
         } catch (IOException e) {
-            System.err.println("IOException " + e);
+            logger.error("IOException " + e);
             System.exit(1);
         }
     }
 
+    /**
+     * @param scenarioName
+     * @param verbose
+     */
     private void removeScenarioInEnvPropertiesFile(String scenarioName, boolean verbose) {
         String propertiesfilePath = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "scenarios.properties";
         if (verbose) {
-            System.out.println("Remove scenario named [" + scenarioName + "] in scenario.properties.");
+            logger.info("Remove scenario named [" + scenarioName + "] in scenario.properties.");
         }
         try (BufferedReader br = new BufferedReader(new FileReader(propertiesfilePath))) {
             StringBuilder sb = new StringBuilder();
@@ -287,7 +298,7 @@ public class Scenario {
             bw.flush();
             bw.close();
         } catch (IOException e) {
-            System.err.println("IOException " + e);
+            logger.error("IOException " + e);
             System.exit(1);
         }
     }
@@ -324,20 +335,24 @@ public class Scenario {
                 Files.asCharSink(newFeature, Charsets.UTF_8).write(sb.toString());
             }
         } catch (Exception e) {
-            System.err.println("IOException " + e);
+            logger.error("IOException " + e);
             System.exit(1);
         }
     }
 
+    /**
+     * @param scenarioName
+     * @param verbose
+     */
     private void removeScenarioFeature(String scenarioName, boolean verbose) {
         String featurePath = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "steps" + File.separator + "scenarios" + File.separator + scenarioName + ".feature";
         try {
             FileUtils.forceDelete(new File(featurePath));
             if (verbose) {
-                System.out.println(featurePath + " removed with success.");
+                logger.info(featurePath + " removed with success.");
             }
         } catch (Exception e) {
-            System.err.println("IOException " + e);
+            logger.error("IOException " + e);
             System.exit(1);
         }
     }
