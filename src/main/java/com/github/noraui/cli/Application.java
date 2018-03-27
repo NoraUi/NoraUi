@@ -43,7 +43,7 @@ public class Application extends AbstractNoraUiCli {
     }
 
     /**
-     * @return
+     * @return a list of available application (name).
      */
     public List<String> get() {
         List<String> applications = new ArrayList<>();
@@ -85,10 +85,8 @@ public class Application extends AbstractNoraUiCli {
 
     /**
      * Remove target application to your robot.
-     * Sample if you add google: -f 4 -a google -u http://www.google.com --verbose
      * 
      * @param applicationName
-     * @param url
      * @param robotContext
      * @param verbose
      */

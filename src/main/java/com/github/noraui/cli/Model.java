@@ -33,7 +33,7 @@ public class Model extends AbstractNoraUiCli {
     /**
      * @param applicationName
      * @param robotContext
-     * @return
+     * @return a list of available model (name).
      */
     public List<String> getModels(String applicationName, Class<?> robotContext) {
         List<String> models = new ArrayList<>();
@@ -54,6 +54,10 @@ public class Model extends AbstractNoraUiCli {
         return models;
     }
 
+    /**
+     * @param robotContext
+     * @return a list of available application (name).
+     */
     public List<String> getApplications(Class<?> robotContext) {
         List<String> applications = new ArrayList<>();
         String modelPath = "src" + File.separator + "main" + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("utils", "application/model/")
@@ -71,12 +75,13 @@ public class Model extends AbstractNoraUiCli {
 
     /**
      * Add new model for a target application to your robot.
-     * Sample if you add google: -f 5 -a google -m user --verbose
+     * Sample if you add google: -f 5 -a google -m user -fi "field1 field2" -re "result1 result2"--verbose
      * 
      * @param applicationName
      * @param modelName
+     * @param fields
+     * @param results
      * @param robotContext
-     * @param noraRobotName
      * @param verbose
      */
     public void add(String applicationName, String modelName, String fields, String results, Class<?> robotContext, boolean verbose) {
@@ -103,7 +108,6 @@ public class Model extends AbstractNoraUiCli {
      * @param applicationName
      * @param modelName
      * @param robotContext
-     * @param noraRobotName
      * @param verbose
      */
     public void remove(String applicationName, String modelName, Class<?> robotContext, boolean verbose) {
