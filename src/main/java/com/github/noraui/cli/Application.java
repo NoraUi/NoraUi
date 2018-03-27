@@ -91,7 +91,7 @@ public class Application extends AbstractNoraUiCli {
      * @param verbose
      */
     public void remove(String applicationName, Class<?> robotContext, boolean verbose) {
-        logger.info("Remove application named [" + applicationName + "]");
+        logger.info("Remove application named [{}]", applicationName);
         removeApplicationPages(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), robotContext, verbose);
         removeApplicationSteps(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), robotContext, verbose);
         removeApplicationModel(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), robotContext, verbose);
@@ -173,7 +173,7 @@ public class Application extends AbstractNoraUiCli {
                 Files.asCharSink(newSelector, Charsets.UTF_8).write(sb.toString());
             }
         } catch (Exception e) {
-            logger.error("IOException " + e);
+            logger.error("IOException {}", e.getMessage(), e);
             System.exit(1);
         }
     }
@@ -190,10 +190,10 @@ public class Application extends AbstractNoraUiCli {
         try {
             FileUtils.forceDelete(new File(applicationPagePath));
             if (verbose) {
-                logger.info(applicationPagePath + " removed with success.");
+                logger.info("{} removed with success.", applicationPagePath);
             }
         } catch (IOException e) {
-            logger.error("IOException " + e);
+            logger.error("IOException {}", e.getMessage(), e);
             System.exit(1);
         }
     }
@@ -250,7 +250,7 @@ public class Application extends AbstractNoraUiCli {
                 Files.asCharSink(newSelector, Charsets.UTF_8).write(sb.toString());
             }
         } catch (Exception e) {
-            logger.error("IOException " + e);
+            logger.error("IOException {}", e.getMessage(), e);
             System.exit(1);
         }
     }
@@ -267,10 +267,10 @@ public class Application extends AbstractNoraUiCli {
         try {
             FileUtils.forceDelete(new File(applicationStepsPath));
             if (verbose) {
-                logger.info(applicationStepsPath + " removed with success.");
+                logger.info("{} removed with success.", applicationStepsPath);
             }
         } catch (IOException e) {
-            logger.error("IOException " + e);
+            logger.error("IOException {}", e.getMessage(), e);
             System.exit(1);
         }
     }
@@ -287,10 +287,10 @@ public class Application extends AbstractNoraUiCli {
         try {
             FileUtils.forceDelete(new File(applicationModelPath));
             if (verbose) {
-                logger.info(applicationModelPath + " removed with success.");
+                logger.info("{} removed with success.", applicationModelPath);
             }
         } catch (IOException e) {
-            logger.error("IOException " + e);
+            logger.error("IOException {}", e.getMessage(), e);
             System.exit(1);
         }
     }
@@ -323,7 +323,7 @@ public class Application extends AbstractNoraUiCli {
         String contextPath = this.mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("/", Matcher.quoteReplacement(File.separator))
                 + ".java";
         if (verbose) {
-            logger.info("Add application named [" + applicationName + "] in context.");
+            logger.info("Add application named [{}] in context.", applicationName);
         }
         try (BufferedReader br = new BufferedReader(new FileReader(contextPath))) {
             StringBuilder sb = new StringBuilder();
@@ -417,7 +417,7 @@ public class Application extends AbstractNoraUiCli {
             bw.flush();
             bw.close();
         } catch (IOException e) {
-            logger.error("IOException " + e);
+            logger.error("IOException {}", e.getMessage(), e);
             System.exit(1);
         }
     }
@@ -441,7 +441,7 @@ public class Application extends AbstractNoraUiCli {
                 }
             }
         } catch (Exception e) {
-            logger.error("IOException " + e);
+            logger.error("IOException {}", e.getMessage(), e);
             System.exit(1);
         }
     }
@@ -457,11 +457,11 @@ public class Application extends AbstractNoraUiCli {
             for (String version : versions) {
                 FileUtils.forceDelete(new File(selectorsPath + File.separator + version + File.separator + applicationName + ".ini"));
                 if (verbose) {
-                    logger.info(selectorsPath + " removed with success.");
+                    logger.info("{} removed with success.", selectorsPath);
                 }
             }
         } catch (IOException e) {
-            logger.error("IOException " + e);
+            logger.error("IOException {}", e.getMessage(), e);
             System.exit(1);
         }
     }
@@ -493,7 +493,7 @@ public class Application extends AbstractNoraUiCli {
     private void manageApplicationInPropertiesFile(boolean addMode, String applicationName, String noraRobotName, boolean verbose) {
         String propertiesfilePath = this.mainPath + File.separator + "resources" + File.separator + noraRobotName + ".properties";
         if (verbose) {
-            logger.info("Add application named [" + applicationName + "] in this properties file: " + propertiesfilePath + "]");
+            logger.info("Add application named [{}] in this properties file: {}]", applicationName, propertiesfilePath);
         }
         try (BufferedReader br = new BufferedReader(new FileReader(propertiesfilePath))) {
             StringBuilder sb = new StringBuilder();
@@ -515,7 +515,7 @@ public class Application extends AbstractNoraUiCli {
             bw.flush();
             bw.close();
         } catch (IOException e) {
-            logger.error("IOException " + e);
+            logger.error("IOException {}", e.getMessage(), e);
             System.exit(1);
         }
     }
@@ -550,7 +550,7 @@ public class Application extends AbstractNoraUiCli {
     private void manageApplicationInEnvPropertiesFile(boolean addMode, String applicationName, String url, String env, boolean verbose) {
         String propertiesfilePath = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "environments" + File.separator + env + ".properties";
         if (verbose) {
-            logger.info("Add application named [" + applicationName + "] in this properties file: " + propertiesfilePath + "]");
+            logger.info("Add application named [{}] in this properties file: [{}]", applicationName, propertiesfilePath);
         }
         try (BufferedReader br = new BufferedReader(new FileReader(propertiesfilePath))) {
             StringBuilder sb = new StringBuilder();
@@ -572,7 +572,7 @@ public class Application extends AbstractNoraUiCli {
             bw.flush();
             bw.close();
         } catch (IOException e) {
-            logger.error("IOException " + e);
+            logger.error("IOException {}", e.getMessage(), e);
             System.exit(1);
         }
     }

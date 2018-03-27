@@ -43,7 +43,7 @@ public class Scenario {
      * @param verbose
      */
     public void add(String scenarioName, String description, String applicationName, String noraRobotName, boolean verbose) {
-        logger.info("Add a new scenario named [" + scenarioName + "] on [" + applicationName + "] application with this description: " + description);
+        logger.info("Add a new scenario named [{}] on [{}] application with this description: [{}]", scenarioName, applicationName, description);
         addScenarioInData(scenarioName, noraRobotName, verbose);
         addScenarioInEnvPropertiesFile(scenarioName, verbose);
         addScenarioFeature(scenarioName, description, applicationName, verbose);
@@ -58,7 +58,7 @@ public class Scenario {
      * @param verbose
      */
     public void remove(String scenarioName, String noraRobotName, boolean verbose) {
-        logger.info("Remove a scenario named [" + scenarioName + "].");
+        logger.info("Remove a scenario named [{}].", scenarioName);
         removeScenarioInData(scenarioName, noraRobotName, verbose);
         removeScenarioInEnvPropertiesFile(scenarioName, verbose);
         removeScenarioFeature(scenarioName, verbose);
@@ -68,11 +68,11 @@ public class Scenario {
         String propertiesfilePath = "src" + File.separator + "main" + File.separator + "resources" + File.separator + noraRobotName + ".properties";
 
         String dataProviderIn = getDataProvider("in", propertiesfilePath);
-        logger.info("dataProvider.in.type is [" + dataProviderIn + "]");
+        logger.info("dataProvider.in.type is [{}]", dataProviderIn);
         removeScenarioInData("in", scenarioName, dataProviderIn, verbose);
 
         String dataProviderOut = getDataProvider("out", propertiesfilePath);
-        logger.info("dataProvider.out.type is [" + dataProviderOut + "]");
+        logger.info("dataProvider.out.type is [{}]", dataProviderOut);
         removeScenarioInData("out", scenarioName, dataProviderOut, verbose);
     }
 
@@ -84,11 +84,11 @@ public class Scenario {
         String propertiesfilePath = "src" + File.separator + "main" + File.separator + "resources" + File.separator + noraRobotName + ".properties";
 
         String dataProviderIn = getDataProvider("in", propertiesfilePath);
-        logger.info("dataProvider.in.type is [" + dataProviderIn + "]");
+        logger.info("dataProvider.in.type is [{}]", dataProviderIn);
         addScenarioInData("in", scenarioName, dataProviderIn, verbose);
 
         String dataProviderOut = getDataProvider("out", propertiesfilePath);
-        logger.info("dataProvider.out.type is [" + dataProviderOut + "]");
+        logger.info("dataProvider.out.type is [{}]", dataProviderOut);
         addScenarioInData("out", scenarioName, dataProviderOut, verbose);
     }
 
@@ -117,7 +117,7 @@ public class Scenario {
                 addXlsxFile(scenarioName, excelPath);
             }
         } else if (verbose) {
-            logger.info("CLI do not add your data provider (" + dataProvider + "). CLI add only CSV, DB and EXCEL.");
+            logger.info("CLI do not add your data provider [{}]. CLI add only CSV, DB and EXCEL.", dataProvider);
         }
     }
 
@@ -139,15 +139,15 @@ public class Scenario {
             if (!"".equals(datafilePath)) {
                 FileUtils.forceDelete(new File(datafilePath));
                 if (verbose) {
-                    logger.info(datafilePath + " removed with success.");
+                    logger.info("{} removed with success.", datafilePath);
                 }
             } else {
                 if (verbose) {
-                    logger.info("CLI do not remove your data provider (" + dataProvider + "). CLI remove only CSV, DB and EXCEL.");
+                    logger.info("CLI do not remove your data provider [{}]. CLI remove only CSV, DB and EXCEL.", dataProvider);
                 }
             }
         } catch (IOException e) {
-            logger.error("IOException " + e);
+            logger.error("IOException {}", e.getMessage(), e);
             System.exit(1);
         }
     }
@@ -177,7 +177,7 @@ public class Scenario {
             workbook.write(outputStream);
             workbook.close();
         } catch (IOException e) {
-            logger.error("IOException " + e);
+            logger.error("IOException {}", e.getMessage(), e);
             System.exit(1);
         }
     }
@@ -193,7 +193,7 @@ public class Scenario {
         try {
             Files.asCharSink(sqlFile, Charsets.UTF_8).write(sb.toString());
         } catch (IOException e) {
-            logger.error("IOException " + e);
+            logger.error("IOException {}", e.getMessage(), e);
             System.exit(1);
         }
     }
@@ -209,7 +209,7 @@ public class Scenario {
         try {
             Files.asCharSink(newCsvfile, Charsets.UTF_8).write(sb.toString());
         } catch (IOException e) {
-            logger.error("IOException " + e);
+            logger.error("IOException {}", e.getMessage(), e);
             System.exit(1);
         }
     }
@@ -230,7 +230,7 @@ public class Scenario {
                 line = br.readLine();
             }
         } catch (IOException e) {
-            logger.error("IOException " + e);
+            logger.error("IOException {}", e.getMessage(), e);
             System.exit(1);
         }
         return dataProvider;
@@ -243,7 +243,7 @@ public class Scenario {
     private void addScenarioInEnvPropertiesFile(String scenarioName, boolean verbose) {
         String propertiesfilePath = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "scenarios.properties";
         if (verbose) {
-            logger.info("Add scenario named [" + scenarioName + "] in scenario.properties.");
+            logger.info("Add scenario named [{}] in scenario.properties.", scenarioName);
         }
         try (BufferedReader br = new BufferedReader(new FileReader(propertiesfilePath))) {
             StringBuilder sb = new StringBuilder();
@@ -268,7 +268,7 @@ public class Scenario {
             bw.flush();
             bw.close();
         } catch (IOException e) {
-            logger.error("IOException " + e);
+            logger.error("IOException {}", e.getMessage(), e);
             System.exit(1);
         }
     }
@@ -280,7 +280,7 @@ public class Scenario {
     private void removeScenarioInEnvPropertiesFile(String scenarioName, boolean verbose) {
         String propertiesfilePath = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "scenarios.properties";
         if (verbose) {
-            logger.info("Remove scenario named [" + scenarioName + "] in scenario.properties.");
+            logger.info("Remove scenario named [{}] in scenario.properties.", scenarioName);
         }
         try (BufferedReader br = new BufferedReader(new FileReader(propertiesfilePath))) {
             StringBuilder sb = new StringBuilder();
@@ -298,7 +298,7 @@ public class Scenario {
             bw.flush();
             bw.close();
         } catch (IOException e) {
-            logger.error("IOException " + e);
+            logger.error("IOException {}", e.getMessage(), e);
             System.exit(1);
         }
     }
@@ -335,7 +335,7 @@ public class Scenario {
                 Files.asCharSink(newFeature, Charsets.UTF_8).write(sb.toString());
             }
         } catch (Exception e) {
-            logger.error("IOException " + e);
+            logger.error("IOException {}", e.getMessage(), e);
             System.exit(1);
         }
     }
@@ -349,10 +349,10 @@ public class Scenario {
         try {
             FileUtils.forceDelete(new File(featurePath));
             if (verbose) {
-                logger.info(featurePath + " removed with success.");
+                logger.info("{} removed with success.", featurePath);
             }
         } catch (Exception e) {
-            logger.error("IOException " + e);
+            logger.error("IOException {}", e.getMessage(), e);
             System.exit(1);
         }
     }
