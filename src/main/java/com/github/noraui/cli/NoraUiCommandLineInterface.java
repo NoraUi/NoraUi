@@ -29,7 +29,7 @@ public class NoraUiCommandLineInterface {
      * @param context
      *            is generated robot context class.
      * @param args
-     *            is list of args (-h, --verbose, -interactiveMode, -f, -s, -u, -d, -a, -m and -fi)
+     *            is list of args (-h, --verbose, -interactiveMode, -f, -s, -u, -d, -a, -m, -fi and -re)
      */
     public void runCli(Class<?> context, String... args) {
         Scanner input = null;
@@ -144,6 +144,7 @@ public class NoraUiCommandLineInterface {
             logger.info("-a: Application Name");
             logger.info("-m: Model Name");
             logger.info("-fi: Field list of model");
+            logger.info("-re: Result list of model");
         }
     }
 
