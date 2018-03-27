@@ -85,16 +85,16 @@ public class Model extends AbstractNoraUiCli {
      * @param verbose
      */
     public void add(String applicationName, String modelName, String fields, String results, Class<?> robotContext, boolean verbose) {
-        logger.info("Add a new model named [" + modelName + "] in application named [" + applicationName + "]");
+        logger.info("Add a new model named [{}] in application named [{}]", modelName, applicationName);
         String[] fieldList = fields.split(" ");
         for (String field : fieldList) {
-            logger.info("field: [" + field + "]");
+            logger.info("field: [{}]", field);
         }
         String[] resultList = new String[0];
         if (results != null) {
             resultList = results.split(" ");
             for (String result : resultList) {
-                logger.info("result: [" + result + "]");
+                logger.info("result: [{}]", result);
             }
         }
         addModel(applicationName, modelName, fieldList, resultList, robotContext, verbose);
@@ -111,7 +111,7 @@ public class Model extends AbstractNoraUiCli {
      * @param verbose
      */
     public void remove(String applicationName, String modelName, Class<?> robotContext, boolean verbose) {
-        logger.info("Remove model named [" + modelName + "] in application named [" + applicationName + "]");
+        logger.info("Remove model named [{}] in application named [{}]", modelName, applicationName);
         String modelPath = "src" + File.separator + "main" + File.separator + "java" + File.separator
                 + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("utils", "application/model/" + applicationName).replaceAll("/", Matcher.quoteReplacement(File.separator))
                         .replaceAll(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1))
@@ -123,11 +123,11 @@ public class Model extends AbstractNoraUiCli {
         try {
             FileUtils.forceDelete(new File(modelPath));
             if (verbose) {
-                logger.info(modelPath + " removed with success.");
+                logger.info("{} removed with success.", modelPath);
             }
             FileUtils.forceDelete(new File(modelsPath));
             if (verbose) {
-                logger.info(modelsPath + " removed with success.");
+                logger.info("{} removed with success.", modelsPath);
             }
             File applicationDirectory = new File(modelPath.substring(0, modelPath.lastIndexOf(File.separator)));
             Collection<File> l = FileUtils.listFiles(applicationDirectory, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
@@ -138,7 +138,7 @@ public class Model extends AbstractNoraUiCli {
                 FileUtils.deleteDirectory(applicationDirectory);
             }
         } catch (IOException e) {
-            logger.error("IOException " + e);
+            logger.error("IOException {}", e.getMessage(), e);
             System.exit(1);
         }
     }
@@ -349,7 +349,7 @@ public class Model extends AbstractNoraUiCli {
                 Files.asCharSink(newSelector, Charsets.UTF_8).write(sb.toString());
             }
         } catch (Exception e) {
-            logger.error("IOException " + e);
+            logger.error("IOException {}", e.getMessage(), e);
             System.exit(1);
         }
     }
@@ -450,7 +450,7 @@ public class Model extends AbstractNoraUiCli {
                 Files.asCharSink(newSelector, Charsets.UTF_8).write(sb.toString());
             }
         } catch (Exception e) {
-            logger.error("IOException " + e);
+            logger.error("IOException {}", e.getMessage(), e);
             System.exit(1);
         }
     }
