@@ -16,10 +16,22 @@
 			</Pattern>
 		</layout>
 	</appender>
+    
+    <appender name="cli" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %m%n
+            </Pattern>
+        </layout>
+    </appender>
 
 	<logger name="org.openqa.selenium" level="off"/>
 	<logger name="com.gargoylesoftware" level="off"/>
 
+    <logger name="com.github.noraui.cli" additivity="false">
+        <appender-ref ref="cli" />
+    </logger>
+    
 	<root level="INFO">
 		<appender-ref ref="consoleInfo" />
 	</root>

@@ -17,11 +17,18 @@ import java.util.regex.Matcher;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 
-public class Model {
+public class Model extends AbstractNoraUiCli {
+
+    /**
+     * Specific logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(Model.class);
 
     /**
      * @param applicationName
@@ -73,16 +80,16 @@ public class Model {
      * @param verbose
      */
     public void add(String applicationName, String modelName, String fields, String results, Class<?> robotContext, boolean verbose) {
-        System.out.println("Add a new model named [" + modelName + "] in application named [" + applicationName + "]");
+        logger.info("Add a new model named [" + modelName + "] in application named [" + applicationName + "]");
         String[] fieldList = fields.split(" ");
         for (String field : fieldList) {
-            System.out.println("field: [" + field + "]");
+            logger.info("field: [" + field + "]");
         }
         String[] resultList = new String[0];
         if (results != null) {
             resultList = results.split(" ");
             for (String result : resultList) {
-                System.out.println("result: [" + result + "]");
+                logger.info("result: [" + result + "]");
             }
         }
         addModel(applicationName, modelName, fieldList, resultList, robotContext, verbose);
@@ -100,7 +107,7 @@ public class Model {
      * @param verbose
      */
     public void remove(String applicationName, String modelName, Class<?> robotContext, boolean verbose) {
-        System.out.println("Remove model named [" + modelName + "] in application named [" + applicationName + "]");
+        logger.info("Remove model named [" + modelName + "] in application named [" + applicationName + "]");
         String modelPath = "src" + File.separator + "main" + File.separator + "java" + File.separator
                 + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("utils", "application/model/" + applicationName).replaceAll("/", Matcher.quoteReplacement(File.separator))
                         .replaceAll(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1))
@@ -112,22 +119,22 @@ public class Model {
         try {
             FileUtils.forceDelete(new File(modelPath));
             if (verbose) {
-                System.out.println(modelPath + " removed with success.");
+                logger.info(modelPath + " removed with success.");
             }
             FileUtils.forceDelete(new File(modelsPath));
             if (verbose) {
-                System.out.println(modelsPath + " removed with success.");
+                logger.info(modelsPath + " removed with success.");
             }
             File applicationDirectory = new File(modelPath.substring(0, modelPath.lastIndexOf(File.separator)));
             Collection<File> l = FileUtils.listFiles(applicationDirectory, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
             if (l.size() == 0) {
                 if (verbose) {
-                    System.out.println("Empty directory, so remove application directory.");
+                    logger.info("Empty directory, so remove application directory.");
                 }
                 FileUtils.deleteDirectory(applicationDirectory);
             }
         } catch (IOException e) {
-            System.err.println("IOException " + e);
+            logger.error("IOException " + e);
             System.exit(1);
         }
     }
@@ -338,7 +345,7 @@ public class Model {
                 Files.asCharSink(newSelector, Charsets.UTF_8).write(sb.toString());
             }
         } catch (Exception e) {
-            System.err.println("IOException " + e);
+            logger.error("IOException " + e);
             System.exit(1);
         }
     }
@@ -349,13 +356,7 @@ public class Model {
                         .replaceAll(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1))
                 + "s.java";
         StringBuilder sb = new StringBuilder();
-        sb.append("/**").append(System.lineSeparator());
-        sb.append(" * " + robotContext.getSimpleName().replaceAll("Context", "") + " generated free by NoraUi Organization https://github.com/NoraUi").append(System.lineSeparator());
-        sb.append(" * " + robotContext.getSimpleName().replaceAll("Context", "") + " is licensed under the license BSD.").append(System.lineSeparator());
-        sb.append(" * ").append(System.lineSeparator());
-        sb.append(" * CAUTION: " + robotContext.getSimpleName().replaceAll("Context", "") + " use NoraUi library. This project is licensed under the license GNU AFFERO GENERAL PUBLIC LICENSE")
-                .append(System.lineSeparator());
-        sb.append(" */").append(System.lineSeparator());
+        sb.append(getJavaClassHeaders(robotContext.getSimpleName().replaceAll("Context", ""))).append(System.lineSeparator());
         sb.append(robotContext.getPackage().toString().replaceAll("utils", "application.model." + applicationName) + ";").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
         sb.append("import java.lang.reflect.Type;").append(System.lineSeparator());
@@ -445,7 +446,7 @@ public class Model {
                 Files.asCharSink(newSelector, Charsets.UTF_8).write(sb.toString());
             }
         } catch (Exception e) {
-            System.err.println("IOException " + e);
+            logger.error("IOException " + e);
             System.exit(1);
         }
     }
