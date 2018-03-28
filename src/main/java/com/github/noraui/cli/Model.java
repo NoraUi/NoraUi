@@ -30,6 +30,16 @@ public class Model extends AbstractNoraUiCli {
      */
     private static final Logger logger = LoggerFactory.getLogger(Model.class);
 
+    private String mainPath;
+
+    public Model() {
+        this.mainPath = "src" + File.separator + "main";
+    }
+
+    protected Model(String mainPath) {
+        this.mainPath = mainPath;
+    }
+
     /**
      * @param applicationName
      * @param robotContext
@@ -37,8 +47,8 @@ public class Model extends AbstractNoraUiCli {
      */
     public List<String> getModels(String applicationName, Class<?> robotContext) {
         List<String> models = new ArrayList<>();
-        String modelPath = "src" + File.separator + "main" + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/")
-                .replaceAll("utils", "application/model/" + applicationName).replaceAll("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), "");
+        String modelPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("utils", "application/model/" + applicationName)
+                .replaceAll("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), "");
         String[] list = new File(modelPath).list();
         if (list != null) {
             models.addAll(Arrays.asList(list));
@@ -60,7 +70,7 @@ public class Model extends AbstractNoraUiCli {
      */
     public List<String> getApplications(Class<?> robotContext) {
         List<String> applications = new ArrayList<>();
-        String modelPath = "src" + File.separator + "main" + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("utils", "application/model/")
+        String modelPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("utils", "application/model/")
                 .replaceAll("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), "");
         String[] apps = new File(modelPath.substring(0, modelPath.length() - 1)).list();
         if (apps != null) {
@@ -112,35 +122,39 @@ public class Model extends AbstractNoraUiCli {
      */
     public void remove(String applicationName, String modelName, Class<?> robotContext, boolean verbose) {
         logger.info("Remove model named [{}] in application named [{}]", modelName, applicationName);
-        String modelPath = "src" + File.separator + "main" + File.separator + "java" + File.separator
-                + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("utils", "application/model/" + applicationName).replaceAll("/", Matcher.quoteReplacement(File.separator))
-                        .replaceAll(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1))
-                + ".java";
-        String modelsPath = "src" + File.separator + "main" + File.separator + "java" + File.separator
-                + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("utils", "application/model/" + applicationName).replaceAll("/", Matcher.quoteReplacement(File.separator))
-                        .replaceAll(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1))
-                + "s.java";
+        String modelPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("utils", "application/model/" + applicationName)
+                .replaceAll("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1)) + ".java";
+        String modelsPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("utils", "application/model/" + applicationName)
+                .replaceAll("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1)) + "s.java";
         try {
             FileUtils.forceDelete(new File(modelPath));
             if (verbose) {
                 logger.info("{} removed with success.", modelPath);
             }
+        } catch (IOException e) {
+            logger.debug("{} not revove because do not exist.", modelPath);
+        }
+        try {
             FileUtils.forceDelete(new File(modelsPath));
             if (verbose) {
                 logger.info("{} removed with success.", modelsPath);
             }
-            File applicationDirectory = new File(modelPath.substring(0, modelPath.lastIndexOf(File.separator)));
-            Collection<File> l = FileUtils.listFiles(applicationDirectory, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
+        } catch (IOException e) {
+            logger.debug("{} not revove because do not exist.", modelsPath);
+        }
+        String applicationDirectoryPath = modelPath.substring(0, modelPath.lastIndexOf(File.separator));
+        try {
+            Collection<File> l = FileUtils.listFiles(new File(applicationDirectoryPath), TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
             if (l.size() == 0) {
                 if (verbose) {
                     logger.info("Empty directory, so remove application directory.");
                 }
-                FileUtils.deleteDirectory(applicationDirectory);
+                FileUtils.deleteDirectory(new File(applicationDirectoryPath));
             }
         } catch (IOException e) {
-            logger.error("IOException {}", e.getMessage(), e);
-            System.exit(1);
+            logger.debug("{} not revove because do not exist.", applicationDirectoryPath);
         }
+
     }
 
     /**
@@ -151,10 +165,8 @@ public class Model extends AbstractNoraUiCli {
      * @param verbose
      */
     private void addModel(String applicationName, String modelName, String[] fieldList, String[] resultList, Class<?> robotContext, boolean verbose) {
-        String modelPath = "src" + File.separator + "main" + File.separator + "java" + File.separator
-                + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("utils", "application/model/" + applicationName).replaceAll("/", Matcher.quoteReplacement(File.separator))
-                        .replaceAll(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1))
-                + ".java";
+        String modelPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("utils", "application/model/" + applicationName)
+                .replaceAll("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1)) + ".java";
         StringBuilder sb = new StringBuilder();
         sb.append("/**").append(System.lineSeparator());
         sb.append(" * " + robotContext.getSimpleName().replaceAll("Context", "") + " generated free by NoraUi Organization https://github.com/NoraUi").append(System.lineSeparator());
@@ -355,10 +367,8 @@ public class Model extends AbstractNoraUiCli {
     }
 
     private void addModels(String applicationName, String modelName, String[] fieldList, String[] resultList, Class<?> robotContext, boolean verbose) {
-        String modelsPath = "src" + File.separator + "main" + File.separator + "java" + File.separator
-                + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("utils", "application/model/" + applicationName).replaceAll("/", Matcher.quoteReplacement(File.separator))
-                        .replaceAll(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1))
-                + "s.java";
+        String modelsPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("utils", "application/model/" + applicationName)
+                .replaceAll("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1)) + "s.java";
         StringBuilder sb = new StringBuilder();
         sb.append(getJavaClassHeaders(robotContext.getSimpleName().replaceAll("Context", ""))).append(System.lineSeparator());
         sb.append(robotContext.getPackage().toString().replaceAll("utils", "application.model." + applicationName) + ";").append(System.lineSeparator());
