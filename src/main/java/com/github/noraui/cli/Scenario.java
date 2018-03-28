@@ -32,6 +32,16 @@ public class Scenario {
      */
     private static final Logger logger = LoggerFactory.getLogger(Scenario.class);
 
+    private String mainPath;
+
+    public Scenario() {
+        this.mainPath = "src" + File.separator + "main";
+    }
+
+    protected Scenario(String mainPath) {
+        this.mainPath = mainPath;
+    }
+
     /**
      * Add new scenario to your robot.
      * Sample if you add google: -f 2 -s loginSample -d "Scenario that sample." -a google --verbose
@@ -65,7 +75,7 @@ public class Scenario {
     }
 
     private void removeScenarioInData(String scenarioName, String noraRobotName, boolean verbose) {
-        String propertiesfilePath = "src" + File.separator + "main" + File.separator + "resources" + File.separator + noraRobotName + ".properties";
+        String propertiesfilePath = mainPath + File.separator + "resources" + File.separator + noraRobotName + ".properties";
 
         String dataProviderIn = getDataProvider("in", propertiesfilePath);
         logger.info("dataProvider.in.type is [{}]", dataProviderIn);
@@ -81,7 +91,7 @@ public class Scenario {
      * @param verbose
      */
     private void addScenarioInData(String scenarioName, String noraRobotName, boolean verbose) {
-        String propertiesfilePath = "src" + File.separator + "main" + File.separator + "resources" + File.separator + noraRobotName + ".properties";
+        String propertiesfilePath = mainPath + File.separator + "resources" + File.separator + noraRobotName + ".properties";
 
         String dataProviderIn = getDataProvider("in", propertiesfilePath);
         logger.info("dataProvider.in.type is [{}]", dataProviderIn);
@@ -127,29 +137,30 @@ public class Scenario {
      * @param dataProviderIn
      */
     private void removeScenarioInData(String type, String scenarioName, String dataProvider, boolean verbose) {
-        try {
-            String datafilePath = "";
-            if ("CSV".equals(dataProvider)) {
-                datafilePath = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "data" + File.separator + type + File.separator + scenarioName + ".csv";
-            } else if ("DB".equals(dataProvider)) {
-                datafilePath = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "data" + File.separator + type + File.separator + scenarioName + ".sql";
-            } else if ("EXCEL".equals(dataProvider)) {
-                datafilePath = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "data" + File.separator + type + File.separator + scenarioName + ".xlsx";
-            }
-            if (!"".equals(datafilePath)) {
+        String datafilePath = "";
+
+        if ("CSV".equals(dataProvider)) {
+            datafilePath = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "data" + File.separator + type + File.separator + scenarioName + ".csv";
+        } else if ("DB".equals(dataProvider)) {
+            datafilePath = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "data" + File.separator + type + File.separator + scenarioName + ".sql";
+        } else if ("EXCEL".equals(dataProvider)) {
+            datafilePath = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "data" + File.separator + type + File.separator + scenarioName + ".xlsx";
+        }
+        if (!"".equals(datafilePath)) {
+            try {
                 FileUtils.forceDelete(new File(datafilePath));
                 if (verbose) {
                     logger.info("{} removed with success.", datafilePath);
                 }
-            } else {
-                if (verbose) {
-                    logger.info("CLI do not remove your data provider [{}]. CLI remove only CSV, DB and EXCEL.", dataProvider);
-                }
+            } catch (IOException e) {
+                logger.debug("{} not revove because do not exist.", datafilePath);
             }
-        } catch (IOException e) {
-            logger.error("IOException {}", e.getMessage(), e);
-            System.exit(1);
+        } else {
+            if (verbose) {
+                logger.info("CLI do not remove your data provider [{}]. CLI remove only CSV, DB and EXCEL.", dataProvider);
+            }
         }
+
     }
 
     /**
@@ -241,7 +252,7 @@ public class Scenario {
      * @param verbose
      */
     private void addScenarioInEnvPropertiesFile(String scenarioName, boolean verbose) {
-        String propertiesfilePath = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "scenarios.properties";
+        String propertiesfilePath = mainPath + File.separator + "resources" + File.separator + "scenarios.properties";
         if (verbose) {
             logger.info("Add scenario named [{}] in scenario.properties.", scenarioName);
         }
@@ -278,7 +289,7 @@ public class Scenario {
      * @param verbose
      */
     private void removeScenarioInEnvPropertiesFile(String scenarioName, boolean verbose) {
-        String propertiesfilePath = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "scenarios.properties";
+        String propertiesfilePath = mainPath + File.separator + "resources" + File.separator + "scenarios.properties";
         if (verbose) {
             logger.info("Remove scenario named [{}] in scenario.properties.", scenarioName);
         }
@@ -352,8 +363,7 @@ public class Scenario {
                 logger.info("{} removed with success.", featurePath);
             }
         } catch (Exception e) {
-            logger.error("IOException {}", e.getMessage(), e);
-            System.exit(1);
+            logger.debug("{} not revove because do not exist.", featurePath);
         }
     }
 

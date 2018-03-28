@@ -47,7 +47,7 @@ public class Application extends AbstractNoraUiCli {
      */
     public List<String> get() {
         List<String> applications = new ArrayList<>();
-        String selectorsPath = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "selectors";
+        String selectorsPath = mainPath + File.separator + "resources" + File.separator + "selectors";
         String[] versions = new File(selectorsPath).list();
         for (String version : versions) {
             applications.addAll(Arrays.asList(new File(selectorsPath + File.separator + version).list()));
@@ -72,7 +72,7 @@ public class Application extends AbstractNoraUiCli {
      * @param verbose
      */
     public void add(String applicationName, String url, Class<?> robotContext, boolean verbose) {
-        logger.info("Add a new application named [" + applicationName + "] with this url: " + url);
+        logger.info("Add a new application named [{}] with this url: [{}]", applicationName, url);
         addApplicationPages(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), robotContext, verbose);
         addApplicationSteps(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), robotContext, verbose);
         addApplicationContext(robotContext, applicationName, verbose);
@@ -91,7 +91,7 @@ public class Application extends AbstractNoraUiCli {
      * @param verbose
      */
     public void remove(String applicationName, Class<?> robotContext, boolean verbose) {
-        logger.info("Remove application named [{}]", applicationName);
+        logger.info("Remove application named [{}].", applicationName);
         removeApplicationPages(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), robotContext, verbose);
         removeApplicationSteps(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), robotContext, verbose);
         removeApplicationModel(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), robotContext, verbose);
@@ -110,9 +110,8 @@ public class Application extends AbstractNoraUiCli {
      * @param verbose
      */
     private void addApplicationPages(String applicationName, String noraRobotName, Class<?> robotContext, boolean verbose) {
-        String pagePath = "src" + File.separator + "main" + File.separator + "java" + File.separator
-                + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("utils", "application/pages/" + applicationName).replaceAll("/", Matcher.quoteReplacement(File.separator))
-                        .replaceAll(robotContext.getSimpleName(), applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "Page")
+        String pagePath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("utils", "application/pages/" + applicationName)
+                .replaceAll("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "Page")
                 + ".java";
         StringBuilder sb = new StringBuilder();
         sb.append(getJavaClassHeaders(noraRobotName)).append(System.lineSeparator());
@@ -185,7 +184,7 @@ public class Application extends AbstractNoraUiCli {
      * @param verbose
      */
     private void removeApplicationPages(String applicationName, String noraRobotName, Class<?> robotContext, boolean verbose) {
-        String applicationPagePath = "src" + File.separator + "main" + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/")
+        String applicationPagePath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/")
                 .replaceAll("utils", "application/pages/" + applicationName).replaceAll("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), "");
         try {
             FileUtils.forceDelete(new File(applicationPagePath));
@@ -193,8 +192,7 @@ public class Application extends AbstractNoraUiCli {
                 logger.info("{} removed with success.", applicationPagePath);
             }
         } catch (IOException e) {
-            logger.error("IOException {}", e.getMessage(), e);
-            System.exit(1);
+            logger.debug("{} not revove because do not exist.", applicationPagePath);
         }
     }
 
@@ -205,9 +203,8 @@ public class Application extends AbstractNoraUiCli {
      * @param verbose
      */
     private void addApplicationSteps(String applicationName, String noraRobotName, Class<?> robotContext, boolean verbose) {
-        String stepsPath = "src" + File.separator + "main" + File.separator + "java" + File.separator
-                + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("utils", "application/steps/" + applicationName).replaceAll("/", Matcher.quoteReplacement(File.separator))
-                        .replaceAll(robotContext.getSimpleName(), applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "Steps")
+        String stepsPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("utils", "application/steps/" + applicationName)
+                .replaceAll("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "Steps")
                 + ".java";
         StringBuilder sb = new StringBuilder();
         sb.append(getJavaClassHeaders(noraRobotName)).append(System.lineSeparator());
@@ -262,7 +259,7 @@ public class Application extends AbstractNoraUiCli {
      * @param verbose
      */
     private void removeApplicationSteps(String applicationName, String noraRobotName, Class<?> robotContext, boolean verbose) {
-        String applicationStepsPath = "src" + File.separator + "main" + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/")
+        String applicationStepsPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/")
                 .replaceAll("utils", "application/steps/" + applicationName).replaceAll("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), "");
         try {
             FileUtils.forceDelete(new File(applicationStepsPath));
@@ -270,8 +267,7 @@ public class Application extends AbstractNoraUiCli {
                 logger.info("{} removed with success.", applicationStepsPath);
             }
         } catch (IOException e) {
-            logger.error("IOException {}", e.getMessage(), e);
-            System.exit(1);
+            logger.debug("{} not revove because do not exist.", applicationStepsPath);
         }
     }
 
@@ -282,7 +278,7 @@ public class Application extends AbstractNoraUiCli {
      * @param verbose
      */
     private void removeApplicationModel(String applicationName, String noraRobotName, Class<?> robotContext, boolean verbose) {
-        String applicationModelPath = "src" + File.separator + "main" + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/")
+        String applicationModelPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/")
                 .replaceAll("utils", "application/model/" + applicationName).replaceAll("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), "");
         try {
             FileUtils.forceDelete(new File(applicationModelPath));
@@ -290,8 +286,7 @@ public class Application extends AbstractNoraUiCli {
                 logger.info("{} removed with success.", applicationModelPath);
             }
         } catch (IOException e) {
-            logger.error("IOException {}", e.getMessage(), e);
-            System.exit(1);
+            logger.debug("{} not revove because do not exist.", applicationModelPath);
         }
     }
 
@@ -461,8 +456,7 @@ public class Application extends AbstractNoraUiCli {
                 }
             }
         } catch (IOException e) {
-            logger.error("IOException {}", e.getMessage(), e);
-            System.exit(1);
+            logger.debug("{} not revove because do not exist.", selectorsPath);
         }
     }
 
