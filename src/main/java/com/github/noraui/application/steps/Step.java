@@ -6,7 +6,6 @@
  */
 package com.github.noraui.application.steps;
 
-import static com.github.noraui.utils.Constants.ALERT_KEY;
 import static com.github.noraui.utils.Constants.DOWNLOADED_FILES_FOLDER;
 import static com.github.noraui.utils.Constants.USER_DIR;
 import static com.github.noraui.utils.Constants.VALUE;
@@ -30,12 +29,11 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.logging.LogEntry;
-import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.reflections.Reflections;
@@ -896,7 +894,7 @@ public class Step implements IStep {
      */
     protected void checkAlert(Page page) throws FailureException {
         if (!DriverFactory.IE.equals(Context.getBrowser())) {
-            final String txt = getLastConsoleAlertMessage();
+            final String txt = getAlertMessage();
             if (txt != null) {
                 new Result.Failure<>(txt, Messages.getMessage(Messages.FAIL_MESSAGE_ALERT_FOUND), true, page.getCallBack());
             }
@@ -966,21 +964,16 @@ public class Step implements IStep {
     }
 
     /**
-     * CAUTION: This check do not work with IE: https://github.com/SeleniumHQ/selenium/issues/468
-     * CAUTION: This feature is not supported by HtmlUnit web driver
-     *
      * @return a String with the message of Alert, return null if no alert message.
      */
-    protected String getLastConsoleAlertMessage() {
-        String msg;
-        final List<LogEntry> l = getDriver().manage().logs().get(LogType.BROWSER).getAll();
-        for (int i = l.size() - 1; i >= 0; i--) {
-            if (l.get(i).getMessage().contains(ALERT_KEY)) {
-                msg = l.get(i).getMessage();
-                return msg.substring(msg.indexOf('"') + 1, msg.length() - 1).replace(ALERT_KEY, "").replace(" (:", "");
-            }
+    protected String getAlertMessage() {
+        String msg = null;
+        Alert alert = getDriver().switchTo().alert();
+        if (alert != null) {
+            msg = alert.getText();
+            alert.accept();
         }
-        return null;
+        return msg;
     }
 
     /**

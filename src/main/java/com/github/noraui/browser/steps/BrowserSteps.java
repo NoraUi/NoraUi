@@ -6,8 +6,6 @@
  */
 package com.github.noraui.browser.steps;
 
-import static com.github.noraui.utils.Constants.ALERT_KEY;
-
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -253,7 +251,6 @@ public class BrowserSteps {
                     String windowHandle = Context.getDriver().getWindowHandle();
                     navigateTo(Context.getApplicationByPagekey(pageKey), urlToOpen, windowHandle);
                 }
-                ((JavascriptExecutor) Context.getDriver()).executeScript("window.alert = function(msg){console.log('" + ALERT_KEY + "' + msg);};");
             } else {
                 throw new TechnicalException(String.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_OPEN_PAGE), pageKey));
             }
