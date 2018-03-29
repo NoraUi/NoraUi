@@ -12,38 +12,21 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Matchers;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-import com.github.noraui.application.page.Page;
 import com.github.noraui.cucumber.injector.NoraUiInjector;
 import com.github.noraui.cucumber.injector.NoraUiInjectorSource;
 import com.github.noraui.exception.FailureException;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.GherkinStepCondition;
-import com.github.noraui.service.ScreenService;
 import com.github.noraui.utils.Messages;
-import com.github.noraui.utils.Utilities;
-import com.google.inject.Inject;
 
-import cucumber.api.Scenario;
-
-@RunWith(PowerMockRunner.class)
-@PowerMockIgnore("javax.management.*")
-@PrepareForTest({ Utilities.class })
 public class CommonStepsUT {
 
     private CommonSteps s = null;
 
-    @Inject
-    private ScreenService screenService;
-
     @Before
     public void setUp() {
+        s = new CommonSteps();
         NoraUiInjector.resetInjector();
         new NoraUiInjectorSource().getInjector();
     }
@@ -55,15 +38,6 @@ public class CommonStepsUT {
 
     @Test
     public void checkMandatoryFieldTextTypeTest() throws TechnicalException {
-        // prepare mock
-        PowerMockito.spy(Utilities.class);
-        PowerMockito.doNothing().when(Utilities.class);
-        screenService.takeScreenshot(Matchers.any(Scenario.class));
-
-        Page.setPageMainPackage("com.github.noraui.application.page.");
-
-        // run test
-        s = new CommonSteps();
         try {
             s.checkMandatoryField("demo.DemoSteps", "mockField", "text", new ArrayList<GherkinStepCondition>());
         } catch (final TechnicalException e) {
