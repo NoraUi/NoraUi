@@ -59,6 +59,7 @@ public class Application extends AbstractNoraUiCli {
         for (int i = 0; i < applications.size(); i++) {
             applications.set(i, applications.get(i).replaceAll(".ini", ""));
         }
+        applications.remove(".gitignore");
         return applications;
     }
 
