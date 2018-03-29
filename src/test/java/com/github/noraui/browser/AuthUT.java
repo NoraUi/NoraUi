@@ -1,6 +1,6 @@
 /**
  * NoraUi is licensed under the license GNU AFFERO GENERAL PUBLIC LICENSE
- * 
+ *
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
@@ -9,6 +9,7 @@ package com.github.noraui.browser;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -17,6 +18,7 @@ import org.junit.Test;
 
 import com.github.noraui.Runner;
 import com.github.noraui.browser.steps.BrowserSteps;
+import com.github.noraui.exception.FailureException;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.utils.Context;
 import com.sun.net.httpserver.BasicAuthenticator;
@@ -29,7 +31,7 @@ import com.sun.net.httpserver.HttpServer;
 public class AuthUT {
 
     private BrowserSteps bs = null;
-    private TestServer testServer = new TestServer();
+    private final TestServer testServer = new TestServer();
 
     @Before
     public void prepare() throws TechnicalException {
@@ -49,7 +51,7 @@ public class AuthUT {
             bs.goToUrl("UNPROTECTED");
             Assert.assertTrue("The requested page content must respond 'OK'.",
                     Context.getDriver().getPageSource().contains("<head></head><body><pre style=\"word-wrap: break-word; white-space: pre-wrap;\">OK</pre></body>"));
-        } catch (Exception e) {
+        } catch (final Exception e) {
             Assert.fail("Exception thrown: " + e.getMessage());
         }
     }
@@ -61,13 +63,18 @@ public class AuthUT {
             System.setProperty(Auth.UID, "admin");
             System.setProperty(Auth.PASSWORD, "wrongpass");
             Auth.setAuthenticationType(Auth.authenticationTypes.BASIC.toString());
+
+            // Set a tiny timeout to force webdriver to crash after authentication failure
+            Context.getDriver().manage().timeouts().pageLoadTimeout(1, TimeUnit.SECONDS);
             bs.goToUrl("PROTECTED");
-            Assert.assertTrue("The requested page content must not respond 'OK'.",
-                    Context.getDriver().getPageSource().contains("<head></head><body><pre style=\"word-wrap: break-word; white-space: pre-wrap;\"></pre></body>")
-                            || Context.getDriver().getPageSource().contains("<html><head></head><body></body></html>"));
-        } catch (Exception e) {
-            Assert.fail("Exception thrown: " + e.getMessage());
+            final boolean notOKResponse = Context.getDriver().getPageSource().contains("<head></head><body><pre style=\"word-wrap: break-word; white-space: pre-wrap;\"></pre></body>")
+                    || Context.getDriver().getPageSource().contains("<html><head></head><body></body></html>");
+            Assert.assertTrue("The requested page content must not respond 'OK'.", notOKResponse);
+
+        } catch (final Exception e) {
+            Assert.assertTrue("Exception thrown after authentication failure should be an instance of 'exception.FailureException' !", (e instanceof FailureException));
         }
+
     }
 
     @Test
@@ -80,7 +87,7 @@ public class AuthUT {
             bs.goToUrl("PROTECTED");
             Assert.assertTrue("The requested page content must respond 'OK'.",
                     Context.getDriver().getPageSource().contains("<head></head><body><pre style=\"word-wrap: break-word; white-space: pre-wrap;\">OK</pre></body>"));
-        } catch (Exception e) {
+        } catch (final Exception e) {
             Assert.fail("Exception thrown: " + e.getMessage());
         }
     }
@@ -101,12 +108,12 @@ class TestServer {
     public void start() {
         try {
             server = HttpServer.create(new InetSocketAddress(8000), 0);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             Assert.fail("Exception thrown: " + e.getMessage());
         }
         server.createContext("/unprotected", new TestHttpHandler());
 
-        HttpContext protectedContext = server.createContext("/protected", new TestHttpHandler());
+        final HttpContext protectedContext = server.createContext("/protected", new TestHttpHandler());
         protectedContext.setAuthenticator(new BasicAuthenticator("get") {
 
             @Override
@@ -133,9 +140,9 @@ class TestServer {
         @Override
         public void handle(HttpExchange t) throws IOException {
             t.getRequestBody();
-            String response = "OK";
+            final String response = "OK";
             t.sendResponseHeaders(200, response.length());
-            OutputStream os = t.getResponseBody();
+            final OutputStream os = t.getResponseBody();
             os.write(response.getBytes());
             os.close();
         }
