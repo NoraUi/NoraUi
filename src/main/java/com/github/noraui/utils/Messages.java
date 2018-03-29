@@ -64,6 +64,7 @@ public class Messages {
     public static final String DATE_GREATER_THAN_TODAY = "DATE_GREATER_THAN_TODAY";
     public static final String FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK = "FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK";
     public static final String FAIL_MESSAGE_UNABLE_TO_PASS_OVER_ELEMENT = "FAIL_MESSAGE_UNABLE_TO_PASS_OVER_ELEMENT";
+    public static final String FAIL_MESSAGE_UNDEFINED_PAGE = "FAIL_MESSAGE_UNDEFINED_PAGE";
     public static final String FAIL_MESSAGE_EMPTY_MANDATORY_FIELD = "FAIL_MESSAGE_EMPTY_MANDATORY_FIELD";
     public static final String FAIL_MESSAGE_WRONG_DATE_FORMAT = "FAIL_MESSAGE_WRONG_DATE_FORMAT";
     public static final String FAIL_MESSAGE_UNABLE_TO_SWITCH_WINDOW = "FAIL_MESSAGE_UNABLE_TO_SWITCH_WINDOW";
@@ -88,7 +89,6 @@ public class Messages {
     public static final String FAIL_MESSAGE_FILE_NOT_MATCHES = "FAIL_MESSAGE_FILE_NOT_MATCHES";
     public static final String FAIL_MESSAGE_UPLOADING_FILE = "FAIL_MESSAGE_UPLOADING_FILE";
     public static final String FAIL_MESSAGE_MAIL_ACTIVATION = "FAIL_MESSAGE_MAIL_ACTIVATION";
-
 
     /**
      * Format given message with provided arguments
