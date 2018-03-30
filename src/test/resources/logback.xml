@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-
+    
+    <appender name="consoleInfo" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                [%d{yyyy-MM-dd HH:mm:ss}]: %m%n
+            </Pattern>
+        </layout>
+    </appender>
+    
     <appender name="cli" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
             <Pattern>
@@ -14,7 +22,8 @@
     </logger>
     
 	<root level="INFO">
-		<appender-ref ref="cli" />
+		<appender-ref ref="consoleInfo" />
+        <appender-ref ref="cli" />
 	</root>
 
 </configuration>
