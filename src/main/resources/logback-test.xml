@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     
-    <appender name="consoleInfo_" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="consoleInfo" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
             <Pattern>
                 [%d{yyyy-MM-dd HH:mm:ss}]:** %m%n
@@ -21,8 +21,12 @@
         <appender-ref ref="cli" />
     </logger>
     
+    <logger name="com.github.noraui.indus">
+        <appender-ref ref="consoleInfo" />
+    </logger>
+    
 	<root level="INFO">
-		<appender-ref ref="consoleInfo_" />
+		<appender-ref ref="consoleInfo" />
         <appender-ref ref="cli" />
 	</root>
 
