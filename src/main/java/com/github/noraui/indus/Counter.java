@@ -35,6 +35,7 @@ public class Counter {
             final List<String> versionControlSystemsBlacklist = new ArrayList<>();
 
             versionControlSystemsBlacklist.add(".svn");
+            versionControlSystemsBlacklist.add(".gitignore");
 
             Context.getInstance().initializeEnv("demo" + args[0] + ".properties");
 
