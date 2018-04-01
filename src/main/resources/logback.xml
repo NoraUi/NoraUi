@@ -32,10 +32,6 @@
         <appender-ref ref="cli" />
     </logger>
     
-    <logger name="com.github.noraui.indus">
-        <appender-ref ref="consoleInfo" />
-    </logger>
-    
 	<root level="INFO">
 		<appender-ref ref="consoleInfo" />
 	</root>
