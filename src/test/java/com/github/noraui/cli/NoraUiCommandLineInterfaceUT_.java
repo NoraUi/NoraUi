@@ -20,7 +20,7 @@ import org.junit.runners.MethodSorters;
 import com.github.noraui.utils.UnitTest4CLIContext;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class NoraUiCommandLineInterfaceUT {
+public class NoraUiCommandLineInterfaceUT_ {
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
