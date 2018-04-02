@@ -20,7 +20,7 @@ import org.junit.runners.MethodSorters;
 import com.github.noraui.utils.UnitTest4CLIContext;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class NoraUiCommandLineInterfaceUT_ {
+public class NoraUiCommandLineInterfaceUT {
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
@@ -28,8 +28,8 @@ public class NoraUiCommandLineInterfaceUT_ {
 
     @Before
     public void setUp() {
-        System.setOut(new PrintStream(outContent));
-        System.setErr(new PrintStream(errContent));
+        // System.setOut(new PrintStream(outContent));
+        // System.setErr(new PrintStream(errContent));
         cli = new NoraUiCommandLineInterface();
         // mock Application Object here.
         cli.setApplication(new Application("src" + File.separator + "test"));
@@ -39,8 +39,8 @@ public class NoraUiCommandLineInterfaceUT_ {
 
     @After
     public void restoreStreams() {
-        System.setOut(System.out);
-        System.setErr(System.err);
+        // System.setOut(System.out);
+        // System.setErr(System.err);
     }
 
     @Test
