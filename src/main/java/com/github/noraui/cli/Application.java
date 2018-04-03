@@ -430,9 +430,17 @@ public class Application extends AbstractNoraUiCli {
         sb.append("xpath=//*[@id='page-element-sample']");
         try {
             for (String version : versions) {
-                File newSelector = new File(selectorsPath + File.separator + version + File.separator + applicationName + ".ini");
+                String iniFilePath = selectorsPath + File.separator + version + File.separator + applicationName + ".ini";
+                File newSelector = new File(iniFilePath);
                 if (!newSelector.exists()) {
                     Files.asCharSink(newSelector, Charsets.UTF_8).write(sb.toString());
+                    if (verbose) {
+                        logger.info("File [{}] created with success.", iniFilePath);
+                    }
+                } else {
+                    if (verbose) {
+                        logger.info("File [{}] already exist.", iniFilePath);
+                    }
                 }
             }
         } catch (Exception e) {
