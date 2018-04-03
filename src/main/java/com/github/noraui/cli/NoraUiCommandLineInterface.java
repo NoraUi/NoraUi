@@ -218,7 +218,7 @@ public class NoraUiCommandLineInterface {
             boolean applicationFinded = false;
             if (applicationName == null || "".equals(applicationName)) {
                 List<String> appList = application.get();
-                if (appList.size() > 0) {
+                if (!appList.isEmpty()) {
                     logger.info("Enter index application number:");
                     for (int i = 0; i < appList.size(); i++) {
                         logger.info("    {}) {}", i + 1, appList.get(i));
@@ -258,7 +258,7 @@ public class NoraUiCommandLineInterface {
             boolean applicationFinded = false;
             if (applicationName == null || "".equals(applicationName)) {
                 List<String> appList = application.get();
-                if (appList.size() > 0) {
+                if (!appList.isEmpty()) {
                     logger.info("Enter index application number:");
                     for (int i = 0; i < appList.size(); i++) {
                         logger.info("    {}) {}", i + 1, appList.get(i));
@@ -310,7 +310,7 @@ public class NoraUiCommandLineInterface {
     private boolean isApplicationFound(String applicationName) {
         boolean applicationFinded = false;
         List<String> appList = application.get();
-        if (appList.size() > 0) {
+        if (!appList.isEmpty()) {
             if (appList.contains(applicationName)) {
                 applicationFinded = true;
             } else {
