@@ -28,19 +28,11 @@ public class NoraUiCommandLineInterfaceUT {
 
     @Before
     public void setUp() {
-        System.setOut(new PrintStream(outContent));
-        System.setErr(new PrintStream(errContent));
         cli = new NoraUiCommandLineInterface();
         // mock Application Object here.
         cli.setApplication(new Application("src" + File.separator + "test"));
         cli.setScenario(new Scenario("src" + File.separator + "test"));
         cli.setModel(new Model("src" + File.separator + "test"));
-    }
-
-    @After
-    public void restoreStreams() {
-        System.setOut(System.out);
-        System.setErr(System.err);
     }
 
     @Test

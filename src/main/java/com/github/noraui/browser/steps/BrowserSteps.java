@@ -252,7 +252,7 @@ public class BrowserSteps {
                     navigateTo(Context.getApplicationByPagekey(pageKey), urlToOpen, windowHandle);
                 }
             } else {
-                throw new TechnicalException(String.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_OPEN_PAGE), pageKey));
+                throw new TechnicalException(String.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNDEFINED_PAGE), pageKey));
             }
         } catch (Exception e) {
             int indexOfUnderscore = pageKey.indexOf('_');
