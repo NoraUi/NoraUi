@@ -489,7 +489,7 @@ public class Application extends AbstractNoraUiCli {
         if (verbose) {
             logger.info("Add application named [{}] in this properties file: {}]", applicationName, propertiesfilePath);
         }
-        try (BufferedReader br = new BufferedReader(new FileReader(propertiesfilePath))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(propertiesfilePath)); FileWriter fw = new FileWriter(propertiesfilePath)) {
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();
             while (line != null) {
@@ -503,7 +503,6 @@ public class Application extends AbstractNoraUiCli {
                 }
                 line = br.readLine();
             }
-            FileWriter fw = new FileWriter(propertiesfilePath);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(sb.toString().substring(0, sb.toString().length() - System.lineSeparator().length()));
             bw.flush();
