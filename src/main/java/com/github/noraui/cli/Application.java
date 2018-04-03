@@ -93,7 +93,7 @@ public class Application extends AbstractNoraUiCli {
      */
     public void remove(String applicationName, Class<?> robotContext, boolean verbose) {
         logger.info("Remove application named [{}].", applicationName);
-        removeApplicationPages(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), robotContext, verbose);
+        removeApplicationPages(applicationName, robotContext, verbose);
         removeApplicationSteps(applicationName, robotContext, verbose);
         removeApplicationModel(applicationName, robotContext, verbose);
         removeApplicationContext(robotContext, applicationName, verbose);
@@ -180,11 +180,10 @@ public class Application extends AbstractNoraUiCli {
 
     /**
      * @param applicationName
-     * @param noraRobotName
      * @param robotContext
      * @param verbose
      */
-    private void removeApplicationPages(String applicationName, String noraRobotName, Class<?> robotContext, boolean verbose) {
+    private void removeApplicationPages(String applicationName, Class<?> robotContext, boolean verbose) {
         String applicationPagePath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/")
                 .replaceAll("utils", "application/pages/" + applicationName).replaceAll("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), "");
         try {
@@ -262,7 +261,6 @@ public class Application extends AbstractNoraUiCli {
 
     /**
      * @param applicationName
-     * @param noraRobotName
      * @param robotContext
      * @param verbose
      */
@@ -281,7 +279,6 @@ public class Application extends AbstractNoraUiCli {
 
     /**
      * @param applicationName
-     * @param noraRobotName
      * @param robotContext
      * @param verbose
      */
