@@ -108,7 +108,7 @@ public class Model extends AbstractNoraUiCli {
             }
         }
         addModel(applicationName, modelName, fieldList, resultList, robotContext, verbose);
-        addModels(applicationName, modelName, fieldList, resultList, robotContext, verbose);
+        addModels(applicationName, modelName, robotContext, verbose);
     }
 
     /**
@@ -366,7 +366,7 @@ public class Model extends AbstractNoraUiCli {
         }
     }
 
-    private void addModels(String applicationName, String modelName, String[] fieldList, String[] resultList, Class<?> robotContext, boolean verbose) {
+    private void addModels(String applicationName, String modelName, Class<?> robotContext, boolean verbose) {
         String modelsPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("utils", "application/model/" + applicationName)
                 .replaceAll("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1)) + "s.java";
         StringBuilder sb = new StringBuilder();
