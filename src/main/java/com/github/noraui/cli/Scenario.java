@@ -340,6 +340,13 @@ public class Scenario {
             File newFeature = new File(newFeaturePath);
             if (!newFeature.exists()) {
                 Files.asCharSink(newFeature, Charsets.UTF_8).write(sb.toString());
+                if (verbose) {
+                    logger.info("File [{}] created with success.", newFeaturePath);
+                }
+            } else {
+                if (verbose) {
+                    logger.info("File [{}] already exist.", newFeaturePath);
+                }
             }
         } catch (Exception e) {
             logger.error("IOException {}", e.getMessage(), e);
