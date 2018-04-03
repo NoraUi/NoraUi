@@ -95,7 +95,7 @@ public class Application extends AbstractNoraUiCli {
         logger.info("Remove application named [{}].", applicationName);
         removeApplicationPages(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), robotContext, verbose);
         removeApplicationSteps(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), robotContext, verbose);
-        removeApplicationModel(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), robotContext, verbose);
+        removeApplicationModel(applicationName, robotContext, verbose);
         removeApplicationContext(robotContext, applicationName, verbose);
         removeApplicationSelector(applicationName, verbose);
         removeApplicationInPropertiesFile(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), verbose);
@@ -278,7 +278,7 @@ public class Application extends AbstractNoraUiCli {
      * @param robotContext
      * @param verbose
      */
-    private void removeApplicationModel(String applicationName, String noraRobotName, Class<?> robotContext, boolean verbose) {
+    private void removeApplicationModel(String applicationName, Class<?> robotContext, boolean verbose) {
         String applicationModelPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/")
                 .replaceAll("utils", "application/model/" + applicationName).replaceAll("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), "");
         try {
