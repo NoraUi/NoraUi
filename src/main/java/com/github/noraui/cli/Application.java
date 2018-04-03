@@ -246,6 +246,13 @@ public class Application extends AbstractNoraUiCli {
             File newSelector = new File(stepsPath);
             if (!newSelector.exists()) {
                 Files.asCharSink(newSelector, Charsets.UTF_8).write(sb.toString());
+                if (verbose) {
+                    logger.info("File [{}] created with success.", stepsPath);
+                }
+            } else {
+                if (verbose) {
+                    logger.info("File [{}] already exist.", stepsPath);
+                }
             }
         } catch (Exception e) {
             logger.error("IOException {}", e.getMessage(), e);
