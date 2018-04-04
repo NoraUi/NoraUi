@@ -359,6 +359,13 @@ public class Model extends AbstractNoraUiCli {
             File newSelector = new File(modelPath);
             if (!newSelector.exists()) {
                 Files.asCharSink(newSelector, Charsets.UTF_8).write(sb.toString());
+                if (verbose) {
+                    logger.info("File [{}] created with success.", modelPath);
+                }
+            } else {
+                if (verbose) {
+                    logger.info("File [{}] already exist.", modelPath);
+                }
             }
         } catch (Exception e) {
             logger.error("IOException {}", e.getMessage(), e);
@@ -458,6 +465,13 @@ public class Model extends AbstractNoraUiCli {
             File newSelector = new File(modelsPath);
             if (!newSelector.exists()) {
                 Files.asCharSink(newSelector, Charsets.UTF_8).write(sb.toString());
+                if (verbose) {
+                    logger.info("File [{}] created with success.", modelsPath);
+                }
+            } else {
+                if (verbose) {
+                    logger.info("File [{}] already exist.", modelsPath);
+                }
             }
         } catch (Exception e) {
             logger.error("IOException {}", e.getMessage(), e);
