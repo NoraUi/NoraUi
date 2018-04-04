@@ -131,7 +131,7 @@ public class Auth {
      * Returns a Cookie object by retrieving data from -Dcookie maven parameter.
      *
      * @param domainUrl
-     *            is url of guardian domain
+     *            the domain on which the cookie is applied
      * @return a Cookie with a name, value, domain and path.
      * @throws TechnicalException
      *             with a message (no screenshot, no exception)
@@ -159,6 +159,9 @@ public class Auth {
 
     /**
      * Loads authentication cookie in the current web browsers.
+     *
+     * @param cookie
+     *            the {@link org.openqa.selenium.Cookie} instance to set to the current web browser.
      */
     public static void loadAuthenticationCookie(Cookie cookie) {
         Context.getDriver().manage().addCookie(cookie);
