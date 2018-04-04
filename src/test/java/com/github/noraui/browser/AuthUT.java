@@ -9,12 +9,16 @@ package com.github.noraui.browser;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.Cookie;
 
 import com.github.noraui.Runner;
 import com.github.noraui.browser.steps.BrowserSteps;
@@ -31,8 +35,13 @@ import com.sun.net.httpserver.HttpServer;
 public class AuthUT {
 
     private BrowserSteps bs = null;
-    private final TestServer testServer = new TestServer();
+    private static final TestServer testServer = new TestServer();
 
+    public static void main(String[] args) {
+        testServer.start();
+    }
+
+    @SuppressWarnings("deprecation")
     @Before
     public void prepare() throws TechnicalException {
         testServer.start();
@@ -40,6 +49,7 @@ public class AuthUT {
         Context.getInstance().initializeRobot(Runner.class);
         Context.getApplication(Context.DEMO_KEY).addUrlPage("PROTECTED", "http://localhost:8000/protected");
         Context.getApplication(Context.DEMO_KEY).addUrlPage("UNPROTECTED", "http://localhost:8000/unprotected");
+        Context.getApplication(Context.DEMO_KEY).addUrlPage("COOKIEPROTECTED", "http://localhost:8000/cookieprotected");
         bs = new BrowserSteps();
     }
 
@@ -92,6 +102,22 @@ public class AuthUT {
         }
     }
 
+    @Test
+    public void testPageBehindCookieAuthentication() {
+        try {
+            Auth.clear();
+            System.setProperty(Auth.SESSION_COOKIE, "auth=ok,path=/");
+            final Cookie c = Auth.getAuthenticationCookie("http://localhost");
+            bs.goToUrl("UNPROTECTED");
+            Auth.loadAuthenticationCookie(c);
+            bs.goToUrl("COOKIEPROTECTED");
+            Assert.assertTrue("The requested page content must respond 'OK'.",
+                    Context.getDriver().getPageSource().contains("<head></head><body><pre style=\"word-wrap: break-word; white-space: pre-wrap;\">OK</pre></body>"));
+        } catch (final Exception e) {
+            Assert.fail("Exception thrown: " + e.getMessage());
+        }
+    }
+
     @After
     public void teardown() {
         testServer.stop();
@@ -114,6 +140,7 @@ class TestServer {
         server.createContext("/unprotected", new TestHttpHandler());
 
         final HttpContext protectedContext = server.createContext("/protected", new TestHttpHandler());
+
         protectedContext.setAuthenticator(new BasicAuthenticator("get") {
 
             @Override
@@ -122,7 +149,9 @@ class TestServer {
             }
 
         });
-        server.setExecutor(null);
+
+        server.createContext("/cookieprotected", new CookieTestHttpHandler());
+
         server.start();
     }
 
@@ -144,6 +173,25 @@ class TestServer {
             t.sendResponseHeaders(200, response.length());
             final OutputStream os = t.getResponseBody();
             os.write(response.getBytes());
+            os.close();
+        }
+    }
+
+    class CookieTestHttpHandler implements HttpHandler {
+        @Override
+        public void handle(HttpExchange t) throws IOException {
+            final Set<Entry<String, List<String>>> headers = t.getRequestHeaders().entrySet();
+            final OutputStream os = t.getResponseBody();
+            for (final Entry<String, List<String>> h : headers) {
+                System.out.println(h);
+                if ("Cookie".equals(h.getKey()) && h.getValue().contains("auth=ok")) {
+                    t.getRequestBody();
+                    final String response = "OK";
+                    t.sendResponseHeaders(200, response.length());
+                    os.write(response.getBytes());
+                    break;
+                }
+            }
             os.close();
         }
     }

@@ -1,6 +1,6 @@
 /**
  * NoraUi is licensed under the license GNU AFFERO GENERAL PUBLIC LICENSE
- * 
+ *
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
@@ -41,7 +41,7 @@ public class Auth {
      */
     private static Auth instance;
 
-    private User currentUser;
+    private final User currentUser;
 
     /**
      * Is current user connected ?
@@ -138,19 +138,19 @@ public class Auth {
      */
     public static Cookie getAuthenticationCookie(String domainUrl) throws TechnicalException {
         if (getInstance().authCookie == null) {
-            String cookieStr = System.getProperty(SESSION_COOKIE);
+            final String cookieStr = System.getProperty(SESSION_COOKIE);
             try {
                 if (cookieStr != null && !"".equals(cookieStr)) {
-                    int indexValue = cookieStr.indexOf('=');
-                    int indexPath = cookieStr.indexOf(",path=");
-                    String cookieName = cookieStr.substring(0, indexValue);
-                    String cookieValue = cookieStr.substring(indexValue + 1, indexPath);
-                    String cookieDomain = new URI(domainUrl).getHost().replaceAll("self.", "");
-                    String cookiePath = cookieStr.substring(indexPath + 6);
+                    final int indexValue = cookieStr.indexOf('=');
+                    final int indexPath = cookieStr.indexOf(",path=");
+                    final String cookieName = cookieStr.substring(0, indexValue);
+                    final String cookieValue = cookieStr.substring(indexValue + 1, indexPath);
+                    final String cookieDomain = new URI(domainUrl).getHost().replaceAll("self.", "");
+                    final String cookiePath = cookieStr.substring(indexPath + 6);
                     getInstance().authCookie = new Cookie.Builder(cookieName, cookieValue).domain(cookieDomain).path(cookiePath).build();
                     logger.debug("New cookie created: {}={} on domain {}{}", cookieName, cookieValue, cookieDomain, cookiePath);
                 }
-            } catch (URISyntaxException e) {
+            } catch (final URISyntaxException e) {
                 throw new TechnicalException(Messages.getMessage(WRONG_URI_SYNTAX), e);
             }
         }
@@ -163,8 +163,8 @@ public class Auth {
      * @param browser
      *            the name of the current browser
      */
-    public static void loadAuthentication(String browser) {
-        Context.getDriver().manage().addCookie(getInstance().authCookie);
+    public static void loadAuthenticationCookie(Cookie cookie) {
+        Context.getDriver().manage().addCookie(cookie);
     }
 
     /**
@@ -204,12 +204,12 @@ public class Auth {
         /**
          * Login used by Jenkins.
          */
-        private String login;
+        private final String login;
 
         /**
          * Password of login used by Jenkins.
          */
-        private String password;
+        private final String password;
 
         public User(String login, String password) {
             super();
