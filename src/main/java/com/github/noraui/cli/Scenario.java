@@ -138,7 +138,6 @@ public class Scenario {
      */
     private void removeScenarioInData(String type, String scenarioName, String dataProvider, boolean verbose) {
         String datafilePath = "";
-
         if ("CSV".equals(dataProvider)) {
             datafilePath = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "data" + File.separator + type + File.separator + scenarioName + ".csv";
         } else if ("DB".equals(dataProvider)) {
@@ -168,23 +167,22 @@ public class Scenario {
      * @param excelPath
      */
     private void addXlsxFile(String scenarioName, String excelPath) {
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        XSSFSheet sheet = workbook.createSheet("NoraUi-" + scenarioName);
-        Object[][] datatypes = { { "user", "password", "Result" }, { "user1", "password1" }, { "user2", "password2" } };
-        int rowNum = 0;
-        for (Object[] datatype : datatypes) {
-            Row row = sheet.createRow(rowNum++);
-            int colNum = 0;
-            for (Object field : datatype) {
-                Cell cell = row.createCell(colNum++);
-                if (field instanceof String) {
-                    cell.setCellValue((String) field);
-                } else if (field instanceof Integer) {
-                    cell.setCellValue((Integer) field);
+        try (FileOutputStream outputStream = new FileOutputStream(excelPath); XSSFWorkbook workbook = new XSSFWorkbook()) {
+            XSSFSheet sheet = workbook.createSheet("NoraUi-" + scenarioName);
+            Object[][] datatypes = { { "user", "password", "Result" }, { "user1", "password1" }, { "user2", "password2" } };
+            int rowNum = 0;
+            for (Object[] datatype : datatypes) {
+                Row row = sheet.createRow(rowNum++);
+                int colNum = 0;
+                for (Object field : datatype) {
+                    Cell cell = row.createCell(colNum++);
+                    if (field instanceof String) {
+                        cell.setCellValue((String) field);
+                    } else if (field instanceof Integer) {
+                        cell.setCellValue((Integer) field);
+                    }
                 }
             }
-        }
-        try (FileOutputStream outputStream = new FileOutputStream(excelPath)) {
             workbook.write(outputStream);
             workbook.close();
         } catch (IOException e) {
@@ -256,7 +254,7 @@ public class Scenario {
         if (verbose) {
             logger.info("Add scenario named [{}] in scenario.properties.", scenarioName);
         }
-        try (BufferedReader br = new BufferedReader(new FileReader(propertiesfilePath))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(propertiesfilePath)); FileWriter fw = new FileWriter(propertiesfilePath)) {
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();
             while (line != null) {
@@ -273,7 +271,6 @@ public class Scenario {
                 }
                 line = br.readLine();
             }
-            FileWriter fw = new FileWriter(propertiesfilePath);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(sb.toString().substring(0, sb.toString().length() - System.lineSeparator().length()));
             bw.flush();
@@ -293,7 +290,7 @@ public class Scenario {
         if (verbose) {
             logger.info("Remove scenario named [{}] in scenario.properties.", scenarioName);
         }
-        try (BufferedReader br = new BufferedReader(new FileReader(propertiesfilePath))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(propertiesfilePath)); FileWriter fw = new FileWriter(propertiesfilePath)) {
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();
             while (line != null) {
@@ -303,7 +300,6 @@ public class Scenario {
                 }
                 line = br.readLine();
             }
-            FileWriter fw = new FileWriter(propertiesfilePath);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(sb.toString().substring(0, sb.toString().length() - System.lineSeparator().length()));
             bw.flush();
