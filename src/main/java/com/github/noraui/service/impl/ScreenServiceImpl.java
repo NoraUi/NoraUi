@@ -45,10 +45,8 @@ import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.noraui.browser.DriverFactory;
 import com.github.noraui.service.ScreenService;
 import com.github.noraui.utils.Context;
-import com.github.noraui.utils.Messages;
 import com.github.noraui.utils.NoraUiScreenRecorder;
 import com.github.noraui.utils.Utilities;
 import com.google.inject.Singleton;
@@ -70,6 +68,7 @@ public class ScreenServiceImpl implements ScreenService {
      */
     @Override
     public void takeScreenshot(Scenario scenario) {
+        logger.debug("takeScreenshot with the scenario named [{}]", scenario.getName());
         final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
         scenario.embed(screenshot, "image/png");
     }
@@ -79,9 +78,10 @@ public class ScreenServiceImpl implements ScreenService {
      */
     @Override
     public void saveScreenshot(String screenName) throws IOException {
-            final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
-            FileUtils.forceMkdir(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
-            FileUtils.writeByteArrayToFile(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + screenName + ".jpg"), screenshot);
+        logger.debug("saveScreenshot with the scenario named [{}]", screenName);
+        final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
+        FileUtils.forceMkdir(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
+        FileUtils.writeByteArrayToFile(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + screenName + ".jpg"), screenshot);
     }
 
     /**
@@ -89,22 +89,24 @@ public class ScreenServiceImpl implements ScreenService {
      */
     @Override
     public void saveScreenshot(String screenName, WebElement element) throws IOException {
-            final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
-            FileUtils.forceMkdir(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
+        logger.debug("saveScreenshot with the scenario named [{}] and element [{}]", screenName, element.getTagName());
 
-            InputStream in = new ByteArrayInputStream(screenshot);
-            BufferedImage fullImg = ImageIO.read(in);
+        final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
+        FileUtils.forceMkdir(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
 
-            // Get the location of element on the page
-            Point point = element.getLocation();
+        InputStream in = new ByteArrayInputStream(screenshot);
+        BufferedImage fullImg = ImageIO.read(in);
 
-            // Get width and height of the element
-            int eleWidth = element.getSize().getWidth();
-            int eleHeight = element.getSize().getHeight();
+        // Get the location of element on the page
+        Point point = element.getLocation();
 
-            // Crop the entire page screenshot to get only element screenshot
-            BufferedImage eleScreenshot = fullImg.getSubimage(point.getX(), point.getY(), eleWidth, eleHeight);
-            ImageIO.write(eleScreenshot, "jpg", new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + screenName + ".jpg"));
+        // Get width and height of the element
+        int eleWidth = element.getSize().getWidth();
+        int eleHeight = element.getSize().getHeight();
+
+        // Crop the entire page screenshot to get only element screenshot
+        BufferedImage eleScreenshot = fullImg.getSubimage(point.getX(), point.getY(), eleWidth, eleHeight);
+        ImageIO.write(eleScreenshot, "jpg", new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + screenName + ".jpg"));
     }
 
     /**
@@ -112,6 +114,7 @@ public class ScreenServiceImpl implements ScreenService {
      */
     @Override
     public void startVideoCapture(String screenName) throws IOException, AWTException {
+        logger.debug("startVideoCapture with the scenario named [{}]", screenName);
         File file = new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Rectangle captureSize = new Rectangle(0, 0, screenSize.width, screenSize.height);
@@ -129,6 +132,7 @@ public class ScreenServiceImpl implements ScreenService {
      */
     @Override
     public void stopVideoCapture() throws IOException {
+        logger.debug("stopVideoCapture");
         this.screenRecorder.stop();
     }
 

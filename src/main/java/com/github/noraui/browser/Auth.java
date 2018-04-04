@@ -159,9 +159,6 @@ public class Auth {
 
     /**
      * Loads authentication cookie in the current web browsers.
-     *
-     * @param browser
-     *            the name of the current browser
      */
     public static void loadAuthenticationCookie(Cookie cookie) {
         Context.getDriver().manage().addCookie(cookie);

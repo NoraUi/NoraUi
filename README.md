@@ -9,7 +9,8 @@ Non-Regression Automation for User Interfaces
 
 # News 
 See [change log](https://noraui.github.io/changelog.txt) for details
-* 2018-0x-xx: NoraUi [3.1.3] is in progress.
+* 2018-0x-xx: NoraUi [3.1.4] is in progress.
+* 2018-03-19: NoraUi [3.1.3] is released.
 * 2018-03-14: NoraUi [3.1.2] is released.
 * 2018-03-06: NoraUi [3.1.1] is released.
 * 2018-03-02: NoraUi [3.1.0] is released.
@@ -29,6 +30,8 @@ See [change log](https://noraui.github.io/changelog.txt) for details
 * Change all `import org.apache.log4j.Logger;` by `import org.slf4j.Logger;` and `import org.slf4j.LoggerFactory;`
 * Change com.github.noraui.browser.DriverFactory#setProperty(String key, Properties propertyFile) to com.github.noraui.browser.DriverFactory#getProperty(String key, Properties propertyFile)
 * replace all step constructors by `com.google.inject.Inject` (inject pages)
+* replace loadAuthentication(String browser) by loadAuthentication()
+* replace PhantomJs by Chrome headless
 
 # Supported languages
 
@@ -37,7 +40,7 @@ These are the currently supported languages
 * English
 * French
 
-Does NoraUi not support your language? Please help us with a PR!
+Does NoraUi not support your language? Please help us with a [PR](https://github.com/NoraUi/NoraUi/pulls)!
 
 # Continuous Integration status
 [![Build Status](https://travis-ci.org/NoraUi/NoraUi.svg?branch=master)](https://travis-ci.org/NoraUi/NoraUi)
@@ -68,7 +71,7 @@ SNAPSHOT:
 <dependency>
     <groupId>com.github.noraui</groupId>
     <artifactId>noraui</artifactId>
-    <version>3.1.0-SNAPSHOT</version>
+    <version>3.1.4-SNAPSHOT</version>
 </dependency>
 ```
 

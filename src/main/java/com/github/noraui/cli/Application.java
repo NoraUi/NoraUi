@@ -93,9 +93,9 @@ public class Application extends AbstractNoraUiCli {
      */
     public void remove(String applicationName, Class<?> robotContext, boolean verbose) {
         logger.info("Remove application named [{}].", applicationName);
-        removeApplicationPages(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), robotContext, verbose);
-        removeApplicationSteps(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), robotContext, verbose);
-        removeApplicationModel(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), robotContext, verbose);
+        removeApplicationPages(applicationName, robotContext, verbose);
+        removeApplicationSteps(applicationName, robotContext, verbose);
+        removeApplicationModel(applicationName, robotContext, verbose);
         removeApplicationContext(robotContext, applicationName, verbose);
         removeApplicationSelector(applicationName, verbose);
         removeApplicationInPropertiesFile(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), verbose);
@@ -180,11 +180,10 @@ public class Application extends AbstractNoraUiCli {
 
     /**
      * @param applicationName
-     * @param noraRobotName
      * @param robotContext
      * @param verbose
      */
-    private void removeApplicationPages(String applicationName, String noraRobotName, Class<?> robotContext, boolean verbose) {
+    private void removeApplicationPages(String applicationName, Class<?> robotContext, boolean verbose) {
         String applicationPagePath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/")
                 .replaceAll("utils", "application/pages/" + applicationName).replaceAll("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), "");
         try {
@@ -246,6 +245,13 @@ public class Application extends AbstractNoraUiCli {
             File newSelector = new File(stepsPath);
             if (!newSelector.exists()) {
                 Files.asCharSink(newSelector, Charsets.UTF_8).write(sb.toString());
+                if (verbose) {
+                    logger.info("File [{}] created with success.", stepsPath);
+                }
+            } else {
+                if (verbose) {
+                    logger.info("File [{}] already exist.", stepsPath);
+                }
             }
         } catch (Exception e) {
             logger.error("IOException {}", e.getMessage(), e);
@@ -255,11 +261,10 @@ public class Application extends AbstractNoraUiCli {
 
     /**
      * @param applicationName
-     * @param noraRobotName
      * @param robotContext
      * @param verbose
      */
-    private void removeApplicationSteps(String applicationName, String noraRobotName, Class<?> robotContext, boolean verbose) {
+    private void removeApplicationSteps(String applicationName, Class<?> robotContext, boolean verbose) {
         String applicationStepsPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/")
                 .replaceAll("utils", "application/steps/" + applicationName).replaceAll("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), "");
         try {
@@ -274,11 +279,10 @@ public class Application extends AbstractNoraUiCli {
 
     /**
      * @param applicationName
-     * @param noraRobotName
      * @param robotContext
      * @param verbose
      */
-    private void removeApplicationModel(String applicationName, String noraRobotName, Class<?> robotContext, boolean verbose) {
+    private void removeApplicationModel(String applicationName, Class<?> robotContext, boolean verbose) {
         String applicationModelPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/")
                 .replaceAll("utils", "application/model/" + applicationName).replaceAll("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), "");
         try {
@@ -321,7 +325,7 @@ public class Application extends AbstractNoraUiCli {
         if (verbose) {
             logger.info("Add application named [{}] in context.", applicationName);
         }
-        try (BufferedReader br = new BufferedReader(new FileReader(contextPath))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(contextPath)); FileWriter fw = new FileWriter(contextPath)) {
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();
             while (line != null) {
@@ -407,7 +411,6 @@ public class Application extends AbstractNoraUiCli {
                 }
                 line = br.readLine();
             }
-            FileWriter fw = new FileWriter(contextPath);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(sb.toString().substring(0, sb.toString().length() - System.lineSeparator().length()));
             bw.flush();
@@ -431,9 +434,17 @@ public class Application extends AbstractNoraUiCli {
         sb.append("xpath=//*[@id='page-element-sample']");
         try {
             for (String version : versions) {
-                File newSelector = new File(selectorsPath + File.separator + version + File.separator + applicationName + ".ini");
+                String iniFilePath = selectorsPath + File.separator + version + File.separator + applicationName + ".ini";
+                File newSelector = new File(iniFilePath);
                 if (!newSelector.exists()) {
                     Files.asCharSink(newSelector, Charsets.UTF_8).write(sb.toString());
+                    if (verbose) {
+                        logger.info("File [{}] created with success.", iniFilePath);
+                    }
+                } else {
+                    if (verbose) {
+                        logger.info("File [{}] already exist.", iniFilePath);
+                    }
                 }
             }
         } catch (Exception e) {
@@ -490,7 +501,7 @@ public class Application extends AbstractNoraUiCli {
         if (verbose) {
             logger.info("Add application named [{}] in this properties file: {}]", applicationName, propertiesfilePath);
         }
-        try (BufferedReader br = new BufferedReader(new FileReader(propertiesfilePath))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(propertiesfilePath)); FileWriter fw = new FileWriter(propertiesfilePath)) {
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();
             while (line != null) {
@@ -504,7 +515,6 @@ public class Application extends AbstractNoraUiCli {
                 }
                 line = br.readLine();
             }
-            FileWriter fw = new FileWriter(propertiesfilePath);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(sb.toString().substring(0, sb.toString().length() - System.lineSeparator().length()));
             bw.flush();
@@ -547,7 +557,7 @@ public class Application extends AbstractNoraUiCli {
         if (verbose) {
             logger.info("Add application named [{}] in this properties file: [{}]", applicationName, propertiesfilePath);
         }
-        try (BufferedReader br = new BufferedReader(new FileReader(propertiesfilePath))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(propertiesfilePath)); FileWriter fw = new FileWriter(propertiesfilePath)) {
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();
             while (line != null) {
@@ -561,7 +571,6 @@ public class Application extends AbstractNoraUiCli {
                 }
                 line = br.readLine();
             }
-            FileWriter fw = new FileWriter(propertiesfilePath);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(sb.toString().substring(0, sb.toString().length() - System.lineSeparator().length()));
             bw.flush();
