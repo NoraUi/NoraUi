@@ -171,6 +171,13 @@ public class Application extends AbstractNoraUiCli {
             File newSelector = new File(pagePath);
             if (!newSelector.exists()) {
                 Files.asCharSink(newSelector, Charsets.UTF_8).write(sb.toString());
+                if (verbose) {
+                    logger.info("File [{}] created with success.", pagePath);
+                }
+            } else {
+                if (verbose) {
+                    logger.info("File [{}] already exist.", pagePath);
+                }
             }
         } catch (Exception e) {
             logger.error("IOException {}", e.getMessage(), e);
