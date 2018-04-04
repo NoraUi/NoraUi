@@ -145,7 +145,7 @@ public class Model extends AbstractNoraUiCli {
         String applicationDirectoryPath = modelPath.substring(0, modelPath.lastIndexOf(File.separator));
         try {
             Collection<File> l = FileUtils.listFiles(new File(applicationDirectoryPath), TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
-            if (l.size() == 0) {
+            if (l.isEmpty()) {
                 if (verbose) {
                     logger.info("Empty directory, so remove application directory.");
                 }
