@@ -30,7 +30,7 @@ See [change log](https://noraui.github.io/changelog.txt) for details
 * Change all `import org.apache.log4j.Logger;` by `import org.slf4j.Logger;` and `import org.slf4j.LoggerFactory;`
 * Change com.github.noraui.browser.DriverFactory#setProperty(String key, Properties propertyFile) to com.github.noraui.browser.DriverFactory#getProperty(String key, Properties propertyFile)
 * replace all step constructors by `com.google.inject.Inject` (inject pages)
-* replace loadAuthentication(String browser) by loadAuthentication()
+* replace loadAuthentication(String browser) by loadAuthentication(Cookie cookie)
 * replace PhantomJs by Chrome headless
 
 # Supported languages
