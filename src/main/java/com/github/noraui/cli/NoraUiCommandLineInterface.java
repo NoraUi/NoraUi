@@ -90,7 +90,7 @@ public class NoraUiCommandLineInterface {
             } else {
                 for (Map.Entry<String, String> f : features.entrySet()) {
                     if (f.getKey().equals(String.valueOf(featureCode))) {
-                        logger.info("Do you want " + f.getValue().toLowerCase() + "? Y");
+                        logger.info("Do you want {}? Y", f.getValue().toLowerCase());
                         if ("y".equalsIgnoreCase(input.nextLine())) {
                             featureCode = Integer.parseInt(f.getKey());
                             break;
@@ -105,7 +105,7 @@ public class NoraUiCommandLineInterface {
                 if (featureCode == -1) {
                     logger.info("What do you want ?");
                     for (Map.Entry<String, String> f : features.entrySet()) {
-                        logger.info("    " + f.getKey() + " => " + f.getValue());
+                        logger.info("    {} => {}", f.getKey(), f.getValue());
                     }
                     featureCode = input.nextInt();
                     input.nextLine();
@@ -168,11 +168,12 @@ public class NoraUiCommandLineInterface {
     }
 
     private void displayCommandLine(String[] args) {
-        System.out.print("Command Line: ");
+        StringBuilder cmd = new StringBuilder();
+        cmd.append("Command Line: ");
         for (String arg : args) {
-            System.out.print(" " + arg);
+            cmd.append(" ").append(arg);
         }
-        logger.info("");
+        logger.info(cmd.toString());
     }
 
     private void runFeature(int featureCode, String applicationName, String scenarioName, String modelName, String url, String description, String fields, String results, Class<?> robotContext,
@@ -217,10 +218,10 @@ public class NoraUiCommandLineInterface {
             boolean applicationFinded = false;
             if (applicationName == null || "".equals(applicationName)) {
                 List<String> appList = application.get();
-                if (appList.size() > 0) {
+                if (!appList.isEmpty()) {
                     logger.info("Enter index application number:");
                     for (int i = 0; i < appList.size(); i++) {
-                        logger.info("    " + (i + 1) + ") " + appList.get(i));
+                        logger.info("    {}) {}", i + 1, appList.get(i));
                     }
                     int appCode = input.nextInt();
                     input.nextLine();
@@ -257,10 +258,10 @@ public class NoraUiCommandLineInterface {
             boolean applicationFinded = false;
             if (applicationName == null || "".equals(applicationName)) {
                 List<String> appList = application.get();
-                if (appList.size() > 0) {
+                if (!appList.isEmpty()) {
                     logger.info("Enter index application number:");
                     for (int i = 0; i < appList.size(); i++) {
-                        logger.info("    " + (i + 1) + ") " + appList.get(i));
+                        logger.info("    {}) {}", i + 1, appList.get(i));
                     }
                     int appCode = input.nextInt();
                     input.nextLine();
@@ -309,7 +310,7 @@ public class NoraUiCommandLineInterface {
     private boolean isApplicationFound(String applicationName) {
         boolean applicationFinded = false;
         List<String> appList = application.get();
-        if (appList.size() > 0) {
+        if (!appList.isEmpty()) {
             if (appList.contains(applicationName)) {
                 applicationFinded = true;
             } else {
@@ -327,7 +328,7 @@ public class NoraUiCommandLineInterface {
                 List<String> appList = application.get();
                 logger.info("Enter index application number:");
                 for (int i = 0; i < appList.size(); i++) {
-                    logger.info("    " + (i + 1) + ") " + appList.get(i));
+                    logger.info("    {}) {}", i + 1, appList.get(i));
                 }
                 int appCode = input.nextInt();
                 input.nextLine();
@@ -380,7 +381,7 @@ public class NoraUiCommandLineInterface {
                 List<String> appList = model.getApplications(robotContext);
                 logger.info("Enter index application number:");
                 for (int i = 0; i < appList.size(); i++) {
-                    logger.info("    " + (i + 1) + ") " + appList.get(i));
+                    logger.info("    {}) {}", i + 1, appList.get(i));
                 }
                 int appCode = input.nextInt();
                 input.nextLine();
@@ -390,7 +391,7 @@ public class NoraUiCommandLineInterface {
                 List<String> modelList = model.getModels(applicationName, robotContext);
                 logger.info("Enter index model number:");
                 for (int i = 0; i < modelList.size(); i++) {
-                    logger.info("    " + (i + 1) + ") " + modelList.get(i));
+                    logger.info("    {}) {}", i + 1, modelList.get(i));
                 }
                 int modelCode = input.nextInt();
                 input.nextLine();
