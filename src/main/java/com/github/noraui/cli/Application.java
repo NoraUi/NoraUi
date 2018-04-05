@@ -528,15 +528,7 @@ public class Application extends AbstractNoraUiCli {
             logger.error("IOException {}", e.getMessage(), e);
             System.exit(1);
         }
-        try (FileWriter fw = new FileWriter(propertiesfilePath)) {
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(sb.toString().substring(0, sb.toString().length() - System.lineSeparator().length()));
-            bw.flush();
-            bw.close();
-        } catch (IOException e) {
-            logger.error("IOException {}", e.getMessage(), e);
-            System.exit(1);
-        }
+        updatePropertiesFile(propertiesfilePath, sb);
     }
 
     /**
@@ -589,15 +581,7 @@ public class Application extends AbstractNoraUiCli {
             logger.error("IOException {}", e.getMessage(), e);
             System.exit(1);
         }
-        try (FileWriter fw = new FileWriter(propertiesfilePath)) {
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(sb.toString().substring(0, sb.toString().length() - System.lineSeparator().length()));
-            bw.flush();
-            bw.close();
-        } catch (IOException e) {
-            logger.error("IOException {}", e.getMessage(), e);
-            System.exit(1);
-        }
+        updatePropertiesFile(propertiesfilePath, sb);
     }
 
 }
