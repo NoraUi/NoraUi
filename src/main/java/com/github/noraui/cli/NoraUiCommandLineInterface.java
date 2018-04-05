@@ -124,6 +124,9 @@ public class NoraUiCommandLineInterface {
         displayEndFooter();
     }
 
+    /**
+     * 
+     */
     private void displaySplashScreen() {
         logger.info("");
         logger.info("  ███╗   ██╗ ██████╗ ██████╗  █████╗ ██╗   ██╗██╗      ██████╗██╗     ██╗ ");
@@ -137,6 +140,9 @@ public class NoraUiCommandLineInterface {
         logger.info("");
     }
 
+    /**
+     * @return
+     */
     private Map<String, String> getFeatures() {
         Map<String, String> features = new HashMap<>();
         features.put("1", "add new application");
@@ -149,6 +155,10 @@ public class NoraUiCommandLineInterface {
         return features;
     }
 
+    /**
+     * @param args
+     * @param features
+     */
     private void displayHelp(String[] args, Map<String, String> features) {
         if (args.length == 1 && (args[0].equals("-h") || args[0].equals("-help"))) {
             logger.info("-h: Display this help");
@@ -167,6 +177,9 @@ public class NoraUiCommandLineInterface {
         }
     }
 
+    /**
+     * @param args
+     */
     private void displayCommandLine(String[] args) {
         StringBuilder cmd = new StringBuilder();
         cmd.append("Command Line: ");
@@ -176,6 +189,20 @@ public class NoraUiCommandLineInterface {
         logger.info(cmd.toString());
     }
 
+    /**
+     * @param featureCode
+     * @param applicationName
+     * @param scenarioName
+     * @param modelName
+     * @param url
+     * @param description
+     * @param fields
+     * @param results
+     * @param robotContext
+     * @param verbose
+     * @param input
+     * @param interactiveMode
+     */
     private void runFeature(int featureCode, String applicationName, String scenarioName, String modelName, String url, String description, String fields, String results, Class<?> robotContext,
             boolean verbose, Scanner input, boolean interactiveMode) {
         if (featureCode == 1) {
@@ -193,6 +220,14 @@ public class NoraUiCommandLineInterface {
         }
     }
 
+    /**
+     * @param applicationName
+     * @param url
+     * @param context
+     * @param verbose
+     * @param input
+     * @param interactiveMode
+     */
     private void addApplication(String applicationName, String url, Class<?> context, boolean verbose, Scanner input, boolean interactiveMode) {
         if (interactiveMode) {
             if (applicationName == null || "".equals(applicationName)) {
@@ -213,19 +248,22 @@ public class NoraUiCommandLineInterface {
         }
     }
 
+    /**
+     * @param applicationName
+     * @param scenarioName
+     * @param description
+     * @param robotName
+     * @param verbose
+     * @param input
+     * @param interactiveMode
+     */
     private void addScenario(String applicationName, String scenarioName, String description, String robotName, boolean verbose, Scanner input, boolean interactiveMode) {
         if (interactiveMode) {
             boolean applicationFinded = false;
             if (applicationName == null || "".equals(applicationName)) {
                 List<String> appList = application.get();
                 if (!appList.isEmpty()) {
-                    logger.info("Enter index application number:");
-                    for (int i = 0; i < appList.size(); i++) {
-                        logger.info("    {}) {}", i + 1, appList.get(i));
-                    }
-                    int appCode = input.nextInt();
-                    input.nextLine();
-                    applicationName = appList.get(appCode - 1);
+                    applicationName = askApplicationNumber(input, appList);
                     applicationFinded = true;
                 } else {
                     logger.info("You must create an application first.");
@@ -253,19 +291,40 @@ public class NoraUiCommandLineInterface {
         }
     }
 
+    /**
+     * @param input
+     * @param appList
+     * @return
+     */
+    private String askApplicationNumber(Scanner input, List<String> appList) {
+        String applicationName;
+        logger.info("Enter index application number:");
+        for (int i = 0; i < appList.size(); i++) {
+            logger.info("    {}) {}", i + 1, appList.get(i));
+        }
+        int appCode = input.nextInt();
+        input.nextLine();
+        applicationName = appList.get(appCode - 1);
+        return applicationName;
+    }
+
+    /**
+     * @param applicationName
+     * @param modelName
+     * @param fields
+     * @param results
+     * @param robotContext
+     * @param verbose
+     * @param input
+     * @param interactiveMode
+     */
     private void addModel(String applicationName, String modelName, String fields, String results, Class<?> robotContext, boolean verbose, Scanner input, boolean interactiveMode) {
         if (interactiveMode) {
             boolean applicationFinded = false;
             if (applicationName == null || "".equals(applicationName)) {
                 List<String> appList = application.get();
                 if (!appList.isEmpty()) {
-                    logger.info("Enter index application number:");
-                    for (int i = 0; i < appList.size(); i++) {
-                        logger.info("    {}) {}", i + 1, appList.get(i));
-                    }
-                    int appCode = input.nextInt();
-                    input.nextLine();
-                    applicationName = appList.get(appCode - 1);
+                    applicationName = askApplicationNumber(input, appList);
                     applicationFinded = true;
                 } else {
                     logger.info("You must create an application first.");
@@ -322,17 +381,18 @@ public class NoraUiCommandLineInterface {
         return applicationFinded;
     }
 
+    /**
+     * @param applicationName
+     * @param robotContext
+     * @param verbose
+     * @param input
+     * @param interactiveMode
+     */
     private void removeApplication(String applicationName, Class<?> robotContext, boolean verbose, Scanner input, boolean interactiveMode) {
         if (interactiveMode) {
             if (applicationName == null || "".equals(applicationName)) {
                 List<String> appList = application.get();
-                logger.info("Enter index application number:");
-                for (int i = 0; i < appList.size(); i++) {
-                    logger.info("    {}) {}", i + 1, appList.get(i));
-                }
-                int appCode = input.nextInt();
-                input.nextLine();
-                applicationName = appList.get(appCode - 1);
+                applicationName = askApplicationNumber(input, appList);
             }
             application.remove(applicationName, robotContext, verbose);
         } else {
@@ -379,13 +439,7 @@ public class NoraUiCommandLineInterface {
         if (interactiveMode) {
             if (applicationName == null || "".equals(applicationName)) {
                 List<String> appList = model.getApplications(robotContext);
-                logger.info("Enter index application number:");
-                for (int i = 0; i < appList.size(); i++) {
-                    logger.info("    {}) {}", i + 1, appList.get(i));
-                }
-                int appCode = input.nextInt();
-                input.nextLine();
-                applicationName = appList.get(appCode - 1);
+                applicationName = askApplicationNumber(input, appList);
             }
             if (modelName == null || "".equals(modelName)) {
                 List<String> modelList = model.getModels(applicationName, robotContext);
@@ -407,18 +461,25 @@ public class NoraUiCommandLineInterface {
         }
     }
 
+    /**
+     * 
+     */
     private void displayFooter() {
         logger.info("");
         logger.info("NoraUi Command Line Interface finished with success.");
         logger.info("");
     }
 
+    /**
+     * 
+     */
     private void displayEndFooter() {
         logger.info("");
         logger.info("Exit NoraUi Command Line Interface with success.");
         logger.info("");
     }
 
+    // setter for Mock
     protected void setApplication(Application application) {
         this.application = application;
     }
