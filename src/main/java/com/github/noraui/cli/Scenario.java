@@ -7,11 +7,9 @@
 package com.github.noraui.cli;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
@@ -25,7 +23,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 
-public class Scenario {
+public class Scenario extends AbstractNoraUiCli {
 
     /**
      * Specific logger
@@ -274,15 +272,7 @@ public class Scenario {
             logger.error("IOException {}", e.getMessage(), e);
             System.exit(1);
         }
-        try (FileWriter fw = new FileWriter(propertiesfilePath)) {
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(sb.toString().substring(0, sb.toString().length() - System.lineSeparator().length()));
-            bw.flush();
-            bw.close();
-        } catch (IOException e) {
-            logger.error("IOException {}", e.getMessage(), e);
-            System.exit(1);
-        }
+        updatePropertiesFile(propertiesfilePath, sb);
     }
 
     /**
@@ -308,15 +298,7 @@ public class Scenario {
             logger.error("IOException {}", e.getMessage(), e);
             System.exit(1);
         }
-        try (FileWriter fw = new FileWriter(propertiesfilePath)) {
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(sb.toString().substring(0, sb.toString().length() - System.lineSeparator().length()));
-            bw.flush();
-            bw.close();
-        } catch (IOException e) {
-            logger.error("IOException {}", e.getMessage(), e);
-            System.exit(1);
-        }
+        updatePropertiesFile(propertiesfilePath, sb);
     }
 
     /**
