@@ -276,7 +276,7 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
     private String readCell(Cell cell) {
         String txt = "";
         if (cell != null) {
-            logger.debug("readCellByType with type: {}" + cell.getCellTypeEnum());
+            logger.debug("readCellByType with type: {}", cell.getCellTypeEnum());
             txt = readCellByType(cell, cell.getCellTypeEnum());
         }
         return txt.trim();
