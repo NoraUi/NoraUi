@@ -184,7 +184,6 @@ public class Scenario {
                 }
             }
             workbook.write(outputStream);
-            workbook.close();
         } catch (IOException e) {
             logger.error("IOException {}", e.getMessage(), e);
             System.exit(1);
