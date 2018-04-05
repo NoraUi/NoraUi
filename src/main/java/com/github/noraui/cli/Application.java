@@ -510,8 +510,8 @@ public class Application extends AbstractNoraUiCli {
         if (verbose) {
             logger.info("Add application named [{}] in this properties file: {}]", applicationName, propertiesfilePath);
         }
+        StringBuilder sb = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader(propertiesfilePath))) {
-            StringBuilder sb = new StringBuilder();
             String line = br.readLine();
             while (line != null) {
                 if (!(applicationName + "=${" + applicationName + "}").equals(line)) {
@@ -524,12 +524,15 @@ public class Application extends AbstractNoraUiCli {
                 }
                 line = br.readLine();
             }
-            FileWriter fw = new FileWriter(propertiesfilePath);
+        } catch (IOException e) {
+            logger.error("IOException {}", e.getMessage(), e);
+            System.exit(1);
+        }
+        try (FileWriter fw = new FileWriter(propertiesfilePath)) {
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(sb.toString().substring(0, sb.toString().length() - System.lineSeparator().length()));
             bw.flush();
             bw.close();
-            fw.close();
         } catch (IOException e) {
             logger.error("IOException {}", e.getMessage(), e);
             System.exit(1);
@@ -568,8 +571,8 @@ public class Application extends AbstractNoraUiCli {
         if (verbose) {
             logger.info("Add application named [{}] in this properties file: [{}]", applicationName, propertiesfilePath);
         }
+        StringBuilder sb = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader(propertiesfilePath))) {
-            StringBuilder sb = new StringBuilder();
             String line = br.readLine();
             while (line != null) {
                 if (!line.startsWith(applicationName + "=")) {
@@ -582,12 +585,15 @@ public class Application extends AbstractNoraUiCli {
                 }
                 line = br.readLine();
             }
-            FileWriter fw = new FileWriter(propertiesfilePath);
+        } catch (IOException e) {
+            logger.error("IOException {}", e.getMessage(), e);
+            System.exit(1);
+        }
+        try (FileWriter fw = new FileWriter(propertiesfilePath)) {
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(sb.toString().substring(0, sb.toString().length() - System.lineSeparator().length()));
             bw.flush();
             bw.close();
-            fw.close();
         } catch (IOException e) {
             logger.error("IOException {}", e.getMessage(), e);
             System.exit(1);
