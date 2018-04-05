@@ -155,7 +155,7 @@ public class NoraUiCommandLineInterface {
             logger.info("--verbose: Add debug informations in console.");
             logger.info("-f: features 1 => add new application");
             for (Map.Entry<String, String> f : features.entrySet()) {
-                logger.info("             " + f.getKey() + " => " + f.getValue());
+                logger.info("             {} => {}", f.getKey(), f.getValue());
             }
             logger.info("-s: Scenario Name");
             logger.info("-u: Url");

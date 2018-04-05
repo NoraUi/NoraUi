@@ -6,6 +6,7 @@
  */
 package com.github.noraui.application.steps;
 
+import java.awt.AWTException;
 import java.io.IOException;
 import java.util.List;
 
@@ -107,12 +108,15 @@ public class ScreenSteps extends Step {
      *            name of video file.
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
-     * @throws Exception
+     * @throws IOException
+     *             if file or directory is wrong.
+     * @throws AWTException
+     *             if configuration video file is wrong.
      */
     @Conditioned
     @Et("Je commence la capture vidéo dans '(.*)'[\\.|\\?]")
     @And("I start video capture in '(.*)'[\\.|\\?]")
-    public void startVideoCapture(String screenName, List<GherkinStepCondition> conditions) throws Exception {
+    public void startVideoCapture(String screenName, List<GherkinStepCondition> conditions) throws IOException, AWTException {
         logger.debug("I start video capture in [{}].", screenName);
         screenService.startVideoCapture(screenName);
     }

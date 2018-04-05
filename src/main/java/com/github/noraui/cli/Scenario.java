@@ -184,7 +184,6 @@ public class Scenario {
                 }
             }
             workbook.write(outputStream);
-            workbook.close();
         } catch (IOException e) {
             logger.error("IOException {}", e.getMessage(), e);
             System.exit(1);
@@ -254,7 +253,7 @@ public class Scenario {
         if (verbose) {
             logger.info("Add scenario named [{}] in scenario.properties.", scenarioName);
         }
-        try (BufferedReader br = new BufferedReader(new FileReader(propertiesfilePath)); FileWriter fw = new FileWriter(propertiesfilePath)) {
+        try (BufferedReader br = new BufferedReader(new FileReader(propertiesfilePath))) {
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();
             while (line != null) {
@@ -271,10 +270,12 @@ public class Scenario {
                 }
                 line = br.readLine();
             }
+            FileWriter fw = new FileWriter(propertiesfilePath);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(sb.toString().substring(0, sb.toString().length() - System.lineSeparator().length()));
             bw.flush();
             bw.close();
+            fw.close();
         } catch (IOException e) {
             logger.error("IOException {}", e.getMessage(), e);
             System.exit(1);
@@ -290,7 +291,7 @@ public class Scenario {
         if (verbose) {
             logger.info("Remove scenario named [{}] in scenario.properties.", scenarioName);
         }
-        try (BufferedReader br = new BufferedReader(new FileReader(propertiesfilePath)); FileWriter fw = new FileWriter(propertiesfilePath)) {
+        try (BufferedReader br = new BufferedReader(new FileReader(propertiesfilePath))) {
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();
             while (line != null) {
@@ -300,10 +301,12 @@ public class Scenario {
                 }
                 line = br.readLine();
             }
+            FileWriter fw = new FileWriter(propertiesfilePath);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(sb.toString().substring(0, sb.toString().length() - System.lineSeparator().length()));
             bw.flush();
             bw.close();
+            fw.close();
         } catch (IOException e) {
             logger.error("IOException {}", e.getMessage(), e);
             System.exit(1);
