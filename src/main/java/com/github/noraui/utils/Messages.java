@@ -42,6 +42,11 @@ public class Messages {
     public static final String SCENARIO_ERROR_MESSAGE_ILLEGAL_TAB_FORMAT = "SCENARIO_ERROR_MESSAGE_ILLEGAL_TAB_FORMAT";
 
     /**
+     * CLI.
+     */
+    public static final String CLI_YOU_MUST_CREATE_AN_APPLICATION_FIRST = "You must create an application first.";
+
+    /**
      * Functional fail messages.
      */
     public static final String FAIL_MESSAGE_UNKNOWN_CREDENTIALS = "FAIL_MESSAGE_UNKNOWN_CREDENTIALS";
