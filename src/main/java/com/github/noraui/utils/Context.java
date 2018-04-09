@@ -314,7 +314,7 @@ public class Context {
     }
 
     public synchronized void initializeRobot(Class<?> clazz) throws TechnicalException {
-        logger.info("Context > initializeRobot() with " + clazz.getCanonicalName());
+        logger.info("Context > initializeRobot() with {}", clazz.getCanonicalName());
         // set browser: chrome,firefox or ie
         browser = getProperty(BROWSER_KEY, applicationProperties);
 
