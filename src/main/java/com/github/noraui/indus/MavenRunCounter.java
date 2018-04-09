@@ -174,12 +174,12 @@ public class MavenRunCounter {
     }
 
     public class Counter implements Comparator<Counter> {
-        String scenarioName;
-        int nbStep;
-        int nbCas;
-        int run;
-        int failures;
-        int skipped;
+        private String scenarioName;
+        private int nbStep;
+        private int nbCas;
+        private int run;
+        private int failures;
+        private int skipped;
 
         public Counter(String scenarioName) {
             this.scenarioName = scenarioName;

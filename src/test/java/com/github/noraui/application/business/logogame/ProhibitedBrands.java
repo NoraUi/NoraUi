@@ -11,8 +11,8 @@ import java.util.List;
 
 public class ProhibitedBrands {
 
-    static List<String> tabaco;
-    static List<String> alcool;
+    private static List<String> tabaco;
+    private static List<String> alcool;
 
     // Tabaco
     private static String MARLBORO = "Marlboro";

@@ -353,7 +353,6 @@ public class Model extends AbstractNoraUiCli {
             sb.append("").append(System.lineSeparator());
         }
         sb.append("}").append(System.lineSeparator());
-        sb.append("").append(System.lineSeparator());
         try {
             FileUtils.forceMkdir(new File(modelPath.substring(0, modelPath.lastIndexOf(File.separator))));
             File newSelector = new File(modelPath);
@@ -459,7 +458,6 @@ public class Model extends AbstractNoraUiCli {
         sb.append("    }").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
         sb.append("}").append(System.lineSeparator());
-        sb.append("").append(System.lineSeparator());
         try {
             FileUtils.forceMkdir(new File(modelsPath.substring(0, modelsPath.lastIndexOf(File.separator))));
             File newSelector = new File(modelsPath);

@@ -1,5 +1,7 @@
 package com.github.noraui.cli;
 
+import static com.github.noraui.utils.Messages.CLI_YOU_MUST_CREATE_AN_APPLICATION_FIRST;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -266,7 +268,7 @@ public class NoraUiCommandLineInterface {
                     applicationName = askApplicationNumber(input, appList);
                     applicationFinded = true;
                 } else {
-                    logger.info("You must create an application first.");
+                    logger.info(CLI_YOU_MUST_CREATE_AN_APPLICATION_FIRST);
                 }
             }
             if (applicationFinded && (scenarioName == null || "".equals(scenarioName))) {
@@ -327,7 +329,7 @@ public class NoraUiCommandLineInterface {
                     applicationName = askApplicationNumber(input, appList);
                     applicationFinded = true;
                 } else {
-                    logger.info("You must create an application first.");
+                    logger.info(CLI_YOU_MUST_CREATE_AN_APPLICATION_FIRST);
                 }
             }
             if (applicationFinded && (modelName == null || "".equals(modelName))) {
@@ -376,7 +378,7 @@ public class NoraUiCommandLineInterface {
                 logger.info("Application [{}] do not exist. You must create an application named [{}] first.", applicationName, applicationName);
             }
         } else {
-            logger.info("You must create an application first.");
+            logger.info(CLI_YOU_MUST_CREATE_AN_APPLICATION_FIRST);
         }
         return applicationFinded;
     }
