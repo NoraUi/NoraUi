@@ -78,6 +78,7 @@ public class Context {
     public static final String HEADLESS = "headless";
     public static final String LOCALE = "locale";
     public static final String AUTH_TYPE = "authentication";
+    public static final String CRYPTO_KEY = "crypto.key";
     public static final String DISPLAY_STACK_TRACE = "display.stacktrace";
     public static final String TIMEOUT_KEY = "timeout";
     public static final String BROWSER_KEY = "browser";
@@ -200,6 +201,12 @@ public class Context {
      * Maximum timeout
      */
     private int timeout;
+
+    /**
+     * cryptoKey for offend password or confidential data. Use this special char in front of your key: ℗.
+     * Example: ℗password
+     */
+    private String cryptoKey;
 
     /**
      * Proxy
@@ -350,6 +357,9 @@ public class Context {
 
         // authentication mode configuration
         Auth.setAuthenticationType(getProperty(AUTH_TYPE, applicationProperties));
+
+        // set version of selectors used to deliver several versions
+        cryptoKey = getProperty(CRYPTO_KEY, applicationProperties);
 
         // stacktrace configuration
         displayStackTrace = "true".equals(getProperty(DISPLAY_STACK_TRACE, applicationProperties));
@@ -617,6 +627,10 @@ public class Context {
 
     public static int getTimeout() {
         return getInstance().timeout;
+    }
+
+    public static String getCryptoKey() {
+        return getInstance().cryptoKey;
     }
 
     public static Proxy getProxy() {
