@@ -53,6 +53,7 @@ import com.github.noraui.exception.Result;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.GherkinConditionedLoopedStep;
 import com.github.noraui.gherkin.GherkinStepCondition;
+import com.github.noraui.service.CryptoService;
 import com.github.noraui.service.UserNameService;
 import com.github.noraui.utils.Constants;
 import com.github.noraui.utils.Context;
@@ -72,6 +73,9 @@ public class Step implements IStep {
 
     @Inject
     private UserNameService userNameService;
+
+    @Inject
+    private CryptoService cryptoService;
 
     protected Step() {
     }
@@ -200,8 +204,11 @@ public class Step implements IStep {
      *             if the scenario encounters a functional error
      */
     protected void updateText(PageElement pageElement, String textOrKey, CharSequence keysToSend, Object... args) throws TechnicalException, FailureException {
-        final String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
+        String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
         if (!"".equals(value)) {
+            if (value.startsWith(cryptoService.getPrefixe())) {
+                value = cryptoService.decrypt(value);
+            }
             try {
                 final WebElement element = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(pageElement, args)));
                 element.clear();
