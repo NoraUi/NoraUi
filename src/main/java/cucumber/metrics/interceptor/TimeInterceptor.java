@@ -46,7 +46,7 @@ public class TimeInterceptor implements MethodInterceptor {
 
     private MBeanServer mbs = null;
 
-    TimedJmxDynamicMBean mbean = null;
+    private TimedJmxDynamicMBean mbean = null;
 
     public TimeInterceptor() {
         this.mbean = new TimedJmxDynamicMBean();
