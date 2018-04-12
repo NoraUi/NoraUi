@@ -291,7 +291,7 @@ public class Step implements IStep {
         WebElement inputText = null;
         String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
         if (value.startsWith(cryptoService.getPrefixe())) {
-            value = cryptoService.encrypt(value);
+            value = cryptoService.decrypt(value);
         }
         try {
             inputText = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
@@ -316,7 +316,7 @@ public class Step implements IStep {
         WebElement element = null;
         String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
         if (value.startsWith(cryptoService.getPrefixe())) {
-            value = cryptoService.encrypt(value);
+            value = cryptoService.decrypt(value);
         }
         try {
             element = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
@@ -381,7 +381,7 @@ public class Step implements IStep {
         WebElement webElement = null;
         String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
         if (value.startsWith(cryptoService.getPrefixe())) {
-            value = cryptoService.encrypt(value);
+            value = cryptoService.decrypt(value);
         }
         try {
             webElement = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
