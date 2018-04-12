@@ -32,12 +32,7 @@ public class TimedJmxDynamicMBean implements DynamicMBean {
      * Specific logger
      */
     private static final Logger logger = LoggerFactory.getLogger(TimedJmxDynamicMBean.class);
-
     private final ConcurrentMap<String, Long> value = new ConcurrentHashMap<>();
-
-    public TimedJmxDynamicMBean() {
-
-    }
 
     @Override
     public Object getAttribute(String attribute) throws AttributeNotFoundException, MBeanException, ReflectionException {
