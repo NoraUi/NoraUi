@@ -41,18 +41,14 @@ import cucumber.metrics.jmx.TimedJmxDynamicMBean;
 public class TimeInterceptor implements MethodInterceptor {
 
     private static Logger logger = Logger.getLogger(TimeInterceptor.class.getName());
-
     private final ConcurrentMap<String, Meter> meters = new ConcurrentHashMap<>();
-
-    private MBeanServer mbs = null;
-
     TimedJmxDynamicMBean mbean = null;
 
     public TimeInterceptor() {
         this.mbean = new TimedJmxDynamicMBean();
-        this.mbs = ManagementFactory.getPlatformMBeanServer();
+        MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
         try {
-            this.mbs.registerMBean(this.mbean, new ObjectName("cucumber.metrics.jmx:type=TimedJmxDynamicMBean"));
+            mbs.registerMBean(this.mbean, new ObjectName("cucumber.metrics.jmx:type=TimedJmxDynamicMBean"));
         } catch (InstanceAlreadyExistsException e) {
             logger.warning("TimedInterceptor Exception - InstanceAlreadyExistsException" + e);
         } catch (MBeanRegistrationException e) {
