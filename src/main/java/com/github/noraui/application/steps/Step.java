@@ -285,10 +285,14 @@ public class Step implements IStep {
      * @return true or false
      * @throws FailureException
      *             if the scenario encounters a functional error
+     * @throws TechnicalException
      */
-    protected boolean checkInputText(PageElement pageElement, String textOrKey) throws FailureException {
+    protected boolean checkInputText(PageElement pageElement, String textOrKey) throws FailureException, TechnicalException {
         WebElement inputText = null;
-        final String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
+        String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
+        if (value.startsWith(cryptoService.getPrefixe())) {
+            value = cryptoService.encrypt(value);
+        }
         try {
             inputText = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
         } catch (final Exception e) {
@@ -310,7 +314,10 @@ public class Step implements IStep {
      */
     protected void expectText(PageElement pageElement, String textOrKey) throws FailureException, TechnicalException {
         WebElement element = null;
-        final String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
+        String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
+        if (value.startsWith(cryptoService.getPrefixe())) {
+            value = cryptoService.encrypt(value);
+        }
         try {
             element = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
         } catch (final Exception e) {
@@ -372,7 +379,10 @@ public class Step implements IStep {
      */
     protected void checkText(PageElement pageElement, String textOrKey) throws TechnicalException, FailureException {
         WebElement webElement = null;
-        final String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
+        String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
+        if (value.startsWith(cryptoService.getPrefixe())) {
+            value = cryptoService.encrypt(value);
+        }
         try {
             webElement = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
         } catch (final Exception e) {
@@ -457,7 +467,10 @@ public class Step implements IStep {
      *             if the scenario encounters a functional error
      */
     protected void updateList(PageElement pageElement, String textOrKey) throws TechnicalException, FailureException {
-        final String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
+        String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
+        if (value.startsWith(cryptoService.getPrefixe())) {
+            value = cryptoService.decrypt(value);
+        }
         try {
             setDropDownValue(pageElement, value);
         } catch (final Exception e) {

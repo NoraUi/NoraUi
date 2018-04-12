@@ -147,7 +147,10 @@ Feature: hello (Function to validate the environment.)
     And I save a screenshot in 'myScreenshot-<id>'.
     And I save a screenshot of 'demo.DemoPage-changeValueButton' in 'changeValueButton<id>'.
 
-    And I update text 'demo.DemoPage-input_text_field' with ramdom match 'noraui[a-zA-Z0-9]{6}'.
+    When I clear text in 'demo.DemoPage-input_text_field'.
+    When I update text 'demo.DemoPage-input_text_field' with '℗:AMAapQjwjKaAGUkO6rbttg=='.
+    And I check text 'demo.DemoPage-input_text_field' with 'foot'.
+    And I check text 'demo.DemoPage-input_text_field' with '℗:AMAapQjwjKaAGUkO6rbttg=='.
     
     Then I click on 'demo.DemoPage-navbarDropdownMenuLink'.
     And I pass over 'demo.DemoPage-navbarDropdownSubMenu'.
