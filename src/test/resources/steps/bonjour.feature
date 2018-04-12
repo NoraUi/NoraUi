@@ -146,6 +146,11 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
 
     Et Je mets à jour le texte 'demo.DemoPage-input_text_field' avec une valeur aléatoire qui vérifie 'noraui[a-zA-Z0-9]{6}'.
     
+    Quand Je clarifie le texte dans 'demo.DemoPage-input_text_field'.
+    Quand Je mets à jour le texte 'demo.DemoPage-input_text_field' avec '℗:AMAapQjwjKaAGUkO6rbttg=='.
+    Et Je vérifie le texte 'demo.DemoPage-input_text_field' avec 'foot'.
+    Et Je vérifie le texte 'demo.DemoPage-input_text_field' avec '℗:AMAapQjwjKaAGUkO6rbttg=='.
+    
     Alors Je clique sur 'demo.DemoPage-navbarDropdownMenuLink'.
     Et Je passe au dessus de 'demo.DemoPage-navbarDropdownSubMenu'.
     Et Je passe au dessus de 'demo.DemoPage-navbarDropdownSubSubMenu1'.
