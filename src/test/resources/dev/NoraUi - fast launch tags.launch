@@ -4,15 +4,15 @@
 <stringAttribute key="M2_GOALS" value="clean install"/>
 <booleanAttribute key="M2_NON_RECURSIVE" value="false"/>
 <booleanAttribute key="M2_OFFLINE" value="false"/>
-<stringAttribute key="M2_PROFILES" value="scenarioInitiator,unit-tests"/>
+<stringAttribute key="M2_PROFILES" value="preIC,scenarioInitiator,unit-tests"/>
 <listAttribute key="M2_PROPERTIES">
-<listEntry value="cucumber.options=--tags ${string_prompt}"/>
+<listEntry value="cucumber.options=--tags '${string_prompt}'"/>
 <listEntry value="maven.test.failure.ignore=true"/>
 </listAttribute>
 <stringAttribute key="M2_RUNTIME" value="EMBEDDED"/>
 <booleanAttribute key="M2_SKIP_TESTS" value="false"/>
 <intAttribute key="M2_THREADS" value="1"/>
-<booleanAttribute key="M2_UPDATE_SNAPSHOTS" value="true"/>
+<booleanAttribute key="M2_UPDATE_SNAPSHOTS" value="false"/>
 <stringAttribute key="M2_USER_SETTINGS" value=""/>
 <booleanAttribute key="M2_WORKSPACE_RESOLUTION" value="false"/>
 <stringAttribute key="bad_container_name" value="\wiitt\src\test\resources\dev"/>
