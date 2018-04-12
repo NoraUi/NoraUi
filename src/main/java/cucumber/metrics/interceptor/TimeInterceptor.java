@@ -42,7 +42,7 @@ public class TimeInterceptor implements MethodInterceptor {
 
     private static Logger logger = Logger.getLogger(TimeInterceptor.class.getName());
     private final ConcurrentMap<String, Meter> meters = new ConcurrentHashMap<>();
-    TimedJmxDynamicMBean mbean = null;
+    private TimedJmxDynamicMBean mbean = null;
 
     public TimeInterceptor() {
         this.mbean = new TimedJmxDynamicMBean();
