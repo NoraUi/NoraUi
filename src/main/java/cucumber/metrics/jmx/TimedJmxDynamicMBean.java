@@ -76,7 +76,7 @@ public class TimedJmxDynamicMBean implements DynamicMBean {
     @Override
     public Object invoke(String actionName, Object[] params, String[] signature) throws MBeanException, ReflectionException {
         try {
-            if (actionName.equals("refresh")) {
+            if ("refresh".equals(actionName)) {
                 refresh();
             }
             return null;
