@@ -39,7 +39,7 @@ public class CucumberHooks {
 
         if (Context.getCurrentScenarioData() == 0) {
             // Retrieve Excel filename to read
-            String scenarioName = System.getProperty("excelfilename") != null ? System.getProperty("excelfilename") : getFirstNonEnvironmentTag(scenario.getSourceTagNames());
+            String scenarioName = System.getProperty("scenario.name") != null ? System.getProperty("scenario.name") : getFirstNonEnvironmentTag(scenario.getSourceTagNames());
 
             Context.setScenarioName(scenarioName);
 
