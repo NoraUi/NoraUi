@@ -49,14 +49,14 @@ public class CryptoServiceUT {
     public void testEncrypt() throws TechnicalException {
         PowerMockito.mockStatic(Context.class);
         when(Context.getCryptoKey()).thenReturn("my-secret");
-        Assert.assertEquals("℗:AMAapQjwjKaAGUkO6rbttg==", cryptoService.encrypt("foot"));
+        Assert.assertEquals("℗:7y+CKIH1Zd5RVORZ0PAQBA==", cryptoService.encrypt("password"));
     }
 
     @Test
     public void testDecrypt() throws TechnicalException {
         PowerMockito.mockStatic(Context.class);
         when(Context.getCryptoKey()).thenReturn("my-secret");
-        Assert.assertEquals("foot", cryptoService.decrypt("℗:AMAapQjwjKaAGUkO6rbttg=="));
+        Assert.assertEquals("password", cryptoService.decrypt("℗:7y+CKIH1Zd5RVORZ0PAQBA=="));
     }
 
     @Test
@@ -64,7 +64,7 @@ public class CryptoServiceUT {
         try {
             PowerMockito.mockStatic(Context.class);
             when(Context.getLocale()).thenReturn(new Locale("en"));
-            cryptoService.encrypt("foo");
+            cryptoService.encrypt("password");
             Assert.assertFalse(true);
         } catch (TechnicalException e) {
             Assert.assertEquals("/!\\ Technical problem. You need to configure crypto.key parameter. /!\\", e.getMessage());

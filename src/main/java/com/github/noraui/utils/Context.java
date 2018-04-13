@@ -358,8 +358,11 @@ public class Context {
         // authentication mode configuration
         Auth.setAuthenticationType(getProperty(AUTH_TYPE, applicationProperties));
 
-        // set version of selectors used to deliver several versions
-        cryptoKey = getProperty(CRYPTO_KEY, applicationProperties);
+        // set crypto key
+        cryptoKey = System.getProperty(CRYPTO_KEY);
+        if (cryptoKey == null) {
+            logger.warn("{} not set. You can not use crypto feature.", CRYPTO_KEY);
+        }
 
         // stacktrace configuration
         displayStackTrace = "true".equals(getProperty(DISPLAY_STACK_TRACE, applicationProperties));
