@@ -47,8 +47,8 @@
     <properties>
         <cucumber.options>--tags @TOSPECIFY</cucumber.options>
         <jenkinsresourcespath>src/test/resources</jenkinsresourcespath>
-        <excelfilename>@TOSPECIFY</excelfilename>
         <crypto.key>@TOSPECIFY</crypto.key>
+        <scenario.name>@TOSPECIFY</scenario.name>
         <cucumber.version>2.1.0</cucumber.version>
         <selenium.version>3.5.3</selenium.version>
         <junit.version>4.12</junit.version>
@@ -690,7 +690,7 @@
                                     <mainClass>com.github.noraui.main.ScenarioInitiatorRunner</mainClass>
                                     <cleanupDaemonThreads>false</cleanupDaemonThreads>
                                     <arguments>
-                                        <argument>${excelfilename}</argument>
+                                        <argument>${scenario.name}</argument>
                                     </arguments>
                                     <systemProperties>
                                         <systemProperty>
