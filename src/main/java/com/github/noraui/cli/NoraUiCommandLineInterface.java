@@ -21,10 +21,10 @@ public class NoraUiCommandLineInterface {
      */
     private static final Logger logger = LoggerFactory.getLogger(NoraUiCommandLineInterface.class);
 
-    Application application;
-    Scenario scenario;
-    Model model;
-    CryptoService cryptoService;
+    private Application application;
+    private Scenario scenario;
+    private Model model;
+    private CryptoService cryptoService;
 
     public NoraUiCommandLineInterface() {
         application = new Application();
@@ -37,7 +37,7 @@ public class NoraUiCommandLineInterface {
      * @param context
      *            is generated robot context class.
      * @param args
-     *            is list of args (-h, --verbose, -interactiveMode, -f, -s, -u, -d, -a, -m, -fi and -re)
+     *            is list of args (-h, --verbose, -interactiveMode, -f, -s, -u, -d, -k, -a, -m, -fi and -re)
      * @throws TechnicalException
      */
     public void runCli(Class<?> context, String... args) throws TechnicalException {
