@@ -39,7 +39,7 @@ public class CryptoServiceImpl implements CryptoService {
      * {@inheritDoc}
      */
     @Override
-    public String getPrefixe() {
+    public String getPrefix() {
         return "℗:";
     }
 
@@ -48,13 +48,28 @@ public class CryptoServiceImpl implements CryptoService {
      */
     @Override
     public String encrypt(String text) throws TechnicalException {
-        String key = Context.getCryptoKey();
+        return encrypt(Context.getCryptoKey(), text);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String decrypt(String encrypted) throws TechnicalException {
+        return decrypt(Context.getCryptoKey(), encrypted);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String encrypt(String cryptoKey, String text) throws TechnicalException {
         Key aesKey = null;
-        if (key != null && !"".equals(key)) {
+        if (cryptoKey != null && !"".equals(cryptoKey)) {
             do {
-                key = key + key;
-            } while (key.length() < 16);
-            aesKey = new SecretKeySpec(key.substring(0, 16).getBytes(), "AES");
+                cryptoKey = cryptoKey + cryptoKey;
+            } while (cryptoKey.length() < 16);
+            aesKey = new SecretKeySpec(cryptoKey.substring(0, 16).getBytes(), "AES");
         }
         if (aesKey == null) {
             logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE_DECRYPT_CONFIGURATION_EXCEPTION);
@@ -63,7 +78,7 @@ public class CryptoServiceImpl implements CryptoService {
         try {
             Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.ENCRYPT_MODE, aesKey);
-            return getPrefixe() + Base64.encodeBase64String(cipher.doFinal(text.getBytes()));
+            return getPrefix() + Base64.encodeBase64String(cipher.doFinal(text.getBytes()));
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
             logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_ENCRYPT_EXCEPTION), e);
             throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_ENCRYPT_EXCEPTION), e);
@@ -74,18 +89,17 @@ public class CryptoServiceImpl implements CryptoService {
      * {@inheritDoc}
      */
     @Override
-    public String decrypt(String encrypted) throws TechnicalException {
-        if (!encrypted.startsWith(getPrefixe())) {
+    public String decrypt(String cryptoKey, String encrypted) throws TechnicalException {
+        if (!encrypted.startsWith(getPrefix())) {
             logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE_DECRYPT_EXCEPTION);
             throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DECRYPT_EXCEPTION));
         }
-        String key = Context.getCryptoKey();
         Key aesKey = null;
-        if (key != null && !"".equals(key)) {
+        if (cryptoKey != null && !"".equals(cryptoKey)) {
             do {
-                key = key + key;
-            } while (key.length() < 16);
-            aesKey = new SecretKeySpec(key.substring(0, 16).getBytes(), "AES");
+                cryptoKey = cryptoKey + cryptoKey;
+            } while (cryptoKey.length() < 16);
+            aesKey = new SecretKeySpec(cryptoKey.substring(0, 16).getBytes(), "AES");
         }
         if (aesKey == null) {
             logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE_DECRYPT_CONFIGURATION_EXCEPTION);
@@ -94,7 +108,7 @@ public class CryptoServiceImpl implements CryptoService {
         try {
             Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.DECRYPT_MODE, aesKey);
-            return new String(new String(cipher.doFinal(Base64.decodeBase64(encrypted.substring(getPrefixe().length(), encrypted.length())))));
+            return new String(new String(cipher.doFinal(Base64.decodeBase64(encrypted.substring(getPrefix().length(), encrypted.length())))));
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
             throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DECRYPT_EXCEPTION), e);
         }

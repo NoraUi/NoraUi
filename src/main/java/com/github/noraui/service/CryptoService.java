@@ -10,10 +10,14 @@ import com.github.noraui.exception.TechnicalException;
 
 public interface CryptoService {
 
-    String getPrefixe();
+    String getPrefix();
 
     String encrypt(String text) throws TechnicalException;
 
     String decrypt(String encrypted) throws TechnicalException;
+
+    String encrypt(String cryptoKey, String text) throws TechnicalException;
+
+    String decrypt(String cryptoKey, String encrypted) throws TechnicalException;
 
 }
