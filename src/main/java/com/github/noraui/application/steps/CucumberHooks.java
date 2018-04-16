@@ -36,26 +36,20 @@ public class CucumberHooks {
     @Before()
     public static void setUpScenario(Scenario scenario) throws TechnicalException {
         logger.debug("setUpScenario {} scenario.", scenario.getName());
-
         if (Context.getCurrentScenarioData() == 0) {
-            // Retrieve Excel filename to read
+            // Retrieve input data provider (by scenario name) to read
             String scenarioName = System.getProperty("scenario.name") != null ? System.getProperty("scenario.name") : getFirstNonEnvironmentTag(scenario.getSourceTagNames());
-
             Context.setScenarioName(scenarioName);
-
             Context.getDataInputProvider().prepare(Context.getScenarioName());
             Context.getDataOutputProvider().prepare(Context.getScenarioName());
             Context.startCurrentScenario();
         }
-
         // Increment current Excel file line to read
         Context.goToNextData();
         Context.emptyScenarioRegistry();
         Context.saveValue(Constants.IS_CONNECTED_REGISTRY_KEY, String.valueOf(Auth.isConnected()));
-
         Context.setCurrentScenario(scenario);
         new Result.Success<>(Context.getScenarioName(), Messages.getMessage(SUCCESS_MESSAGE_BY_DEFAULT));
-
     }
 
     @After()
