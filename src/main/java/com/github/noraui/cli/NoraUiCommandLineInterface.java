@@ -234,9 +234,9 @@ public class NoraUiCommandLineInterface {
         } else if (featureCode == 6) {
             removeModel(applicationName, modelName, robotContext, verbose, input, interactiveMode);
         } else if (featureCode == 7) {
-            encrypt(cryptoKey, description, verbose, input, interactiveMode);
+            encrypt(cryptoKey, description, input, interactiveMode);
         } else if (featureCode == 8) {
-            decrypt(cryptoKey, description, verbose, input, interactiveMode);
+            decrypt(cryptoKey, description, input, interactiveMode);
         }
     }
 
@@ -484,12 +484,11 @@ public class NoraUiCommandLineInterface {
     /**
      * @param cryptoKey
      * @param description
-     * @param verbose
      * @param input
      * @param interactiveMode
      * @throws TechnicalException
      */
-    private void encrypt(String cryptoKey, String description, boolean verbose, Scanner input, boolean interactiveMode) throws TechnicalException {
+    private void encrypt(String cryptoKey, String description, Scanner input, boolean interactiveMode) throws TechnicalException {
         logger.info("Encrypt a data [{}] with this crypto key: [{}]", description, cryptoKey);
         if (interactiveMode) {
             if (cryptoKey == null || "".equals(cryptoKey)) {
@@ -514,12 +513,11 @@ public class NoraUiCommandLineInterface {
     /**
      * @param cryptoKey
      * @param description
-     * @param verbose
      * @param input
      * @param interactiveMode
      * @throws TechnicalException
      */
-    private void decrypt(String cryptoKey, String description, boolean verbose, Scanner input, boolean interactiveMode) throws TechnicalException {
+    private void decrypt(String cryptoKey, String description, Scanner input, boolean interactiveMode) throws TechnicalException {
         logger.info("Decrypt a data [{}] with this crypto key: [{}]", description, cryptoKey);
         if (interactiveMode) {
             if (cryptoKey == null || "".equals(cryptoKey)) {
