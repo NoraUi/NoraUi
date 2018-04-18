@@ -53,6 +53,7 @@ import com.github.noraui.exception.Result;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.GherkinConditionedLoopedStep;
 import com.github.noraui.gherkin.GherkinStepCondition;
+import com.github.noraui.service.CryptoService;
 import com.github.noraui.service.UserNameService;
 import com.github.noraui.utils.Constants;
 import com.github.noraui.utils.Context;
@@ -72,6 +73,9 @@ public class Step implements IStep {
 
     @Inject
     private UserNameService userNameService;
+
+    @Inject
+    private CryptoService cryptoService;
 
     protected Step() {
     }
@@ -200,7 +204,7 @@ public class Step implements IStep {
      *             if the scenario encounters a functional error
      */
     protected void updateText(PageElement pageElement, String textOrKey, CharSequence keysToSend, Object... args) throws TechnicalException, FailureException {
-        final String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
+        String value = getTextOrKey(textOrKey);
         if (!"".equals(value)) {
             try {
                 final WebElement element = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(pageElement, args)));
@@ -278,10 +282,11 @@ public class Step implements IStep {
      * @return true or false
      * @throws FailureException
      *             if the scenario encounters a functional error
+     * @throws TechnicalException
      */
-    protected boolean checkInputText(PageElement pageElement, String textOrKey) throws FailureException {
+    protected boolean checkInputText(PageElement pageElement, String textOrKey) throws FailureException, TechnicalException {
         WebElement inputText = null;
-        final String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
+        String value = getTextOrKey(textOrKey);
         try {
             inputText = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
         } catch (final Exception e) {
@@ -303,7 +308,7 @@ public class Step implements IStep {
      */
     protected void expectText(PageElement pageElement, String textOrKey) throws FailureException, TechnicalException {
         WebElement element = null;
-        final String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
+        String value = getTextOrKey(textOrKey);
         try {
             element = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
         } catch (final Exception e) {
@@ -313,9 +318,8 @@ public class Step implements IStep {
             Context.waitUntil(ExpectSteps.textToBeEqualsToExpectedValue(Utilities.getLocator(pageElement), value));
         } catch (final Exception e) {
             logger.error("error in expectText. element is [{}]", element == null ? null : element.getText());
-            new Result.Failure<>(element == null ? null : element.getText(),
-                    Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE), pageElement, value, pageElement.getPage().getApplication()), true,
-                    pageElement.getPage().getCallBack());
+            new Result.Failure<>(element == null ? null : element.getText(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE), pageElement,
+                    textOrKey.startsWith(cryptoService.getPrefix()) ? "[secure]" : value, pageElement.getPage().getApplication()), true, pageElement.getPage().getCallBack());
         }
 
     }
@@ -365,7 +369,7 @@ public class Step implements IStep {
      */
     protected void checkText(PageElement pageElement, String textOrKey) throws TechnicalException, FailureException {
         WebElement webElement = null;
-        final String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
+        String value = getTextOrKey(textOrKey);
         try {
             webElement = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
         } catch (final Exception e) {
@@ -373,10 +377,10 @@ public class Step implements IStep {
         }
 
         final String innerText = webElement == null ? null : webElement.getText();
-        logger.info("checkText() expected [{}] and found [{}].", value, innerText);
+        logger.info("checkText() expected [{}] and found [{}].", textOrKey.startsWith(cryptoService.getPrefix()) ? "[secure]" : value, innerText);
         if (!value.equals(innerText)) {
-            new Result.Failure<>(innerText, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE), pageElement, value, pageElement.getPage().getApplication()), true,
-                    pageElement.getPage().getCallBack());
+            new Result.Failure<>(innerText, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE), pageElement,
+                    textOrKey.startsWith(cryptoService.getPrefix()) ? "[secure]" : value, pageElement.getPage().getApplication()), true, pageElement.getPage().getCallBack());
         }
     }
 
@@ -450,7 +454,7 @@ public class Step implements IStep {
      *             if the scenario encounters a functional error
      */
     protected void updateList(PageElement pageElement, String textOrKey) throws TechnicalException, FailureException {
-        final String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
+        String value = getTextOrKey(textOrKey);
         try {
             setDropDownValue(pageElement, value);
         } catch (final Exception e) {
@@ -877,8 +881,8 @@ public class Step implements IStep {
         if (index != -1) {
             dropDown.selectByIndex(index);
         } else {
-            new Result.Failure<>(text, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_VALUE_NOT_AVAILABLE_IN_THE_LIST), element, element.getPage().getApplication()), false,
-                    element.getPage().getCallBack());
+            new Result.Failure<>(text.startsWith(cryptoService.getPrefix()) ? "[secure]" : text,
+                    Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_VALUE_NOT_AVAILABLE_IN_THE_LIST), element, element.getPage().getApplication()), false, element.getPage().getCallBack());
         }
 
     }
@@ -1009,6 +1013,20 @@ public class Step implements IStep {
             result.addAll(new Reflections(packageName, new SubTypesScanner(false)).getSubTypesOf(Step.class));
         }
         return result;
+    }
+
+    /**
+     * @param textOrKey
+     *            Is the new data (text or text in context (after a save))
+     * @return
+     * @throws TechnicalException
+     */
+    private String getTextOrKey(String textOrKey) throws TechnicalException {
+        String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
+        if (value.startsWith(cryptoService.getPrefix())) {
+            value = cryptoService.decrypt(value);
+        }
+        return value;
     }
 
 }

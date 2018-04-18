@@ -10,6 +10,10 @@ import java.util.Scanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.github.noraui.exception.TechnicalException;
+import com.github.noraui.service.CryptoService;
+import com.github.noraui.service.impl.CryptoServiceImpl;
+
 public class NoraUiCommandLineInterface {
 
     /**
@@ -17,23 +21,26 @@ public class NoraUiCommandLineInterface {
      */
     private static final Logger logger = LoggerFactory.getLogger(NoraUiCommandLineInterface.class);
 
-    Application application;
-    Scenario scenario;
-    Model model;
+    private Application application;
+    private Scenario scenario;
+    private Model model;
+    private CryptoService cryptoService;
 
     public NoraUiCommandLineInterface() {
         application = new Application();
         scenario = new Scenario();
         model = new Model();
+        cryptoService = new CryptoServiceImpl();
     }
 
     /**
      * @param context
      *            is generated robot context class.
      * @param args
-     *            is list of args (-h, --verbose, -interactiveMode, -f, -s, -u, -d, -a, -m, -fi and -re)
+     *            is list of args (-h, --verbose, -interactiveMode, -f, -s, -u, -d, -k, -a, -m, -fi and -re)
+     * @throws TechnicalException
      */
-    public void runCli(Class<?> context, String... args) {
+    public void runCli(Class<?> context, String... args) throws TechnicalException {
         Scanner input = null;
         boolean runCli = true;
         boolean verbose = false;
@@ -44,6 +51,7 @@ public class NoraUiCommandLineInterface {
         String modelName = null;
         String url = null;
         String description = null;
+        String cryptoKey = null;
         String fields = null;
         String results = null;
 
@@ -82,6 +90,8 @@ public class NoraUiCommandLineInterface {
                     fields = args[i + 1];
                 } else if ("-re".equals(args[i])) {
                     results = args[i + 1];
+                } else if ("-k".equals(args[i])) {
+                    cryptoKey = args[i + 1];
                 }
             }
             if (!interactiveMode) {
@@ -113,7 +123,7 @@ public class NoraUiCommandLineInterface {
                     input.nextLine();
                 }
                 if (featureCode > 0) {
-                    runFeature(featureCode, applicationName, scenarioName, modelName, url, description, fields, results, context, verbose, input, interactiveMode);
+                    runFeature(featureCode, applicationName, scenarioName, modelName, url, description, fields, results, cryptoKey, context, verbose, input, interactiveMode);
                     displayFooter();
                 } else {
                     runCli = false;
@@ -153,6 +163,8 @@ public class NoraUiCommandLineInterface {
         features.put("4", "remove application");
         features.put("5", "remove scenario");
         features.put("6", "remove model");
+        features.put("7", "encrypt data");
+        features.put("8", "decrypt data");
         features.put("0", "exit NoraUi CLI");
         return features;
     }
@@ -172,6 +184,7 @@ public class NoraUiCommandLineInterface {
             logger.info("-s: Scenario Name");
             logger.info("-u: Url");
             logger.info("-d: Description");
+            logger.info("-k: Crypto key");
             logger.info("-a: Application Name");
             logger.info("-m: Model Name");
             logger.info("-fi: Field list of model");
@@ -204,9 +217,10 @@ public class NoraUiCommandLineInterface {
      * @param verbose
      * @param input
      * @param interactiveMode
+     * @throws TechnicalException
      */
-    private void runFeature(int featureCode, String applicationName, String scenarioName, String modelName, String url, String description, String fields, String results, Class<?> robotContext,
-            boolean verbose, Scanner input, boolean interactiveMode) {
+    private void runFeature(int featureCode, String applicationName, String scenarioName, String modelName, String url, String description, String fields, String results, String cryptoKey,
+            Class<?> robotContext, boolean verbose, Scanner input, boolean interactiveMode) throws TechnicalException {
         if (featureCode == 1) {
             addApplication(applicationName, url, robotContext, verbose, input, interactiveMode);
         } else if (featureCode == 2) {
@@ -219,6 +233,10 @@ public class NoraUiCommandLineInterface {
             removeScenario(scenarioName, robotContext.getSimpleName().replaceAll("Context", ""), verbose, input, interactiveMode);
         } else if (featureCode == 6) {
             removeModel(applicationName, modelName, robotContext, verbose, input, interactiveMode);
+        } else if (featureCode == 7) {
+            encrypt(cryptoKey, description, input, interactiveMode);
+        } else if (featureCode == 8) {
+            decrypt(cryptoKey, description, input, interactiveMode);
         }
     }
 
@@ -459,6 +477,63 @@ public class NoraUiCommandLineInterface {
                 logger.error("When you want to remove a model with interactiveMode is false, you need use -a and -m");
             } else {
                 model.remove(applicationName, modelName, robotContext, verbose);
+            }
+        }
+    }
+
+    /**
+     * @param cryptoKey
+     * @param description
+     * @param input
+     * @param interactiveMode
+     * @throws TechnicalException
+     */
+    private void encrypt(String cryptoKey, String description, Scanner input, boolean interactiveMode) throws TechnicalException {
+        logger.info("Encrypt a data [{}] with this crypto key: [{}]", description, cryptoKey);
+        if (interactiveMode) {
+            if (cryptoKey == null || "".equals(cryptoKey)) {
+                logger.info("Enter crypto key:");
+                cryptoKey = input.nextLine();
+            }
+            if (description == null || "".equals(description)) {
+                logger.info("Enter data:");
+                description = input.nextLine();
+            }
+            logger.info("Encrypted value is {}", cryptoService.encrypt(cryptoKey, description));
+        } else {
+            if (cryptoKey == null || "".equals(cryptoKey) || description == null || "".equals(description)) {
+                logger.error("When you want to encrypt data with interactiveMode is false, you need use -d and -k");
+            } else {
+                logger.info("Encrypted value is {}", cryptoService.encrypt(cryptoKey, description));
+            }
+        }
+
+    }
+
+    /**
+     * @param cryptoKey
+     * @param description
+     * @param input
+     * @param interactiveMode
+     * @throws TechnicalException
+     */
+    private void decrypt(String cryptoKey, String description, Scanner input, boolean interactiveMode) throws TechnicalException {
+        logger.info("Decrypt a data [{}] with this crypto key: [{}]", description, cryptoKey);
+        if (interactiveMode) {
+            if (cryptoKey == null || "".equals(cryptoKey)) {
+                logger.info("Enter crypto key:");
+                cryptoKey = input.nextLine();
+            }
+            if (description == null || "".equals(description)) {
+                logger.info("Enter data:");
+                description = input.nextLine();
+            }
+            logger.info("Decrypted value is {}", cryptoService.decrypt(cryptoKey, description));
+        } else {
+            if (cryptoKey == null || "".equals(cryptoKey) || description == null || "".equals(description)) {
+                logger.error("When you want to decrypt data with interactiveMode is false, you need use -d and -k");
+            } else {
+                logger.info("Decrypted value is {}", cryptoService.decrypt(cryptoKey, description));
             }
         }
     }

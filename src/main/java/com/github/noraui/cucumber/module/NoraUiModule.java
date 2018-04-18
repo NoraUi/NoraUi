@@ -16,8 +16,10 @@ import com.github.noraui.browser.steps.BrowserSteps;
 import com.github.noraui.cucumber.annotation.Conditioned;
 import com.github.noraui.cucumber.interceptor.ConditionedInterceptor;
 import com.github.noraui.cucumber.interceptor.StepInterceptor;
+import com.github.noraui.service.CryptoService;
 import com.github.noraui.service.ScreenService;
 import com.github.noraui.service.UserNameService;
+import com.github.noraui.service.impl.CryptoServiceImpl;
 import com.github.noraui.service.impl.ScreenServiceImpl;
 import com.github.noraui.service.impl.UserNameServiceImpl;
 import com.google.inject.Binder;
@@ -41,6 +43,7 @@ public class NoraUiModule implements Module {
         binder.bindInterceptor(Matchers.subclassesOf(com.github.noraui.application.steps.Step.class).or(Matchers.subclassesOf(BrowserSteps.class)), any(), new StepInterceptor());
 
         logger.debug("NORAUI service binding");
+        binder.bind(CryptoService.class).to(CryptoServiceImpl.class).asEagerSingleton();
         binder.bind(ScreenService.class).to(ScreenServiceImpl.class).asEagerSingleton();
         binder.bind(UserNameService.class).to(UserNameServiceImpl.class).asEagerSingleton();
     }
