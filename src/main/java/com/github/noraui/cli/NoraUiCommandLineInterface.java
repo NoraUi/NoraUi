@@ -489,7 +489,6 @@ public class NoraUiCommandLineInterface {
      * @throws TechnicalException
      */
     private void encrypt(String cryptoKey, String description, Scanner input, boolean interactiveMode) throws TechnicalException {
-        logger.info("Encrypt a data [{}] with this crypto key: [{}]", description, cryptoKey);
         if (interactiveMode) {
             if (cryptoKey == null || "".equals(cryptoKey)) {
                 logger.info("Enter crypto key:");
@@ -499,6 +498,7 @@ public class NoraUiCommandLineInterface {
                 logger.info("Enter data:");
                 description = input.nextLine();
             }
+            logger.info("Encrypt a data [{}] with this crypto key: [{}]", description, cryptoKey);
             logger.info("Encrypted value is {}", cryptoService.encrypt(cryptoKey, description));
         } else {
             if (cryptoKey == null || "".equals(cryptoKey) || description == null || "".equals(description)) {
@@ -518,7 +518,6 @@ public class NoraUiCommandLineInterface {
      * @throws TechnicalException
      */
     private void decrypt(String cryptoKey, String description, Scanner input, boolean interactiveMode) throws TechnicalException {
-        logger.info("Decrypt a data [{}] with this crypto key: [{}]", description, cryptoKey);
         if (interactiveMode) {
             if (cryptoKey == null || "".equals(cryptoKey)) {
                 logger.info("Enter crypto key:");
@@ -528,6 +527,7 @@ public class NoraUiCommandLineInterface {
                 logger.info("Enter data:");
                 description = input.nextLine();
             }
+            logger.info("Decrypt a data [{}] with this crypto key: [{}]", description, cryptoKey);
             logger.info("Decrypted value is {}", cryptoService.decrypt(cryptoKey, description));
         } else {
             if (cryptoKey == null || "".equals(cryptoKey) || description == null || "".equals(description)) {
