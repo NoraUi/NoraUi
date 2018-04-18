@@ -336,8 +336,7 @@ public class CommonSteps extends Step {
             try {
                 Context.getDataOutputProvider().writeDataResult(targetColumn, line, value);
             } catch (final TechnicalException e) {
-                new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_WRITE_MESSAGE_IN_RESULT_FILE), targetColumn), true,
-                        Page.getInstance(page).getCallBack());
+                new Result.Warning<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_WRITE_MESSAGE_IN_RESULT_FILE), targetColumn), false, 0);
             }
         }
     }
