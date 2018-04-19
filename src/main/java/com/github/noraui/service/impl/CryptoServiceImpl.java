@@ -121,7 +121,7 @@ public class CryptoServiceImpl implements CryptoService {
         cryptoKeyBuilder.append(cryptoKey);
         do {
             cryptoKeyBuilder.append(cryptoKey);
-        } while (cryptoKeyBuilder.toString().length() < 16);
+        } while (cryptoKeyBuilder.length() < 16);
         aesKey = new SecretKeySpec(cryptoKeyBuilder.toString().substring(0, 16).getBytes(), "AES");
         return aesKey;
     }
