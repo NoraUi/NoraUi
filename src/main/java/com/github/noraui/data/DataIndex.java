@@ -13,9 +13,9 @@ public class DataIndex {
     private int dataLine;
     private List<Integer> indexes;
 
-    public DataIndex(int dataLine, List<Integer> index) {
+    public DataIndex(int dataLine, List<Integer> indexes) {
         this.dataLine = dataLine;
-        this.indexes = index;
+        this.indexes = indexes;
     }
 
     public int getDataLine() {
