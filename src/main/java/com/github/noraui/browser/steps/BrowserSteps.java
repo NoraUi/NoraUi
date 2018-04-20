@@ -66,7 +66,7 @@ public class BrowserSteps {
      * Open Url if different with conditions.
      *
      * @param pageKey
-     *            is the key of page (example: SALTO_HOME)
+     *            is the key of page (example: GOOGLE_HOME)
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
