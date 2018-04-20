@@ -56,7 +56,7 @@
         <poi.version>3.17</poi.version>
         <opencsv.version>4.0</opencsv.version>
         <generex.version>1.0.2</generex.version>
-        <springframework.version>5.0.0.RELEASE</springframework.version>
+        <okhttp.version>3.10.0</okhttp.version>
         <javax.mail.version>1.6.0</javax.mail.version>
         <jsoup.version>1.11.2</jsoup.version>
         <screen-recorder.version>0.7.7.0</screen-recorder.version>
@@ -200,11 +200,11 @@
             <version>${generex.version}</version>
         </dependency>
 
-        <!-- springframework/spring-web -->
+        <!-- okhttp: An HTTP+HTTP/2 client for Android and Java applications. -->
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>${springframework.version}</version>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>${okhttp.version}</version>
         </dependency>
 
         <!-- javax.mail -->
