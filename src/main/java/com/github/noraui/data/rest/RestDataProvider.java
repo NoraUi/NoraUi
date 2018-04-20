@@ -39,7 +39,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
     private final String norauiWebServicesApi;
 
     @Inject
-    HttpService httpService;
+    private HttpService httpService;
 
     public enum types {
         JSON, XML
