@@ -59,7 +59,7 @@ public class MailSteps extends Step {
     private static final Logger logger = LoggerFactory.getLogger(MailSteps.class);
 
     @Inject
-    HttpService httpService;
+    private HttpService httpService;
 
     /**
      * Valid activation email.
