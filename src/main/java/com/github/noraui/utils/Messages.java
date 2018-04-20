@@ -56,6 +56,7 @@ public class Messages {
     public static final String FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT = "FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT";
     public static final String FAIL_MESSAGE_ELEMENT_STILL_VISIBLE = "FAIL_MESSAGE_ELEMENT_STILL_VISIBLE";
     public static final String FAIL_MESSAGE_UNABLE_TO_OPEN_A_NEW_WINDOW = "FAIL_MESSAGE_UNABLE_TO_OPEN_A_NEW_WINDOW";
+    public static final String FAIL_MESSAGE_UNABLE_TO_CALL_API_REST = "FAIL_MESSAGE_UNABLE_TO_CALL_API_REST";
 
     /**
      * Functional fail messages with parameters.
