@@ -25,34 +25,25 @@ import javax.mail.search.FromTerm;
 import javax.mail.search.SearchTerm;
 import javax.mail.search.SubjectTerm;
 
-import org.apache.http.HttpHost;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.HttpClient;
-import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.http.converter.json.GsonHttpMessageConverter;
-import org.springframework.web.client.RestTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.github.noraui.cucumber.annotation.Conditioned;
+import com.github.noraui.cucumber.annotation.Experimental;
 import com.github.noraui.cucumber.annotation.RetryOnFailure;
 import com.github.noraui.exception.Callbacks;
 import com.github.noraui.exception.FailureException;
+import com.github.noraui.exception.HttpServiceException;
 import com.github.noraui.exception.Result;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.GherkinStepCondition;
+import com.github.noraui.service.HttpService;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
+import com.google.inject.Inject;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.fr.Et;
@@ -61,6 +52,14 @@ import cucumber.api.java.fr.Et;
  * This class contains Gherkin callable steps that aim for expecting a specific result.
  */
 public class MailSteps extends Step {
+
+    /**
+     * Specific logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(MailSteps.class);
+
+    @Inject
+    HttpService httpService;
 
     /**
      * Valid activation email.
@@ -81,13 +80,14 @@ public class MailSteps extends Step {
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
+    @Experimental(name = "validActivationEmail")
     @RetryOnFailure(attempts = 3, delay = 60)
     @Conditioned
     @Et("Je valide le mail d'activation '(.*)'[\\.|\\?]")
     @And("I valid activation email '(.*)'[\\.|\\?]")
     public void validActivationEmail(String mailHost, String mailUser, String mailPassword, String senderMail, String subjectMail, String firstCssQuery, List<GherkinStepCondition> conditions)
             throws FailureException, TechnicalException {
-        RestTemplate restTemplate = createRestTemplate();
+        // RestTemplate restTemplate = createRestTemplate();
         try {
             Properties props = System.getProperties();
             props.setProperty("mail.store.protocol", "imap");
@@ -105,10 +105,10 @@ public class MailSteps extends Step {
             for (Message message : messages) {
                 Document doc = Jsoup.parse(getTextFromMessage(message));
                 Element link = doc.selectFirst(firstCssQuery);
-                HttpHeaders headers = new HttpHeaders();
-                HttpEntity<String> entity = new HttpEntity<>(headers);
-                ResponseEntity<String> response = restTemplate.exchange(link.attr("href"), HttpMethod.GET, entity, String.class);
-                if (!response.getStatusCode().equals(HttpStatus.OK)) {
+                try {
+                    String response = httpService.get(link.attr("href"));
+                } catch (HttpServiceException e) {
+                    logger.error(Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_MAIL_ACTIVATION), subjectMail), e);
                     new Result.Failure<>("", Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_MAIL_ACTIVATION), subjectMail), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
                 }
             }
@@ -117,26 +117,12 @@ public class MailSteps extends Step {
         }
     }
 
-    private static RestTemplate createRestTemplate() {
-        String proxyUser = "";
-        String proxyPassword = "";
-        String proxyUrl = "";
-        int proxyPort = 0;
-        HttpClientBuilder clientBuilder = HttpClientBuilder.create();
-        if (!"".equals(proxyUrl)) {
-            CredentialsProvider credsProvider = new BasicCredentialsProvider();
-            credsProvider.setCredentials(new AuthScope(proxyUrl, proxyPort), new UsernamePasswordCredentials(proxyUser, proxyPassword));
-            HttpHost myProxy = new HttpHost(proxyUrl, proxyPort);
-            clientBuilder.setProxy(myProxy).setDefaultCredentialsProvider(credsProvider).disableCookieManagement();
-        }
-        HttpClient httpClient = clientBuilder.build();
-        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
-        factory.setHttpClient(httpClient);
-        RestTemplate restTemplate = new RestTemplate(factory);
-        restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
-        return restTemplate;
-    }
-
+    /**
+     * @param message
+     * @return
+     * @throws MessagingException
+     * @throws IOException
+     */
     private static String getTextFromMessage(Message message) throws MessagingException, IOException {
         String result = "";
         if (message.isMimeType("text/plain")) {
@@ -148,6 +134,12 @@ public class MailSteps extends Step {
         return result;
     }
 
+    /**
+     * @param mimeMultipart
+     * @return
+     * @throws MessagingException
+     * @throws IOException
+     */
     private static String getTextFromMimeMultipart(MimeMultipart mimeMultipart) throws MessagingException, IOException {
         StringBuilder result = new StringBuilder();
         int count = mimeMultipart.getCount();
