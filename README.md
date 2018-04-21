@@ -9,7 +9,7 @@ Non-Regression Automation for User Interfaces
 
 # News 
 See [change log](https://noraui.github.io/changelog.txt) for details
-* 2018-0x-xx: NoraUi [3.1.4] is in progress.
+* 2018-0x-xx: NoraUi [3.2.0] is in progress.
 * 2018-03-19: NoraUi [3.1.3] is released.
 * 2018-03-14: NoraUi [3.1.2] is released.
 * 2018-03-06: NoraUi [3.1.1] is released.
@@ -32,6 +32,7 @@ See [change log](https://noraui.github.io/changelog.txt) for details
 * replace all step constructors by `com.google.inject.Inject` (inject pages)
 * replace loadAuthentication(String browser) by loadAuthentication(Cookie cookie)
 * replace PhantomJs by Chrome headless
+* replace springframework RestTemplate by OkHttp
 
 # Supported languages
 
