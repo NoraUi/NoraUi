@@ -70,6 +70,7 @@ public class Step implements IStep {
      * Specific logger
      */
     protected static final Logger logger = LoggerFactory.getLogger(Step.class);
+    private static final String SECURE_MASK = "[secure]";
 
     @Inject
     private UserNameService userNameService;
@@ -319,7 +320,7 @@ public class Step implements IStep {
         } catch (final Exception e) {
             logger.error("error in expectText. element is [{}]", element == null ? null : element.getText());
             new Result.Failure<>(element == null ? null : element.getText(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE), pageElement,
-                    textOrKey.startsWith(cryptoService.getPrefix()) ? "[secure]" : value, pageElement.getPage().getApplication()), true, pageElement.getPage().getCallBack());
+                    textOrKey.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : value, pageElement.getPage().getApplication()), true, pageElement.getPage().getCallBack());
         }
 
     }
@@ -377,10 +378,10 @@ public class Step implements IStep {
         }
 
         final String innerText = webElement == null ? null : webElement.getText();
-        logger.info("checkText() expected [{}] and found [{}].", textOrKey.startsWith(cryptoService.getPrefix()) ? "[secure]" : value, innerText);
+        logger.info("checkText() expected [{}] and found [{}].", textOrKey.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : value, innerText);
         if (!value.equals(innerText)) {
             new Result.Failure<>(innerText, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE), pageElement,
-                    textOrKey.startsWith(cryptoService.getPrefix()) ? "[secure]" : value, pageElement.getPage().getApplication()), true, pageElement.getPage().getCallBack());
+                    textOrKey.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : value, pageElement.getPage().getApplication()), true, pageElement.getPage().getCallBack());
         }
     }
 
@@ -881,7 +882,7 @@ public class Step implements IStep {
         if (index != -1) {
             dropDown.selectByIndex(index);
         } else {
-            new Result.Failure<>(text.startsWith(cryptoService.getPrefix()) ? "[secure]" : text,
+            new Result.Failure<>(text.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : text,
                     Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_VALUE_NOT_AVAILABLE_IN_THE_LIST), element, element.getPage().getApplication()), false, element.getPage().getCallBack());
         }
 

@@ -96,10 +96,7 @@ public class CryptoServiceImpl implements CryptoService {
         }
         Key aesKey = null;
         if (cryptoKey != null && !"".equals(cryptoKey)) {
-            do {
-                cryptoKey = cryptoKey + cryptoKey;
-            } while (cryptoKey.length() < 16);
-            aesKey = new SecretKeySpec(cryptoKey.substring(0, 16).getBytes(), "AES");
+            aesKey = buildKey16char(cryptoKey);
         }
         if (aesKey == null) {
             logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE_DECRYPT_CONFIGURATION_EXCEPTION);
@@ -108,10 +105,25 @@ public class CryptoServiceImpl implements CryptoService {
         try {
             Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.DECRYPT_MODE, aesKey);
-            return new String(new String(cipher.doFinal(Base64.decodeBase64(encrypted.substring(getPrefix().length(), encrypted.length())))));
+            return new String(cipher.doFinal(Base64.decodeBase64(encrypted.substring(getPrefix().length(), encrypted.length()))));
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
             throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DECRYPT_EXCEPTION), e);
         }
+    }
+
+    /**
+     * @param cryptoKey
+     * @return
+     */
+    private Key buildKey16char(String cryptoKey) {
+        Key aesKey;
+        StringBuilder cryptoKeyBuilder = new StringBuilder();
+        cryptoKeyBuilder.append(cryptoKey);
+        do {
+            cryptoKeyBuilder.append(cryptoKey);
+        } while (cryptoKeyBuilder.length() < 16);
+        aesKey = new SecretKeySpec(cryptoKeyBuilder.toString().substring(0, 16).getBytes(), "AES");
+        return aesKey;
     }
 
 }
