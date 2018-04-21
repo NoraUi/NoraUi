@@ -119,6 +119,12 @@ public class Context {
     public static final String COUNTRIES_KEY = "countries";
     public static final String COUNTRIES_HOME = "COUNTRIES_HOME";
 
+    /**
+     * GITHUBAPI
+     */
+    public static final String GITHUBAPI_KEY = "githubapi";
+    public static final String GITHUBAPI_HOME = "GITHUBAPI_HOME";
+
     private static final String NOT_SET_LABEL = "NOT_SET_LABEL";
     private static final String CONTEXT_PROPERTIES_FILE_NOT_FOUND = "CONTEXT_PROPERTIES_FILE_NOT_FOUND";
     private static final String CONTEXT_APP_INI_FILE_NOT_FOUND = "CONTEXT_APP_INI_FILE_NOT_FOUND";
@@ -384,6 +390,9 @@ public class Context {
 
         initApplicationDom(clazz.getClassLoader(), selectorsVersion, COUNTRIES_KEY);
         applications.put(COUNTRIES_KEY, new Application(COUNTRIES_HOME, getProperty(COUNTRIES_KEY, applicationProperties) + "/index.html"));
+
+        // initApplicationDom(clazz.getClassLoader(), selectorsVersion, GITHUBAPI_KEY);
+        applications.put(GITHUBAPI_KEY, new Application(GITHUBAPI_HOME, getProperty(GITHUBAPI_KEY, applicationProperties)));
 
         // read and init all cucumber methods
         cucumberMethods = Step.getAllCucumberMethods(clazz);
