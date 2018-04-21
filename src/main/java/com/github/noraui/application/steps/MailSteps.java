@@ -87,7 +87,6 @@ public class MailSteps extends Step {
     @And("I valid activation email '(.*)'[\\.|\\?]")
     public void validActivationEmail(String mailHost, String mailUser, String mailPassword, String senderMail, String subjectMail, String firstCssQuery, List<GherkinStepCondition> conditions)
             throws FailureException, TechnicalException {
-        // RestTemplate restTemplate = createRestTemplate();
         try {
             Properties props = System.getProperties();
             props.setProperty("mail.store.protocol", "imap");
