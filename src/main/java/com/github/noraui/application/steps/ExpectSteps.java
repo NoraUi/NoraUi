@@ -82,4 +82,19 @@ public class ExpectSteps extends Step {
             }
         };
     }
+    
+    /**
+     * Expects that the target page is complete.
+     * 
+     * @return true or false
+     */
+    public static ExpectedCondition<Boolean> waitForLoad() {
+        return new ExpectedCondition<Boolean>() {
+            @Override
+            public Boolean apply(WebDriver driver) {
+                return ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
+            }
+        };
+    }
+    
 }
