@@ -156,7 +156,10 @@ Feature: hello (Function to validate the environment.)
     And I pass over 'demo.DemoPage-navbarDropdownSubMenu'.
     And I pass over 'demo.DemoPage-navbarDropdownSubSubMenu1'.
     And I click on 'demo.DemoPage-navbarDropdownSubSubMenu2'.
-    
+
+    And I save the value of REST API 'GET' 'GITHUBAPI_HOME' '/search/users?q=location:rennes+language:java&page=1&per_page=10' in 'title' context key.
+    And I save the value of REST API 'GET' 'GITHUBAPI_HOME' '/search/users?q=location:rennes+language:java&page=1&per_page=10' in 'title' column of data output provider.
+
     Given I stop video capture?
         |key|expected|actual|
         |id|1|<id>|

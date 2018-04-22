@@ -44,8 +44,10 @@ public class HttpServiceImpl implements HttpService {
         Response response;
         try {
             response = getClient().newCall(new Request.Builder().url(new URL(url)).header("Accept", "application/json").build()).execute();
-            logger.debug("JSON response is: {}", response.body().string());
-            return response.body().string();
+            String jsonResponse = response.body().string();
+            logger.info("JSON response is: {}", jsonResponse);
+            response.close();
+            return jsonResponse;
         } catch (IOException e) {
             throw new HttpServiceException(Messages.format(Messages.getMessage(HttpServiceException.HTTP_SERVICE_ERROR_MESSAGE)), e);
         }
@@ -68,8 +70,10 @@ public class HttpServiceImpl implements HttpService {
         Response response;
         try {
             response = getClient().newCall(new Request.Builder().url(url).post(RequestBody.create(MediaType.parse("application/json"), json)).build()).execute();
-            logger.debug("JSON response is: {}", response.body().string());
-            return response.body().string();
+            String jsonResponse = response.body().string();
+            logger.info("JSON response is: {}", jsonResponse);
+            response.close();
+            return jsonResponse;
         } catch (IOException e) {
             throw new HttpServiceException(Messages.format(Messages.getMessage(HttpServiceException.HTTP_SERVICE_ERROR_MESSAGE)), e);
         }

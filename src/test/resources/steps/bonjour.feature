@@ -155,7 +155,10 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
     Et Je passe au dessus de 'demo.DemoPage-navbarDropdownSubMenu'.
     Et Je passe au dessus de 'demo.DemoPage-navbarDropdownSubSubMenu1'.
     Et Je clique sur 'demo.DemoPage-navbarDropdownSubSubMenu2'.
-    
+
+    Et Je sauvegarde la valeur de cette API REST 'GET' 'GITHUBAPI_HOME' '/search/users?q=location:rennes+language:java&page=1&per_page=10' dans 'title' du contexte.
+    Et Je sauvegarde la valeur de cette API REST 'GET' 'GITHUBAPI_HOME' '/search/users?q=location:rennes+language:java&page=1&per_page=10' dans 'title' du fournisseur de données en sortie.
+
     Et Je stop la capture vidéo?
         |key|expected|actual|
         |id|1|<id>|
