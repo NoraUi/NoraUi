@@ -14,14 +14,11 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import javax.annotation.Nullable;
-
 import org.ini4j.Ini;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -331,71 +328,6 @@ public class Utilities {
             return getSystemArchitecture(currentArchitecture);
         }
 
-    }
-
-    public static ExpectedCondition<WebElement> atLeastOneOfTheseElementsIsPresent(final By... locators) {
-        return new ExpectedCondition<WebElement>() {
-            @Override
-            public WebElement apply(@Nullable WebDriver driver) {
-                WebElement element = null;
-                if (driver != null && locators.length > 0) {
-                    for (final By b : locators) {
-                        try {
-                            element = driver.findElement(b);
-                        } catch (final Exception e) {
-                            continue;
-                        }
-                    }
-                }
-                return element;
-            }
-        };
-    }
-
-    /**
-     * An expectation for checking that there is at least one element present on a web page.
-     *
-     * @param locator
-     *            used to find the element
-     * @param nb
-     *            is exactly number of responses
-     * @return the list of WebElements once they are located
-     */
-    public static ExpectedCondition<List<WebElement>> presenceOfNbElementsLocatedBy(final By locator, final int nb) {
-        return new ExpectedCondition<List<WebElement>>() {
-            @Override
-            public List<WebElement> apply(WebDriver driver) {
-                final List<WebElement> elements = driver.findElements(locator);
-                return elements.size() == nb ? elements : null;
-            }
-        };
-    }
-
-    /**
-     * An expectation for checking that nb elements present on the web page that match the locator
-     * are visible. Visibility means that the elements are not only displayed but also have a height
-     * and width that is greater than 0.
-     *
-     * @param locator
-     *            used to find the element
-     * @param nb
-     *            is exactly number of responses
-     * @return the list of WebElements once they are located
-     */
-    public static ExpectedCondition<List<WebElement>> visibilityOfNbElementsLocatedBy(final By locator, final int nb) {
-        return new ExpectedCondition<List<WebElement>>() {
-            @Override
-            public List<WebElement> apply(WebDriver driver) {
-                int nbElementIsDisplayed = 0;
-                final List<WebElement> elements = driver.findElements(locator);
-                for (final WebElement element : elements) {
-                    if (element.isDisplayed()) {
-                        nbElementIsDisplayed++;
-                    }
-                }
-                return nbElementIsDisplayed == nb ? elements : null;
-            }
-        };
     }
 
 }
