@@ -1,6 +1,6 @@
 /**
  * NoraUi is licensed under the license GNU AFFERO GENERAL PUBLIC LICENSE
- * 
+ *
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
@@ -56,7 +56,7 @@ public class ExpectSteps extends Step {
 
     /**
      * Expects that the target element contains the given value as text.
-     * The inner text and 'value' attribute of the element is checked.
+     * The inner text and 'value' attribute of the element are checked.
      *
      * @param locator
      *            is the selenium locator
@@ -72,14 +72,87 @@ public class ExpectSteps extends Step {
             @Override
             public Boolean apply(@Nullable WebDriver driver) {
                 try {
-                    WebElement element = driver.findElement(locator);
+                    final WebElement element = driver.findElement(locator);
                     if (element != null && value != null) {
                         return !((element.getAttribute(VALUE) == null || !value.equals(element.getAttribute(VALUE).trim())) && !value.equals(element.getText().replaceAll("\n", "")));
                     }
-                } catch (Exception e) {
+                } catch (final Exception e) {
                 }
                 return false;
             }
         };
     }
+
+    /**
+     * Expects that at least one of the given elements is present.
+     *
+     * @param locators
+     *            The list of elements identified by their locators
+     * @return true or false
+     */
+    public static ExpectedCondition<WebElement> atLeastOneOfTheseElementsIsPresent(final By... locators) {
+        return new ExpectedCondition<WebElement>() {
+            @Override
+            public WebElement apply(@Nullable WebDriver driver) {
+                WebElement element = null;
+                if (driver != null && locators.length > 0) {
+                    for (final By b : locators) {
+                        try {
+                            element = driver.findElement(b);
+                        } catch (final Exception e) {
+                            continue;
+                        }
+                    }
+                }
+                return element;
+            }
+        };
+    }
+
+    /**
+     * An expectation for checking that nb elements that match the locator are present on the web page.
+     *
+     * @param locator
+     *            Locator of element
+     * @param nb
+     *            Expected number of elements
+     * @return the list of WebElements once they are located
+     */
+    public static ExpectedCondition<List<WebElement>> presenceOfNbElementsLocatedBy(final By locator, final int nb) {
+        return new ExpectedCondition<List<WebElement>>() {
+            @Override
+            public List<WebElement> apply(WebDriver driver) {
+                final List<WebElement> elements = driver.findElements(locator);
+                return elements.size() == nb ? elements : null;
+            }
+        };
+    }
+
+    /**
+     * An expectation for checking that nb elements present on the web page that match the locator
+     * are visible. Visibility means that the elements are not only displayed but also have a height
+     * and width that is greater than 0.
+     *
+     * @param locator
+     *            Locator of element
+     * @param nb
+     *            Expected number of elements
+     * @return the list of WebElements once they are located
+     */
+    public static ExpectedCondition<List<WebElement>> visibilityOfNbElementsLocatedBy(final By locator, final int nb) {
+        return new ExpectedCondition<List<WebElement>>() {
+            @Override
+            public List<WebElement> apply(WebDriver driver) {
+                int nbElementIsDisplayed = 0;
+                final List<WebElement> elements = driver.findElements(locator);
+                for (final WebElement element : elements) {
+                    if (element.isDisplayed()) {
+                        nbElementIsDisplayed++;
+                    }
+                }
+                return nbElementIsDisplayed == nb ? elements : null;
+            }
+        };
+    }
+
 }
