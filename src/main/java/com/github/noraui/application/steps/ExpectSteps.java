@@ -11,6 +11,7 @@ import static com.github.noraui.utils.Constants.VALUE;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -82,4 +83,19 @@ public class ExpectSteps extends Step {
             }
         };
     }
+    
+    /**
+     * Expects that the target page is complete.
+     * 
+     * @return true or false
+     */
+    public static ExpectedCondition<Boolean> waitForLoad() {
+        return new ExpectedCondition<Boolean>() {
+            @Override
+            public Boolean apply(WebDriver driver) {
+                return ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
+            }
+        };
+    }
+    
 }
