@@ -173,7 +173,6 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
             }
         } catch (TechnicalException | NumberFormatException | HttpServiceException e) {
             logger.error("initColumns error", e);
-            System.err.println("initColumns error " + e);
         }
     }
 
