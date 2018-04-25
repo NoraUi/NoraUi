@@ -391,7 +391,6 @@ public class Context {
         initApplicationDom(clazz.getClassLoader(), selectorsVersion, COUNTRIES_KEY);
         applications.put(COUNTRIES_KEY, new Application(COUNTRIES_HOME, getProperty(COUNTRIES_KEY, applicationProperties) + "/index.html"));
 
-        // initApplicationDom(clazz.getClassLoader(), selectorsVersion, GITHUBAPI_KEY);
         applications.put(GITHUBAPI_KEY, new Application(GITHUBAPI_HOME, getProperty(GITHUBAPI_KEY, applicationProperties)));
 
         // read and init all cucumber methods
