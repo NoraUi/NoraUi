@@ -66,10 +66,7 @@ public class CryptoServiceImpl implements CryptoService {
     public String encrypt(String cryptoKey, String text) throws TechnicalException {
         Key aesKey = null;
         if (cryptoKey != null && !"".equals(cryptoKey)) {
-            do {
-                cryptoKey = cryptoKey + cryptoKey;
-            } while (cryptoKey.length() < 16);
-            aesKey = new SecretKeySpec(cryptoKey.substring(0, 16).getBytes(), "AES");
+            aesKey = buildKey16char(cryptoKey);
         }
         if (aesKey == null) {
             logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE_DECRYPT_CONFIGURATION_EXCEPTION);
