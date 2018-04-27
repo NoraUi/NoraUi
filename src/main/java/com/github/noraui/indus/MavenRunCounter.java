@@ -49,6 +49,7 @@ public class MavenRunCounter {
                 int nbStep = 0;
                 try (BufferedReader br = new BufferedReader(new FileReader(file));) {
                     String sCurrentLine;
+                    // issue #66: Split all "Scenario Outline" here.
                     while ((sCurrentLine = br.readLine()) != null) {
                         if (sCurrentLine.startsWith("    Given") || sCurrentLine.startsWith("    Then") || sCurrentLine.startsWith("    When") || sCurrentLine.startsWith("    And")
                                 || sCurrentLine.startsWith("    But") || sCurrentLine.startsWith("    Alors") || sCurrentLine.startsWith("    Et") || sCurrentLine.startsWith("    Lorsqu")
