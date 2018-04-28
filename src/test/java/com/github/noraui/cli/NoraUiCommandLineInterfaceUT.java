@@ -7,7 +7,12 @@
 package com.github.noraui.cli;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.commons.io.FileUtils;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -16,6 +21,12 @@ import org.junit.Test;
 import org.junit.contrib.java.lang.system.StandardOutputStreamLog;
 import org.junit.runners.MethodSorters;
 
+import com.github.noraui.cli.model.NoraUiApplicationFile;
+import com.github.noraui.cli.model.NoraUiCliFile;
+import com.github.noraui.cli.model.NoraUiField;
+import com.github.noraui.cli.model.NoraUiModel;
+import com.github.noraui.cli.model.NoraUiResult;
+import com.github.noraui.cli.model.NoraUiScenarioFile;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.utils.UnitTest4CLIContext;
 
@@ -27,12 +38,73 @@ public class NoraUiCommandLineInterfaceUT {
     private NoraUiCommandLineInterface cli;
 
     @Before
-    public void setUp() {
+    public void setUp() throws IOException {
         cli = new NoraUiCommandLineInterface();
         // mock Application Object here.
         cli.setApplication(new Application("src" + File.separator + "test"));
         cli.setScenario(new Scenario("src" + File.separator + "test"));
         cli.setModel(new Model("src" + File.separator + "test"));
+        FileUtils.forceMkdir(new File(".noraui"));
+    }
+
+    @After
+    public void tearDown() throws IOException {
+        FileUtils.deleteDirectory(new File(".noraui"));
+    }
+
+    @Test
+    public void testNoraUiCliFiles() {
+        NoraUiCliFile noraUiCliFile = new NoraUiCliFile();
+        List<NoraUiApplicationFile> applicationFiles = new ArrayList<>();
+        NoraUiApplicationFile noraUiApplicationFile = new NoraUiApplicationFile();
+        noraUiApplicationFile.setName("stubapp");
+        noraUiApplicationFile.setUrl("https://noraui.github.io/demo/logogame/v3/#/login");
+        List<NoraUiModel> noraUiModels = new ArrayList<>();
+        NoraUiModel noraUiModel = new NoraUiModel();
+        noraUiModel.setName("foo");
+        List<NoraUiField> fields = new ArrayList<>();
+        NoraUiField aaa = new NoraUiField();
+        aaa.setName("aaa");
+        NoraUiField bbb = new NoraUiField();
+        bbb.setName("bbb");
+        fields.add(aaa);
+        fields.add(bbb);
+        noraUiModel.setFields(fields);
+        List<NoraUiResult> results = new ArrayList<>();
+        NoraUiResult ccc = new NoraUiResult();
+        ccc.setName("ccc");
+        results.add(ccc);
+        noraUiModel.setResults(results);
+        noraUiModels.add(noraUiModel);
+        noraUiApplicationFile.setModels(noraUiModels);
+        applicationFiles.add(noraUiApplicationFile);
+        noraUiCliFile.setApplicationFiles(applicationFiles);
+
+        List<NoraUiScenarioFile> scenarioFiles = new ArrayList<>();
+        NoraUiScenarioFile scenario = new NoraUiScenarioFile();
+        scenario.setName("stubSenario");
+        scenario.setDescription("stubDescription");
+        scenario.setApplication("stubapp");
+        scenarioFiles.add(scenario);
+        noraUiCliFile.setScenarioFiles(scenarioFiles);
+
+        cli.writeNoraUiCliFiles(noraUiCliFile, true);
+        NoraUiCliFile result = cli.readNoraUiCliFiles(true);
+        Assert.assertTrue(result.getApplicationFiles().size() == 1);
+        Assert.assertEquals(result.getApplicationFiles().get(0).getName(), "stubapp");
+        Assert.assertEquals(result.getApplicationFiles().get(0).getUrl(), "https://noraui.github.io/demo/logogame/v3/#/login");
+        Assert.assertTrue(result.getApplicationFiles().get(0).getModels().size() == 1);
+        Assert.assertEquals(result.getApplicationFiles().get(0).getModels().get(0).getName(), "foo");
+        Assert.assertTrue(result.getApplicationFiles().get(0).getModels().get(0).getFields().size() == 2);
+        Assert.assertEquals(result.getApplicationFiles().get(0).getModels().get(0).getFields().get(0).getName(), "aaa");
+        Assert.assertEquals(result.getApplicationFiles().get(0).getModels().get(0).getFields().get(1).getName(), "bbb");
+        Assert.assertTrue(result.getApplicationFiles().get(0).getModels().get(0).getResults().size() == 1);
+        Assert.assertEquals(result.getApplicationFiles().get(0).getModels().get(0).getResults().get(0).getName(), "ccc");
+
+        Assert.assertTrue(result.getScenarioFiles().size() == 1);
+        Assert.assertEquals(result.getScenarioFiles().get(0).getName(), "stubSenario");
+        Assert.assertEquals(result.getScenarioFiles().get(0).getDescription(), "stubDescription");
+        Assert.assertEquals(result.getScenarioFiles().get(0).getApplication(), "stubapp");
     }
 
     @Test

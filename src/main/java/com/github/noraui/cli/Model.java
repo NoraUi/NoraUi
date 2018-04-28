@@ -368,7 +368,6 @@ public class Model extends AbstractNoraUiCli {
             }
         } catch (Exception e) {
             logger.error("IOException {}", e.getMessage(), e);
-            System.exit(1);
         }
     }
 
@@ -473,7 +472,6 @@ public class Model extends AbstractNoraUiCli {
             }
         } catch (Exception e) {
             logger.error("IOException {}", e.getMessage(), e);
-            System.exit(1);
         }
     }
 

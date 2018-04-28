@@ -37,7 +37,6 @@ public abstract class AbstractNoraUiCli {
             bw.close();
         } catch (IOException e) {
             logger.error("IOException {}", e.getMessage(), e);
-            System.exit(1);
         }
     }
 

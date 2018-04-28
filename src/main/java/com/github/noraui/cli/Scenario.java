@@ -184,7 +184,6 @@ public class Scenario extends AbstractNoraUiCli {
             workbook.write(outputStream);
         } catch (IOException e) {
             logger.error("IOException {}", e.getMessage(), e);
-            System.exit(1);
         }
     }
 
@@ -200,7 +199,6 @@ public class Scenario extends AbstractNoraUiCli {
             Files.asCharSink(sqlFile, Charsets.UTF_8).write(sb.toString());
         } catch (IOException e) {
             logger.error("IOException {}", e.getMessage(), e);
-            System.exit(1);
         }
     }
 
@@ -216,7 +214,6 @@ public class Scenario extends AbstractNoraUiCli {
             Files.asCharSink(newCsvfile, Charsets.UTF_8).write(sb.toString());
         } catch (IOException e) {
             logger.error("IOException {}", e.getMessage(), e);
-            System.exit(1);
         }
     }
 
@@ -237,7 +234,6 @@ public class Scenario extends AbstractNoraUiCli {
             }
         } catch (IOException e) {
             logger.error("IOException {}", e.getMessage(), e);
-            System.exit(1);
         }
         return dataProvider;
     }
@@ -270,7 +266,6 @@ public class Scenario extends AbstractNoraUiCli {
             }
         } catch (IOException e) {
             logger.error("IOException {}", e.getMessage(), e);
-            System.exit(1);
         }
         updatePropertiesFile(propertiesfilePath, sb);
     }
@@ -296,7 +291,6 @@ public class Scenario extends AbstractNoraUiCli {
             }
         } catch (IOException e) {
             logger.error("IOException {}", e.getMessage(), e);
-            System.exit(1);
         }
         updatePropertiesFile(propertiesfilePath, sb);
     }
@@ -341,7 +335,6 @@ public class Scenario extends AbstractNoraUiCli {
             }
         } catch (Exception e) {
             logger.error("IOException {}", e.getMessage(), e);
-            System.exit(1);
         }
     }
 

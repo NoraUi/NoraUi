@@ -64,7 +64,8 @@ public class GherkinFactory {
                     examples.append("|\n    ");
                 }
 
-                fileContent = fileContent.replaceAll("(" + DATA + "\r?\n.*\r?\n)[\\s\\S]*(" + DATA_END + ")", "$1" + examples.toString() + "$2");
+                // fileContent = fileContent.replaceAll("(" + DATA + "\r?\n.*\r?\n)[\\s\\S]*(" + DATA_END + ")", "$1" + examples.toString() + "$2");
+                fileContent = fileContent.replaceAll("(" + DATA + "\r?\n.*\r?\n)[\\s\\w]*(" + DATA_END + ")", "$1" + examples.toString() + "$2");
 
                 try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath.toString()), Charset.forName(Constants.DEFAULT_ENDODING)));) {
                     bw.write(fileContent);
@@ -91,7 +92,7 @@ public class GherkinFactory {
             }
             String[] examples = lines.split("\\n");
             // Return lines - #DATA - #END
-            return (examples.length > 2) ? Arrays.copyOfRange(examples, 1, examples.length - 1) : new String[] {};
+            return examples.length > 2 ? Arrays.copyOfRange(examples, 1, examples.length - 1) : new String[] {};
 
         } catch (IOException e) {
             logger.error("error GherkinFactory.getExamples()", e);

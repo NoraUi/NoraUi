@@ -181,7 +181,6 @@ public class Application extends AbstractNoraUiCli {
             }
         } catch (Exception e) {
             logger.error("IOException {}", e.getMessage(), e);
-            System.exit(1);
         }
     }
 
@@ -262,7 +261,6 @@ public class Application extends AbstractNoraUiCli {
             }
         } catch (Exception e) {
             logger.error("IOException {}", e.getMessage(), e);
-            System.exit(1);
         }
     }
 
@@ -426,7 +424,6 @@ public class Application extends AbstractNoraUiCli {
             fw.close();
         } catch (IOException e) {
             logger.error("IOException {}", e.getMessage(), e);
-            System.exit(1);
         }
     }
 
@@ -458,7 +455,6 @@ public class Application extends AbstractNoraUiCli {
             }
         } catch (Exception e) {
             logger.error("IOException {}", e.getMessage(), e);
-            System.exit(1);
         }
     }
 
@@ -526,7 +522,6 @@ public class Application extends AbstractNoraUiCli {
             }
         } catch (IOException e) {
             logger.error("IOException {}", e.getMessage(), e);
-            System.exit(1);
         }
         updatePropertiesFile(propertiesfilePath, sb);
     }
@@ -579,7 +574,6 @@ public class Application extends AbstractNoraUiCli {
             }
         } catch (IOException e) {
             logger.error("IOException {}", e.getMessage(), e);
-            System.exit(1);
         }
         updatePropertiesFile(propertiesfilePath, sb);
     }
