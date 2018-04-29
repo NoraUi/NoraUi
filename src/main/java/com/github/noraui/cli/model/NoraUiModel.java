@@ -27,6 +27,18 @@ public class NoraUiModel {
         return fields;
     }
 
+    public String getFieldsString() {
+        if (fields != null && fields.size() > 0) {
+            StringBuilder sb = new StringBuilder();
+            for (NoraUiField noraUiField : fields) {
+                sb.append(noraUiField.getName()).append(" ");
+            }
+            sb.deleteCharAt(sb.length());
+            return sb.toString();
+        }
+        return "";
+    }
+
     public void setFields(List<NoraUiField> fields) {
         this.fields = fields;
     }
@@ -45,6 +57,18 @@ public class NoraUiModel {
 
     public List<NoraUiResult> getResults() {
         return results;
+    }
+
+    public String getResultsString() {
+        if (results != null && results.size() > 0) {
+            StringBuilder sb = new StringBuilder();
+            for (NoraUiResult noraUiResult : results) {
+                sb.append(noraUiResult.getName()).append(" ");
+            }
+            sb.deleteCharAt(sb.length());
+            return sb.toString();
+        }
+        return "";
     }
 
     public void setResults(List<NoraUiResult> results) {

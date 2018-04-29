@@ -159,7 +159,7 @@ public class NoraUiCommandLineInterface {
                 input.close();
             }
         } else {
-            updateRobotFromNoraUiCliFiles(noraUiCliFile);
+            updateRobotFromNoraUiCliFiles(noraUiCliFile, context, verbose);
         }
         displayEndFooter();
     }
@@ -329,7 +329,18 @@ public class NoraUiCommandLineInterface {
     /**
      * @param noraUiCliFile
      */
-    private void updateRobotFromNoraUiCliFiles(NoraUiCliFile noraUiCliFile) {
+    private void updateRobotFromNoraUiCliFiles(NoraUiCliFile noraUiCliFile, Class<?> robotContext, boolean verbose) {
+        logger.info("updateRobotFromNoraUiCliFiles");
+        for (NoraUiApplicationFile noraUiApplicationFile : noraUiCliFile.getApplicationFiles()) {
+            addApplication(null, noraUiApplicationFile.getName(), noraUiApplicationFile.getUrl(), robotContext, verbose, null, false);
+            for (NoraUiModel noraUiModel : noraUiApplicationFile.getModels()) {
+                addModel(null, noraUiApplicationFile.getName(), noraUiModel.getName(), noraUiModel.getFieldsString(), noraUiModel.getResultsString(), robotContext, verbose, null, false);
+            }
+        }
+        for (NoraUiScenarioFile noraUiScenarioFile : noraUiCliFile.getScenarioFiles()) {
+            addScenario(null, noraUiScenarioFile.getApplication(), noraUiScenarioFile.getName(), noraUiScenarioFile.getDescription(), robotContext.getSimpleName().replaceAll("Context", ""), verbose,
+                    null, false);
+        }
 
     }
 
@@ -381,7 +392,7 @@ public class NoraUiCommandLineInterface {
      * @param input
      * @param interactiveMode
      */
-    private NoraUiCliFile addApplication(NoraUiCliFile noraUiCliFile, String applicationName, String url, Class<?> context, boolean verbose, Scanner input, boolean interactiveMode) {
+    private NoraUiCliFile addApplication(NoraUiCliFile noraUiCliFile, String applicationName, String url, Class<?> robotContext, boolean verbose, Scanner input, boolean interactiveMode) {
         if (interactiveMode) {
             if (applicationName == null || "".equals(applicationName)) {
                 logger.info("Enter application name:");
@@ -391,12 +402,12 @@ public class NoraUiCommandLineInterface {
                 logger.info("Enter url:");
                 url = input.nextLine();
             }
-            application.add(applicationName, url, context, verbose);
+            application.add(applicationName, url, robotContext, verbose);
         } else {
             if (applicationName == null || "".equals(applicationName) || url == null || "".equals(url)) {
                 logger.error("When you want to add an application with interactiveMode is false, you need use -a and -u");
             } else {
-                application.add(applicationName, url, context, verbose);
+                application.add(applicationName, url, robotContext, verbose);
             }
         }
         NoraUiApplicationFile noraUiApplicationFile = new NoraUiApplicationFile();
