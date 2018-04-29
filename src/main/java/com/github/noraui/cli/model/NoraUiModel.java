@@ -27,8 +27,11 @@ public class NoraUiModel {
         return fields;
     }
 
+    /**
+     * @return all fields in a String and separated by a space.
+     */
     public String getFieldsString() {
-        if (fields != null && fields.size() > 0) {
+        if (fields != null && !fields.isEmpty()) {
             StringBuilder sb = new StringBuilder();
             for (NoraUiField noraUiField : fields) {
                 sb.append(noraUiField.getName()).append(" ");
@@ -43,6 +46,10 @@ public class NoraUiModel {
         this.fields = fields;
     }
 
+    /**
+     * @param fields
+     *            is all fields in a String and separated by a space.
+     */
     public void setFields(String fields) {
         List<NoraUiField> r = new ArrayList<>();
         if (fields != null) {
@@ -59,8 +66,11 @@ public class NoraUiModel {
         return results;
     }
 
+    /**
+     * @return all results in a String and separated by a space.
+     */
     public String getResultsString() {
-        if (results != null && results.size() > 0) {
+        if (results != null && !results.isEmpty()) {
             StringBuilder sb = new StringBuilder();
             for (NoraUiResult noraUiResult : results) {
                 sb.append(noraUiResult.getName()).append(" ");
@@ -75,6 +85,10 @@ public class NoraUiModel {
         this.results = results;
     }
 
+    /**
+     * @param results
+     *            is all results in a String and separated by a space.
+     */
     public void setResults(String results) {
         List<NoraUiResult> r = new ArrayList<>();
         if (results != null) {
