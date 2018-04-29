@@ -106,6 +106,7 @@ public class MailSteps extends Step {
                 Element link = doc.selectFirst(firstCssQuery);
                 try {
                     String response = httpService.get(link.attr("href"));
+                    logger.debug("response is {}.", response);
                 } catch (HttpServiceException e) {
                     logger.error(Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_MAIL_ACTIVATION), subjectMail), e);
                     new Result.Failure<>("", Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_MAIL_ACTIVATION), subjectMail), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
