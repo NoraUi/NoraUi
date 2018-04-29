@@ -91,20 +91,20 @@ public class NoraUiCommandLineInterfaceUT {
         cli.writeNoraUiCliFiles(noraUiCliFile, true);
         NoraUiCliFile result = cli.readNoraUiCliFiles(true);
         Assert.assertTrue(result.getApplicationFiles().size() == 1);
-        Assert.assertEquals(result.getApplicationFiles().get(0).getName(), "stubapp");
-        Assert.assertEquals(result.getApplicationFiles().get(0).getUrl(), "https://noraui.github.io/demo/logogame/v3/#/login");
+        Assert.assertEquals("stubapp", result.getApplicationFiles().get(0).getName());
+        Assert.assertEquals("https://noraui.github.io/demo/logogame/v3/#/login", result.getApplicationFiles().get(0).getUrl());
         Assert.assertTrue(result.getApplicationFiles().get(0).getModels().size() == 1);
-        Assert.assertEquals(result.getApplicationFiles().get(0).getModels().get(0).getName(), "foo");
+        Assert.assertEquals("foo", result.getApplicationFiles().get(0).getModels().get(0).getName());
         Assert.assertTrue(result.getApplicationFiles().get(0).getModels().get(0).getFields().size() == 2);
-        Assert.assertEquals(result.getApplicationFiles().get(0).getModels().get(0).getFields().get(0).getName(), "aaa");
-        Assert.assertEquals(result.getApplicationFiles().get(0).getModels().get(0).getFields().get(1).getName(), "bbb");
+        Assert.assertEquals("aaa", result.getApplicationFiles().get(0).getModels().get(0).getFields().get(0).getName());
+        Assert.assertEquals("bbb", result.getApplicationFiles().get(0).getModels().get(0).getFields().get(1).getName());
         Assert.assertTrue(result.getApplicationFiles().get(0).getModels().get(0).getResults().size() == 1);
-        Assert.assertEquals(result.getApplicationFiles().get(0).getModels().get(0).getResults().get(0).getName(), "ccc");
+        Assert.assertEquals("ccc", result.getApplicationFiles().get(0).getModels().get(0).getResults().get(0).getName());
 
         Assert.assertTrue(result.getScenarioFiles().size() == 1);
-        Assert.assertEquals(result.getScenarioFiles().get(0).getName(), "stubSenario");
-        Assert.assertEquals(result.getScenarioFiles().get(0).getDescription(), "stubDescription");
-        Assert.assertEquals(result.getScenarioFiles().get(0).getApplication(), "stubapp");
+        Assert.assertEquals("stubSenario", result.getScenarioFiles().get(0).getName());
+        Assert.assertEquals("stubDescription", result.getScenarioFiles().get(0).getDescription());
+        Assert.assertEquals("stubapp", result.getScenarioFiles().get(0).getApplication());
     }
 
     @Test
