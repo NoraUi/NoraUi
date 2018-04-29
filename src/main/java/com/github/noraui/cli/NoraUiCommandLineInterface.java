@@ -1,6 +1,7 @@
 package com.github.noraui.cli;
 
 import static com.github.noraui.exception.TechnicalException.TECHNICAL_IO_EXCEPTION;
+import static com.github.noraui.utils.Constants.CLI_FILES_DIR;
 import static com.github.noraui.utils.Messages.CLI_YOU_MUST_CREATE_AN_APPLICATION_FIRST;
 
 import java.io.BufferedReader;
@@ -241,14 +242,14 @@ public class NoraUiCommandLineInterface {
         List<NoraUiScenarioFile> noraUiScenarioFiles = new ArrayList<>();
         Gson gson = new Gson();
         logger.info("readNoraUiCliFiles");
-        String[] applications = new File(".noraui" + File.separator + "applications").list();
-        String[] scenarios = new File(".noraui" + File.separator + "scenarios").list();
+        String[] applications = new File(CLI_FILES_DIR + File.separator + "applications").list();
+        String[] scenarios = new File(CLI_FILES_DIR + File.separator + "scenarios").list();
         if (applications != null) {
             for (String application : applications) {
                 if (verbose) {
                     logger.info("CLI File [{}] found.", application);
                 }
-                try (BufferedReader bufferedReader = new BufferedReader(new FileReader(".noraui" + File.separator + "applications" + File.separator + application))) {
+                try (BufferedReader bufferedReader = new BufferedReader(new FileReader(CLI_FILES_DIR + File.separator + "applications" + File.separator + application))) {
                     NoraUiApplicationFile noraUiApplicationFile = gson.fromJson(bufferedReader, NoraUiApplicationFile.class);
                     noraUiApplicationFiles.add(noraUiApplicationFile);
                 } catch (IOException e) {
@@ -261,7 +262,7 @@ public class NoraUiCommandLineInterface {
                 if (verbose) {
                     logger.info("CLI File [{}] found.", scenario);
                 }
-                try (BufferedReader bufferedReader = new BufferedReader(new FileReader(".noraui" + File.separator + "scenarios" + File.separator + scenario))) {
+                try (BufferedReader bufferedReader = new BufferedReader(new FileReader(CLI_FILES_DIR + File.separator + "scenarios" + File.separator + scenario))) {
                     NoraUiScenarioFile noraUiScenarioFile = gson.fromJson(bufferedReader, NoraUiScenarioFile.class);
                     noraUiScenarioFiles.add(noraUiScenarioFile);
                 } catch (IOException e) {
@@ -281,8 +282,8 @@ public class NoraUiCommandLineInterface {
         Gson gson = new Gson();
         for (NoraUiApplicationFile noraUiApplicationFile : noraUiCliFile.getApplicationFiles()) {
             try {
-                FileUtils.forceMkdir(new File(".noraui" + File.separator + "applications"));
-                File applicationFile = new File(".noraui" + File.separator + "applications" + File.separator + noraUiApplicationFile.getName() + ".json");
+                FileUtils.forceMkdir(new File(CLI_FILES_DIR + File.separator + "applications"));
+                File applicationFile = new File(CLI_FILES_DIR + File.separator + "applications" + File.separator + noraUiApplicationFile.getName() + ".json");
                 if (!applicationFile.exists()) {
                     Files.asCharSink(applicationFile, Charsets.UTF_8).write(gson.toJson(noraUiApplicationFile));
                     if (verbose) {
@@ -296,7 +297,7 @@ public class NoraUiCommandLineInterface {
             } catch (Exception e) {
                 logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
             }
-            try (FileWriter fw = new FileWriter(".noraui" + File.separator + "applications" + File.separator + noraUiApplicationFile.getName() + ".json")) {
+            try (FileWriter fw = new FileWriter(CLI_FILES_DIR + File.separator + "applications" + File.separator + noraUiApplicationFile.getName() + ".json")) {
                 BufferedWriter bw = new BufferedWriter(fw);
                 bw.write(gson.toJson(noraUiApplicationFile));
                 bw.flush();
@@ -307,8 +308,8 @@ public class NoraUiCommandLineInterface {
         }
         for (NoraUiScenarioFile noraUiScenarioFile : noraUiCliFile.getScenarioFiles()) {
             try {
-                FileUtils.forceMkdir(new File(".noraui" + File.separator + "scenarios"));
-                File scenarioFile = new File(".noraui" + File.separator + "scenarios" + File.separator + noraUiScenarioFile.getName() + ".json");
+                FileUtils.forceMkdir(new File(CLI_FILES_DIR + File.separator + "scenarios"));
+                File scenarioFile = new File(CLI_FILES_DIR + File.separator + "scenarios" + File.separator + noraUiScenarioFile.getName() + ".json");
                 if (!scenarioFile.exists()) {
                     Files.asCharSink(scenarioFile, Charsets.UTF_8).write(gson.toJson(noraUiScenarioFile));
                     if (verbose) {
