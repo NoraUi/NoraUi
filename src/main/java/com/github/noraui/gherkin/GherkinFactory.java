@@ -64,8 +64,7 @@ public class GherkinFactory {
                     examples.append("|\n    ");
                 }
 
-                // fileContent = fileContent.replaceAll("(" + DATA + "\r?\n.*\r?\n)[\\s\\S]*(" + DATA_END + ")", "$1" + examples.toString() + "$2");
-                fileContent = fileContent.replaceAll("(" + DATA + "\r?\n.*\r?\n)[\\s\\w]*(" + DATA_END + ")", "$1" + examples.toString() + "$2");
+                fileContent = fileContent.replaceAll("(" + DATA + "\r?\n.*\r?\n)[\\s\\S]*(" + DATA_END + ")", "$1" + examples.toString() + "$2");
 
                 try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath.toString()), Charset.forName(Constants.DEFAULT_ENDODING)));) {
                     bw.write(fileContent);
