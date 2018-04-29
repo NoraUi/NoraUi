@@ -413,9 +413,12 @@ public class NoraUiCommandLineInterface {
         NoraUiApplicationFile noraUiApplicationFile = new NoraUiApplicationFile();
         noraUiApplicationFile.setName(applicationName);
         noraUiApplicationFile.setUrl(url);
-        List<NoraUiApplicationFile> r = noraUiCliFile.addApplication(noraUiApplicationFile);
-        noraUiCliFile.setApplicationFiles(r);
-        return noraUiCliFile;
+        if (noraUiCliFile != null) {
+            List<NoraUiApplicationFile> r = noraUiCliFile.addApplication(noraUiApplicationFile);
+            noraUiCliFile.setApplicationFiles(r);
+            return noraUiCliFile;
+        }
+        return null;
     }
 
     /**
@@ -460,13 +463,16 @@ public class NoraUiCommandLineInterface {
                 }
             }
         }
-        NoraUiScenarioFile noraUiScenarioFile = new NoraUiScenarioFile();
-        noraUiScenarioFile.setName(scenarioName);
-        noraUiScenarioFile.setDescription(description);
-        noraUiScenarioFile.setApplication(applicationName);
-        List<NoraUiScenarioFile> r = noraUiCliFile.addScenario(noraUiScenarioFile);
-        noraUiCliFile.setScenarioFiles(r);
-        return noraUiCliFile;
+        if (noraUiCliFile != null) {
+            NoraUiScenarioFile noraUiScenarioFile = new NoraUiScenarioFile();
+            noraUiScenarioFile.setName(scenarioName);
+            noraUiScenarioFile.setDescription(description);
+            noraUiScenarioFile.setApplication(applicationName);
+            List<NoraUiScenarioFile> r = noraUiCliFile.addScenario(noraUiScenarioFile);
+            noraUiCliFile.setScenarioFiles(r);
+            return noraUiCliFile;
+        }
+        return null;
     }
 
     /**
@@ -537,13 +543,16 @@ public class NoraUiCommandLineInterface {
             }
         }
 
-        NoraUiModel noraUiModel = new NoraUiModel();
-        noraUiModel.setName(modelName);
-        noraUiModel.setFields(fields);
-        noraUiModel.setResults(results);
-        List<NoraUiApplicationFile> r = noraUiCliFile.addModel(applicationName, noraUiModel);
-        noraUiCliFile.setApplicationFiles(r);
-        return noraUiCliFile;
+        if (noraUiCliFile != null) {
+            NoraUiModel noraUiModel = new NoraUiModel();
+            noraUiModel.setName(modelName);
+            noraUiModel.setFields(fields);
+            noraUiModel.setResults(results);
+            List<NoraUiApplicationFile> r = noraUiCliFile.addModel(applicationName, noraUiModel);
+            noraUiCliFile.setApplicationFiles(r);
+            return noraUiCliFile;
+        }
+        return null;
     }
 
     /**

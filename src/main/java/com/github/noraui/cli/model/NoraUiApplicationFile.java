@@ -6,6 +6,7 @@
  */
 package com.github.noraui.cli.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NoraUiApplicationFile {
@@ -13,6 +14,12 @@ public class NoraUiApplicationFile {
     private String name;
     private String url;
     private List<NoraUiModel> models;
+
+    public NoraUiApplicationFile() {
+        this.name = "";
+        this.url = "";
+        this.models = new ArrayList<>();
+    }
 
     public String getName() {
         return name;
