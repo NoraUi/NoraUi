@@ -6,6 +6,8 @@
  */
 package com.github.noraui.cli;
 
+import static com.github.noraui.exception.TechnicalException.TECHNICAL_IO_EXCEPTION;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -198,7 +200,7 @@ public class Scenario extends AbstractNoraUiCli {
         try {
             Files.asCharSink(sqlFile, Charsets.UTF_8).write(sb.toString());
         } catch (IOException e) {
-            logger.error("IOException {}", e.getMessage(), e);
+            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 
@@ -213,7 +215,7 @@ public class Scenario extends AbstractNoraUiCli {
         try {
             Files.asCharSink(newCsvfile, Charsets.UTF_8).write(sb.toString());
         } catch (IOException e) {
-            logger.error("IOException {}", e.getMessage(), e);
+            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 
@@ -233,7 +235,7 @@ public class Scenario extends AbstractNoraUiCli {
                 line = br.readLine();
             }
         } catch (IOException e) {
-            logger.error("IOException {}", e.getMessage(), e);
+            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
         return dataProvider;
     }
@@ -265,7 +267,7 @@ public class Scenario extends AbstractNoraUiCli {
                 line = br.readLine();
             }
         } catch (IOException e) {
-            logger.error("IOException {}", e.getMessage(), e);
+            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
         updatePropertiesFile(propertiesfilePath, sb);
     }
@@ -290,7 +292,7 @@ public class Scenario extends AbstractNoraUiCli {
                 line = br.readLine();
             }
         } catch (IOException e) {
-            logger.error("IOException {}", e.getMessage(), e);
+            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
         updatePropertiesFile(propertiesfilePath, sb);
     }
@@ -334,7 +336,7 @@ public class Scenario extends AbstractNoraUiCli {
                 }
             }
         } catch (Exception e) {
-            logger.error("IOException {}", e.getMessage(), e);
+            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 

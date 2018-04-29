@@ -6,6 +6,8 @@
  */
 package com.github.noraui.cli;
 
+import static com.github.noraui.exception.TechnicalException.TECHNICAL_IO_EXCEPTION;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -180,7 +182,7 @@ public class Application extends AbstractNoraUiCli {
                 }
             }
         } catch (Exception e) {
-            logger.error("IOException {}", e.getMessage(), e);
+            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 
@@ -260,7 +262,7 @@ public class Application extends AbstractNoraUiCli {
                 }
             }
         } catch (Exception e) {
-            logger.error("IOException {}", e.getMessage(), e);
+            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 
@@ -423,7 +425,7 @@ public class Application extends AbstractNoraUiCli {
             bw.close();
             fw.close();
         } catch (IOException e) {
-            logger.error("IOException {}", e.getMessage(), e);
+            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 
@@ -454,7 +456,7 @@ public class Application extends AbstractNoraUiCli {
                 }
             }
         } catch (Exception e) {
-            logger.error("IOException {}", e.getMessage(), e);
+            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 
@@ -521,7 +523,7 @@ public class Application extends AbstractNoraUiCli {
                 line = br.readLine();
             }
         } catch (IOException e) {
-            logger.error("IOException {}", e.getMessage(), e);
+            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
         updatePropertiesFile(propertiesfilePath, sb);
     }
@@ -573,7 +575,7 @@ public class Application extends AbstractNoraUiCli {
                 line = br.readLine();
             }
         } catch (IOException e) {
-            logger.error("IOException {}", e.getMessage(), e);
+            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
         updatePropertiesFile(propertiesfilePath, sb);
     }

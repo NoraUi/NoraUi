@@ -1,5 +1,7 @@
 package com.github.noraui.cli;
 
+import static com.github.noraui.exception.TechnicalException.TECHNICAL_IO_EXCEPTION;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -36,7 +38,7 @@ public abstract class AbstractNoraUiCli {
             bw.flush();
             bw.close();
         } catch (IOException e) {
-            logger.error("IOException {}", e.getMessage(), e);
+            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 

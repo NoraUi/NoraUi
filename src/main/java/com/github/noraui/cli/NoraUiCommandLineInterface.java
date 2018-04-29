@@ -1,5 +1,6 @@
 package com.github.noraui.cli;
 
+import static com.github.noraui.exception.TechnicalException.TECHNICAL_IO_EXCEPTION;
 import static com.github.noraui.utils.Messages.CLI_YOU_MUST_CREATE_AN_APPLICATION_FIRST;
 
 import java.io.BufferedReader;
@@ -293,7 +294,7 @@ public class NoraUiCommandLineInterface {
                     }
                 }
             } catch (Exception e) {
-                logger.error("IOException {}", e.getMessage(), e);
+                logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
             }
             try (FileWriter fw = new FileWriter(".noraui" + File.separator + "applications" + File.separator + noraUiApplicationFile.getName() + ".json")) {
                 BufferedWriter bw = new BufferedWriter(fw);
@@ -301,7 +302,7 @@ public class NoraUiCommandLineInterface {
                 bw.flush();
                 bw.close();
             } catch (IOException e) {
-                logger.error("IOException {}", e.getMessage(), e);
+                logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
             }
         }
         for (NoraUiScenarioFile noraUiScenarioFile : noraUiCliFile.getScenarioFiles()) {
@@ -319,7 +320,7 @@ public class NoraUiCommandLineInterface {
                     }
                 }
             } catch (Exception e) {
-                logger.error("IOException {}", e.getMessage(), e);
+                logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
             }
         }
     }

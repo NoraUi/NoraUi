@@ -86,11 +86,16 @@ public class NoraUiCliFile {
             NoraUiApplicationFile e = r.get(i);
             if (applicationName.equals(e.getName())) {
                 List<NoraUiModel> models = e.getModels();
-                models.add(model);
+                for (int j = 0; j < models.size(); j++) {
+                    NoraUiModel m = models.get(i);
+                    if (m.getName().equals(model.getName())) {
+                        models.remove(i);
+                        break;
+                    }
+                }
                 e.setModels(models);
-                r.set(i, e);
-                break;
             }
+            r.set(i, e);
         }
         return r;
     }

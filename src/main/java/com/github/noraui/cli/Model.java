@@ -6,6 +6,8 @@
  */
 package com.github.noraui.cli;
 
+import static com.github.noraui.exception.TechnicalException.TECHNICAL_IO_EXCEPTION;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -367,7 +369,7 @@ public class Model extends AbstractNoraUiCli {
                 }
             }
         } catch (Exception e) {
-            logger.error("IOException {}", e.getMessage(), e);
+            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 
@@ -471,7 +473,7 @@ public class Model extends AbstractNoraUiCli {
                 }
             }
         } catch (Exception e) {
-            logger.error("IOException {}", e.getMessage(), e);
+            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 
