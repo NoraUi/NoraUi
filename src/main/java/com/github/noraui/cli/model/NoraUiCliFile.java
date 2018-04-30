@@ -80,7 +80,7 @@ public class NoraUiCliFile {
         return r;
     }
 
-    public List<NoraUiApplicationFile> removeModel(String applicationName, NoraUiModel model) {
+    public List<NoraUiApplicationFile> removeModel(String applicationName, String modelName) {
         List<NoraUiApplicationFile> r = getApplicationFiles();
         for (int i = 0; i < r.size(); i++) {
             NoraUiApplicationFile e = r.get(i);
@@ -88,7 +88,7 @@ public class NoraUiCliFile {
                 List<NoraUiModel> models = e.getModels();
                 for (int j = 0; j < models.size(); j++) {
                     NoraUiModel m = models.get(i);
-                    if (m.getName().equals(model.getName())) {
+                    if (m.getName().equals(modelName)) {
                         models.remove(i);
                         break;
                     }

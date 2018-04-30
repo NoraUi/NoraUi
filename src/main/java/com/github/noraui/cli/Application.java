@@ -45,7 +45,7 @@ public class Application extends AbstractNoraUiCli {
     }
 
     /**
-     * @return a list of available application (name).
+     * @return a list of available applications (name).
      */
     public List<String> get() {
         List<String> applications = new ArrayList<>();

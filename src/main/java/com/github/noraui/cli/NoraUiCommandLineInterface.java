@@ -241,7 +241,6 @@ public class NoraUiCommandLineInterface {
         List<NoraUiApplicationFile> noraUiApplicationFiles = new ArrayList<>();
         List<NoraUiScenarioFile> noraUiScenarioFiles = new ArrayList<>();
         Gson gson = new Gson();
-        logger.info("readNoraUiCliFiles");
         String[] applications = new File(CLI_FILES_DIR + File.separator + "applications").list();
         String[] scenarios = new File(CLI_FILES_DIR + File.separator + "scenarios").list();
         if (applications != null) {
@@ -493,6 +492,23 @@ public class NoraUiCommandLineInterface {
     }
 
     /**
+     * @param input
+     * @param scenarioList
+     * @return
+     */
+    private String askScenarioNumber(Scanner input, List<String> scenarioList) {
+        String scenarioName;
+        logger.info("Enter index scenario number:");
+        for (int i = 0; i < scenarioList.size(); i++) {
+            logger.info("    {}) {}", i + 1, scenarioList.get(i));
+        }
+        int scenarioCode = input.nextInt();
+        input.nextLine();
+        scenarioName = scenarioList.get(scenarioCode - 1);
+        return scenarioName;
+    }
+
+    /**
      * @param applicationName
      * @param modelName
      * @param fields
@@ -586,11 +602,19 @@ public class NoraUiCommandLineInterface {
      */
     private NoraUiCliFile removeApplication(NoraUiCliFile noraUiCliFile, String applicationName, Class<?> robotContext, boolean verbose, Scanner input, boolean interactiveMode) {
         if (interactiveMode) {
+            boolean applicationFinded = false;
             if (applicationName == null || "".equals(applicationName)) {
                 List<String> appList = application.get();
-                applicationName = askApplicationNumber(input, appList);
+                if (!appList.isEmpty()) {
+                    applicationName = askApplicationNumber(input, appList);
+                    applicationFinded = true;
+                } else {
+                    logger.info("Your robot does not contain applications.");
+                }
             }
-            application.remove(applicationName, robotContext, verbose);
+            if (applicationFinded) {
+                application.remove(applicationName, robotContext, verbose);
+            }
         } else {
             if (applicationName == null || "".equals(applicationName)) {
                 logger.error("When you want to remove an application with interactiveMode is false, you need use -a");
@@ -598,8 +622,10 @@ public class NoraUiCommandLineInterface {
                 application.remove(applicationName, robotContext, verbose);
             }
         }
-        List<NoraUiApplicationFile> r = noraUiCliFile.removeApplication(applicationName);
-        noraUiCliFile.setApplicationFiles(r);
+        if (applicationName != null && !"".equals(applicationName)) {
+            List<NoraUiApplicationFile> r = noraUiCliFile.removeApplication(applicationName);
+            noraUiCliFile.setApplicationFiles(r);
+        }
         return noraUiCliFile;
     }
 
@@ -612,11 +638,19 @@ public class NoraUiCommandLineInterface {
      */
     private NoraUiCliFile removeScenario(NoraUiCliFile noraUiCliFile, String scenarioName, String robotName, boolean verbose, Scanner input, boolean interactiveMode) {
         if (interactiveMode) {
+            boolean scenarioFinded = false;
             if (scenarioName == null || "".equals(scenarioName)) {
-                logger.info("Enter scenario name:");
-                scenarioName = input.nextLine();
+                List<String> scenarioList = scenario.get();
+                if (!scenarioList.isEmpty()) {
+                    scenarioName = askScenarioNumber(input, scenarioList);
+                    scenarioFinded = true;
+                } else {
+                    logger.info("Your robot does not contain scenarios.");
+                }
             }
-            scenario.remove(scenarioName, robotName, verbose);
+            if (scenarioFinded) {
+                scenario.remove(scenarioName, robotName, verbose);
+            }
         } else {
             if (scenarioName == null || "".equals(scenarioName)) {
                 logger.error("When you want to remove a scenario with interactiveMode is false, you need use -s");
@@ -624,8 +658,10 @@ public class NoraUiCommandLineInterface {
                 scenario.remove(scenarioName, robotName, verbose);
             }
         }
-        List<NoraUiScenarioFile> r = noraUiCliFile.removeScenario(scenarioName);
-        noraUiCliFile.setScenarioFiles(r);
+        if (scenarioName != null && !"".equals(scenarioName)) {
+            List<NoraUiScenarioFile> r = noraUiCliFile.removeScenario(scenarioName);
+            noraUiCliFile.setScenarioFiles(r);
+        }
         return noraUiCliFile;
     }
 
@@ -639,21 +675,34 @@ public class NoraUiCommandLineInterface {
      */
     private NoraUiCliFile removeModel(NoraUiCliFile noraUiCliFile, String applicationName, String modelName, Class<?> robotContext, boolean verbose, Scanner input, boolean interactiveMode) {
         if (interactiveMode) {
-            if (applicationName == null || "".equals(applicationName)) {
+            boolean applicationFinded = false;
+            boolean modelFinded = false;
+            if (applicationName == null || "".equals(applicationName) || modelName == null || "".equals(modelName)) {
                 List<String> appList = model.getApplications(robotContext);
-                applicationName = askApplicationNumber(input, appList);
-            }
-            if (modelName == null || "".equals(modelName)) {
-                List<String> modelList = model.getModels(applicationName, robotContext);
-                logger.info("Enter index model number:");
-                for (int i = 0; i < modelList.size(); i++) {
-                    logger.info("    {}) {}", i + 1, modelList.get(i));
+                if (!appList.isEmpty()) {
+                    applicationName = askApplicationNumber(input, appList);
+                    applicationFinded = true;
+                } else {
+                    logger.info("Your robot does not contain applications.");
                 }
-                int modelCode = input.nextInt();
-                input.nextLine();
-                modelName = modelList.get(modelCode - 1);
+
+                List<String> modelList = model.getModels(applicationName, robotContext);
+                if (!modelList.isEmpty()) {
+                    logger.info("Enter index model number:");
+                    for (int i = 0; i < modelList.size(); i++) {
+                        logger.info("    {}) {}", i + 1, modelList.get(i));
+                    }
+                    int modelCode = input.nextInt();
+                    input.nextLine();
+                    modelName = modelList.get(modelCode - 1);
+                    modelFinded = true;
+                } else {
+                    logger.info("Your robot does not contain models.");
+                }
             }
-            model.remove(applicationName, modelName, robotContext, verbose);
+            if (applicationFinded && modelFinded) {
+                model.remove(applicationName, modelName, robotContext, verbose);
+            }
         } else {
             if (applicationName == null || "".equals(applicationName) || modelName == null || "".equals(modelName)) {
                 logger.error("When you want to remove a model with interactiveMode is false, you need use -a and -m");
@@ -661,7 +710,10 @@ public class NoraUiCommandLineInterface {
                 model.remove(applicationName, modelName, robotContext, verbose);
             }
         }
-
+        if (applicationName != null && !"".equals(applicationName)) {
+            List<NoraUiApplicationFile> r = noraUiCliFile.removeModel(applicationName, modelName);
+            noraUiCliFile.setApplicationFiles(r);
+        }
         return noraUiCliFile;
     }
 

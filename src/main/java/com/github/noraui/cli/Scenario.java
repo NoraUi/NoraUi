@@ -13,6 +13,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.Cell;
@@ -40,6 +42,27 @@ public class Scenario extends AbstractNoraUiCli {
 
     protected Scenario(String mainPath) {
         this.mainPath = mainPath;
+    }
+
+    /**
+     * @return a list of available scenarios (name).
+     */
+    public List<String> get() {
+        List<String> scenarios = new ArrayList<>();
+        String propertiesfilePath = mainPath + File.separator + "resources" + File.separator + "scenarios.properties";
+        try (BufferedReader br = new BufferedReader(new FileReader(propertiesfilePath))) {
+            String line = br.readLine();
+            while (line != null) {
+                if (!line.startsWith("#") && !"".equals(line)) {
+                    String[] l = line.split("=");
+                    scenarios.add(l[0]);
+                }
+                line = br.readLine();
+            }
+        } catch (IOException e) {
+            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+        }
+        return scenarios;
     }
 
     /**
