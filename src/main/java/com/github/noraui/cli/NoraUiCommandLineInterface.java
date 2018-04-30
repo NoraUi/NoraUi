@@ -724,23 +724,24 @@ public class NoraUiCommandLineInterface {
      * @param interactiveMode
      * @throws TechnicalException
      */
-    private void encrypt(String cryptoKey, String description, Scanner input, boolean interactiveMode) throws TechnicalException {
+    private void encrypt(String cryptoKey, String data, Scanner input, boolean interactiveMode) throws TechnicalException {
         if (interactiveMode) {
             if (cryptoKey == null || "".equals(cryptoKey)) {
                 logger.info("Enter crypto key:");
                 cryptoKey = input.nextLine();
             }
-            if (description == null || "".equals(description)) {
+            if (data == null || "".equals(data)) {
                 logger.info("Enter data:");
-                description = input.nextLine();
+                data = input.nextLine();
             }
-            logger.info("Encrypt a data [{}] with this crypto key: [{}]", description, cryptoKey);
-            logger.info("Encrypted value is {}", cryptoService.encrypt(cryptoKey, description));
+            logger.info("Encrypt a data [{}] with this crypto key: [{}]", data, cryptoKey);
+            logger.info("Encrypted value is {}", cryptoService.encrypt(cryptoKey, data));
         } else {
-            if (cryptoKey == null || "".equals(cryptoKey) || description == null || "".equals(description)) {
+            if (cryptoKey == null || "".equals(cryptoKey) || data == null || "".equals(data)) {
                 logger.error("When you want to encrypt data with interactiveMode is false, you need use -d and -k");
             } else {
-                logger.info("Encrypted value is {}", cryptoService.encrypt(cryptoKey, description));
+                logger.info("Encrypt a data [{}] with this crypto key: [{}]", data, cryptoKey);
+                logger.info("Encrypted value is {}", cryptoService.encrypt(cryptoKey, data));
             }
         }
 
@@ -769,6 +770,7 @@ public class NoraUiCommandLineInterface {
             if (cryptoKey == null || "".equals(cryptoKey) || description == null || "".equals(description)) {
                 logger.error("When you want to decrypt data with interactiveMode is false, you need use -d and -k");
             } else {
+                logger.info("Decrypt a data [{}] with this crypto key: [{}]", description, cryptoKey);
                 logger.info("Decrypted value is {}", cryptoService.decrypt(cryptoKey, description));
             }
         }
