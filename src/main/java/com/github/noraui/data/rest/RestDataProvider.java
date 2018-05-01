@@ -19,9 +19,9 @@ import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.exception.data.EmptyDataFileContentException;
 import com.github.noraui.exception.data.WebServicesException;
 import com.github.noraui.service.HttpService;
+import com.github.noraui.service.impl.HttpServiceImpl;
 import com.github.noraui.utils.Messages;
 import com.google.gson.Gson;
-import com.google.inject.Inject;
 
 public class RestDataProvider extends CommonDataProvider implements DataInputProvider, DataOutputProvider {
 
@@ -38,7 +38,6 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
 
     private final String norauiWebServicesApi;
 
-    @Inject
     private HttpService httpService;
 
     public enum types {
@@ -60,6 +59,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
     public RestDataProvider(String type, String host, String port) throws WebServicesException {
         logger.info(Messages.getMessage(REST_DATA_PROVIDER_USED));
         this.norauiWebServicesApi = host + ":" + port + NORAUI_API;
+        this.httpService = new HttpServiceImpl();
         if (!types.JSON.toString().equals(type) && !types.XML.toString().equals(type)) {
             throw new WebServicesException(String.format(Messages.getMessage(WebServicesException.TECHNICAL_ERROR_MESSAGE_UNKNOWN_WEB_SERVICES_TYPE), type));
         }
