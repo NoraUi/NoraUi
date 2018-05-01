@@ -18,6 +18,8 @@ public class Constants {
     public static final String USER_DIR = "user.dir";
     public static final String CLI_FILES_DIR = ".noraui";
 
+    public static final String SCENARIO_FILE = "scenarios.properties";
+
     public static final String IS_CONNECTED_REGISTRY_KEY = "AUTH-isConnected";
 
     public static final String DATA_IN = "/data/in/";

@@ -8,6 +8,7 @@ package com.github.noraui.utils;
 
 import static com.github.noraui.utils.Constants.DATA_IN;
 import static com.github.noraui.utils.Constants.DATA_OUT;
+import static com.github.noraui.utils.Constants.SCENARIO_FILE;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -621,7 +622,7 @@ public class Context {
     }
 
     public static void initializeScenarioProperties(ClassLoader loader) {
-        scenariosProperties = initPropertiesFile(loader, "scenarios.properties");
+        scenariosProperties = initPropertiesFile(loader, SCENARIO_FILE);
     }
 
     public static String getWebdriversProperties(String key) {

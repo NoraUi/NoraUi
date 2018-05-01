@@ -7,6 +7,7 @@
 package com.github.noraui.cli;
 
 import static com.github.noraui.exception.TechnicalException.TECHNICAL_IO_EXCEPTION;
+import static com.github.noraui.utils.Constants.SCENARIO_FILE;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -49,7 +50,7 @@ public class Scenario extends AbstractNoraUiCli {
      */
     public List<String> get() {
         List<String> scenarios = new ArrayList<>();
-        String propertiesfilePath = mainPath + File.separator + RESOURCES + File.separator + "scenarios.properties";
+        String propertiesfilePath = mainPath + File.separator + RESOURCES + File.separator + SCENARIO_FILE;
         try (BufferedReader br = new BufferedReader(new FileReader(propertiesfilePath))) {
             String line = br.readLine();
             while (line != null) {
@@ -268,7 +269,7 @@ public class Scenario extends AbstractNoraUiCli {
      * @param verbose
      */
     private void addScenarioInEnvPropertiesFile(String scenarioName, boolean verbose) {
-        String propertiesfilePath = mainPath + File.separator + RESOURCES + File.separator + "scenarios.properties";
+        String propertiesfilePath = mainPath + File.separator + RESOURCES + File.separator + SCENARIO_FILE;
         if (verbose) {
             logger.info("Add scenario named [{}] in scenario.properties.", scenarioName);
         }
@@ -300,7 +301,7 @@ public class Scenario extends AbstractNoraUiCli {
      * @param verbose
      */
     private void removeScenarioInEnvPropertiesFile(String scenarioName, boolean verbose) {
-        String propertiesfilePath = mainPath + File.separator + RESOURCES + File.separator + "scenarios.properties";
+        String propertiesfilePath = mainPath + File.separator + RESOURCES + File.separator + SCENARIO_FILE;
         if (verbose) {
             logger.info("Remove scenario named [{}] in scenario.properties.", scenarioName);
         }
