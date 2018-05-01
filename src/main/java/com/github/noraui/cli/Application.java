@@ -49,7 +49,7 @@ public class Application extends AbstractNoraUiCli {
      */
     public List<String> get() {
         List<String> applications = new ArrayList<>();
-        String selectorsPath = mainPath + File.separator + "resources" + File.separator + "selectors";
+        String selectorsPath = mainPath + File.separator + RESOURCES + File.separator + "selectors";
         String[] versions = new File(selectorsPath).list();
         for (String version : versions) {
             applications.addAll(Arrays.asList(new File(selectorsPath + File.separator + version).list()));
@@ -434,7 +434,7 @@ public class Application extends AbstractNoraUiCli {
      * @param verbose
      */
     private void addApplicationSelector(String applicationName, boolean verbose) {
-        String selectorsPath = this.mainPath + File.separator + "resources" + File.separator + "selectors";
+        String selectorsPath = this.mainPath + File.separator + RESOURCES + File.separator + "selectors";
         String[] versions = new File(selectorsPath).list();
         StringBuilder sb = new StringBuilder();
         sb.append("[" + applicationName.toUpperCase() + "_HOM-pageElementSample]");
@@ -465,7 +465,7 @@ public class Application extends AbstractNoraUiCli {
      * @param verbose
      */
     private void removeApplicationSelector(String applicationName, boolean verbose) {
-        String selectorsPath = this.mainPath + File.separator + "resources" + File.separator + "selectors";
+        String selectorsPath = this.mainPath + File.separator + RESOURCES + File.separator + "selectors";
         String[] versions = new File(selectorsPath).list();
         try {
             for (String version : versions) {
@@ -504,7 +504,7 @@ public class Application extends AbstractNoraUiCli {
      * @param verbose
      */
     private void manageApplicationInPropertiesFile(boolean addMode, String applicationName, String noraRobotName, boolean verbose) {
-        String propertiesfilePath = this.mainPath + File.separator + "resources" + File.separator + noraRobotName + ".properties";
+        String propertiesfilePath = this.mainPath + File.separator + RESOURCES + File.separator + noraRobotName + ".properties";
         if (verbose) {
             logger.info("Add application named [{}] in this properties file: {}]", applicationName, propertiesfilePath);
         }
@@ -556,7 +556,7 @@ public class Application extends AbstractNoraUiCli {
      * @param verbose
      */
     private void manageApplicationInEnvPropertiesFile(boolean addMode, String applicationName, String url, String env, boolean verbose) {
-        String propertiesfilePath = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "environments" + File.separator + env + ".properties";
+        String propertiesfilePath = "src" + File.separator + "test" + File.separator + RESOURCES + File.separator + "environments" + File.separator + env + ".properties";
         if (verbose) {
             logger.info("Add application named [{}] in this properties file: [{}]", applicationName, propertiesfilePath);
         }

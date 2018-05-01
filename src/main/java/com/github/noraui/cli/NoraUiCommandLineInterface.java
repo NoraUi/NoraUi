@@ -37,6 +37,7 @@ public class NoraUiCommandLineInterface {
      * Specific logger
      */
     private static final Logger logger = LoggerFactory.getLogger(NoraUiCommandLineInterface.class);
+    private static final String JSON = ".json";
 
     private Application application;
     private Scenario scenario;
@@ -282,7 +283,7 @@ public class NoraUiCommandLineInterface {
         for (NoraUiApplicationFile noraUiApplicationFile : noraUiCliFile.getApplicationFiles()) {
             try {
                 FileUtils.forceMkdir(new File(CLI_FILES_DIR + File.separator + "applications"));
-                File applicationFile = new File(CLI_FILES_DIR + File.separator + "applications" + File.separator + noraUiApplicationFile.getName() + ".json");
+                File applicationFile = new File(CLI_FILES_DIR + File.separator + "applications" + File.separator + noraUiApplicationFile.getName() + JSON);
                 if (!applicationFile.exists()) {
                     Files.asCharSink(applicationFile, Charsets.UTF_8).write(gson.toJson(noraUiApplicationFile));
                     if (verbose) {
@@ -296,7 +297,7 @@ public class NoraUiCommandLineInterface {
             } catch (Exception e) {
                 logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
             }
-            try (FileWriter fw = new FileWriter(CLI_FILES_DIR + File.separator + "applications" + File.separator + noraUiApplicationFile.getName() + ".json")) {
+            try (FileWriter fw = new FileWriter(CLI_FILES_DIR + File.separator + "applications" + File.separator + noraUiApplicationFile.getName() + JSON)) {
                 BufferedWriter bw = new BufferedWriter(fw);
                 bw.write(gson.toJson(noraUiApplicationFile));
                 bw.flush();
@@ -308,7 +309,7 @@ public class NoraUiCommandLineInterface {
         for (NoraUiScenarioFile noraUiScenarioFile : noraUiCliFile.getScenarioFiles()) {
             try {
                 FileUtils.forceMkdir(new File(CLI_FILES_DIR + File.separator + "scenarios"));
-                File scenarioFile = new File(CLI_FILES_DIR + File.separator + "scenarios" + File.separator + noraUiScenarioFile.getName() + ".json");
+                File scenarioFile = new File(CLI_FILES_DIR + File.separator + "scenarios" + File.separator + noraUiScenarioFile.getName() + JSON);
                 if (!scenarioFile.exists()) {
                     Files.asCharSink(scenarioFile, Charsets.UTF_8).write(gson.toJson(noraUiScenarioFile));
                     if (verbose) {

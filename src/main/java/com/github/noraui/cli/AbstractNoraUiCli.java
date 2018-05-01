@@ -15,6 +15,7 @@ public abstract class AbstractNoraUiCli {
      * Specific logger
      */
     private static final Logger logger = LoggerFactory.getLogger(AbstractNoraUiCli.class);
+    protected static final String RESOURCES = "resources";
 
     protected String getJavaClassHeaders(String noraRobotName) {
         StringBuilder sb = new StringBuilder();

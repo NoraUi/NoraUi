@@ -49,7 +49,7 @@ public class Scenario extends AbstractNoraUiCli {
      */
     public List<String> get() {
         List<String> scenarios = new ArrayList<>();
-        String propertiesfilePath = mainPath + File.separator + "resources" + File.separator + "scenarios.properties";
+        String propertiesfilePath = mainPath + File.separator + RESOURCES + File.separator + "scenarios.properties";
         try (BufferedReader br = new BufferedReader(new FileReader(propertiesfilePath))) {
             String line = br.readLine();
             while (line != null) {
@@ -98,7 +98,7 @@ public class Scenario extends AbstractNoraUiCli {
     }
 
     private void removeScenarioInData(String scenarioName, String noraRobotName, boolean verbose) {
-        String propertiesfilePath = mainPath + File.separator + "resources" + File.separator + noraRobotName + ".properties";
+        String propertiesfilePath = mainPath + File.separator + RESOURCES + File.separator + noraRobotName + ".properties";
 
         String dataProviderIn = getDataProvider("in", propertiesfilePath);
         logger.info("dataProvider.in.type is [{}]", dataProviderIn);
@@ -114,7 +114,7 @@ public class Scenario extends AbstractNoraUiCli {
      * @param verbose
      */
     private void addScenarioInData(String scenarioName, String noraRobotName, boolean verbose) {
-        String propertiesfilePath = mainPath + File.separator + "resources" + File.separator + noraRobotName + ".properties";
+        String propertiesfilePath = mainPath + File.separator + RESOURCES + File.separator + noraRobotName + ".properties";
 
         String dataProviderIn = getDataProvider("in", propertiesfilePath);
         logger.info("dataProvider.in.type is [{}]", dataProviderIn);
@@ -132,19 +132,19 @@ public class Scenario extends AbstractNoraUiCli {
      */
     private void addScenarioInData(String type, String scenarioName, String dataProvider, boolean verbose) {
         if ("CSV".equals(dataProvider)) {
-            String csvPath = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "data" + File.separator + type + File.separator + scenarioName + ".csv";
+            String csvPath = "src" + File.separator + "test" + File.separator + RESOURCES + File.separator + "data" + File.separator + type + File.separator + scenarioName + ".csv";
             File newCsvfile = new File(csvPath);
             if (!newCsvfile.exists()) {
                 addCsvFile(newCsvfile);
             }
         } else if ("DB".equals(dataProvider)) {
-            String excelPath = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "data" + File.separator + type + File.separator + scenarioName + ".sql";
+            String excelPath = "src" + File.separator + "test" + File.separator + RESOURCES + File.separator + "data" + File.separator + type + File.separator + scenarioName + ".sql";
             File sqlFile = new File(excelPath);
             if (!sqlFile.exists()) {
                 addSqlFile(scenarioName, sqlFile);
             }
         } else if ("EXCEL".equals(dataProvider)) {
-            String excelPath = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "data" + File.separator + type + File.separator + scenarioName + ".xlsx";
+            String excelPath = "src" + File.separator + "test" + File.separator + RESOURCES + File.separator + "data" + File.separator + type + File.separator + scenarioName + ".xlsx";
             File newExcelFile = new File(excelPath);
             if (!newExcelFile.exists()) {
                 addXlsxFile(scenarioName, excelPath);
@@ -162,11 +162,11 @@ public class Scenario extends AbstractNoraUiCli {
     private void removeScenarioInData(String type, String scenarioName, String dataProvider, boolean verbose) {
         String datafilePath = "";
         if ("CSV".equals(dataProvider)) {
-            datafilePath = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "data" + File.separator + type + File.separator + scenarioName + ".csv";
+            datafilePath = "src" + File.separator + "test" + File.separator + RESOURCES + File.separator + "data" + File.separator + type + File.separator + scenarioName + ".csv";
         } else if ("DB".equals(dataProvider)) {
-            datafilePath = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "data" + File.separator + type + File.separator + scenarioName + ".sql";
+            datafilePath = "src" + File.separator + "test" + File.separator + RESOURCES + File.separator + "data" + File.separator + type + File.separator + scenarioName + ".sql";
         } else if ("EXCEL".equals(dataProvider)) {
-            datafilePath = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "data" + File.separator + type + File.separator + scenarioName + ".xlsx";
+            datafilePath = "src" + File.separator + "test" + File.separator + RESOURCES + File.separator + "data" + File.separator + type + File.separator + scenarioName + ".xlsx";
         }
         if (!"".equals(datafilePath)) {
             try {
@@ -268,7 +268,7 @@ public class Scenario extends AbstractNoraUiCli {
      * @param verbose
      */
     private void addScenarioInEnvPropertiesFile(String scenarioName, boolean verbose) {
-        String propertiesfilePath = mainPath + File.separator + "resources" + File.separator + "scenarios.properties";
+        String propertiesfilePath = mainPath + File.separator + RESOURCES + File.separator + "scenarios.properties";
         if (verbose) {
             logger.info("Add scenario named [{}] in scenario.properties.", scenarioName);
         }
@@ -300,7 +300,7 @@ public class Scenario extends AbstractNoraUiCli {
      * @param verbose
      */
     private void removeScenarioInEnvPropertiesFile(String scenarioName, boolean verbose) {
-        String propertiesfilePath = mainPath + File.separator + "resources" + File.separator + "scenarios.properties";
+        String propertiesfilePath = mainPath + File.separator + RESOURCES + File.separator + "scenarios.properties";
         if (verbose) {
             logger.info("Remove scenario named [{}] in scenario.properties.", scenarioName);
         }
@@ -327,7 +327,7 @@ public class Scenario extends AbstractNoraUiCli {
      * @param verbose
      */
     private void addScenarioFeature(String scenarioName, String description, String applicationName, boolean verbose) {
-        String newFeaturePath = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "steps" + File.separator + "scenarios" + File.separator + scenarioName + ".feature";
+        String newFeaturePath = "src" + File.separator + "test" + File.separator + RESOURCES + File.separator + "steps" + File.separator + "scenarios" + File.separator + scenarioName + ".feature";
         StringBuilder sb = new StringBuilder();
         sb.append("@" + scenarioName).append(System.lineSeparator());
         sb.append("Feature: " + scenarioName + " (" + description + ")").append(System.lineSeparator());
@@ -368,7 +368,7 @@ public class Scenario extends AbstractNoraUiCli {
      * @param verbose
      */
     private void removeScenarioFeature(String scenarioName, boolean verbose) {
-        String featurePath = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "steps" + File.separator + "scenarios" + File.separator + scenarioName + ".feature";
+        String featurePath = "src" + File.separator + "test" + File.separator + RESOURCES + File.separator + "steps" + File.separator + "scenarios" + File.separator + scenarioName + ".feature";
         try {
             FileUtils.forceDelete(new File(featurePath));
             if (verbose) {
