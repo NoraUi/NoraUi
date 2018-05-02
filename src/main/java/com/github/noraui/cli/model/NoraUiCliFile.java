@@ -35,6 +35,11 @@ public class NoraUiCliFile {
         return r;
     }
 
+    /**
+     * @param applicationName
+     *            name of application.
+     * @return
+     */
     public List<NoraUiApplicationFile> removeApplication(String applicationName) {
         List<NoraUiApplicationFile> r = getApplicationFiles();
         for (int i = 0; i < r.size(); i++) {
@@ -47,12 +52,21 @@ public class NoraUiCliFile {
         return r;
     }
 
+    /**
+     * @param noraUiScenarioFile
+     * @return
+     */
     public List<NoraUiScenarioFile> addScenario(NoraUiScenarioFile noraUiScenarioFile) {
         List<NoraUiScenarioFile> r = getScenarioFiles();
         r.add(noraUiScenarioFile);
         return r;
     }
 
+    /**
+     * @param scenarioName
+     *            name of scenario removed.
+     * @return
+     */
     public List<NoraUiScenarioFile> removeScenario(String scenarioName) {
         List<NoraUiScenarioFile> r = getScenarioFiles();
         for (int i = 0; i < r.size(); i++) {
@@ -65,6 +79,12 @@ public class NoraUiCliFile {
         return r;
     }
 
+    /**
+     * @param applicationName
+     *            name of application.
+     * @param model
+     * @return
+     */
     public List<NoraUiApplicationFile> addModel(String applicationName, NoraUiModel model) {
         List<NoraUiApplicationFile> r = getApplicationFiles();
         for (int i = 0; i < r.size(); i++) {
@@ -80,6 +100,13 @@ public class NoraUiCliFile {
         return r;
     }
 
+    /**
+     * @param applicationName
+     *            name of application.
+     * @param modelName
+     *            name of model removed.
+     * @return
+     */
     public List<NoraUiApplicationFile> removeModel(String applicationName, String modelName) {
         List<NoraUiApplicationFile> r = getApplicationFiles();
         for (int i = 0; i < r.size(); i++) {

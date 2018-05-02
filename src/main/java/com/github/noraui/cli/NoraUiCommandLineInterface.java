@@ -1,7 +1,15 @@
+/**
+ * NoraUi is licensed under the license GNU AFFERO GENERAL PUBLIC LICENSE
+ * 
+ * @author Nicolas HALLOUIN
+ * @author Stéphane GRILLON
+ */
 package com.github.noraui.cli;
 
 import static com.github.noraui.exception.TechnicalException.TECHNICAL_IO_EXCEPTION;
+import static com.github.noraui.utils.Constants.CLI_APPLICATIONS_FILES_DIR;
 import static com.github.noraui.utils.Constants.CLI_FILES_DIR;
+import static com.github.noraui.utils.Constants.CLI_SCENARIOS_FILES_DIR;
 import static com.github.noraui.utils.Messages.CLI_YOU_MUST_CREATE_AN_APPLICATION_FIRST;
 
 import java.io.BufferedReader;
@@ -38,6 +46,7 @@ public class NoraUiCommandLineInterface {
      */
     private static final Logger logger = LoggerFactory.getLogger(NoraUiCommandLineInterface.class);
     private static final String JSON = ".json";
+    private static final String CLI_TAB = "    {}) {}";
 
     private Application application;
     private Scenario scenario;
@@ -57,6 +66,8 @@ public class NoraUiCommandLineInterface {
      * @param args
      *            is list of args (-h, --verbose, --update, -interactiveMode, -f, -s, -u, -d, -k, -a, -m, -fi and -re)
      * @throws TechnicalException
+     *             is throws if you have a technical error (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException | IOException,
+     *             ...) in NoraUi.
      */
     public void runCli(Class<?> context, String... args) throws TechnicalException {
         Scanner input = null;
@@ -206,7 +217,8 @@ public class NoraUiCommandLineInterface {
         if (args.length == 1 && (args[0].equals("-h") || args[0].equals("-help"))) {
             logger.info("-h: Display this help");
             logger.info("--verbose: Add debug informations in console.");
-            logger.info("-f: features 1 => add new application");
+            logger.info("--update: Use NoraUi CLI files for update your robot.");
+            logger.info("-f: features");
             for (Map.Entry<String, String> f : features.entrySet()) {
                 logger.info("             {} => {}", f.getKey(), f.getValue());
             }
@@ -218,6 +230,8 @@ public class NoraUiCommandLineInterface {
             logger.info("-m: Model Name");
             logger.info("-fi: Field list of model");
             logger.info("-re: Result list of model");
+            logger.info(
+                    "-interactiveMode: (boolean) When the NoraUi CLI goal is executed in interactive mode, it will prompt the user for all the previously listed parameters. When interactiveMode is false, the NoraUi CLI goal will use the values passed in from the command line.");
         }
     }
 
@@ -235,21 +249,22 @@ public class NoraUiCommandLineInterface {
 
     /**
      * @param verbose
-     * @return
+     *            boolean to activate verbose mode (show more traces).
+     * @return NoraUiCliFile Object contain all data from CLI Files.
      */
     protected NoraUiCliFile readNoraUiCliFiles(boolean verbose) {
         NoraUiCliFile result = new NoraUiCliFile();
         List<NoraUiApplicationFile> noraUiApplicationFiles = new ArrayList<>();
         List<NoraUiScenarioFile> noraUiScenarioFiles = new ArrayList<>();
         Gson gson = new Gson();
-        String[] applications = new File(CLI_FILES_DIR + File.separator + "applications").list();
-        String[] scenarios = new File(CLI_FILES_DIR + File.separator + "scenarios").list();
+        String[] applications = new File(CLI_FILES_DIR + File.separator + CLI_APPLICATIONS_FILES_DIR).list();
+        String[] scenarios = new File(CLI_FILES_DIR + File.separator + CLI_SCENARIOS_FILES_DIR).list();
         if (applications != null) {
-            for (String application : applications) {
+            for (String app : applications) {
                 if (verbose) {
-                    logger.info("CLI File [{}] found.", application);
+                    logger.info("CLI File [{}] found.", app);
                 }
-                try (BufferedReader bufferedReader = new BufferedReader(new FileReader(CLI_FILES_DIR + File.separator + "applications" + File.separator + application))) {
+                try (BufferedReader bufferedReader = new BufferedReader(new FileReader(CLI_FILES_DIR + File.separator + CLI_APPLICATIONS_FILES_DIR + File.separator + app))) {
                     NoraUiApplicationFile noraUiApplicationFile = gson.fromJson(bufferedReader, NoraUiApplicationFile.class);
                     noraUiApplicationFiles.add(noraUiApplicationFile);
                 } catch (IOException e) {
@@ -258,11 +273,11 @@ public class NoraUiCommandLineInterface {
             }
         }
         if (scenarios != null) {
-            for (String scenario : scenarios) {
+            for (String s : scenarios) {
                 if (verbose) {
-                    logger.info("CLI File [{}] found.", scenario);
+                    logger.info("CLI File [{}] found.", s);
                 }
-                try (BufferedReader bufferedReader = new BufferedReader(new FileReader(CLI_FILES_DIR + File.separator + "scenarios" + File.separator + scenario))) {
+                try (BufferedReader bufferedReader = new BufferedReader(new FileReader(CLI_FILES_DIR + File.separator + CLI_SCENARIOS_FILES_DIR + File.separator + s))) {
                     NoraUiScenarioFile noraUiScenarioFile = gson.fromJson(bufferedReader, NoraUiScenarioFile.class);
                     noraUiScenarioFiles.add(noraUiScenarioFile);
                 } catch (IOException e) {
@@ -277,13 +292,16 @@ public class NoraUiCommandLineInterface {
 
     /**
      * @param noraUiCliFile
+     *            Object contain all data from CLI Files.
+     * @param verbose
+     *            boolean to activate verbose mode (show more traces).
      */
     protected void writeNoraUiCliFiles(NoraUiCliFile noraUiCliFile, boolean verbose) {
         Gson gson = new Gson();
         for (NoraUiApplicationFile noraUiApplicationFile : noraUiCliFile.getApplicationFiles()) {
             try {
-                FileUtils.forceMkdir(new File(CLI_FILES_DIR + File.separator + "applications"));
-                File applicationFile = new File(CLI_FILES_DIR + File.separator + "applications" + File.separator + noraUiApplicationFile.getName() + JSON);
+                FileUtils.forceMkdir(new File(CLI_FILES_DIR + File.separator + CLI_APPLICATIONS_FILES_DIR));
+                File applicationFile = new File(CLI_FILES_DIR + File.separator + CLI_APPLICATIONS_FILES_DIR + File.separator + noraUiApplicationFile.getName() + JSON);
                 if (!applicationFile.exists()) {
                     Files.asCharSink(applicationFile, Charsets.UTF_8).write(gson.toJson(noraUiApplicationFile));
                     if (verbose) {
@@ -297,7 +315,7 @@ public class NoraUiCommandLineInterface {
             } catch (Exception e) {
                 logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
             }
-            try (FileWriter fw = new FileWriter(CLI_FILES_DIR + File.separator + "applications" + File.separator + noraUiApplicationFile.getName() + JSON)) {
+            try (FileWriter fw = new FileWriter(CLI_FILES_DIR + File.separator + CLI_APPLICATIONS_FILES_DIR + File.separator + noraUiApplicationFile.getName() + JSON)) {
                 BufferedWriter bw = new BufferedWriter(fw);
                 bw.write(gson.toJson(noraUiApplicationFile));
                 bw.flush();
@@ -308,8 +326,8 @@ public class NoraUiCommandLineInterface {
         }
         for (NoraUiScenarioFile noraUiScenarioFile : noraUiCliFile.getScenarioFiles()) {
             try {
-                FileUtils.forceMkdir(new File(CLI_FILES_DIR + File.separator + "scenarios"));
-                File scenarioFile = new File(CLI_FILES_DIR + File.separator + "scenarios" + File.separator + noraUiScenarioFile.getName() + JSON);
+                FileUtils.forceMkdir(new File(CLI_FILES_DIR + File.separator + CLI_SCENARIOS_FILES_DIR));
+                File scenarioFile = new File(CLI_FILES_DIR + File.separator + CLI_SCENARIOS_FILES_DIR + File.separator + noraUiScenarioFile.getName() + JSON);
                 if (!scenarioFile.exists()) {
                     Files.asCharSink(scenarioFile, Charsets.UTF_8).write(gson.toJson(noraUiScenarioFile));
                     if (verbose) {
@@ -328,6 +346,11 @@ public class NoraUiCommandLineInterface {
 
     /**
      * @param noraUiCliFile
+     *            Object contain all data from CLI Files.
+     * @param robotContext
+     *            Context class from robot.
+     * @param verbose
+     *            boolean to activate verbose mode (show more traces).
      */
     private void updateRobotFromNoraUiCliFiles(NoraUiCliFile noraUiCliFile, Class<?> robotContext, boolean verbose) {
         logger.info("updateRobotFromNoraUiCliFiles");
@@ -346,21 +369,36 @@ public class NoraUiCommandLineInterface {
 
     /**
      * @param noraUiCliFile
+     *            Object contain all data from CLI Files.
      * @param featureCode
      * @param applicationName
+     *            name of application.
      * @param scenarioName
+     *            name of scenario.
      * @param modelName
+     *            name of model.
      * @param url
      * @param description
+     *            is description of scenario.
      * @param fields
+     *            is fields of model (String separated by a space).
      * @param results
+     *            is results of model (String separated by a space).
      * @param cryptoKey
+     *            is AES key (secret key).
      * @param robotContext
+     *            Context class from robot.
      * @param verbose
+     *            boolean to activate verbose mode (show more traces).
      * @param input
+     *            NoraUI CLI use Java Scanner class.
      * @param interactiveMode
-     * @return
+     *            When the NoraUi CLI goal is executed in interactive mode, it will prompt the user for all the previously listed parameters.
+     *            When interactiveMode is false, the NoraUi CLI goal will use the values passed in from the command line.
+     * @return NoraUiCliFile Object contain all data from CLI Files.
      * @throws TechnicalException
+     *             is throws if you have a technical error (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException | IOException,
+     *             ...) in NoraUi.
      */
     private NoraUiCliFile runFeature(NoraUiCliFile noraUiCliFile, int featureCode, String applicationName, String scenarioName, String modelName, String url, String description, String fields,
             String results, String cryptoKey, Class<?> robotContext, boolean verbose, Scanner input, boolean interactiveMode) throws TechnicalException {
@@ -385,12 +423,21 @@ public class NoraUiCommandLineInterface {
     }
 
     /**
+     * @param noraUiCliFile
+     *            Object contain all data from CLI Files.
      * @param applicationName
+     *            name of application added.
      * @param url
-     * @param context
+     * @param robotContext
+     *            Context class from robot.
      * @param verbose
+     *            boolean to activate verbose mode (show more traces).
      * @param input
+     *            NoraUI CLI use Java Scanner class.
      * @param interactiveMode
+     *            When the NoraUi CLI goal is executed in interactive mode, it will prompt the user for all the previously listed parameters.
+     *            When interactiveMode is false, the NoraUi CLI goal will use the values passed in from the command line.
+     * @return NoraUiCliFile Object contain all data from CLI Files.
      */
     private NoraUiCliFile addApplication(NoraUiCliFile noraUiCliFile, String applicationName, String url, Class<?> robotContext, boolean verbose, Scanner input, boolean interactiveMode) {
         if (interactiveMode) {
@@ -422,13 +469,23 @@ public class NoraUiCommandLineInterface {
     }
 
     /**
+     * @param noraUiCliFile
+     *            Object contain all data from CLI Files.
      * @param applicationName
+     *            name of application.
      * @param scenarioName
+     *            name of scenario added.
      * @param description
+     *            is description of scenario.
      * @param robotName
      * @param verbose
+     *            boolean to activate verbose mode (show more traces).
      * @param input
+     *            NoraUI CLI use Java Scanner class.
      * @param interactiveMode
+     *            When the NoraUi CLI goal is executed in interactive mode, it will prompt the user for all the previously listed parameters.
+     *            When interactiveMode is false, the NoraUi CLI goal will use the values passed in from the command line.
+     * @return NoraUiCliFile Object contain all data from CLI Files.
      */
     private NoraUiCliFile addScenario(NoraUiCliFile noraUiCliFile, String applicationName, String scenarioName, String description, String robotName, boolean verbose, Scanner input,
             boolean interactiveMode) {
@@ -477,6 +534,7 @@ public class NoraUiCommandLineInterface {
 
     /**
      * @param input
+     *            NoraUI CLI use Java Scanner class.
      * @param appList
      * @return
      */
@@ -484,7 +542,7 @@ public class NoraUiCommandLineInterface {
         String applicationName;
         logger.info("Enter index application number:");
         for (int i = 0; i < appList.size(); i++) {
-            logger.info("    {}) {}", i + 1, appList.get(i));
+            logger.info(CLI_TAB, i + 1, appList.get(i));
         }
         int appCode = input.nextInt();
         input.nextLine();
@@ -494,6 +552,7 @@ public class NoraUiCommandLineInterface {
 
     /**
      * @param input
+     *            NoraUI CLI use Java Scanner class.
      * @param scenarioList
      * @return
      */
@@ -501,7 +560,7 @@ public class NoraUiCommandLineInterface {
         String scenarioName;
         logger.info("Enter index scenario number:");
         for (int i = 0; i < scenarioList.size(); i++) {
-            logger.info("    {}) {}", i + 1, scenarioList.get(i));
+            logger.info(CLI_TAB, i + 1, scenarioList.get(i));
         }
         int scenarioCode = input.nextInt();
         input.nextLine();
@@ -510,14 +569,26 @@ public class NoraUiCommandLineInterface {
     }
 
     /**
+     * @param noraUiCliFile
+     *            Object contain all data from CLI Files.
      * @param applicationName
+     *            name of application.
      * @param modelName
+     *            name of model added.
      * @param fields
+     *            is fields of model (String separated by a space).
      * @param results
+     *            is results of model (String separated by a space).
      * @param robotContext
+     *            Context class from robot.
      * @param verbose
+     *            boolean to activate verbose mode (show more traces).
      * @param input
+     *            NoraUI CLI use Java Scanner class.
      * @param interactiveMode
+     *            When the NoraUi CLI goal is executed in interactive mode, it will prompt the user for all the previously listed parameters.
+     *            When interactiveMode is false, the NoraUi CLI goal will use the values passed in from the command line.
+     * @return NoraUiCliFile Object contain all data from CLI Files.
      */
     private NoraUiCliFile addModel(NoraUiCliFile noraUiCliFile, String applicationName, String modelName, String fields, String results, Class<?> robotContext, boolean verbose, Scanner input,
             boolean interactiveMode) {
@@ -595,11 +666,20 @@ public class NoraUiCommandLineInterface {
     }
 
     /**
+     * @param noraUiCliFile
+     *            Object contain all data from CLI Files.
      * @param applicationName
+     *            name of application removed.
      * @param robotContext
+     *            Context class from robot.
      * @param verbose
+     *            boolean to activate verbose mode (show more traces).
      * @param input
+     *            NoraUI CLI use Java Scanner class.
      * @param interactiveMode
+     *            When the NoraUi CLI goal is executed in interactive mode, it will prompt the user for all the previously listed parameters.
+     *            When interactiveMode is false, the NoraUi CLI goal will use the values passed in from the command line.
+     * @return NoraUiCliFile Object contain all data from CLI Files.
      */
     private NoraUiCliFile removeApplication(NoraUiCliFile noraUiCliFile, String applicationName, Class<?> robotContext, boolean verbose, Scanner input, boolean interactiveMode) {
         if (interactiveMode) {
@@ -631,11 +711,19 @@ public class NoraUiCommandLineInterface {
     }
 
     /**
+     * @param noraUiCliFile
+     *            Object contain all data from CLI Files.
      * @param scenarioName
+     *            name of scenario.
      * @param robotName
      * @param verbose
+     *            boolean to activate verbose mode (show more traces).
      * @param input
+     *            NoraUI CLI use Java Scanner class.
      * @param interactiveMode
+     *            When the NoraUi CLI goal is executed in interactive mode, it will prompt the user for all the previously listed parameters.
+     *            When interactiveMode is false, the NoraUi CLI goal will use the values passed in from the command line.
+     * @return NoraUiCliFile Object contain all data from CLI Files.
      */
     private NoraUiCliFile removeScenario(NoraUiCliFile noraUiCliFile, String scenarioName, String robotName, boolean verbose, Scanner input, boolean interactiveMode) {
         if (interactiveMode) {
@@ -667,12 +755,22 @@ public class NoraUiCommandLineInterface {
     }
 
     /**
+     * @param noraUiCliFile
+     *            Object contain all data from CLI Files.
      * @param applicationName
+     *            name of application.
      * @param modelName
+     *            name of model removed.
      * @param robotContext
+     *            Context class from robot.
      * @param verbose
+     *            boolean to activate verbose mode (show more traces).
      * @param input
+     *            NoraUI CLI use Java Scanner class.
      * @param interactiveMode
+     *            When the NoraUi CLI goal is executed in interactive mode, it will prompt the user for all the previously listed parameters.
+     *            When interactiveMode is false, the NoraUi CLI goal will use the values passed in from the command line.
+     * @return NoraUiCliFile Object contain all data from CLI Files.
      */
     private NoraUiCliFile removeModel(NoraUiCliFile noraUiCliFile, String applicationName, String modelName, Class<?> robotContext, boolean verbose, Scanner input, boolean interactiveMode) {
         if (interactiveMode) {
@@ -691,7 +789,7 @@ public class NoraUiCommandLineInterface {
                 if (!modelList.isEmpty()) {
                     logger.info("Enter index model number:");
                     for (int i = 0; i < modelList.size(); i++) {
-                        logger.info("    {}) {}", i + 1, modelList.get(i));
+                        logger.info(CLI_TAB, i + 1, modelList.get(i));
                     }
                     int modelCode = input.nextInt();
                     input.nextLine();
@@ -720,10 +818,17 @@ public class NoraUiCommandLineInterface {
 
     /**
      * @param cryptoKey
+     *            is AES key (secret key).
      * @param description
+     *            is description of scenario.
      * @param input
+     *            NoraUI CLI use Java Scanner class.
      * @param interactiveMode
+     *            When the NoraUi CLI goal is executed in interactive mode, it will prompt the user for all the previously listed parameters.
+     *            When interactiveMode is false, the NoraUi CLI goal will use the values passed in from the command line.
      * @throws TechnicalException
+     *             is throws if you have a technical error (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException | IOException,
+     *             ...) in NoraUi.
      */
     private void encrypt(String cryptoKey, String data, Scanner input, boolean interactiveMode) throws TechnicalException {
         if (interactiveMode) {
@@ -750,10 +855,17 @@ public class NoraUiCommandLineInterface {
 
     /**
      * @param cryptoKey
+     *            is AES key (secret key).
      * @param description
+     *            is description of scenario.
      * @param input
+     *            NoraUI CLI use Java Scanner class.
      * @param interactiveMode
+     *            When the NoraUi CLI goal is executed in interactive mode, it will prompt the user for all the previously listed parameters.
+     *            When interactiveMode is false, the NoraUi CLI goal will use the values passed in from the command line.
      * @throws TechnicalException
+     *             is throws if you have a technical error (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException | IOException,
+     *             ...) in NoraUi.
      */
     private void decrypt(String cryptoKey, String description, Scanner input, boolean interactiveMode) throws TechnicalException {
         if (interactiveMode) {
@@ -778,7 +890,7 @@ public class NoraUiCommandLineInterface {
     }
 
     /**
-     * 
+     * Display CLI footer.
      */
     private void displayFooter() {
         logger.info("");
@@ -787,7 +899,7 @@ public class NoraUiCommandLineInterface {
     }
 
     /**
-     * 
+     * Display end CLI footer.
      */
     private void displayEndFooter() {
         logger.info("");

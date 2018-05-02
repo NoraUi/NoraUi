@@ -17,6 +17,8 @@ public class Constants {
 
     public static final String USER_DIR = "user.dir";
     public static final String CLI_FILES_DIR = ".noraui";
+    public static final String CLI_APPLICATIONS_FILES_DIR = "applications";
+    public static final String CLI_SCENARIOS_FILES_DIR = "scenarios";
 
     public static final String SCENARIO_FILE = "scenarios.properties";
 

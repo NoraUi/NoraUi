@@ -48,7 +48,7 @@ public class NoraUiModel {
 
     /**
      * @param fields
-     *            is all fields in a String and separated by a space.
+     *            is fields of model (String separated by a space).
      */
     public void setFields(String fields) {
         List<NoraUiField> r = new ArrayList<>();
