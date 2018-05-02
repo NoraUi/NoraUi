@@ -193,7 +193,7 @@ public class NoraUiCommandLineInterface {
     }
 
     /**
-     * @return
+     * @return a list of feature (Map<index,feature description>).
      */
     private Map<String, String> getFeatures() {
         Map<String, String> features = new HashMap<>();
@@ -211,7 +211,9 @@ public class NoraUiCommandLineInterface {
 
     /**
      * @param args
+     *            is list of command arguments.
      * @param features
+     *            is list of feature (Map<index,feature description>).
      */
     private void displayHelp(String[] args, Map<String, String> features) {
         if (args.length == 1 && (args[0].equals("-h") || args[0].equals("-help"))) {
@@ -237,6 +239,7 @@ public class NoraUiCommandLineInterface {
 
     /**
      * @param args
+     *            is list of command arguments.
      */
     private void displayCommandLine(String[] args) {
         StringBuilder cmd = new StringBuilder();

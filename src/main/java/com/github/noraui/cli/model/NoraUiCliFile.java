@@ -37,8 +37,8 @@ public class NoraUiCliFile {
 
     /**
      * @param applicationName
-     *            name of application.
-     * @return
+     *            name of application removed.
+     * @return list of NoraUiApplicationFile Object contain all application data from CLI Files.
      */
     public List<NoraUiApplicationFile> removeApplication(String applicationName) {
         List<NoraUiApplicationFile> r = getApplicationFiles();
@@ -54,7 +54,8 @@ public class NoraUiCliFile {
 
     /**
      * @param noraUiScenarioFile
-     * @return
+     *            Object contain all scenario data added.
+     * @return list of NoraUiScenarioFile Object contain all scenario data from CLI Files.
      */
     public List<NoraUiScenarioFile> addScenario(NoraUiScenarioFile noraUiScenarioFile) {
         List<NoraUiScenarioFile> r = getScenarioFiles();
@@ -65,7 +66,7 @@ public class NoraUiCliFile {
     /**
      * @param scenarioName
      *            name of scenario removed.
-     * @return
+     * @return list of NoraUiScenarioFile Object contain all scenario data from CLI Files.
      */
     public List<NoraUiScenarioFile> removeScenario(String scenarioName) {
         List<NoraUiScenarioFile> r = getScenarioFiles();
@@ -83,7 +84,8 @@ public class NoraUiCliFile {
      * @param applicationName
      *            name of application.
      * @param model
-     * @return
+     *            name of model added.
+     * @return list of NoraUiApplicationFile Object contain all application data from CLI Files.
      */
     public List<NoraUiApplicationFile> addModel(String applicationName, NoraUiModel model) {
         List<NoraUiApplicationFile> r = getApplicationFiles();
@@ -105,7 +107,7 @@ public class NoraUiCliFile {
      *            name of application.
      * @param modelName
      *            name of model removed.
-     * @return
+     * @return list of NoraUiApplicationFile Object contain all application data from CLI Files.
      */
     public List<NoraUiApplicationFile> removeModel(String applicationName, String modelName) {
         List<NoraUiApplicationFile> r = getApplicationFiles();
