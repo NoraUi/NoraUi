@@ -133,23 +133,39 @@ public abstract class CommonDataProvider implements DataProvider {
     }
 
     /**
-     * {@inheritDoc}
+     * Writes a fail result
+     *
+     * @param line
+     *            The line number
+     * @param value
+     *            The value
+     * @throws TechnicalException
      */
-    public void writeFailedResult(int line, String value) {
+    public void writeFailedResult(int line, String value) throws TechnicalException {
         logger.debug("Write Failed result => line:{} value:{}", line, value);
         writeValue(resultColumnName, line, value);
     }
 
     /**
-     * {@inheritDoc}
+     * Writes a success result
+     *
+     * @param line
+     *            The line number
+     * @throws TechnicalException
      */
-    public void writeSuccessResult(int line) {
+    public void writeSuccessResult(int line) throws TechnicalException {
         logger.debug("Write Success result => line:{}", line);
         writeValue(resultColumnName, line, Messages.getMessage(Messages.SUCCESS_MESSAGE));
     }
 
     /**
-     * {@inheritDoc}
+     * Writes a warning result
+     *
+     * @param line
+     *            The line number
+     * @param value
+     *            The value
+     * @throws TechnicalException
      */
     public void writeWarningResult(int line, String value) throws TechnicalException {
         logger.debug("Write Warning result => line:{} value:{}", line, value);
@@ -157,9 +173,17 @@ public abstract class CommonDataProvider implements DataProvider {
     }
 
     /**
-     * {@inheritDoc}
+     * Writes some data as result.
+     *
+     * @param column
+     *            The column name
+     * @param line
+     *            The line number
+     * @param value
+     *            The data value
+     * @throws TechnicalException
      */
-    public void writeDataResult(String column, int line, String value) {
+    public void writeDataResult(String column, int line, String value) throws TechnicalException {
         logger.debug("Write Data result => column:{} line:{} value:{}", column, line, value);
         writeValue(column, line, value);
     }
