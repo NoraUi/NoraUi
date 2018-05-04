@@ -34,6 +34,11 @@ script:
 after_success:
 - test/after_success.sh
 
+cache:
+  directories:
+    - '$HOME/.m2/repository'
+    - '$HOME/.sonar/cache'
+
 notifications:
   webhooks:
     urls:
