@@ -812,6 +812,19 @@ public class NoraUiCommandLineInterface {
                 model.remove(applicationName, modelName, robotContext, verbose);
             }
         }
+        return removeModelInCliFileFeature(noraUiCliFile, applicationName, modelName);
+    }
+
+    /**
+     * @param noraUiCliFile
+     *            Object contain all data from CLI Files.
+     * @param applicationName
+     *            name of application.
+     * @param modelName
+     *            name of model removed.
+     * @return NoraUiCliFile Object contain all data from CLI Files.
+     */
+    private NoraUiCliFile removeModelInCliFileFeature(NoraUiCliFile noraUiCliFile, String applicationName, String modelName) {
         if (applicationName != null && !"".equals(applicationName)) {
             List<NoraUiApplicationFile> r = noraUiCliFile.removeModel(applicationName, modelName);
             noraUiCliFile.setApplicationFiles(r);
