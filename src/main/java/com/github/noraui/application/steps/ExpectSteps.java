@@ -101,7 +101,6 @@ public class ExpectSteps extends Step {
                         try {
                             element = driver.findElement(b);
                         } catch (final Exception e) {
-                            continue;
                         }
                     }
                 }

@@ -1,6 +1,6 @@
 /**
  * NoraUi is licensed under the license GNU AFFERO GENERAL PUBLIC LICENSE
- * 
+ *
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
@@ -97,42 +97,6 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
      * {@inheritDoc}
      */
     @Override
-    public void writeFailedResult(int line, String value) {
-        logger.debug("Write Failed result => line:{} value:{}", line, value);
-        writeValue(resultColumnName, line, value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void writeSuccessResult(int line) {
-        logger.debug("Write Success result => line:{}", line);
-        writeValue(resultColumnName, line, Messages.getMessage(Messages.SUCCESS_MESSAGE));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void writeWarningResult(int line, String value) throws TechnicalException {
-        logger.debug("Write Warning result => line:{} value:{}", line, value);
-        writeValue(resultColumnName, line, value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void writeDataResult(String column, int line, String value) {
-        logger.debug("Write Data result => column:{} line:{} value:{}", column, line, value);
-        writeValue(column, line, value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public String readValue(String column, int line) {
         final String url = this.norauiWebServicesApi + scenarioName + COLUMN + (columns.indexOf(column) + 1) + LINE + line;
         try {
@@ -176,12 +140,16 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
         }
     }
 
-    private void writeValue(String column, int line, String value) {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void writeValue(String column, int line, String value) {
         logger.debug("Writing: [{}] at line [{}] in column [{}]", value, line, column);
         final int colIndex = columns.indexOf(column);
         final String url = this.norauiWebServicesApi + scenarioName + COLUMN + colIndex + LINE + line;
         try {
-            DataModel dataModel = new Gson().fromJson(httpService.post(url, value), DataModel.class);
+            final DataModel dataModel = new Gson().fromJson(httpService.post(url, value), DataModel.class);
             if (resultColumnName.equals(column)) {
                 if (value.equals(dataModel.getRows().get(line - 1).getResult())) {
                     logger.info(Messages.getMessage(REST_DATA_PROVIDER_WRITING_IN_REST_WS_ERROR_MESSAGE), column, line, value);
@@ -196,7 +164,12 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
         }
     }
 
-    // for Mock
+    /**
+     * HttpService setter for mock
+     *
+     * @param httpService
+     *            The HTTP Service
+     */
     protected void setHttpService(HttpService httpService) {
         this.httpService = httpService;
     }
