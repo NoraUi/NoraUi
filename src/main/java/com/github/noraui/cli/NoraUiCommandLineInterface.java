@@ -503,15 +503,15 @@ public class NoraUiCommandLineInterface {
                     logger.info(CLI_YOU_MUST_CREATE_AN_APPLICATION_FIRST);
                 }
             }
-            if (applicationFinded && (scenarioName == null || "".equals(scenarioName))) {
-                logger.info("Enter scenario name:");
-                scenarioName = input.nextLine();
-            }
-            if (applicationFinded && (description == null || "".equals(description))) {
-                logger.info("Enter description:");
-                description = input.nextLine();
-            }
             if (applicationFinded) {
+                if (scenarioName == null || "".equals(scenarioName)) {
+                    logger.info("Enter scenario name:");
+                    scenarioName = input.nextLine();
+                }
+                if (description == null || "".equals(description)) {
+                    logger.info("Enter description:");
+                    description = input.nextLine();
+                }
                 scenario.add(scenarioName, description, applicationName, robotName, verbose);
             }
         } else {
@@ -606,22 +606,22 @@ public class NoraUiCommandLineInterface {
                     logger.info(CLI_YOU_MUST_CREATE_AN_APPLICATION_FIRST);
                 }
             }
-            if (applicationFinded && (modelName == null || "".equals(modelName))) {
-                logger.info("Enter model name:");
-                modelName = input.nextLine();
-            }
-            if (applicationFinded && (fields == null || "".equals(fields))) {
-                logger.info("Enter field list:");
-                fields = input.nextLine();
-            }
-            if (applicationFinded && (results == null || "".equals(results))) {
-                logger.info("Enter result list:");
-                results = input.nextLine();
-                if ("".equals(results)) {
-                    results = null;
-                }
-            }
             if (applicationFinded) {
+                if (modelName == null || "".equals(modelName)) {
+                    logger.info("Enter model name:");
+                    modelName = input.nextLine();
+                }
+                if (fields == null || "".equals(fields)) {
+                    logger.info("Enter field list:");
+                    fields = input.nextLine();
+                }
+                if (results == null || "".equals(results)) {
+                    logger.info("Enter result list:");
+                    results = input.nextLine();
+                    if ("".equals(results)) {
+                        results = null;
+                    }
+                }
                 model.add(applicationName, modelName, fields, results, robotContext, verbose);
             }
         } else {
