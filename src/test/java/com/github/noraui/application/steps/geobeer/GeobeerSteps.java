@@ -4,15 +4,15 @@
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
-package com.github.noraui.application.steps.countries;
+package com.github.noraui.application.steps.geobeer;
 
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.noraui.application.page.countries.CountriesPage;
-import com.github.noraui.application.page.countries.DashboardPage;
-import com.github.noraui.application.page.countries.LogoutPage;
+import com.github.noraui.application.page.geobeer.DashboardPage;
+import com.github.noraui.application.page.geobeer.GeobeerPage;
+import com.github.noraui.application.page.geobeer.LogoutPage;
 import com.github.noraui.application.steps.Step;
 import com.github.noraui.browser.Auth;
 import com.github.noraui.exception.FailureException;
@@ -27,15 +27,15 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import cucumber.api.java.fr.Alors;
 
-public class CountriesSteps extends Step {
+public class GeobeerSteps extends Step {
 
     /**
      * Specific logger
      */
-    private static final Logger logger = LoggerFactory.getLogger(CountriesSteps.class);
+    private static final Logger logger = LoggerFactory.getLogger(GeobeerSteps.class);
 
     @Inject
-    private CountriesPage countriesPage;
+    private GeobeerPage geobeerPage;
 
     @Inject
     private DashboardPage dashboardPage;
@@ -49,10 +49,10 @@ public class CountriesSteps extends Step {
      * @throws FailureException
      *             if the scenario encounters a functional error.
      */
-    @Then("The COUNTRIES home page is displayed")
+    @Then("The GEOBEER home page is displayed")
     public void checkCountriesLoginPage() throws FailureException {
-        if (!countriesPage.checkPage()) {
-            new Result.Failure<>(countriesPage.getApplication(), Messages.getMessage(Messages.FAIL_MESSAGE_UNKNOWN_CREDENTIALS), true, countriesPage.getCallBack());
+        if (!geobeerPage.checkPage()) {
+            new Result.Failure<>(geobeerPage.getApplication(), Messages.getMessage(Messages.FAIL_MESSAGE_UNKNOWN_CREDENTIALS), true, geobeerPage.getCallBack());
         }
     }
 
@@ -70,12 +70,12 @@ public class CountriesSteps extends Step {
     @Then("I log in to COUNTRIES as '(.*)' '(.*)'")
     public void logInToCountries(String login, String password) throws FailureException {
         try {
-            Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(countriesPage.signInButton)));
-            Utilities.findElement(countriesPage.login).sendKeys(login);
-            Utilities.findElement(countriesPage.password).sendKeys(password);
-            Utilities.findElement(countriesPage.signInButton).click();
+            Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(geobeerPage.signInButton)));
+            Utilities.findElement(geobeerPage.login).sendKeys(login);
+            Utilities.findElement(geobeerPage.password).sendKeys(password);
+            Utilities.findElement(geobeerPage.signInButton).click();
         } catch (Exception e) {
-            new Result.Failure<>(e, Messages.getMessage(Messages.FAIL_MESSAGE_UNKNOWN_CREDENTIALS), true, countriesPage.getCallBack());
+            new Result.Failure<>(e, Messages.getMessage(Messages.FAIL_MESSAGE_UNKNOWN_CREDENTIALS), true, geobeerPage.getCallBack());
         }
     }
 

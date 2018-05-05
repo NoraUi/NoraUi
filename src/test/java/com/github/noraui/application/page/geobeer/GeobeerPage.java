@@ -4,9 +4,10 @@
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
-package com.github.noraui.application.page.countries;
+package com.github.noraui.application.page.geobeer;
 
-import static com.github.noraui.utils.Context.COUNTRIES_KEY;
+import static com.github.noraui.utils.Context.GEOBEER_HOME;
+import static com.github.noraui.utils.Context.GEOBEER_KEY;
 
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
@@ -19,23 +20,23 @@ import com.github.noraui.utils.Utilities;
 import com.google.inject.Singleton;
 
 @Singleton
-public class CountriesPage extends Page {
+public class GeobeerPage extends Page {
 
     /**
      * Specific logger
      */
-    protected static final Logger logger = LoggerFactory.getLogger(CountriesPage.class);
+    protected static final Logger logger = LoggerFactory.getLogger(GeobeerPage.class);
 
     public final PageElement login = new PageElement("-login_field", "Login");
     public final PageElement loginTitle = new PageElement("-login_title", "Login title");
     public final PageElement password = new PageElement("-password_field", "Password");
     public final PageElement signInButton = new PageElement("-sign_in_button", "Sign-in button");
 
-    public CountriesPage() {
+    public GeobeerPage() {
         super();
-        this.application = COUNTRIES_KEY;
-        this.pageKey = "COUNTRIES_HOM";
-        this.callBack = Context.getCallBack(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_COUNTRIES_HOME);
+        this.application = GEOBEER_KEY;
+        this.pageKey = GEOBEER_HOME;
+        this.callBack = Context.getCallBack(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_GEOBEER_HOME);
     }
 
     /**

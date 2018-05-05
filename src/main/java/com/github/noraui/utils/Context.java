@@ -89,13 +89,13 @@ public class Context {
     /**
      * DEMO
      *
-     * @deprecated because use {@link #COUNTRIES_KEY} instead.
+     * @deprecated because use {@link #GEOBEER_KEY} instead.
      */
     @Deprecated
     public static final String DEMO_KEY = "demo";
 
     /**
-     * @deprecated because use {@link #COUNTRIES_HOME} instead.
+     * @deprecated because use {@link #GEOBEER_HOME} instead.
      */
     @Deprecated
     public static final String DEMO_HOME = "DEMO_HOME";
@@ -103,22 +103,22 @@ public class Context {
     /**
      * LOGOGAME
      *
-     * @deprecated because use {@link #COUNTRIES_KEY} instead.
+     * @deprecated because use {@link #GEOBEER_KEY} instead.
      */
     @Deprecated
     public static final String LOGOGAME_KEY = "logogame";
 
     /**
-     * @deprecated because use {@link #COUNTRIES_HOME} instead.
+     * @deprecated because use {@link #GEOBEER_HOME} instead.
      */
     @Deprecated
     public static final String LOGOGAME_HOME = "LOGOGAME_HOME";
 
     /**
-     * COUNTRIES
+     * GEOBEER
      */
-    public static final String COUNTRIES_KEY = "countries";
-    public static final String COUNTRIES_HOME = "COUNTRIES_HOME";
+    public static final String GEOBEER_KEY = "geobeer";
+    public static final String GEOBEER_HOME = "GEOBEER_HOME";
 
     /**
      * GITHUBAPI
@@ -381,7 +381,8 @@ public class Context {
         exceptionCallbacks.put(Callbacks.RESTART_WEB_DRIVER, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, RESTART_WEB_DRIVER_METHOD_NAME);
         exceptionCallbacks.put(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_DEMO_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, DEMO_HOME);
         exceptionCallbacks.put(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_LOGOGAME_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, LOGOGAME_HOME);
-        exceptionCallbacks.put(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_COUNTRIES_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, COUNTRIES_HOME);
+        exceptionCallbacks.put(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_GITHUBAPI_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, GITHUBAPI_HOME);
+        exceptionCallbacks.put(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_GEOBEER_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, GEOBEER_HOME);
 
         // init applications
         final String indexPage = "/index.html";
@@ -391,8 +392,8 @@ public class Context {
         initApplicationDom(clazz.getClassLoader(), selectorsVersion, LOGOGAME_KEY);
         applications.put(LOGOGAME_KEY, new Application(LOGOGAME_HOME, getProperty(LOGOGAME_KEY, applicationProperties) + indexPage));
 
-        initApplicationDom(clazz.getClassLoader(), selectorsVersion, COUNTRIES_KEY);
-        applications.put(COUNTRIES_KEY, new Application(COUNTRIES_HOME, getProperty(COUNTRIES_KEY, applicationProperties) + indexPage));
+        initApplicationDom(clazz.getClassLoader(), selectorsVersion, GEOBEER_KEY);
+        applications.put(GEOBEER_KEY, new Application(GEOBEER_HOME, getProperty(GEOBEER_KEY, applicationProperties) + indexPage));
 
         applications.put(GITHUBAPI_KEY, new Application(GITHUBAPI_HOME, getProperty(GITHUBAPI_KEY, applicationProperties)));
 

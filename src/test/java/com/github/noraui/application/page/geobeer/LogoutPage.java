@@ -4,9 +4,9 @@
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
-package com.github.noraui.application.page.countries;
+package com.github.noraui.application.page.geobeer;
 
-import static com.github.noraui.utils.Context.COUNTRIES_KEY;
+import static com.github.noraui.utils.Context.GEOBEER_KEY;
 
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
@@ -28,9 +28,9 @@ public class LogoutPage extends Page {
 
     public LogoutPage() {
         super();
-        this.application = COUNTRIES_KEY;
+        this.application = GEOBEER_KEY;
         this.pageKey = "COUNTRIES_OUT";
-        this.callBack = Context.getCallBack(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_COUNTRIES_HOME);
+        this.callBack = Context.getCallBack(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_GEOBEER_HOME);
     }
 
     /**
