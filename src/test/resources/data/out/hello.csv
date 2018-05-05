@@ -1,4 +1,4 @@
-﻿author;zip;city;element;element2;date;title;Résultat
+﻿author;zip;city;element;element2;date;title;Result
 Jenkins T1;35000;Rennes;smile;smile;16/01/2020;;UT Failed Message
 Jenkins T2;75000;Paris;smile;smile;;;Succès
 Jenkins T3;56100;Lorient;smile;smile;;;UT Warning Message
