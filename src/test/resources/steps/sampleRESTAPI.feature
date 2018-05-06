@@ -1,5 +1,5 @@
-@sampleREST_API 
-Feature: sampleREST_API (Function to validate REST API features) 
+@sampleRESTAPI 
+Feature: sampleRESTAPI (Function to validate REST API features) 
 
   Scenario Outline: Function to validate REST API features.
   
