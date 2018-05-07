@@ -27,6 +27,7 @@ before_script:
 - psql -U travis -d noraui -a -f config/noraui-db.sql
 - mysql -e 'CREATE DATABASE noraui;'
 - mysql --user=travis noraui < config/noraui-db.sql > output.tab
+- chmod +x $HOME/.sonar
 
 script:
 - test/run.sh
