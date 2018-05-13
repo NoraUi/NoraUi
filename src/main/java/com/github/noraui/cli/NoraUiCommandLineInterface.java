@@ -523,6 +523,10 @@ public class NoraUiCommandLineInterface {
                 }
             }
         }
+        return addScenario4CliFiles(noraUiCliFile, applicationName, scenarioName, description);
+    }
+
+    private NoraUiCliFile addScenario4CliFiles(NoraUiCliFile noraUiCliFile, String applicationName, String scenarioName, String description) {
         if (noraUiCliFile != null) {
             NoraUiScenarioFile noraUiScenarioFile = new NoraUiScenarioFile();
             noraUiScenarioFile.setName(scenarioName);
@@ -633,7 +637,18 @@ public class NoraUiCommandLineInterface {
                 }
             }
         }
+        return addModel4CliFiles(noraUiCliFile, applicationName, modelName, fields, results);
+    }
 
+    /**
+     * @param noraUiCliFile
+     * @param applicationName
+     * @param modelName
+     * @param fields
+     * @param results
+     * @return
+     */
+    private NoraUiCliFile addModel4CliFiles(NoraUiCliFile noraUiCliFile, String applicationName, String modelName, String fields, String results) {
         if (noraUiCliFile != null) {
             NoraUiModel noraUiModel = new NoraUiModel();
             noraUiModel.setName(modelName);
@@ -706,6 +721,15 @@ public class NoraUiCommandLineInterface {
                 application.remove(applicationName, robotContext, verbose);
             }
         }
+        return removeApplication4CliFiles(noraUiCliFile, applicationName);
+    }
+
+    /**
+     * @param noraUiCliFile
+     * @param applicationName
+     * @return
+     */
+    private NoraUiCliFile removeApplication4CliFiles(NoraUiCliFile noraUiCliFile, String applicationName) {
         if (applicationName != null && !"".equals(applicationName)) {
             List<NoraUiApplicationFile> r = noraUiCliFile.removeApplication(applicationName);
             noraUiCliFile.setApplicationFiles(r);
@@ -750,6 +774,15 @@ public class NoraUiCommandLineInterface {
                 scenario.remove(scenarioName, robotName, verbose);
             }
         }
+        return removeScenario4CliFiles(noraUiCliFile, scenarioName);
+    }
+
+    /**
+     * @param noraUiCliFile
+     * @param scenarioName
+     * @return
+     */
+    private NoraUiCliFile removeScenario4CliFiles(NoraUiCliFile noraUiCliFile, String scenarioName) {
         if (scenarioName != null && !"".equals(scenarioName)) {
             List<NoraUiScenarioFile> r = noraUiCliFile.removeScenario(scenarioName);
             noraUiCliFile.setScenarioFiles(r);
