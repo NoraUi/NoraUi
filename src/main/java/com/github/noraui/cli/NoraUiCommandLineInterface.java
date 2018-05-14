@@ -262,6 +262,24 @@ public class NoraUiCommandLineInterface {
         Gson gson = new Gson();
         String[] applications = new File(CLI_FILES_DIR + File.separator + CLI_APPLICATIONS_FILES_DIR).list();
         String[] scenarios = new File(CLI_FILES_DIR + File.separator + CLI_SCENARIOS_FILES_DIR).list();
+        readApplicationNoraUiCliFiles(verbose, noraUiApplicationFiles, gson, applications);
+        readScenarioNoraUiCliFiles(verbose, noraUiScenarioFiles, gson, scenarios);
+        result.setApplicationFiles(noraUiApplicationFiles);
+        result.setScenarioFiles(noraUiScenarioFiles);
+        return result;
+    }
+
+    /**
+     * @param verbose
+     *            boolean to activate verbose mode (show more traces).
+     * @param noraUiApplicationFiles
+     *            is list of NoraUiApplicationFile Object.
+     * @param gson
+     *            is singleton json tool.
+     * @param applications
+     *            array of application (array of String).
+     */
+    private void readApplicationNoraUiCliFiles(boolean verbose, List<NoraUiApplicationFile> noraUiApplicationFiles, Gson gson, String[] applications) {
         if (applications != null) {
             for (String app : applications) {
                 if (verbose) {
@@ -275,6 +293,19 @@ public class NoraUiCommandLineInterface {
                 }
             }
         }
+    }
+
+    /**
+     * @param verbose
+     *            boolean to activate verbose mode (show more traces).
+     * @param noraUiScenarioFiles
+     *            is list of NoraUiScenarioFile Object.
+     * @param gson
+     *            is singleton json tool.
+     * @param scenarios
+     *            array of scenario (array of String).
+     */
+    private void readScenarioNoraUiCliFiles(boolean verbose, List<NoraUiScenarioFile> noraUiScenarioFiles, Gson gson, String[] scenarios) {
         if (scenarios != null) {
             for (String s : scenarios) {
                 if (verbose) {
@@ -288,9 +319,6 @@ public class NoraUiCommandLineInterface {
                 }
             }
         }
-        result.setApplicationFiles(noraUiApplicationFiles);
-        result.setScenarioFiles(noraUiScenarioFiles);
-        return result;
     }
 
     /**
@@ -301,32 +329,78 @@ public class NoraUiCommandLineInterface {
      */
     protected void writeNoraUiCliFiles(NoraUiCliFile noraUiCliFile, boolean verbose) {
         Gson gson = new Gson();
+        writeApplicationsNoraUiCliFiles(noraUiCliFile, verbose, gson);
+        writeScenariosNoraUiCliFiles(noraUiCliFile, verbose, gson);
+    }
+
+    /**
+     * @param noraUiCliFile
+     *            Object contain all data from CLI Files.
+     * @param verbose
+     *            boolean to activate verbose mode (show more traces).
+     * @param gson
+     *            is singleton json tool.
+     */
+    private void writeApplicationsNoraUiCliFiles(NoraUiCliFile noraUiCliFile, boolean verbose, Gson gson) {
         for (NoraUiApplicationFile noraUiApplicationFile : noraUiCliFile.getApplicationFiles()) {
-            try {
-                FileUtils.forceMkdir(new File(CLI_FILES_DIR + File.separator + CLI_APPLICATIONS_FILES_DIR));
-                File applicationFile = new File(CLI_FILES_DIR + File.separator + CLI_APPLICATIONS_FILES_DIR + File.separator + noraUiApplicationFile.getName() + JSON);
-                if (!applicationFile.exists()) {
-                    Files.asCharSink(applicationFile, Charsets.UTF_8).write(gson.toJson(noraUiApplicationFile));
-                    if (verbose) {
-                        logger.info("File [{}.json] created with success.", noraUiApplicationFile.getName());
-                    }
-                } else {
-                    if (verbose) {
-                        logger.info("File [{}.json] already exist.", noraUiApplicationFile.getName());
-                    }
-                }
-            } catch (Exception e) {
-                logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
-            }
-            try (FileWriter fw = new FileWriter(CLI_FILES_DIR + File.separator + CLI_APPLICATIONS_FILES_DIR + File.separator + noraUiApplicationFile.getName() + JSON)) {
-                BufferedWriter bw = new BufferedWriter(fw);
-                bw.write(gson.toJson(noraUiApplicationFile));
-                bw.flush();
-                bw.close();
-            } catch (IOException e) {
-                logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
-            }
+            createFileApplicationsNoraUiCliFiles(verbose, gson, noraUiApplicationFile);
+            updateFileApplicationsNoraUiCliFiles(gson, noraUiApplicationFile);
         }
+    }
+
+    /**
+     * @param verbose
+     *            boolean to activate verbose mode (show more traces).
+     * @param gson
+     *            is singleton json tool.
+     * @param noraUiApplicationFile
+     *            Object contain a application file from CLI Files.
+     */
+    private void createFileApplicationsNoraUiCliFiles(boolean verbose, Gson gson, NoraUiApplicationFile noraUiApplicationFile) {
+        try {
+            FileUtils.forceMkdir(new File(CLI_FILES_DIR + File.separator + CLI_APPLICATIONS_FILES_DIR));
+            File applicationFile = new File(CLI_FILES_DIR + File.separator + CLI_APPLICATIONS_FILES_DIR + File.separator + noraUiApplicationFile.getName() + JSON);
+            if (!applicationFile.exists()) {
+                Files.asCharSink(applicationFile, Charsets.UTF_8).write(gson.toJson(noraUiApplicationFile));
+                if (verbose) {
+                    logger.info("File [{}.json] created with success.", noraUiApplicationFile.getName());
+                }
+            } else {
+                if (verbose) {
+                    logger.info("File [{}.json] already exist.", noraUiApplicationFile.getName());
+                }
+            }
+        } catch (Exception e) {
+            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+        }
+    }
+
+    /**
+     * @param gson
+     *            is singleton json tool.
+     * @param noraUiApplicationFile
+     *            Object contain a application file from CLI Files.
+     */
+    private void updateFileApplicationsNoraUiCliFiles(Gson gson, NoraUiApplicationFile noraUiApplicationFile) {
+        try (FileWriter fw = new FileWriter(CLI_FILES_DIR + File.separator + CLI_APPLICATIONS_FILES_DIR + File.separator + noraUiApplicationFile.getName() + JSON)) {
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(gson.toJson(noraUiApplicationFile));
+            bw.flush();
+            bw.close();
+        } catch (IOException e) {
+            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+        }
+    }
+
+    /**
+     * @param noraUiCliFile
+     *            Object contain all data from CLI Files.
+     * @param verbose
+     *            boolean to activate verbose mode (show more traces).
+     * @param gson
+     *            is singleton json tool.
+     */
+    private void writeScenariosNoraUiCliFiles(NoraUiCliFile noraUiCliFile, boolean verbose, Gson gson) {
         for (NoraUiScenarioFile noraUiScenarioFile : noraUiCliFile.getScenarioFiles()) {
             try {
                 FileUtils.forceMkdir(new File(CLI_FILES_DIR + File.separator + CLI_SCENARIOS_FILES_DIR));
@@ -374,6 +448,8 @@ public class NoraUiCommandLineInterface {
      * @param noraUiCliFile
      *            Object contain all data from CLI Files.
      * @param featureCode
+     *            is -f arg ("1" is "add new application", "2" is "add new scenario", "3" is "add new model", "4" is "remove application", "5" is "remove scenario", "6" is "remove model", "7" is
+     *            "encrypt data", "8" is "decrypt data" and "0" is "exit NoraUi CLI").
      * @param applicationName
      *            name of application.
      * @param scenarioName
@@ -381,6 +457,7 @@ public class NoraUiCommandLineInterface {
      * @param modelName
      *            name of model.
      * @param url
+     *            is first(home or login page) url of application.
      * @param description
      *            is description of scenario.
      * @param fields
@@ -431,6 +508,7 @@ public class NoraUiCommandLineInterface {
      * @param applicationName
      *            name of application added.
      * @param url
+     *            is first(home or login page) url of application.
      * @param robotContext
      *            Context class from robot.
      * @param verbose
@@ -460,6 +538,19 @@ public class NoraUiCommandLineInterface {
                 application.add(applicationName, url, robotContext, verbose);
             }
         }
+        return addApplication4CliFiles(noraUiCliFile, applicationName, url);
+    }
+
+    /**
+     * @param noraUiCliFile
+     *            Object contain all data from CLI Files.
+     * @param applicationName
+     *            name of application added.
+     * @param url
+     *            is first(home or login page) url of application.
+     * @return NoraUiCliFile Object contain all data from CLI Files.
+     */
+    private NoraUiCliFile addApplication4CliFiles(NoraUiCliFile noraUiCliFile, String applicationName, String url) {
         NoraUiApplicationFile noraUiApplicationFile = new NoraUiApplicationFile();
         noraUiApplicationFile.setName(applicationName);
         noraUiApplicationFile.setUrl(url);
@@ -481,6 +572,7 @@ public class NoraUiCommandLineInterface {
      * @param description
      *            is description of scenario.
      * @param robotName
+     *            is name of target Robot.
      * @param verbose
      *            boolean to activate verbose mode (show more traces).
      * @param input
@@ -493,17 +585,15 @@ public class NoraUiCommandLineInterface {
     private NoraUiCliFile addScenario(NoraUiCliFile noraUiCliFile, String applicationName, String scenarioName, String description, String robotName, boolean verbose, Scanner input,
             boolean interactiveMode) {
         if (interactiveMode) {
-            boolean applicationFinded = false;
             if (applicationName == null || "".equals(applicationName)) {
                 List<String> appList = application.get();
                 if (!appList.isEmpty()) {
                     applicationName = askApplicationNumber(input, appList);
-                    applicationFinded = true;
                 } else {
                     logger.info(CLI_YOU_MUST_CREATE_AN_APPLICATION_FIRST);
                 }
             }
-            if (applicationFinded) {
+            if (applicationName == null || "".equals(applicationName)) {
                 if (scenarioName == null || "".equals(scenarioName)) {
                     logger.info("Enter scenario name:");
                     scenarioName = input.nextLine();
@@ -526,6 +616,17 @@ public class NoraUiCommandLineInterface {
         return addScenario4CliFiles(noraUiCliFile, applicationName, scenarioName, description);
     }
 
+    /**
+     * @param noraUiCliFile
+     *            Object contain all data from CLI Files.
+     * @param applicationName
+     *            name of application.
+     * @param scenarioName
+     *            name of scenario added.
+     * @param description
+     *            is description of scenario.
+     * @return NoraUiCliFile Object contain all data from CLI Files.
+     */
     private NoraUiCliFile addScenario4CliFiles(NoraUiCliFile noraUiCliFile, String applicationName, String scenarioName, String description) {
         if (noraUiCliFile != null) {
             NoraUiScenarioFile noraUiScenarioFile = new NoraUiScenarioFile();
@@ -543,7 +644,8 @@ public class NoraUiCommandLineInterface {
      * @param input
      *            NoraUI CLI use Java Scanner class.
      * @param appList
-     * @return
+     *            list of application (string list).
+     * @return index of application (int in a String).
      */
     private String askApplicationNumber(Scanner input, List<String> appList) {
         String applicationName;
@@ -561,7 +663,8 @@ public class NoraUiCommandLineInterface {
      * @param input
      *            NoraUI CLI use Java Scanner class.
      * @param scenarioList
-     * @return
+     *            list of scenario (string list).
+     * @return index of scenario (int in a String).
      */
     private String askScenarioNumber(Scanner input, List<String> scenarioList) {
         String scenarioName;
@@ -600,17 +703,15 @@ public class NoraUiCommandLineInterface {
     private NoraUiCliFile addModel(NoraUiCliFile noraUiCliFile, String applicationName, String modelName, String fields, String results, Class<?> robotContext, boolean verbose, Scanner input,
             boolean interactiveMode) {
         if (interactiveMode) {
-            boolean applicationFinded = false;
             if (applicationName == null || "".equals(applicationName)) {
                 List<String> appList = application.get();
                 if (!appList.isEmpty()) {
                     applicationName = askApplicationNumber(input, appList);
-                    applicationFinded = true;
                 } else {
                     logger.info(CLI_YOU_MUST_CREATE_AN_APPLICATION_FIRST);
                 }
             }
-            if (applicationFinded) {
+            if (applicationName == null || "".equals(applicationName)) {
                 if (modelName == null || "".equals(modelName)) {
                     logger.info("Enter model name:");
                     modelName = input.nextLine();
@@ -642,11 +743,16 @@ public class NoraUiCommandLineInterface {
 
     /**
      * @param noraUiCliFile
+     *            Object contain all data from CLI Files.
      * @param applicationName
+     *            name of application.
      * @param modelName
+     *            name of model added.
      * @param fields
+     *            is fields of model (String separated by a space).
      * @param results
-     * @return
+     *            is results of model (String separated by a space).
+     * @return NoraUiCliFile Object contain all data from CLI Files.
      */
     private NoraUiCliFile addModel4CliFiles(NoraUiCliFile noraUiCliFile, String applicationName, String modelName, String fields, String results) {
         if (noraUiCliFile != null) {
@@ -726,8 +832,10 @@ public class NoraUiCommandLineInterface {
 
     /**
      * @param noraUiCliFile
+     *            Object contain all data from CLI Files.
      * @param applicationName
-     * @return
+     *            name of application removed.
+     * @return NoraUiCliFile Object contain all data from CLI Files.
      */
     private NoraUiCliFile removeApplication4CliFiles(NoraUiCliFile noraUiCliFile, String applicationName) {
         if (applicationName != null && !"".equals(applicationName)) {
@@ -743,6 +851,7 @@ public class NoraUiCommandLineInterface {
      * @param scenarioName
      *            name of scenario.
      * @param robotName
+     *            is name of target Robot.
      * @param verbose
      *            boolean to activate verbose mode (show more traces).
      * @param input
@@ -779,8 +888,10 @@ public class NoraUiCommandLineInterface {
 
     /**
      * @param noraUiCliFile
+     *            Object contain all data from CLI Files.
      * @param scenarioName
-     * @return
+     *            name of scenario removed.
+     * @return NoraUiCliFile Object contain all data from CLI Files.
      */
     private NoraUiCliFile removeScenario4CliFiles(NoraUiCliFile noraUiCliFile, String scenarioName) {
         if (scenarioName != null && !"".equals(scenarioName)) {
