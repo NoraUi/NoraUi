@@ -222,7 +222,7 @@ public class NoraUiCommandLineInterface {
             logger.info("--update: Use NoraUi CLI files for update your robot.");
             logger.info("-f: features");
             for (Map.Entry<String, String> f : features.entrySet()) {
-                logger.info("             {} => {}", f.getKey(), f.getValue());
+                logger.info("    {} => {}", f.getKey(), f.getValue());
             }
             logger.info("-s: Scenario Name");
             logger.info("-u: Url");
@@ -593,7 +593,7 @@ public class NoraUiCommandLineInterface {
                     logger.info(CLI_YOU_MUST_CREATE_AN_APPLICATION_FIRST);
                 }
             }
-            if (applicationName == null || "".equals(applicationName)) {
+            if (applicationName != null && !"".equals(applicationName)) {
                 if (scenarioName == null || "".equals(scenarioName)) {
                     logger.info("Enter scenario name:");
                     scenarioName = input.nextLine();
@@ -711,7 +711,7 @@ public class NoraUiCommandLineInterface {
                     logger.info(CLI_YOU_MUST_CREATE_AN_APPLICATION_FIRST);
                 }
             }
-            if (applicationName == null || "".equals(applicationName)) {
+            if (applicationName != null && !"".equals(applicationName)) {
                 if (modelName == null || "".equals(modelName)) {
                     logger.info("Enter model name:");
                     modelName = input.nextLine();
@@ -807,17 +807,15 @@ public class NoraUiCommandLineInterface {
      */
     private NoraUiCliFile removeApplication(NoraUiCliFile noraUiCliFile, String applicationName, Class<?> robotContext, boolean verbose, Scanner input, boolean interactiveMode) {
         if (interactiveMode) {
-            boolean applicationFinded = false;
             if (applicationName == null || "".equals(applicationName)) {
                 List<String> appList = application.get();
                 if (!appList.isEmpty()) {
                     applicationName = askApplicationNumber(input, appList);
-                    applicationFinded = true;
                 } else {
                     logger.info("Your robot does not contain applications.");
                 }
             }
-            if (applicationFinded) {
+            if (applicationName != null && !"".equals(applicationName)) {
                 application.remove(applicationName, robotContext, verbose);
             }
         } else {
