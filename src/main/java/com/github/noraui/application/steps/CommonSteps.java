@@ -108,7 +108,7 @@ public class CommonSteps extends Step {
      *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
      */
     @Conditioned
-    @Lorsque("J'attends la diparition de '(.*)-(.*)' avec un timeout de '(.*)' secondes[\\.|\\?]")
+    @Lorsque("J'attends la disparition de '(.*)-(.*)' avec un timeout de '(.*)' secondes[\\.|\\?]")
     @Then("I wait staleness of '(.*)-(.*)' with timeout of '(.*)' seconds[\\.|\\?]")
     public void waitStalenessOf(String page, String element, int time, List<GherkinStepCondition> conditions) throws TechnicalException {
         final WebElement we = Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + element));
