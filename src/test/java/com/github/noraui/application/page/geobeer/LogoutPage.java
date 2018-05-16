@@ -29,7 +29,7 @@ public class LogoutPage extends Page {
     public LogoutPage() {
         super();
         this.application = GEOBEER_KEY;
-        this.pageKey = "COUNTRIES_OUT";
+        this.pageKey = "GEOBEER_OUT";
         this.callBack = Context.getCallBack(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_GEOBEER_HOME);
     }
 
