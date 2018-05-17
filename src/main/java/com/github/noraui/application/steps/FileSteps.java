@@ -138,6 +138,6 @@ public class FileSteps extends Step {
     @Then("I use '(.*)-(.*)' element to upload '(.*)' file[\\.|\\?]")
     public void uploadFile(String page, String element, String filename, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
         uploadFile(Page.getInstance(page).getPageElementByKey('-' + element), filename);
-
     }
+
 }
