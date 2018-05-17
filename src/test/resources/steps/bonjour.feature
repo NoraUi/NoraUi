@@ -170,6 +170,7 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
         |id|1|<id>|
 
     Et Je vide le repertoire des téléchargements.
+    Et Je clique sur 'demo.DemoPage-exportCSV'.
     Et Je patiente que le fichier nommé 'stock-data.csv' soit téléchargé avec un timeout de '3' secondes.
     Et Le fichier 'stock-data.csv' encodé en 'ISO-8859-1' vérifie 'Symbol;Company;Price'.
 
