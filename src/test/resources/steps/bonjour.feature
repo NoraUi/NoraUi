@@ -144,6 +144,12 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
     Quand Je clique sur 'demo.DemoPage-changeValueButton'.
     Alors Je m'attends à avoir 'demo.DemoPage-changeValueButton' avec le texte 'My value has changed'.
 
+    Quand Je clique sur 'demo.DemoPage-disappearButton'.
+    Et J'attends l'invisibilité de 'demo.DemoPage-disappearButton' avec un timeout de '10' secondes.
+    
+    Quand Je clique sur 'demo.DemoPage-staleButton'.
+    Et J'attends la disparition de 'demo.DemoPage-staleButton' avec un timeout de '10' secondes.
+
     Et Je mets à jour le texte 'demo.DemoPage-input_text_field' avec une valeur aléatoire qui vérifie 'noraui[a-zA-Z0-9]{6}'.
     
     Quand Je clarifie le texte dans 'demo.DemoPage-input_text_field'.

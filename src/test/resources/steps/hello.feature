@@ -147,6 +147,12 @@ Feature: hello (Function to validate the environment.)
     And I save a screenshot in 'myScreenshot-<id>'.
     And I save a screenshot of 'demo.DemoPage-changeValueButton' in 'changeValueButton<id>'.
 
+    Then I click on 'demo.DemoPage-disappearButton'.
+    And I wait invisibility of 'demo.DemoPage-disappearButton' with timeout of '10' seconds.
+    
+    Then I click on 'demo.DemoPage-staleButton'.
+    And I wait staleness of 'demo.DemoPage-disappearButton' with timeout of '10' seconds.
+
     When I clear text in 'demo.DemoPage-input_text_field'.
     When I update text 'demo.DemoPage-input_text_field' with '℗:AMAapQjwjKaAGUkO6rbttg=='.
     And I check text 'demo.DemoPage-input_text_field' with 'foot'.
