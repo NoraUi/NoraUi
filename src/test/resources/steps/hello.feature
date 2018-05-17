@@ -164,6 +164,10 @@ Feature: hello (Function to validate the environment.)
         |key|expected|actual|
         |id|1|<id>|
 
+    And I clean download directory.
+    And I wait file named 'stock-data.csv' to be downloaded with timeout of '3' seconds.
+    And The file 'stock-data.csv' encoded in 'ISO-8859-1' matches 'Symbol;Company;Price'.
+
     And I go back to 'DEMO_HOME'        
 
   Examples:

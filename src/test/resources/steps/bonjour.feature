@@ -163,6 +163,10 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
         |key|expected|actual|
         |id|1|<id>|
 
+    Et Je vide le repertoire des téléchargements.
+    ET J'attends que le fichier nommé 'stock-data.csv' soit téléchargé avec un timeout de '3' secondes.
+    Et Le fichier 'stock-data.csv' encodé en 'ISO-8859-1' vérifie 'Symbol;Company;Price'.
+
     Et Je retourne vers 'DEMO_HOME'
 
   Exemples:
