@@ -65,7 +65,7 @@ public class CommonSteps extends Step {
      *             Exception for the sleep
      */
     @Conditioned
-    @Lorsque("J'attends '(.*)' secondes[\\.|\\?]")
+    @Lorsque("Je patiente '(.*)' secondes[\\.|\\?]")
     @Then("I wait '(.*)' seconds[\\.|\\?]")
     public void wait(int time, List<GherkinStepCondition> conditions) throws InterruptedException {
         Thread.sleep((long) time * 1000);
@@ -86,7 +86,7 @@ public class CommonSteps extends Step {
      *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
      */
     @Conditioned
-    @Lorsque("J'attends l'invisibilité de '(.*)-(.*)' avec un timeout de '(.*)' secondes[\\.|\\?]")
+    @Lorsque("Je patiente l'invisibilité de '(.*)-(.*)' avec un timeout de '(.*)' secondes[\\.|\\?]")
     @Then("I wait invisibility of '(.*)-(.*)' with timeout of '(.*)' seconds[\\.|\\?]")
     public void waitInvisibilityOf(String page, String element, int time, List<GherkinStepCondition> conditions) throws TechnicalException {
         final WebElement we = Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + element));
@@ -108,7 +108,7 @@ public class CommonSteps extends Step {
      *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
      */
     @Conditioned
-    @Lorsque("J'attends la disparition de '(.*)-(.*)' avec un timeout de '(.*)' secondes[\\.|\\?]")
+    @Lorsque("Je patiente la disparition de '(.*)-(.*)' avec un timeout de '(.*)' secondes[\\.|\\?]")
     @Then("I wait staleness of '(.*)-(.*)' with timeout of '(.*)' seconds[\\.|\\?]")
     public void waitStalenessOf(String page, String element, int time, List<GherkinStepCondition> conditions) throws TechnicalException {
         final WebElement we = Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + element));

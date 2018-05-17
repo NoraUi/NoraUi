@@ -16,7 +16,7 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
         |element|<element>|
         |element2|<element2>|
         
-    Alors J'attends '1' secondes.
+    Alors Je patiente '1' secondes.
     
     Lorsque 'DEMO_HOME' est ouvert?
     Alors Le portail DEMO est affiché.
@@ -76,13 +76,13 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
     
     Alors Si '' vérifie '', je fais '2' fois:
         |key|step|expected|actual|
-        |1|J'attends '3' secondes.|1|1|
-        |2|J'attends '4' secondes.|1|2|
+        |1|Je patiente '3' secondes.|1|1|
+        |2|Je patiente '4' secondes.|1|2|
     
     Alors Si '' vérifie '', je fais jusqu'à 'myOutLoopKey' respecte 'Rennes' avec '4' essais maxi: 
         |key|step|expected|actual|
-        |1|J'attends '3' secondes.|1|1|
-        |2|J'attends '4' secondes.|1|2|
+        |1|Je patiente '3' secondes.|1|1|
+        |2|Je patiente '4' secondes.|1|2|
         |3|Je mets à jour la liste déroulante 'demo.DemoPage-input_select_field' avec '<city>'.|||
         |4|Je sauvegarde la valeur de 'demo.DemoPage-input_select_field' dans la clé 'myOutLoopKey' du contexte.|||
 
@@ -145,10 +145,10 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
     Alors Je m'attends à avoir 'demo.DemoPage-changeValueButton' avec le texte 'My value has changed'.
 
     Quand Je clique sur 'demo.DemoPage-disappearButton'.
-    Et J'attends l'invisibilité de 'demo.DemoPage-disappearButton' avec un timeout de '10' secondes.
+    Et Je patiente l'invisibilité de 'demo.DemoPage-disappearButton' avec un timeout de '10' secondes.
     
     Quand Je clique sur 'demo.DemoPage-staleButton'.
-    Et J'attends la disparition de 'demo.DemoPage-staleButton' avec un timeout de '10' secondes.
+    Et Je patiente la disparition de 'demo.DemoPage-staleButton' avec un timeout de '10' secondes.
 
     Et Je mets à jour le texte 'demo.DemoPage-input_text_field' avec une valeur aléatoire qui vérifie 'noraui[a-zA-Z0-9]{6}'.
     
@@ -170,7 +170,7 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
         |id|1|<id>|
 
     Et Je vide le repertoire des téléchargements.
-    ET J'attends que le fichier nommé 'stock-data.csv' soit téléchargé avec un timeout de '3' secondes.
+    ET Je patiente que le fichier nommé 'stock-data.csv' soit téléchargé avec un timeout de '3' secondes.
     Et Le fichier 'stock-data.csv' encodé en 'ISO-8859-1' vérifie 'Symbol;Company;Price'.
 
     Et Je retourne vers 'DEMO_HOME'

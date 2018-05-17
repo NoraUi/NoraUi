@@ -103,7 +103,7 @@ public class FileSteps extends Step {
      * @throws FailureException
      */
     @Conditioned
-    @Lorsque("J'attends que le fichier nommé '(.*)' soit téléchargé avec un timeout de '(.*)' secondes[\\.|\\?]")
+    @Lorsque("Je patiente que le fichier nommé '(.*)' soit téléchargé avec un timeout de '(.*)' secondes[\\.|\\?]")
     @Then("I wait file named '(.*)' to be downloaded with timeout of '(.*)' seconds[\\.|\\?]")
     public void waitDownloadFile(String file, int timeout, List<GherkinStepCondition> conditions) throws InterruptedException, FailureException, TechnicalException {
         File f;
