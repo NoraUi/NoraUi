@@ -49,14 +49,17 @@ public class FileSteps extends Step {
      *
      * @param conditions
      *            List of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
-     * @throws IOException
      */
     @Conditioned
     @Lorsque("Je vide le repertoire des téléchargements[\\.|\\?]")
     @Given("I clean download directory[\\.|\\?]")
-    public void cleanDownloadDirectory(List<GherkinStepCondition> conditions) throws IOException {
-        FileUtils.forceMkdir(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
-        FileUtils.cleanDirectory(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
+    public void cleanDownloadDirectory(List<GherkinStepCondition> conditions) {
+        try {
+            FileUtils.forceMkdir(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
+            FileUtils.cleanDirectory(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
+        } catch (IOException e) {
+            logger.warn("IOException in cleanDownloadDirectory", e);
+        }
     }
 
     /**
