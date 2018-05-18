@@ -35,10 +35,12 @@ Feature: hello (Function to validate the environment.)
 			  
     Given me a cat, please. Best Regards '<author>'.
     
+    Given I create test.txt file in download directory
     When I use 'demo.DemoPage-file_input_text_field' element to upload 'test.txt' file.
     And I click on 'demo.DemoPage-send'.
     Then I check text 'demo.DemoPage-input_text_field' with 'test.txt'.
-		
+    And I clean download directory.
+
     When I clear text in 'demo.DemoPage-input_text_field'.
     When I update text 'demo.DemoPage-input_text_field' with '<author>'.
     When I update text 'demo.DemoPage-input_text_field' and type ENTER with '<author>'.
@@ -170,10 +172,10 @@ Feature: hello (Function to validate the environment.)
         |key|expected|actual|
         |id|1|<id>|
 
-    And I clean download directory.
     And I click on 'demo.DemoPage-exportCSV'.
     And I wait file named 'stock-data.csv' to be downloaded with timeout of '3' seconds.
     And The file 'stock-data.csv' encoded in 'ISO-8859-1' matches 'Symbol;Company;Price'.
+    And I remove 'stock-data.csv' file in download directory.
 
     And I go back to 'DEMO_HOME'        
 

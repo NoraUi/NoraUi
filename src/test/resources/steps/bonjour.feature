@@ -35,10 +35,12 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
         |city|<city>|
 
     Lorsque moi un chat, s'il vous plaît, meilleures salutations '<author>'.
-    
+
+    Lorsque Je fait la créaton du fichier test.txt dans repertoire des téléchargements
     Quand J'utilise l'élément 'demo.DemoPage-file_input_text_field' pour uploader le fichier 'test.txt'.
     Et Je clique sur 'demo.DemoPage-send'.
     Alors Je vérifie le texte 'demo.DemoPage-input_text_field' avec 'test.txt'.
+    Lorsque Je vide le repertoire des téléchargements.
     
     Quand Je clarifie le texte dans 'demo.DemoPage-input_text_field'.
     Quand Je mets à jour le texte 'demo.DemoPage-input_text_field' avec '<author>'.
@@ -169,10 +171,10 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
         |key|expected|actual|
         |id|1|<id>|
 
-    Et Je vide le repertoire des téléchargements.
     Et Je clique sur 'demo.DemoPage-exportCSV'.
     Et Je patiente que le fichier nommé 'stock-data.csv' soit téléchargé avec un timeout de '3' secondes.
     Et Le fichier 'stock-data.csv' encodé en 'ISO-8859-1' vérifie 'Symbol;Company;Price'.
+    Lorsque Je supprime le fichier 'stock-data.csv' dans repertoire des téléchargements.
 
     Et Je retourne vers 'DEMO_HOME'
 

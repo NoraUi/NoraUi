@@ -45,7 +45,7 @@ public class FileSteps extends Step {
     private static final Logger logger = LoggerFactory.getLogger(CommonSteps.class);
 
     /**
-     * Empties the default downloaded files folder
+     * Empties the default downloaded files folder.
      *
      * @param conditions
      *            List of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
@@ -57,6 +57,22 @@ public class FileSteps extends Step {
     public void cleanDownloadDirectory(List<GherkinStepCondition> conditions) throws IOException {
         FileUtils.forceMkdir(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
         FileUtils.cleanDirectory(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
+    }
+
+    /**
+     * Remove a file in the default downloaded files folder
+     * 
+     * @param file
+     *            The name of the file removed.
+     * @param conditions
+     *            List of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
+     * @throws IOException
+     */
+    @Conditioned
+    @Lorsque("Je supprime le fichier '(.*)' dans repertoire des téléchargements[\\.|\\?]")
+    @Given("I remove '(.*)' file in download directory[\\.|\\?]")
+    public void removefileInDownloadDirectory(String file, List<GherkinStepCondition> conditions) throws IOException {
+        FileUtils.forceDelete(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + file));
     }
 
     /**

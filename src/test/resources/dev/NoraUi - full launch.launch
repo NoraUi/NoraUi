@@ -7,7 +7,8 @@
 <stringAttribute key="M2_PROFILES" value="preIC,scenarioInitiator,unit-tests"/>
 <listAttribute key="M2_PROPERTIES">
 <listEntry value="maven.test.failure.ignore=true"/>
-<listEntry value="cucumber.options=--tags '@hello or @bonjour or @blog or @playToLogoGame or @jouerAuJeuDesLogos'"/>
+<listEntry value="cucumber.options=--tags '@bonjour'"/>
+<listEntry value="crypto.key=my-secret"/>
 </listAttribute>
 <stringAttribute key="M2_RUNTIME" value="EMBEDDED"/>
 <booleanAttribute key="M2_SKIP_TESTS" value="false"/>

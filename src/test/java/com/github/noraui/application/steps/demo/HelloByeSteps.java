@@ -6,6 +6,11 @@
  */
 package com.github.noraui.application.steps.demo;
 
+import static com.github.noraui.utils.Constants.DOWNLOADED_FILES_FOLDER;
+import static com.github.noraui.utils.Constants.USER_DIR;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -49,6 +54,17 @@ public class HelloByeSteps extends Step {
     public void checkDemoPortalPage() throws FailureException {
         if (!demoPage.checkPage()) {
             new Result.Failure<>("DEMO", Messages.getMessage(Messages.FAIL_MESSAGE_UNKNOWN_CREDENTIALS), true, this.demoPage.getCallBack());
+        }
+    }
+
+    @Lorsque("Je fait la créaton du fichier test.txt dans repertoire des téléchargements")
+    @Given("I create test.txt file in download directory")
+    public void createTestTxtFileInDownloadDirectory() throws IOException {
+        File f = new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + "Test.txt");
+        if (!f.exists()) {
+            f.createNewFile();
+        } else {
+            logger.warn("File already exists");
         }
     }
 

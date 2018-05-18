@@ -1,9 +1,9 @@
-﻿author;zip;city;element;element2;date;title;Result
-Jenkins T1;35000;Rennes;smile;smile;16/01/2020;;UT Failed Message
-Jenkins T2;75000;Paris;smile;smile;;;Succès
-Jenkins T3;56100;Lorient;smile;smile;;;UT Warning Message
-Jenkins T4;35000;Rennes;smile;smile;;UT title;
-Jenkins T5;35000;Rennes;noExistElement;noExistElement;;;35
+author;zip;city;element;element2;date;title;Result
+Jenkins T1;35000;Rennes;smile;smile;16/01/2020;;
+Jenkins T2;75000;Paris;smile;smile;;;30
+Jenkins T3;56100;Lorient;smile;smile;;;24
+Jenkins T4;35000;Rennes;smile;smile;;;
+Jenkins T5;35000;Rennes;noExistElement;noExistElement;;;38
 Jenkins T6;35000;;smile;smile;;;2
-Jenkins T7;35000;Rennes;;;;;3
-Jenkins T8;;Rennes;;smile;smile;;51
+Jenkins T7;35000;Rennes;;;;;4
+Jenkins T8;;Rennes;;smile;smile;;54
