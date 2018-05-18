@@ -60,7 +60,7 @@ public class HelloByeSteps extends Step {
     @Lorsque("Je fait la créaton du fichier test.txt dans repertoire des téléchargements")
     @Given("I create test.txt file in download directory")
     public void createTestTxtFileInDownloadDirectory() throws IOException {
-        File f = new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + "Test.txt");
+        File f = new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + "test.txt");
         if (!f.exists()) {
             f.createNewFile();
         } else {
