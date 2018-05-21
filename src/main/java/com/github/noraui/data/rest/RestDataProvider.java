@@ -148,6 +148,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
         logger.info("Writing: [{}] at line [{}] in column [{}]", value, line, column);
         final int colIndex = columns.indexOf(column);
         final String url = this.norauiWebServicesApi + scenarioName + COLUMN + colIndex + LINE + line;
+        logger.info("url: [{}]", url);
         try {
             final DataModel dataModel = new Gson().fromJson(httpService.post(url, value), DataModel.class);
             if (resultColumnName.equals(column)) {
