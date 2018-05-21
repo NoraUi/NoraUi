@@ -145,7 +145,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
      */
     @Override
     protected void writeValue(String column, int line, String value) {
-        logger.debug("Writing: [{}] at line [{}] in column [{}]", value, line, column);
+        logger.info("Writing: [{}] at line [{}] in column [{}]", value, line, column);
         final int colIndex = columns.indexOf(column);
         final String url = this.norauiWebServicesApi + scenarioName + COLUMN + colIndex + LINE + line;
         try {
