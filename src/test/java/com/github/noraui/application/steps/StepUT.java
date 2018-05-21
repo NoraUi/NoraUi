@@ -1,6 +1,6 @@
 /**
  * NoraUi is licensed under the license GNU AFFERO GENERAL PUBLIC LICENSE
- * 
+ *
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
@@ -371,16 +371,16 @@ public class StepUT {
     @Test
     public void testRunAllStepsInLoopWithUndefinedStep() {
         final List<GherkinConditionedLoopedStep> steps = new ArrayList<>();
-        final String expected = ".+;(ETS Backbone VLAN LL2048K\\|ETS Accès L2ETH\\|Accès XDSL ETS\\|Backbone VLAN Virtuelle)";
-        final String actual = "VPNtechnique;OSC_ACC-resource_type";
-        Context.saveValue("OSC_ACC-resource_type", "ETS Accès L2ETH");
-        final GherkinConditionedLoopedStep gherkinConditionedLoopedStep = new GherkinConditionedLoopedStep("1", "I wait '4' seconds.", expected, actual);
+        final String expected = ".+;(Value1 with space\\|Value2\\|Value3 3958\\|Value 4)";
+        final String actual = "OtherValue;Value 4";
+        Context.saveValue("TEST-resource_type", "A Resource");
+        final GherkinConditionedLoopedStep gherkinConditionedLoopedStep = new GherkinConditionedLoopedStep("1", "I want to do '4' things I cant.", expected, actual);
         steps.add(gherkinConditionedLoopedStep);
         try {
             step.runAllStepsInLoop(steps);
             Assert.fail("TechnicalException should have been thrown");
         } catch (final TechnicalException e) {
-            Assert.assertEquals(String.format(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_STEP_UNDEFINED), "I wait '4' seconds."), e.getMessage());
+            Assert.assertEquals(String.format(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_STEP_UNDEFINED), "I want to do '4' things I cant."), e.getMessage().replace("\"", ""));
         }
     }
 

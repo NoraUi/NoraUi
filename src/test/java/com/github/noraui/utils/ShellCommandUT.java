@@ -21,7 +21,13 @@ public class ShellCommandUT {
     @Test
     public void testSimpleCommandWithParameters() {
         try {
-            final int returnCode = new ShellCommand("help", "echo").run();
+            final int returnCode;
+            final String operatingSystemName = Utilities.OperatingSystem.getCurrentOperatingSystem().getOperatingSystemName().toLowerCase();
+            if (operatingSystemName.contains("windows")) {
+                returnCode = new ShellCommand("help", "echo").run();
+            } else {
+                returnCode = new ShellCommand("man", "echo").run();
+            }
             Assert.assertTrue("testSimpleCommandWithParameters() wrongly ended ! return code is " + returnCode, returnCode == 0 || returnCode == 1);
         } catch (final Exception e) {
             Assert.fail("Exception thrown: " + e.getMessage());
