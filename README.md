@@ -9,7 +9,7 @@ Non-Regression Automation for User Interfaces
 
 # News 
 See [change log](https://noraui.github.io/changelog.txt) for details
-* 2018-0x-xx: NoraUi [3.2.0] is in progress.
+* 2018-05-24: NoraUi [3.2.0] is in progress.
 * 2018-03-19: NoraUi [3.1.3] is released.
 * 2018-03-14: NoraUi [3.1.2] is released.
 * 2018-03-06: NoraUi [3.1.1] is released.
@@ -29,6 +29,7 @@ See [change log](https://noraui.github.io/changelog.txt) for details
 * Change all `private static Logger logger = Logger.getLogger` by `private static final Logger logger = LoggerFactory.getLogger`
 * Change all `import org.apache.log4j.Logger;` by `import org.slf4j.Logger;` and `import org.slf4j.LoggerFactory;`
 * Change com.github.noraui.browser.DriverFactory#setProperty(String key, Properties propertyFile) to com.github.noraui.browser.DriverFactory#getProperty(String key, Properties propertyFile)
+* Change com.github.noraui.browser.DriverFactory#setIntProperty(String key, Properties propertyFile) to com.github.noraui.browser.DriverFactory#getIntProperty(String key, Properties propertyFile)
 * replace all step constructors by `com.google.inject.Inject` (inject pages)
 * replace loadAuthentication(String browser) by loadAuthentication(Cookie cookie)
 * replace PhantomJs by Chrome headless
