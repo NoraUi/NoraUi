@@ -40,8 +40,7 @@ public class ShellCommandUT {
             new ShellCommand("unknown").run();
             Assert.fail("testUnknownSimpleCommand() should return an exception");
         } catch (final Exception e) {
-            System.out.println(e.getClass());
-            Assert.assertTrue("Exception thrown after testUnknownSimpleCommand() should be an instance of 'exception.TechnicalException' !", (e instanceof TechnicalException));
+            Assert.assertTrue("Exception thrown after testUnknownSimpleCommand() should be an instance of 'exception.TechnicalException' !", e instanceof TechnicalException);
         }
     }
 }
