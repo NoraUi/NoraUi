@@ -302,6 +302,9 @@ public class Context {
         return instance;
     }
 
+    /**
+     * @param propertiesFile
+     */
     public synchronized void initializeEnv(String propertiesFile) {
         logger.info("Context > initializeEnv()");
 
@@ -327,6 +330,11 @@ public class Context {
 
     }
 
+    /**
+     * @param clazz
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     */
     public synchronized void initializeRobot(Class<?> clazz) throws TechnicalException {
         logger.info("Context > initializeRobot() with {}", clazz.getCanonicalName());
         // set browser: chrome,firefox or ie
@@ -336,7 +344,7 @@ public class Context {
         initializeWebdriversProperties(Thread.currentThread().getContextClassLoader());
 
         // wait delay until web element is displayed.
-        timeout = setIntProperty(TIMEOUT_KEY, applicationProperties);
+        timeout = getIntProperty(TIMEOUT_KEY, applicationProperties);
 
         // set version of selectors used to deliver several versions
         selectorsVersion = getProperty(SELECTORS_VERSION, applicationProperties);
@@ -506,6 +514,9 @@ public class Context {
         getInstance().currentScenarioData = current;
     }
 
+    /**
+     * 
+     */
     public static void goToNextFeature() {
         getInstance().currentScenarioData = 0;
         getInstance().nbFailure = 0;
@@ -516,6 +527,9 @@ public class Context {
         return getInstance().scenarioName;
     }
 
+    /**
+     * @param scenarioName
+     */
     public static void setScenarioName(String scenarioName) {
         if (getInstance().scenarioName == null || !getInstance().scenarioName.equals(scenarioName)) {
             try {
@@ -571,6 +585,11 @@ public class Context {
         getInstance().dataOutputProvider = dataOutputProvider;
     }
 
+    /**
+     * @param loader
+     * @param propertiesFileName
+     * @return
+     */
     protected static Properties initPropertiesFile(ClassLoader loader, String propertiesFileName) {
         if (loader != null) {
             final InputStream in = loader.getResourceAsStream(propertiesFileName);
@@ -591,6 +610,12 @@ public class Context {
         return null;
     }
 
+    /**
+     * @param key
+     *            of property
+     * @param propertyFile
+     * @return String property
+     */
     public static String getProperty(String key, Properties propertyFile) {
         if (propertyFile == null) {
             return null;
@@ -602,10 +627,36 @@ public class Context {
         return p;
     }
 
+    /**
+     * @param key
+     *            of property
+     * @param propertyFile
+     * @return int property
+     */
+    private static int getIntProperty(String key, Properties propertyFile) {
+        final String property = propertyFile.getProperty(key);
+        int p = 0;
+        if (property == null) {
+            logger.error("{}{}", key, Messages.getMessage(NOT_SET_LABEL));
+        } else {
+            p = Integer.parseInt(property);
+            logger.info("{} = {}", key, p);
+        }
+        return p;
+    }
+
     public static String getResourcesPath() {
         return getInstance().resourcesPath;
     }
 
+    /**
+     * @param loader
+     *            is class loader
+     * @param version
+     *            is version of selector (target application version).
+     * @param applicationKey
+     *            unic key of application
+     */
     protected static void initApplicationDom(ClassLoader loader, String version, String applicationKey) {
         try {
             final InputStream data = loader.getResourceAsStream("selectors/" + version + "/" + applicationKey + ".ini");
@@ -684,6 +735,13 @@ public class Context {
         return getInstance().applications.get(applicationKey);
     }
 
+    /**
+     * Get url name in a string by page key.
+     * 
+     * @param pageKey
+     *            is key of page
+     * @return url in a string
+     */
     public static String getUrlByPagekey(String pageKey) {
         if (pageKey != null) {
             for (final Map.Entry<String, Application> application : getInstance().applications.entrySet()) {
@@ -699,6 +757,13 @@ public class Context {
         return null;
     }
 
+    /**
+     * Get application name in a string by page key.
+     * 
+     * @param pageKey
+     *            is key of page
+     * @return application name in a string
+     */
     public static String getApplicationByPagekey(String pageKey) {
         if (pageKey != null) {
             for (final Map.Entry<String, Application> application : getInstance().applications.entrySet()) {
@@ -714,18 +779,14 @@ public class Context {
         return null;
     }
 
-    private static int setIntProperty(String key, Properties propertyFile) {
-        final String property = propertyFile.getProperty(key);
-        int p = 0;
-        if (property == null) {
-            logger.error("{}{}", key, Messages.getMessage(NOT_SET_LABEL));
-        } else {
-            p = Integer.parseInt(property);
-            logger.info("{} = {}", key, p);
-        }
-        return p;
-    }
-
+    /**
+     * init all Data index (by model).
+     * 
+     * @param scenarioName
+     *            name of scenario.
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     */
     private static void initDataId(String scenarioName) throws TechnicalException {
         final List<DataIndex> indexData = new ArrayList<>();
         try {
@@ -757,6 +818,9 @@ public class Context {
         }
     }
 
+    /**
+     * initialize Locale (fr, en).
+     */
     private void initializeLocale() {
         final String locale = getProperty(LOCALE, applicationProperties);
         if (locale != null && !"".equals(locale)) {
@@ -772,6 +836,9 @@ public class Context {
         logger.info(Messages.getMessage(CONTEXT_LOCALE_USED), currentLocale);
     }
 
+    /**
+     * @param applicationProperties
+     */
     private void plugDataProvider(Properties applicationProperties) {
         try {
             final String dataIn = getProperty("dataProvider.in.type", applicationProperties);
@@ -826,4 +893,5 @@ public class Context {
             logger.error(Messages.getMessage(CONTEXT_ERROR_WHEN_PLUGING_DATA_PROVIDER), e);
         }
     }
+
 }
