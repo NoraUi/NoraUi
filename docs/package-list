@@ -7,6 +7,8 @@ com.github.noraui.application.page
 com.github.noraui.application.steps
 com.github.noraui.browser
 com.github.noraui.browser.steps
+com.github.noraui.cli
+com.github.noraui.cli.model
 com.github.noraui.cucumber.annotation
 com.github.noraui.cucumber.injector
 com.github.noraui.cucumber.interceptor
@@ -27,4 +29,12 @@ com.github.noraui.model
 com.github.noraui.service
 com.github.noraui.service.impl
 com.github.noraui.utils
+cucumber.metrics.annotation.regulator
+cucumber.metrics.annotation.time
+cucumber.metrics.core
+cucumber.metrics.core.impl
+cucumber.metrics.core.patch4java7
+cucumber.metrics.interceptor
+cucumber.metrics.jmx
+cucumber.metrics.module
 cucumber.runtime
