@@ -12,23 +12,18 @@ import com.github.noraui.model.ModelList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-/**
- * @deprecated since NoraUi 3.3.0, because DemosModel renamed to CommonModels.
- *             {@link com.github.noraui.application.model.CommonModels<T>} instead.
- */
-@Deprecated
-public abstract class DemosModel<T> extends ArrayList<T> implements ModelList {
+public abstract class CommonModels<T> extends ArrayList<T> implements ModelList {
 
     /**
      *
      */
     private static final long serialVersionUID = 257533336402277981L;
 
-    protected DemosModel() {
+    protected CommonModels() {
         super();
     }
 
-    protected DemosModel(DemosModel<T> inputList) {
+    protected CommonModels(CommonModels<T> inputList) {
         super(inputList);
     }
 

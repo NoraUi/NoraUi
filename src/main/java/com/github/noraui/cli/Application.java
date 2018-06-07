@@ -155,7 +155,7 @@ public class Application extends AbstractNoraUiCli {
         sb.append("    public " + applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "Page() {").append(System.lineSeparator());
         sb.append("        super();").append(System.lineSeparator());
         sb.append("        this.application = " + applicationName.toUpperCase() + "_KEY;").append(System.lineSeparator());
-        sb.append("        this.pageKey = \"" + applicationName.toUpperCase() + "_HOM\";").append(System.lineSeparator());
+        sb.append("        this.pageKey = \"" + applicationName.toUpperCase() + "_HOME\";").append(System.lineSeparator());
         sb.append("        this.callBack = Context.getCallBack(" + noraRobotName + "Context.CLOSE_WINDOW_AND_SWITCH_TO_" + applicationName.toUpperCase() + "_HOME);").append(System.lineSeparator());
         sb.append("    }").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
@@ -251,7 +251,7 @@ public class Application extends AbstractNoraUiCli {
         sb.append("    private " + applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "Page " + applicationName + "Page;").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
         sb.append("    /**").append(System.lineSeparator());
-        sb.append("     * Check Login page.").append(System.lineSeparator());
+        sb.append("     * Check home page.").append(System.lineSeparator());
         sb.append("     *").append(System.lineSeparator());
         sb.append("     * @throws FailureException").append(System.lineSeparator());
         sb.append("     *             if the scenario encounters a functional error.").append(System.lineSeparator());
@@ -259,7 +259,7 @@ public class Application extends AbstractNoraUiCli {
         sb.append("    @Then(\"The " + applicationName.toUpperCase() + " home page is displayed\")").append(System.lineSeparator());
         sb.append("    public void check" + applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "HomePage() throws FailureException {").append(System.lineSeparator());
         sb.append("        if (!" + applicationName + "Page.checkPage()) {").append(System.lineSeparator());
-        sb.append("            new Result.Failure<>(" + applicationName + "Page.getApplication(), Messages.getMessage(Messages.FAIL_MESSAGE_UNKNOWN_CREDENTIALS), true, " + applicationName
+        sb.append("            new Result.Failure<>(" + applicationName + "Page.getApplication(), Messages.getMessage(Messages.FAIL_MESSAGE_HOME_PAGE_NOT_FOUND), true, " + applicationName
                 + "Page.getCallBack());").append(System.lineSeparator());
         sb.append("        }").append(System.lineSeparator());
         sb.append("    }").append(System.lineSeparator());
@@ -470,7 +470,7 @@ public class Application extends AbstractNoraUiCli {
         String selectorsPath = this.mainPath + File.separator + RESOURCES + File.separator + "selectors";
         String[] versions = new File(selectorsPath).list();
         StringBuilder sb = new StringBuilder();
-        sb.append("[" + applicationName.toUpperCase() + "_HOM-pageElementSample]");
+        sb.append("[" + applicationName.toUpperCase() + "_HOME-pageElementSample]");
         sb.append(System.lineSeparator());
         sb.append("xpath=//*[@id='page-element-sample']");
         try {
@@ -572,6 +572,7 @@ public class Application extends AbstractNoraUiCli {
         updatePropertiesFile(propertiesfilePath, sb);
     }
 
+    
     /**
      * @param applicationName
      *            name of application added.

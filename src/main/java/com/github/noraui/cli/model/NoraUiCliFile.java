@@ -45,7 +45,8 @@ public class NoraUiCliFile {
         for (int i = 0; i < r.size(); i++) {
             NoraUiApplicationFile e = r.get(i);
             if (applicationName.equals(e.getName())) {
-                r.remove(i);
+                e.setStatus(false);
+                r.set(i, e);
                 break;
             }
         }
@@ -73,7 +74,8 @@ public class NoraUiCliFile {
         for (int i = 0; i < r.size(); i++) {
             NoraUiScenarioFile e = r.get(i);
             if (scenarioName.equals(e.getName())) {
-                r.remove(i);
+                e.setStatus(false);
+                r.set(i, e);
                 break;
             }
         }
@@ -122,7 +124,6 @@ public class NoraUiCliFile {
                         break;
                     }
                 }
-                e.setModels(models);
             }
             r.set(i, e);
         }

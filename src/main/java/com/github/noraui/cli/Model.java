@@ -417,11 +417,11 @@ public class Model extends AbstractNoraUiCli {
         sb.append("import com.google.gson.GsonBuilder;").append(System.lineSeparator());
         sb.append("import com.google.gson.reflect.TypeToken;").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
-        sb.append("import com.github.noraui.application.model.DemosModel;").append(System.lineSeparator());
+        sb.append("import com.github.noraui.application.model.CommonModels;").append(System.lineSeparator());
         sb.append("import com.github.noraui.model.Model;").append(System.lineSeparator());
         sb.append("import com.github.noraui.model.ModelList;").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
-        sb.append("public class " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s extends DemosModel<" + modelName.toUpperCase().charAt(0) + modelName.substring(1)
+        sb.append("public class " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s extends CommonModels<" + modelName.toUpperCase().charAt(0) + modelName.substring(1)
                 + "> implements ModelList {").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
         sb.append("    /**").append(System.lineSeparator());
@@ -433,7 +433,7 @@ public class Model extends AbstractNoraUiCli {
         sb.append("        super();").append(System.lineSeparator());
         sb.append("    }").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
-        sb.append("    public " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s(DemosModel<" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "> inputList) {")
+        sb.append("    public " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s(CommonModels<" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "> inputList) {")
                 .append(System.lineSeparator());
         sb.append("        super(inputList);").append(System.lineSeparator());
         sb.append("    }").append(System.lineSeparator());

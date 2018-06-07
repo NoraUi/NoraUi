@@ -50,6 +50,7 @@ public class Messages {
      * Functional fail messages.
      */
     public static final String FAIL_MESSAGE_UNKNOWN_CREDENTIALS = "FAIL_MESSAGE_UNKNOWN_CREDENTIALS";
+    public static final String FAIL_MESSAGE_HOME_PAGE_NOT_FOUND = "FAIL_MESSAGE_HOME_PAGE_NOT_FOUND";
     public static final String FAIL_MESSAGE_LOGOUT = "FAIL_MESSAGE_LOGOUT";
     public static final String FAIL_MESSAGE_LIST = "FAIL_MESSAGE_LIST";
     public static final String FAIL_MESSAGE_TEXT = "FAIL_MESSAGE_TEXT";

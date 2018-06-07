@@ -14,11 +14,13 @@ public class NoraUiApplicationFile {
     private String name;
     private String url;
     private List<NoraUiModel> models;
+    private boolean status;
 
     public NoraUiApplicationFile() {
         this.name = "";
         this.url = "";
         this.models = new ArrayList<>();
+        this.status = true;
     }
 
     public String getName() {
@@ -43,6 +45,14 @@ public class NoraUiApplicationFile {
 
     public void setModels(List<NoraUiModel> models) {
         this.models = models;
+    }
+
+    public boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
 }

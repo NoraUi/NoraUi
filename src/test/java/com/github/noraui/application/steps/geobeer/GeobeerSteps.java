@@ -44,20 +44,20 @@ public class GeobeerSteps extends Step {
     private LogoutPage logoutPage;
 
     /**
-     * Check Login page.
+     * Check home page.
      *
      * @throws FailureException
      *             if the scenario encounters a functional error.
      */
     @Then("The GEOBEER home page is displayed")
-    public void checkCountriesLoginPage() throws FailureException {
+    public void checkGeobeerLoginPage() throws FailureException {
         if (!geobeerPage.checkPage()) {
-            new Result.Failure<>(geobeerPage.getApplication(), Messages.getMessage(Messages.FAIL_MESSAGE_UNKNOWN_CREDENTIALS), true, geobeerPage.getCallBack());
+            new Result.Failure<>(geobeerPage.getApplication(), Messages.getMessage(Messages.FAIL_MESSAGE_HOME_PAGE_NOT_FOUND), true, geobeerPage.getCallBack());
         }
     }
 
     /**
-     * Log in to COUNTRIES.
+     * Log in to GEOBEER.
      *
      * @param login
      *            Login to use.
@@ -66,9 +66,9 @@ public class GeobeerSteps extends Step {
      * @throws FailureException
      *             if the scenario encounters a functional error.
      */
-    @Alors("Je me connect sur COUNTRIES avec '(.*)' '(.*)'")
-    @Then("I log in to COUNTRIES as '(.*)' '(.*)'")
-    public void logInToCountries(String login, String password) throws FailureException {
+    @Alors("Je me connect sur GEOBEER avec '(.*)' '(.*)'")
+    @Then("I log in to GEOBEER as '(.*)' '(.*)'")
+    public void logInToGeobeer(String login, String password) throws FailureException {
         try {
             Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(geobeerPage.signInButton)));
             Utilities.findElement(geobeerPage.login).sendKeys(login);
@@ -79,13 +79,13 @@ public class GeobeerSteps extends Step {
         }
     }
 
-    @Alors("Le portail COUNTRIES est affiché")
-    @Then("The COUNTRIES portal is displayed")
+    @Alors("Le portail GEOBEER est affiché")
+    @Then("The GEOBEER portal is displayed")
     public void checkDemoPortalPage() throws FailureException {
         try {
             Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(dashboardPage.signInMessage)));
             if (!dashboardPage.checkPage()) {
-                logInToCountriesWithCountriesRobot();
+                logInToGeobeerWithGeobeerRobot();
             }
             if (!dashboardPage.checkPage()) {
                 new Result.Failure<>(dashboardPage.getApplication(), Messages.getMessage(Messages.FAIL_MESSAGE_UNKNOWN_CREDENTIALS), true, dashboardPage.getCallBack());
@@ -97,14 +97,14 @@ public class GeobeerSteps extends Step {
     }
 
     /**
-     * Logout of Countries.
+     * Logout of Geobeer.
      * 
      * @throws FailureException
      *             if the scenario encounters a functional error.
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      */
-    @When("I log out of COUNTRIES")
+    @When("I log out of GEOBEER")
     public void logOut() throws FailureException, TechnicalException {
         if (Auth.isConnected()) {
             getDriver().switchTo().defaultContent();
@@ -117,24 +117,24 @@ public class GeobeerSteps extends Step {
      * 
      * @throws FailureException
      */
-    @Then("The COUNTRIES logout page is displayed")
-    public void checkCountriesLogoutPage() throws FailureException {
+    @Then("The GEOBEER logout page is displayed")
+    public void checkGeobeerLogoutPage() throws FailureException {
         if (!logoutPage.checkPage()) {
             new Result.Failure<>(logoutPage.getApplication(), Messages.getMessage(Messages.FAIL_MESSAGE_LOGOUT), true, logoutPage.getCallBack());
         }
     }
 
     /**
-     * Log in to COUNTRIES with CountriesRobot (login and password in job parameters).
+     * Log in to GEOBEER with GeobeerRobot (login and password in job parameters).
      *
      * @throws FailureException
      *             if the scenario encounters a functional error.
      */
-    private void logInToCountriesWithCountriesRobot() throws FailureException {
+    private void logInToGeobeerWithGeobeerRobot() throws FailureException {
         String login = Auth.getLogin();
         String password = Auth.getPassword();
         if (!"".equals(login) && !"".equals(password)) {
-            logInToCountries(login, password);
+            logInToGeobeer(login, password);
         }
     }
 

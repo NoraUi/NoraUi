@@ -122,7 +122,8 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("    8 => decrypt data").append(System.lineSeparator());
         expectedCliAsk.append("Enter application name:").append(System.lineSeparator());
         expectedCliAsk.append("Enter url:").append(System.lineSeparator());
-        expectedCliAsk.append("Add a new application named [google] with this url: [http://www.google.fr]").append(System.lineSeparator());
+        expectedCliAsk.append("Add a new application named [google] with this url: [http://www.google.fr]")
+                .append(System.lineSeparator());
         expectedCliAsk.append(System.lineSeparator());
         expectedCliAsk.append("NoraUi Command Line Interface finished with success.").append(System.lineSeparator());
         expectedCliAsk.append(System.lineSeparator());
@@ -169,7 +170,9 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("    1) google").append(System.lineSeparator());
         expectedCliAsk.append("Enter scenario name:").append(System.lineSeparator());
         expectedCliAsk.append("Enter description:").append(System.lineSeparator());
-        expectedCliAsk.append("Add a new scenario named [loginSample] on [google] application with this description: [description for login to google sample]").append(System.lineSeparator());
+        expectedCliAsk.append(
+                "Add a new scenario named [loginSample] on [google] application with this description: [description for login to google sample]")
+                .append(System.lineSeparator());
         expectedCliAsk.append("dataProvider.in.type is [EXCEL]").append(System.lineSeparator());
         expectedCliAsk.append("dataProvider.out.type is [EXCEL]").append(System.lineSeparator());
         expectedCliAsk.append(System.lineSeparator());
@@ -219,8 +222,9 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("    1) google").append(System.lineSeparator());
         expectedCliAsk.append("Enter model name:").append(System.lineSeparator());
         expectedCliAsk.append("Enter field list:").append(System.lineSeparator());
-        expectedCliAsk.append("Enter result list:").append(System.lineSeparator());
-        expectedCliAsk.append("Add a new model named [foo] in application named [google]").append(System.lineSeparator());
+        expectedCliAsk.append("Enter result list (optional):").append(System.lineSeparator());
+        expectedCliAsk.append("Add a new model named [foo] in application named [google]")
+                .append(System.lineSeparator());
         expectedCliAsk.append("field: [field1]").append(System.lineSeparator());
         expectedCliAsk.append("field: [field2]").append(System.lineSeparator());
         expectedCliAsk.append("result: [result1]").append(System.lineSeparator());
