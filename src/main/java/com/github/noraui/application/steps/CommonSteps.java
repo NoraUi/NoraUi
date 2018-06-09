@@ -815,7 +815,7 @@ public class CommonSteps extends Step {
      */
     @Et("Je vérifie le message '(.*)' sur l'alerte")
     @And("I check message '(.*)' on alert")
-    public void checkAlertInLogs(String messageOrKey) throws TechnicalException, FailureException {
+    public void checkAlert(String messageOrKey) throws TechnicalException, FailureException {
         final String message = Context.getValue(messageOrKey) != null ? Context.getValue(messageOrKey) : messageOrKey;
         final String msg = getAlertMessage();
         if (msg == null || !msg.equals(message)) {
