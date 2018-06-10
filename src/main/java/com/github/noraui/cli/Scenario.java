@@ -19,7 +19,12 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
@@ -217,14 +222,38 @@ public class Scenario extends AbstractNoraUiCli {
      */
     private void addXlsxFile(String scenarioName, String excelPath) {
         try (FileOutputStream outputStream = new FileOutputStream(excelPath); XSSFWorkbook workbook = new XSSFWorkbook()) {
+            XSSFCellStyle noraUiColumnStyle = workbook.createCellStyle();
+            XSSFFont noraUiColumnFont = workbook.createFont();
+            noraUiColumnFont.setColor(IndexedColors.BLACK.getIndex());
+            noraUiColumnFont.setBold(true);
+            noraUiColumnStyle.setFont(noraUiColumnFont);
+            noraUiColumnStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(0, 96, 88)));
+            noraUiColumnStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+            XSSFCellStyle noraUiResultColumnStyle = workbook.createCellStyle();
+            XSSFFont noraUiResultColumnFont = workbook.createFont();
+            noraUiResultColumnFont.setColor(IndexedColors.WHITE.getIndex());
+            noraUiResultColumnFont.setBold(false);
+            noraUiResultColumnStyle.setFont(noraUiResultColumnFont);
+            noraUiResultColumnStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(128, 128, 128)));
+            noraUiResultColumnStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
             XSSFSheet sheet = workbook.createSheet("NoraUi-" + scenarioName);
-            Object[][] datatypes = { { "user", "password", "Result" }, { "user1", "password1" }, { "user2", "password2" } };
+            Object[][] datas = { { "user", "password", "Result" }, { "user1", "password1" }, { "user2", "password2" } };
             int rowNum = 0;
-            for (Object[] datatype : datatypes) {
+            for (int i = 0; i < datas.length; i++) {
+                Object[] data = datas[i];
                 Row row = sheet.createRow(rowNum++);
                 int colNum = 0;
-                for (Object field : datatype) {
+                for (Object field : data) {
                     Cell cell = row.createCell(colNum++);
+                    if (i == 0) {
+                        if ("Result".equals(field)) {
+                            cell.setCellStyle(noraUiResultColumnStyle);
+                        } else {
+                            cell.setCellStyle(noraUiColumnStyle);
+                        }
+                    }
                     if (field instanceof String) {
                         cell.setCellValue((String) field);
                     } else if (field instanceof Integer) {
