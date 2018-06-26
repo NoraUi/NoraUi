@@ -1,6 +1,6 @@
 /**
  * NoraUi is licensed under the license GNU AFFERO GENERAL PUBLIC LICENSE
- * 
+ *
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
@@ -134,7 +134,7 @@ public class MavenRunCounter {
     }
 
     protected String generateExpected2(String type, int run, int failures, int skipped, int scenarios) {
-        StringBuilder expectedResults2 = new StringBuilder(100);
+        final StringBuilder expectedResults2 = new StringBuilder(100);
         int passed;
         expectedResults2.append("[").append(type).append("] > <EXPECTED_RESULTS_2>");
         expectedResults2.append(run - scenarios).append(" Steps (");
@@ -155,7 +155,7 @@ public class MavenRunCounter {
     }
 
     protected String generateExpected1(String type, int failures, int scenarios) {
-        StringBuilder expectedResults1 = new StringBuilder(100);
+        final StringBuilder expectedResults1 = new StringBuilder(100);
         int passed;
         expectedResults1.append("[").append(type).append("] > <EXPECTED_RESULTS_1>");
         expectedResults1.append(scenarios).append(" Scenarios (");
@@ -286,17 +286,19 @@ public class MavenRunCounter {
         final String[] headers = Context.getDataInputProvider().readLine(0, false);
         if (headers != null) {
             final Constructor<Model> modelConstructor = DataUtils.getModelConstructor(model, headers);
-            final Map<String, ModelList> fusionedData = DataUtils.fusionProcessor(model, modelConstructor);
+            final Map<Integer, Map<String, ModelList>> fusionedData = DataUtils.fusionProcessor(model, modelConstructor);
             int dataIndex = 0;
-            for (final Entry<String, ModelList> e : fusionedData.entrySet()) {
-                dataIndex++;
-                indexData.add(new DataIndex(dataIndex, e.getValue().getIds()));
-                for (int i = 0; i < e.getValue().getIds().size(); i++) {
-                    final Integer wid = e.getValue().getIds().get(i);
-                    final String resultColumn = Context.getDataInputProvider().readValue(Context.getDataInputProvider().getResultColumnName(), wid);
-                    if (!"".equals(resultColumn)) {
-                        failures += 1;
-                        skipped += nbStep - (int) Double.parseDouble(resultColumn);
+            for (final Entry<Integer, Map<String, ModelList>> e : fusionedData.entrySet()) {
+                for (final Entry<String, ModelList> e2 : e.getValue().entrySet()) {
+                    dataIndex++;
+                    indexData.add(new DataIndex(dataIndex, e2.getValue().getIds()));
+                    for (int i = 0; i < e2.getValue().getIds().size(); i++) {
+                        final Integer id = e2.getValue().getIds().get(i);
+                        final String resultColumn = Context.getDataInputProvider().readValue(Context.getDataInputProvider().getResultColumnName(), id);
+                        if (!"".equals(resultColumn)) {
+                            failures += 1;
+                            skipped += nbStep - (int) Double.parseDouble(resultColumn);
+                        }
                     }
                 }
             }
