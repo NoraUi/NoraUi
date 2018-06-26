@@ -70,7 +70,7 @@ public class GherkinFactory {
                         examplesString.append("|\n    ");
                     }
 
-                    scenarioOutlines[examples.getKey() + 1] = scenarioOutlines[examples.getKey() + 1].replaceAll("(" + DATA + "\r?\n.*\r?\n)[\\s\\S]*(" + DATA_END + ")",
+                    scenarioOutlines[examples.getKey()] = scenarioOutlines[examples.getKey()].replaceAll("(" + DATA + "\r?\n.*\r?\n)[\\s\\S]*(" + DATA_END + ")",
                             "$1" + examplesString.toString() + "$2");
 
                     // final Pattern pattern = Pattern.compile("(" + DATA + "\\r?\\n.*\\r?\\n)[\\s\\S]*(" + DATA_END + ")");
