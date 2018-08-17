@@ -27,17 +27,17 @@ See [change log](https://noraui.github.io/changelog.txt) for details
 1. if you use Oracle Db provider, use com.oracle.jdbc:ojdbc8 dependency and configure your env with OTN: Sample(https://github.com/sgrillon14/MavenSampleOracleJdbc) (default)
 2. if you do not use Oracle Db provider, just exclude com.oracle.jdbc:ojdbc8 dependency in the noraui dependency call within your pom.xml. You can follow these instructions at https://maven.apache.org/guides/introduction/introduction-to-optional-and-excludes-dependencies.html. It should look something like that :
 ```xml
-        <dependency>
-			<groupId>com.github.noraui</groupId>
-			<artifactId>noraui</artifactId>
-			<version>${noraui.version}</version>
-			<exclusions>
-	        	<exclusion>
-	          		<groupId>com.oracle.jdbc</groupId>
-	          		<artifactId>ojdbc8</artifactId>
-	        	</exclusion>
-      		</exclusions>
-		</dependency>
+<dependency>
+        <groupId>com.github.noraui</groupId>
+	<artifactId>noraui</artifactId>
+	<version>${noraui.version}</version>
+	<exclusions>
+	        <exclusion>
+	                <groupId>com.oracle.jdbc</groupId>
+	          	<artifactId>ojdbc8</artifactId>
+	        </exclusion>
+      	</exclusions>
+</dependency>
 ```
 * Change all "noraui" import to "com.github.noraui"
 * Change all `private static Logger logger = Logger.getLogger` by `private static final Logger logger = LoggerFactory.getLogger`
