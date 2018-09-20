@@ -1022,7 +1022,7 @@ public class Step implements IStep {
      * @return
      * @throws TechnicalException
      */
-    private String getTextOrKey(String textOrKey) throws TechnicalException {
+    protected String getTextOrKey(String textOrKey) throws TechnicalException {
         String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
         if (value.startsWith(cryptoService.getPrefix())) {
             value = cryptoService.decrypt(value);
