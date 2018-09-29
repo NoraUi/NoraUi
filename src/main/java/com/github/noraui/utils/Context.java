@@ -588,7 +588,7 @@ public class Context {
     /**
      * @param loader
      * @param propertiesFileName
-     * @return
+     * @return Properties Object contain all properties.
      */
     protected static Properties initPropertiesFile(ClassLoader loader, String propertiesFileName) {
         if (loader != null) {

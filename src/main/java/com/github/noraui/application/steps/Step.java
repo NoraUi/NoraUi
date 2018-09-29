@@ -1019,7 +1019,7 @@ public class Step implements IStep {
     /**
      * @param textOrKey
      *            Is the new data (text or text in context (after a save))
-     * @return
+     * @return a string from context or not (and crypted or not).
      * @throws TechnicalException
      */
     protected String getTextOrKey(String textOrKey) throws TechnicalException {
