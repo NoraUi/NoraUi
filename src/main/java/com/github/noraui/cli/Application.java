@@ -569,7 +569,7 @@ public class Application extends AbstractNoraUiCli {
         } catch (IOException e) {
             logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
-        updatePropertiesFile(propertiesfilePath, sb);
+        updateFile(propertiesfilePath, sb);
     }
 
     
@@ -628,7 +628,7 @@ public class Application extends AbstractNoraUiCli {
         } catch (IOException e) {
             logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
-        updatePropertiesFile(propertiesfilePath, sb);
+        updateFile(propertiesfilePath, sb);
     }
 
 }

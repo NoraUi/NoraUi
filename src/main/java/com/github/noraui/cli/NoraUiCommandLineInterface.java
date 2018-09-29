@@ -63,6 +63,8 @@ public class NoraUiCommandLineInterface {
     /**
      * @param context
      *            is generated robot context class.
+     * @param counter
+     *            is generated robot counter class.
      * @param args
      *            is list of args (-h, --verbose, --update, -interactiveMode, -f, -s, -u, -d, -k, -a, -m, -fi and -re)
      * @throws TechnicalException
@@ -70,7 +72,7 @@ public class NoraUiCommandLineInterface {
      *             InvalidKeyException | IllegalBlockSizeException | BadPaddingException | IOException,
      *             ...) in NoraUi.
      */
-    public void runCli(Class<?> context, String... args) throws TechnicalException {
+    public void runCli(Class<?> context, Class<?> counter, String... args) throws TechnicalException {
         Scanner input = null;
         boolean runCli = true;
         boolean verbose = false;
@@ -159,7 +161,7 @@ public class NoraUiCommandLineInterface {
                         input.nextLine();
                     }
                     if (featureCode > 0) {
-                        noraUiCliFile = runFeature(noraUiCliFile, featureCode, applicationName, scenarioName, modelName, url, description, fields, results, cryptoKey, context, verbose, input,
+                        noraUiCliFile = runFeature(noraUiCliFile, featureCode, applicationName, scenarioName, modelName, url, description, fields, results, cryptoKey, context, counter, verbose, input,
                                 interactiveMode);
                         writeNoraUiCliFiles(noraUiCliFile, verbose);
                         displayFooter();
@@ -548,6 +550,8 @@ public class NoraUiCommandLineInterface {
      *            is AES key (secret key).
      * @param robotContext
      *            Context class from robot.
+     * @param robotCounter
+     *            Counter class from robot.          
      * @param verbose
      *            boolean to activate verbose mode (show more traces).
      * @param input
@@ -564,7 +568,7 @@ public class NoraUiCommandLineInterface {
      *             ...) in NoraUi.
      */
     private NoraUiCliFile runFeature(NoraUiCliFile noraUiCliFile, int featureCode, String applicationName, String scenarioName, String modelName, String url, String description, String fields,
-            String results, String cryptoKey, Class<?> robotContext, boolean verbose, Scanner input, boolean interactiveMode) throws TechnicalException {
+            String results, String cryptoKey, Class<?> robotContext, Class<?> robotCounter, boolean verbose, Scanner input, boolean interactiveMode) throws TechnicalException {
         if (featureCode == 1) {
             noraUiCliFile = addApplication(noraUiCliFile, applicationName, url, robotContext, verbose, input, interactiveMode);
         } else if (featureCode == 2) {
@@ -574,7 +578,7 @@ public class NoraUiCommandLineInterface {
         } else if (featureCode == 4) {
             noraUiCliFile = removeApplication(noraUiCliFile, applicationName, robotContext, verbose, input, interactiveMode);
         } else if (featureCode == 5) {
-            noraUiCliFile = removeScenario(noraUiCliFile, scenarioName, robotContext.getSimpleName().replaceAll("Context", ""), verbose, input, interactiveMode);
+            noraUiCliFile = removeScenario(noraUiCliFile, scenarioName, robotContext.getSimpleName().replaceAll("Context", ""), robotCounter, verbose, input, interactiveMode);
         } else if (featureCode == 6) {
             noraUiCliFile = removeModel(noraUiCliFile, applicationName, modelName, robotContext, verbose, input, interactiveMode);
         } else if (featureCode == 7) {
@@ -941,6 +945,8 @@ public class NoraUiCommandLineInterface {
      *            name of scenario.
      * @param robotName
      *            is name of target Robot.
+     * @param robotCounter
+     *            Counter class from robot.           
      * @param verbose
      *            boolean to activate verbose mode (show more traces).
      * @param input
@@ -952,7 +958,7 @@ public class NoraUiCommandLineInterface {
      *            line.
      * @return NoraUiCliFile Object contain all data from CLI Files.
      */
-    private NoraUiCliFile removeScenario(NoraUiCliFile noraUiCliFile, String scenarioName, String robotName, boolean verbose, Scanner input, boolean interactiveMode) {
+    private NoraUiCliFile removeScenario(NoraUiCliFile noraUiCliFile, String scenarioName, String robotName, Class<?> robotCounter, boolean verbose, Scanner input, boolean interactiveMode) {
         if (interactiveMode) {
             boolean scenarioFinded = false;
             if (scenarioName == null || "".equals(scenarioName)) {
@@ -965,13 +971,13 @@ public class NoraUiCommandLineInterface {
                 }
             }
             if (scenarioFinded) {
-                scenario.remove(scenarioName, robotName, verbose);
+                scenario.remove(scenarioName, robotName, robotCounter, verbose);
             }
         } else {
             if (scenarioName == null || "".equals(scenarioName)) {
                 logger.error("When you want to remove a scenario with interactiveMode is false, you need use -s");
             } else {
-                scenario.remove(scenarioName, robotName, verbose);
+                scenario.remove(scenarioName, robotName, robotCounter, verbose);
             }
         }
         return removeScenario4CliFiles(noraUiCliFile, scenarioName);

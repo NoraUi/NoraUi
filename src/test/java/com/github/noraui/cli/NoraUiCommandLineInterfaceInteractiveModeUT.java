@@ -22,6 +22,7 @@ import org.junit.contrib.java.lang.system.TextFromStandardInputStream;
 import org.junit.runners.MethodSorters;
 
 import com.github.noraui.exception.TechnicalException;
+import com.github.noraui.indus.UnitTest4CLICounter;
 import com.github.noraui.utils.UnitTest4CLIContext;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -55,7 +56,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         systemInMock.provideText(humanResponse.toString());
 
         String[] args = { "-h" };
-        cli.runCli(UnitTest4CLIContext.class, args);
+        cli.runCli(UnitTest4CLIContext.class, UnitTest4CLICounter.class, args);
 
         StringBuilder expectedCliAsk = new StringBuilder();
         expectedCliAsk.append("-h: Display this help").append(System.lineSeparator());
@@ -107,7 +108,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         humanResponse.append("0").append(System.lineSeparator());
         systemInMock.provideText(humanResponse.toString());
 
-        cli.runCli(UnitTest4CLIContext.class);
+        cli.runCli(UnitTest4CLIContext.class, UnitTest4CLICounter.class);
 
         StringBuilder expectedCliAsk = new StringBuilder();
         expectedCliAsk.append("What do you want ?").append(System.lineSeparator());
@@ -153,7 +154,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         humanResponse.append("0").append(System.lineSeparator());
         systemInMock.provideText(humanResponse.toString());
 
-        cli.runCli(UnitTest4CLIContext.class);
+        cli.runCli(UnitTest4CLIContext.class, UnitTest4CLICounter.class);
 
         StringBuilder expectedCliAsk = new StringBuilder();
         expectedCliAsk.append("What do you want ?").append(System.lineSeparator());
@@ -205,7 +206,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         humanResponse.append("0").append(System.lineSeparator());
         systemInMock.provideText(humanResponse.toString());
 
-        cli.runCli(UnitTest4CLIContext.class);
+        cli.runCli(UnitTest4CLIContext.class, UnitTest4CLICounter.class);
 
         StringBuilder expectedCliAsk = new StringBuilder();
         expectedCliAsk.append("What do you want ?").append(System.lineSeparator());
@@ -258,7 +259,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         humanResponse.append("0").append(System.lineSeparator());
         systemInMock.provideText(humanResponse.toString());
 
-        cli.runCli(UnitTest4CLIContext.class);
+        cli.runCli(UnitTest4CLIContext.class, UnitTest4CLICounter.class);
 
         StringBuilder expectedCliAsk = new StringBuilder();
         expectedCliAsk.append("What do you want ?").append(System.lineSeparator());
@@ -305,7 +306,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         humanResponse.append("0").append(System.lineSeparator());
         systemInMock.provideText(humanResponse.toString());
 
-        cli.runCli(UnitTest4CLIContext.class);
+        cli.runCli(UnitTest4CLIContext.class, UnitTest4CLICounter.class);
 
         StringBuilder expectedCliAsk = new StringBuilder();
         expectedCliAsk.append("What do you want ?").append(System.lineSeparator());
@@ -357,7 +358,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         humanResponse.append("0").append(System.lineSeparator());
         systemInMock.provideText(humanResponse.toString());
 
-        cli.runCli(UnitTest4CLIContext.class);
+        cli.runCli(UnitTest4CLIContext.class, UnitTest4CLICounter.class);
 
         StringBuilder expectedCliAsk = new StringBuilder();
         expectedCliAsk.append("What do you want ?").append(System.lineSeparator());

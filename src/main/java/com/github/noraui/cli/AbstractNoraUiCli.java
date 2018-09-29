@@ -38,7 +38,7 @@ public abstract class AbstractNoraUiCli {
      * @param propertiesfilePath
      * @param sb
      */
-    protected void updatePropertiesFile(String propertiesfilePath, StringBuilder sb) {
+    protected void updateFile(String propertiesfilePath, StringBuilder sb) {
         try (FileWriter fw = new FileWriter(propertiesfilePath)) {
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(sb.toString().substring(0, sb.toString().length() - System.lineSeparator().length()));
