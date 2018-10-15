@@ -33,7 +33,9 @@ public class Application extends AbstractNoraUiCli {
      * Specific logger
      */
     private static final Logger logger = LoggerFactory.getLogger(Application.class);
-
+    public static final String SUFFIX_HOME = "_HOME\";";
+    public static final String SUFFIX_KEY = "_KEY;";
+            
     private String mainPath;
 
     public Application() {
@@ -130,7 +132,7 @@ public class Application extends AbstractNoraUiCli {
         sb.append(getJavaClassHeaders(noraRobotName)).append(System.lineSeparator());
         sb.append(robotContext.getPackage().toString().replaceAll("utils", "application.pages." + applicationName) + ";").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
-        sb.append("import static " + robotContext.getCanonicalName() + "." + applicationName.toUpperCase() + "_KEY;").append(System.lineSeparator());
+        sb.append("import static " + robotContext.getCanonicalName() + "." + applicationName.toUpperCase() + SUFFIX_KEY).append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
         sb.append("import org.openqa.selenium.support.ui.ExpectedConditions;").append(System.lineSeparator());
         sb.append("import org.slf4j.Logger;").append(System.lineSeparator());
@@ -154,8 +156,8 @@ public class Application extends AbstractNoraUiCli {
         sb.append("").append(System.lineSeparator());
         sb.append("    public " + applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "Page() {").append(System.lineSeparator());
         sb.append("        super();").append(System.lineSeparator());
-        sb.append("        this.application = " + applicationName.toUpperCase() + "_KEY;").append(System.lineSeparator());
-        sb.append("        this.pageKey = \"" + applicationName.toUpperCase() + "_HOME\";").append(System.lineSeparator());
+        sb.append("        this.application = " + applicationName.toUpperCase() + SUFFIX_KEY).append(System.lineSeparator());
+        sb.append("        this.pageKey = \"" + applicationName.toUpperCase() + SUFFIX_HOME).append(System.lineSeparator());
         sb.append("        this.callBack = Context.getCallBack(" + noraRobotName + "Context.CLOSE_WINDOW_AND_SWITCH_TO_" + applicationName.toUpperCase() + "_HOME);").append(System.lineSeparator());
         sb.append("    }").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
@@ -368,13 +370,13 @@ public class Application extends AbstractNoraUiCli {
             String line = br.readLine();
             while (line != null) {
                 if (!(("    public static final String " + applicationName.toUpperCase() + "_KEY = \"" + applicationName + "\";").equals(line)
-                        || ("    public static final String " + applicationName.toUpperCase() + "_HOME = \"" + applicationName.toUpperCase() + "_HOME\";").equals(line)
+                        || ("    public static final String " + applicationName.toUpperCase() + "_HOME = \"" + applicationName.toUpperCase() + SUFFIX_HOME).equals(line)
                         || ("    private String " + applicationName + "Home; // " + applicationName.toUpperCase() + " home url").equals(line)
-                        || ("    public static final String GO_TO_" + applicationName.toUpperCase() + "_HOME = \"GO_TO_" + applicationName.toUpperCase() + "_HOME\";").equals(line)
+                        || ("    public static final String GO_TO_" + applicationName.toUpperCase() + "_HOME = \"GO_TO_" + applicationName.toUpperCase() + SUFFIX_HOME).equals(line)
                         || ("    public static final String CLOSE_WINDOW_AND_SWITCH_TO_" + applicationName.toUpperCase() + "_HOME = \"CLOSE_WINDOW_AND_SWITCH_TO_" + applicationName.toUpperCase()
-                                + "_HOME\";").equals(line)
+                                + SUFFIX_HOME).equals(line)
                         || ("    public static final String CLOSE_ALL_WINDOWS_AND_SWITCH_TO_" + applicationName.toUpperCase() + "_HOME = \"CLOSE_ALL_WINDOWS_AND_SWITCH_TO_"
-                                + applicationName.toUpperCase() + "_HOME\";").equals(line)
+                                + applicationName.toUpperCase() + SUFFIX_HOME).equals(line)
                         || ("        " + applicationName + "Home = getProperty(" + applicationName.toUpperCase() + "_KEY, applicationProperties);").equals(line)
                         || ("        initApplicationDom(clazz.getClassLoader(), selectorsVersion, " + applicationName.toUpperCase() + "_KEY);").equals(line)
                         || ("        exceptionCallbacks.put(GO_TO_" + applicationName.toUpperCase() + "_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, "
@@ -398,19 +400,19 @@ public class Application extends AbstractNoraUiCli {
                         if ("    // applications".equals(line)) {
                             sb.append("    public static final String " + applicationName.toUpperCase() + "_KEY = \"" + applicationName + "\";");
                             sb.append(System.lineSeparator());
-                            sb.append("    public static final String " + applicationName.toUpperCase() + "_HOME = \"" + applicationName.toUpperCase() + "_HOME\";");
+                            sb.append("    public static final String " + applicationName.toUpperCase() + "_HOME = \"" + applicationName.toUpperCase() + SUFFIX_HOME);
                             sb.append(System.lineSeparator());
                             sb.append("    private String " + applicationName + "Home; // " + applicationName.toUpperCase() + " home url");
                             sb.append(System.lineSeparator());
                         }
                         if ("    // targets".equals(line)) {
-                            sb.append("    public static final String GO_TO_" + applicationName.toUpperCase() + "_HOME = \"GO_TO_" + applicationName.toUpperCase() + "_HOME\";");
+                            sb.append("    public static final String GO_TO_" + applicationName.toUpperCase() + "_HOME = \"GO_TO_" + applicationName.toUpperCase() + SUFFIX_HOME);
                             sb.append(System.lineSeparator());
                             sb.append("    public static final String CLOSE_WINDOW_AND_SWITCH_TO_" + applicationName.toUpperCase() + "_HOME = \"CLOSE_WINDOW_AND_SWITCH_TO_"
-                                    + applicationName.toUpperCase() + "_HOME\";");
+                                    + applicationName.toUpperCase() + SUFFIX_HOME);
                             sb.append(System.lineSeparator());
                             sb.append("    public static final String CLOSE_ALL_WINDOWS_AND_SWITCH_TO_" + applicationName.toUpperCase() + "_HOME = \"CLOSE_ALL_WINDOWS_AND_SWITCH_TO_"
-                                    + applicationName.toUpperCase() + "_HOME\";");
+                                    + applicationName.toUpperCase() + SUFFIX_HOME);
                             sb.append(System.lineSeparator());
                         }
                         if ("        // Urls configuration".equals(line)) {
