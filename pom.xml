@@ -92,7 +92,7 @@
         <sonar.jacoco.reportPaths>${project.testresult.directory}/coverage/jacoco/jacoco.exec</sonar.jacoco.reportPaths>
         <sonar.tests>${project.basedir}/src/test/</sonar.tests>
         <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
-        <sonar.exclusions>**/cucumber/**/*,**/*Exception.*,**/annotation/**/*,**/noraui/model/**/*,**/noraui/data/rest/Row.java,**/noraui/utils/Constants.java,**/noraui/application/steps/MailSteps.java</sonar.exclusions>
+        <sonar.exclusions>**/cucumber/**/*,**/*Exception.*,**/annotation/**/*,**/noraui/model/**/*,**/noraui/data/rest/Row.java,**/noraui/utils/Constants.java,**/noraui/application/steps/MailSteps.java,*.css</sonar.exclusions>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <javadoc.opts>-Xdoclint:none</javadoc.opts>
     </properties>
