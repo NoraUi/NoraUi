@@ -70,7 +70,7 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
     Et Je vérifie le message 'OK' sur l'alerte
     Et Je vérifie le texte 'demo.DemoPage-input_current_date' avec '2'.
 
-    Quand  Quand Je clique via js sur 'demo.DemoPage-smilejsIssue80'.
+    Quand Je clique via js sur 'demo.DemoPage-smilejsIssue80'.
     Et Je vérifie le message 'OK' sur l'alerte
     Et Je vérifie le texte 'demo.DemoPage-input_current_date' avec '3'.
 
