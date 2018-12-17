@@ -68,10 +68,14 @@ Feature: hello (Function to validate the environment.)
     When I click by js on xpath './/*[@name=\'smilejs\' and @title=\'smilejs\']' from 'demo.DemoPage' page.
     And I check message 'OK' on alert
     And I check text 'demo.DemoPage-input_current_date' with '2'.
-    
-    When I click on 'demo.DemoPage-<element>'.
+
+    When I click by js on 'demo.DemoPage-smilejsIssue80'.
     And I check message 'OK' on alert
     And I check text 'demo.DemoPage-input_current_date' with '3'.
+
+    When I click on 'demo.DemoPage-<element>'.
+    And I check message 'OK' on alert
+    And I check text 'demo.DemoPage-input_current_date' with '4'.
 		
     Given test for 'Annulée'
     
