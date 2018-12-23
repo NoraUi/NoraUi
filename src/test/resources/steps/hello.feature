@@ -76,26 +76,26 @@ Feature: hello (Function to validate the environment.)
     When I click on 'demo.DemoPage-<element>'.
     And I check message 'OK' on alert
     And I check text 'demo.DemoPage-input_current_date' with '4'.
-		
+	
     Given test for 'Annulée'
-    
+
     Then If '' matches '', I do '2' times:
         |key|step|expected|actual|
         |1|I wait '3' seconds.|1|1|
         |2|I wait '4' seconds.|1|2|
-    
+
     Then If '' matches '', I do until 'myOutLoopKey' respects 'Rennes' with '4' max tries: 
         |key|step|expected|actual|
         |1|I wait '3' seconds?|1|1|
         |2|I wait '4' seconds?|1|2|
         |3|I update select list 'demo.DemoPage-input_select_field' with '<city>'.|||
         |4|I save the value of 'demo.DemoPage-input_select_field' in 'myOutLoopKey' context key.|||
-        
+
     Then If '<author>' matches '.+', I do until 'demo.DemoPage-big_title' respects 'This is a demo for NORAUI.*' with '3' max tries:
         |key|step|expected|actual|
         |1|I wait '1' seconds?|||
         |2|I wait '1' seconds?|(Rennes\|Paris\|New York)|<city>|
-        
+
     Then If '<author>' matches '.+', While 'demo.DemoPage-big_title' respects 'This is a demo for NORAUI.*' I do with '3' max tries:    
         |key|step|expected|actual|
         |1|I wait '1' seconds?|||
@@ -113,7 +113,7 @@ Feature: hello (Function to validate the environment.)
     When I clear text in 'demo.DemoPage-input_text_field'.
     When I update text 'demo.DemoPage-input_text_field' and type ENTER with '<zip>'.
     And I check mandatory field 'demo.DemoPage-input_text_field' of type 'text'.
-    
+
     And I update radio list 'demo.DemoPage-rate' with '<author>' from these values:
         |Jenkins T1|week-end|
         |Jenkins T2|night|
@@ -148,6 +148,10 @@ Feature: hello (Function to validate the environment.)
     
     When I click on 'demo.DemoPage-changeValueButton'.
     Then I expect to have 'demo.DemoPage-changeValueButton' with the text 'My value has changed'.
+
+    Et Je prends une capture d'écran.
+    Et Je sauvegarde une capture d'écran dans 'myScreenshot-<id>'.
+    Et Je sauvegarde une capture d'écran de 'demo.DemoPage-changeValueButton' dans 'changeValueButton<id>'.
 
     And I take a screenshot.
     And I save a screenshot in 'myScreenshot-<id>'.
