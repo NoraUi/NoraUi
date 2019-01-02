@@ -59,8 +59,8 @@ These are the currently supported languages
 Does NoraUi not support your language? Please help us with a [PR](https://github.com/NoraUi/NoraUi/pulls)!
 
 # Continuous Integration status
-[![Build Status](https://travis-ci.org/NoraUi/NoraUi.svg?branch=master)](https://travis-ci.org/NoraUi/NoraUi)[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fsgrillon14%2FNoraUi.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fsgrillon14%2FNoraUi?ref=badge_shield)
-
+[![Build Status](https://travis-ci.org/NoraUi/NoraUi.svg?branch=master)](https://travis-ci.org/NoraUi/NoraUi)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FNoraUi%2FNoraUi.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FNoraUi%2FNoraUi?ref=badge_shield)
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=com.github.noraui%3Anoraui&metric=alert_status)](https://sonarcloud.io/dashboard/index/com.github.noraui:noraui)
 [![SonarCloud Coverage](https://sonarcloud.io/api/project_badges/measure?project=com.github.noraui%3Anoraui&metric=coverage)](https://sonarcloud.io/component_measures/metric/coverage/list?id=com.github.noraui:noraui)
 [![SonarCloud Bugs](https://sonarcloud.io/api/project_badges/measure?project=com.github.noraui%3Anoraui&metric=bugs)](https://sonarcloud.io/component_measures/metric/reliability_rating/list?id=com.github.noraui%3Anoraui)
@@ -115,8 +115,7 @@ SNAPSHOT:
 
 [![license](https://img.shields.io/github/license/NoraUi/NoraUi.svg)](https://github.com/NoraUi/NoraUi/blob/master/LICENSE) See LICENSE for details
 
-
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fsgrillon14%2FNoraUi.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fsgrillon14%2FNoraUi?ref=badge_large)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FNoraUi%2FNoraUi.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FNoraUi%2FNoraUi?ref=badge_large)
 
 # Contributing
 
