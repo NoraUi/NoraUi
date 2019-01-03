@@ -110,9 +110,11 @@ SNAPSHOT:
 * Gherkin
 * Cucumber
 * Selenium
+* Webdriver
 * Java 8
 * Maven
-* JUnit
+* Google guice
+* JUnit / Mockito / Cucumber
 
 # Run Anywhere
 ![RunAnywhere](/screenshots/plateforme.png)
