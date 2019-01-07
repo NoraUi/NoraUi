@@ -32,7 +32,7 @@ public class GeobeerSteps extends Step {
     /**
      * Specific logger
      */
-    private static final Logger logger = LoggerFactory.getLogger(GeobeerSteps.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GeobeerSteps.class);
 
     @Inject
     private GeobeerPage geobeerPage;

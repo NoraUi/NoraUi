@@ -36,9 +36,9 @@ public abstract class Result {
     public static class Success<O> extends Result {
 
         /**
-         * Specific logger
+         * Specific LOGGER
          */
-        private static final Logger logger = LoggerFactory.getLogger(Success.class);
+        private static final Logger LOGGER = LoggerFactory.getLogger(Success.class);
 
         private final O object;
 
@@ -58,9 +58,9 @@ public abstract class Result {
             }
             O s = success();
             if (s != null) {
-                logger.info("{} [{}]", message, s);
+                LOGGER.info("{} [{}]", message, s);
             } else {
-                logger.info("{}", message);
+                LOGGER.info("{}", message);
             }
         }
 
@@ -73,9 +73,9 @@ public abstract class Result {
     public static class Warning<O> extends Result {
 
         /**
-         * Specific logger
+         * Specific LOGGER
          */
-        private static final Logger logger = LoggerFactory.getLogger(Warning.class);
+        private static final Logger LOGGER = LoggerFactory.getLogger(Warning.class);
 
         private ScreenService screenService = new ScreenServiceImpl();
 
@@ -99,22 +99,22 @@ public abstract class Result {
                 Context.getDataOutputProvider().writeWarningResult(Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData()).getIndexes().get(nid),
                         Messages.getMessage(Messages.WARNING_MESSAGE_DEFAULT) + message);
             } catch (final TechnicalException e) {
-                logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE), e);
+                LOGGER.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE), e);
             }
             if (!Context.scenarioHasWarning()) {
                 Context.addWarning();
                 Context.scenarioHasWarning(true);
             }
             if (takeScreenshot) {
-                logger.debug("Current scenario is {}", Context.getCurrentScenario());
+                LOGGER.debug("Current scenario is {}", Context.getCurrentScenario());
                 screenService.takeScreenshot(Context.getCurrentScenario());
             }
             Context.getCurrentScenario().write(Messages.getMessage(Messages.WARNING_MESSAGE_DEFAULT) + message);
             O s = warning();
             if (s != null) {
-                logger.info("{} [{}]", message, s);
+                LOGGER.info("{} [{}]", message, s);
             } else {
-                logger.info("{}", message);
+                LOGGER.info("{}", message);
             }
         }
 
@@ -127,9 +127,9 @@ public abstract class Result {
     public static class Failure<O> extends Result {
 
         /**
-         * Specific logger
+         * Specific LOGGER
          */
-        private static final Logger logger = LoggerFactory.getLogger(Failure.class);
+        private static final Logger LOGGER = LoggerFactory.getLogger(Failure.class);
 
         private ScreenService screenService = new ScreenServiceImpl();
 
@@ -198,7 +198,7 @@ public abstract class Result {
                         Context.getDataOutputProvider().writeWarningResult(line, Messages.getMessage(Messages.NOT_RUN_MESSAGE));
                     }
                 } catch (final TechnicalException e) {
-                    logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE), e);
+                    LOGGER.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE), e);
                 }
             }
             Context.addFailure();
@@ -207,7 +207,7 @@ public abstract class Result {
                 Context.scenarioHasWarning(false);
             }
             if (takeScreenshot) {
-                logger.debug("Current scenario is {}", Context.getCurrentScenario());
+                LOGGER.debug("Current scenario is {}", Context.getCurrentScenario());
                 screenService.takeScreenshot(Context.getCurrentScenario());
             }
             if (callback != null) {

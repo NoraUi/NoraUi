@@ -18,9 +18,9 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractNoraUiCli {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    private static final Logger logger = LoggerFactory.getLogger(AbstractNoraUiCli.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractNoraUiCli.class);
     protected static final String RESOURCES = "resources";
 
     protected String getJavaClassHeaders(String noraRobotName) {
@@ -45,7 +45,7 @@ public abstract class AbstractNoraUiCli {
             bw.flush();
             bw.close();
         } catch (IOException e) {
-            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+            LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 

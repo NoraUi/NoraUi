@@ -22,9 +22,9 @@ import com.github.noraui.utils.Messages;
 public class OutputConsoleDataProvider extends CommonDataProvider implements DataOutputProvider {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    private static final Logger logger = LoggerFactory.getLogger(OutputConsoleDataProvider.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OutputConsoleDataProvider.class);
 
     private static final String OUTPUT_CONSOLE_DATA_PROVIDER_USED = "OUTPUT_CONSOLE_DATA_PROVIDER_USED";
     private static final String OUTPUT_CONSOLE_DATA_PROVIDER_FAILED_AT_LINE = "OUTPUT_CONSOLE_DATA_PROVIDER_FAILED_AT_LINE";
@@ -34,7 +34,7 @@ public class OutputConsoleDataProvider extends CommonDataProvider implements Dat
 
     public OutputConsoleDataProvider() {
         super();
-        logger.info(Messages.getMessage(OUTPUT_CONSOLE_DATA_PROVIDER_USED));
+        LOGGER.info(Messages.getMessage(OUTPUT_CONSOLE_DATA_PROVIDER_USED));
     }
 
     /**
@@ -50,7 +50,7 @@ public class OutputConsoleDataProvider extends CommonDataProvider implements Dat
      */
     @Override
     public void writeFailedResult(int line, String value) {
-        logger.error(Messages.getMessage(OUTPUT_CONSOLE_DATA_PROVIDER_FAILED_AT_LINE), line, value);
+        LOGGER.error(Messages.getMessage(OUTPUT_CONSOLE_DATA_PROVIDER_FAILED_AT_LINE), line, value);
     }
 
     /**
@@ -58,7 +58,7 @@ public class OutputConsoleDataProvider extends CommonDataProvider implements Dat
      */
     @Override
     public void writeWarningResult(int line, String value) {
-        logger.warn(Messages.getMessage(OUTPUT_CONSOLE_DATA_PROVIDER_WARNING_AT_LINE), line, value);
+        LOGGER.warn(Messages.getMessage(OUTPUT_CONSOLE_DATA_PROVIDER_WARNING_AT_LINE), line, value);
     }
 
     /**
@@ -66,7 +66,7 @@ public class OutputConsoleDataProvider extends CommonDataProvider implements Dat
      */
     @Override
     public void writeSuccessResult(int line) {
-        logger.info(Messages.getMessage(OUTPUT_CONSOLE_DATA_PROVIDER_SUCCESS_AT_LINE), line);
+        LOGGER.info(Messages.getMessage(OUTPUT_CONSOLE_DATA_PROVIDER_SUCCESS_AT_LINE), line);
 
     }
 
@@ -75,7 +75,7 @@ public class OutputConsoleDataProvider extends CommonDataProvider implements Dat
      */
     @Override
     public void writeDataResult(String column, int line, String value) {
-        logger.info(Messages.getMessage(OUTPUT_CONSOLE_DATA_PROVIDER_RESULT_AT_LINE), line, column, value);
+        LOGGER.info(Messages.getMessage(OUTPUT_CONSOLE_DATA_PROVIDER_RESULT_AT_LINE), line, column, value);
     }
 
 }

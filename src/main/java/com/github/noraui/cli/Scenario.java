@@ -37,9 +37,9 @@ import com.google.common.io.Files;
 public class Scenario extends AbstractNoraUiCli {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    private static final Logger logger = LoggerFactory.getLogger(Scenario.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Scenario.class);
 
     private String mainPath;
 
@@ -67,7 +67,7 @@ public class Scenario extends AbstractNoraUiCli {
                 line = br.readLine();
             }
         } catch (IOException e) {
-            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+            LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
         return scenarios;
     }
@@ -88,7 +88,7 @@ public class Scenario extends AbstractNoraUiCli {
      *            boolean to activate verbose mode (show more traces).
      */
     public void add(String scenarioName, String description, String applicationName, String noraRobotName, boolean verbose) {
-        logger.info("Add a new scenario named [{}] on [{}] application with this description: [{}]", scenarioName, applicationName, description);
+        LOGGER.info("Add a new scenario named [{}] on [{}] application with this description: [{}]", scenarioName, applicationName, description);
         addScenarioInData(scenarioName, noraRobotName, verbose);
         addScenarioInEnvPropertiesFile(scenarioName, verbose);
         addScenarioFeature(scenarioName, description, applicationName, verbose);
@@ -108,7 +108,7 @@ public class Scenario extends AbstractNoraUiCli {
      *            boolean to activate verbose mode (show more traces).
      */
     public void remove(String scenarioName, String noraRobotName, Class<?> robotCounter, boolean verbose) {
-        logger.info("Remove a scenario named [{}].", scenarioName);
+        LOGGER.info("Remove a scenario named [{}].", scenarioName);
         removeScenarioInData(scenarioName, noraRobotName, verbose);
         removeScenarioInEnvPropertiesFile(scenarioName, verbose);
         removeScenarioFeature(scenarioName, verbose);
@@ -127,11 +127,11 @@ public class Scenario extends AbstractNoraUiCli {
         String propertiesfilePath = mainPath + File.separator + RESOURCES + File.separator + noraRobotName + ".properties";
 
         String dataProviderIn = getDataProvider("in", propertiesfilePath);
-        logger.info("dataProvider.in.type is [{}]", dataProviderIn);
+        LOGGER.info("dataProvider.in.type is [{}]", dataProviderIn);
         removeScenarioInData("in", scenarioName, dataProviderIn, verbose);
 
         String dataProviderOut = getDataProvider("out", propertiesfilePath);
-        logger.info("dataProvider.out.type is [{}]", dataProviderOut);
+        LOGGER.info("dataProvider.out.type is [{}]", dataProviderOut);
         removeScenarioInData("out", scenarioName, dataProviderOut, verbose);
     }
 
@@ -145,11 +145,11 @@ public class Scenario extends AbstractNoraUiCli {
         String propertiesfilePath = mainPath + File.separator + RESOURCES + File.separator + noraRobotName + ".properties";
 
         String dataProviderIn = getDataProvider("in", propertiesfilePath);
-        logger.info("dataProvider.in.type is [{}]", dataProviderIn);
+        LOGGER.info("dataProvider.in.type is [{}]", dataProviderIn);
         addScenarioInData("in", scenarioName, dataProviderIn, verbose);
 
         String dataProviderOut = getDataProvider("out", propertiesfilePath);
-        logger.info("dataProvider.out.type is [{}]", dataProviderOut);
+        LOGGER.info("dataProvider.out.type is [{}]", dataProviderOut);
         addScenarioInData("out", scenarioName, dataProviderOut, verbose);
     }
 
@@ -181,7 +181,7 @@ public class Scenario extends AbstractNoraUiCli {
                 addXlsxFile(scenarioName, excelPath);
             }
         } else if (verbose) {
-            logger.info("CLI do not add your data provider [{}]. CLI add only CSV, DB and EXCEL.", dataProvider);
+            LOGGER.info("CLI do not add your data provider [{}]. CLI add only CSV, DB and EXCEL.", dataProvider);
         }
     }
 
@@ -206,14 +206,14 @@ public class Scenario extends AbstractNoraUiCli {
             try {
                 FileUtils.forceDelete(new File(datafilePath));
                 if (verbose) {
-                    logger.info("{} removed with success.", datafilePath);
+                    LOGGER.info("{} removed with success.", datafilePath);
                 }
             } catch (IOException e) {
-                logger.debug("{} not revove because do not exist.", datafilePath);
+                LOGGER.debug("{} not revove because do not exist.", datafilePath);
             }
         } else {
             if (verbose) {
-                logger.info("CLI do not remove your data provider [{}]. CLI remove only CSV, DB and EXCEL.", dataProvider);
+                LOGGER.info("CLI do not remove your data provider [{}]. CLI remove only CSV, DB and EXCEL.", dataProvider);
             }
         }
 
@@ -267,7 +267,7 @@ public class Scenario extends AbstractNoraUiCli {
             }
             workbook.write(outputStream);
         } catch (IOException e) {
-            logger.error("IOException {}", e.getMessage(), e);
+            LOGGER.error("IOException {}", e.getMessage(), e);
         }
     }
 
@@ -283,7 +283,7 @@ public class Scenario extends AbstractNoraUiCli {
         try {
             Files.asCharSink(sqlFile, Charsets.UTF_8).write(sb.toString());
         } catch (IOException e) {
-            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+            LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 
@@ -298,7 +298,7 @@ public class Scenario extends AbstractNoraUiCli {
         try {
             Files.asCharSink(newCsvfile, Charsets.UTF_8).write(sb.toString());
         } catch (IOException e) {
-            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+            LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 
@@ -318,7 +318,7 @@ public class Scenario extends AbstractNoraUiCli {
                 line = br.readLine();
             }
         } catch (IOException e) {
-            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+            LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
         return dataProvider;
     }
@@ -332,7 +332,7 @@ public class Scenario extends AbstractNoraUiCli {
     private void addScenarioInEnvPropertiesFile(String scenarioName, boolean verbose) {
         String scenarioFilePath = mainPath + File.separator + RESOURCES + File.separator + SCENARIO_FILE;
         if (verbose) {
-            logger.info("Add scenario named [{}] in scenario.properties.", scenarioName);
+            LOGGER.info("Add scenario named [{}] in scenario.properties.", scenarioName);
         }
         StringBuilder sb = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader(scenarioFilePath))) {
@@ -352,7 +352,7 @@ public class Scenario extends AbstractNoraUiCli {
                 line = br.readLine();
             }
         } catch (IOException e) {
-            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+            LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
         updateFile(scenarioFilePath, sb);
     }
@@ -366,7 +366,7 @@ public class Scenario extends AbstractNoraUiCli {
     private void removeScenarioInEnvPropertiesFile(String scenarioName, boolean verbose) {
         String scenarioFilePath = mainPath + File.separator + RESOURCES + File.separator + SCENARIO_FILE;
         if (verbose) {
-            logger.info("Remove scenario named [{}] in scenario.properties.", scenarioName);
+            LOGGER.info("Remove scenario named [{}] in scenario.properties.", scenarioName);
         }
         StringBuilder sb = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader(scenarioFilePath))) {
@@ -379,7 +379,7 @@ public class Scenario extends AbstractNoraUiCli {
                 line = br.readLine();
             }
         } catch (IOException e) {
-            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+            LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
         updateFile(scenarioFilePath, sb);
     }
@@ -419,15 +419,15 @@ public class Scenario extends AbstractNoraUiCli {
             if (!newFeature.exists()) {
                 Files.asCharSink(newFeature, Charsets.UTF_8).write(sb.toString());
                 if (verbose) {
-                    logger.info("File [{}] created with success.", newFeaturePath);
+                    LOGGER.info("File [{}] created with success.", newFeaturePath);
                 }
             } else {
                 if (verbose) {
-                    logger.info("File [{}] already exist.", newFeaturePath);
+                    LOGGER.info("File [{}] already exist.", newFeaturePath);
                 }
             }
         } catch (Exception e) {
-            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+            LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 
@@ -442,10 +442,10 @@ public class Scenario extends AbstractNoraUiCli {
         try {
             FileUtils.forceDelete(new File(featurePath));
             if (verbose) {
-                logger.info("{} removed with success.", featurePath);
+                LOGGER.info("{} removed with success.", featurePath);
             }
         } catch (Exception e) {
-            logger.debug("{} not revove because do not exist.", featurePath);
+            LOGGER.debug("{} not revove because do not exist.", featurePath);
         }
     }
 
@@ -461,7 +461,7 @@ public class Scenario extends AbstractNoraUiCli {
         String counterFilePath = this.mainPath + File.separator + "java" + File.separator
                 + robotCounter.getCanonicalName().replaceAll("\\.", "/").replaceAll("/", Matcher.quoteReplacement(File.separator)) + ".java";
         if (verbose) {
-            logger.info("Remove scenario named [{}] in black list of counter [{}].", scenarioName, counterFilePath);
+            LOGGER.info("Remove scenario named [{}] in black list of counter [{}].", scenarioName, counterFilePath);
         }
         StringBuilder sb = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader(counterFilePath))) {
@@ -474,7 +474,7 @@ public class Scenario extends AbstractNoraUiCli {
                 line = br.readLine();
             }
         } catch (IOException e) {
-            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+            LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
         updateFile(counterFilePath, sb);
     }

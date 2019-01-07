@@ -24,9 +24,9 @@ public class Callbacks extends HashMap<String, Callback> {
     private static final long serialVersionUID = -8116045885450166607L;
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    private static final Logger logger = LoggerFactory.getLogger(Callback.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Callback.class);
 
     /**
      * @deprecated (Only used for demo application for testing purposes, use {@link #CLOSE_WINDOW_AND_SWITCH_TO_GEOBEER_HOME} instead)
@@ -74,7 +74,7 @@ public class Callbacks extends HashMap<String, Callback> {
          */
         public Callback(String strClass, String strMethod, Object... parameters) {
             try {
-                logger.debug("ExceptionCallback with full name of class: {}", strClass);
+                LOGGER.debug("ExceptionCallback with full name of class: {}", strClass);
                 this.objectClass = Class.forName(strClass);
 
                 final Class<?>[] paramClasses = new Class<?>[parameters.length];
@@ -84,7 +84,7 @@ public class Callbacks extends HashMap<String, Callback> {
                 this.method = objectClass.getDeclaredMethod(strMethod, paramClasses);
                 this.parameters = parameters;
             } catch (final Exception e) {
-                logger.error("error Callback()", e);
+                LOGGER.error("error Callback()", e);
             }
         }
 
@@ -95,9 +95,9 @@ public class Callbacks extends HashMap<String, Callback> {
             try {
                 method.invoke(objectClass.newInstance(), parameters);
             } catch (final InvocationTargetException ite) {
-                logger.error("error InvocationTargetException", ite);
+                LOGGER.error("error InvocationTargetException", ite);
             } catch (final Exception e) {
-                logger.error("error Callback.call()", e);
+                LOGGER.error("error Callback.call()", e);
             }
         }
     }

@@ -45,7 +45,7 @@ public class LogoGameSteps extends Step {
     /**
      * Specific logger
      */
-    private static final Logger logger = LoggerFactory.getLogger(LogoGameSteps.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogoGameSteps.class);
 
     @Inject
     private LogoGamePage logoGamePage;
@@ -149,7 +149,7 @@ public class LogoGameSteps extends Step {
                 Context.getCurrentScenario().write("score is:\n" + message.getText());
                 Context.getDataOutputProvider().writeDataResult("score", Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData()).getIndexes().get(0), message.getText());
             } catch (TechnicalException e) {
-                logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE), e);
+                LOGGER.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE), e);
             }
         } catch (Exception e) {
             new Result.Failure<>(e.getMessage(), "", true, this.logoGamePage.getCallBack());

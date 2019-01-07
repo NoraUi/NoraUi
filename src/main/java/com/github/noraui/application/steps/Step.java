@@ -67,9 +67,9 @@ import cucumber.runtime.java.StepDefAnnotation;
 public class Step implements IStep {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    protected static final Logger logger = LoggerFactory.getLogger(Step.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(Step.class);
     private static final String SECURE_MASK = "[secure]";
 
     @Inject
@@ -138,7 +138,7 @@ public class Step implements IStep {
         try {
             Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(toClick, args)));
             ((JavascriptExecutor) getDriver())
-                    .executeScript("document.evaluate(\"" + Utilities.getLocatorValue(toClick, args).replace("\"", "\\\"") + "\", document, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click();");
+                    .executeScript("document.evaluate(\"" + Utilities.getLocatorValue(toClick, args) + "\", document, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click();");
         } catch (final Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK), toClick, toClick.getPage().getApplication()), true,
                     toClick.getPage().getCallBack());
@@ -224,7 +224,7 @@ public class Step implements IStep {
                         pageElement.getPage().getCallBack());
             }
         } else {
-            logger.debug("Empty data provided. No need to update text. If you want clear data, you need use: \"I clear text in ...\"");
+            LOGGER.debug("Empty data provided. No need to update text. If you want clear data, you need use: \"I clear text in ...\"");
         }
     }
 
@@ -318,7 +318,7 @@ public class Step implements IStep {
         try {
             Context.waitUntil(ExpectSteps.textToBeEqualsToExpectedValue(Utilities.getLocator(pageElement), value));
         } catch (final Exception e) {
-            logger.error("error in expectText. element is [{}]", element == null ? null : element.getText());
+            LOGGER.error("error in expectText. element is [{}]", element == null ? null : element.getText());
             new Result.Failure<>(element == null ? null : element.getText(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE), pageElement,
                     textOrKey.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : value, pageElement.getPage().getApplication()), true, pageElement.getPage().getCallBack());
         }
@@ -378,7 +378,7 @@ public class Step implements IStep {
         }
 
         final String innerText = webElement == null ? null : webElement.getText();
-        logger.info("checkText() expected [{}] and found [{}].", textOrKey.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : value, innerText);
+        LOGGER.info("checkText() expected [{}] and found [{}].", textOrKey.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : value, innerText);
         if (!value.equals(innerText)) {
             new Result.Failure<>(innerText, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE), pageElement,
                     textOrKey.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : value, pageElement.getPage().getApplication()), true, pageElement.getPage().getCallBack());
@@ -504,19 +504,19 @@ public class Step implements IStep {
      *             if the scenario encounters a functional error
      */
     protected void updateDateValidated(PageElement pageElement, String dateType, String date) throws TechnicalException, FailureException {
-        logger.debug("updateDateValidated with elementName={}, dateType={} and date={}", pageElement, dateType, date);
+        LOGGER.debug("updateDateValidated with elementName={}, dateType={} and date={}", pageElement, dateType, date);
         final DateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT);
         final Date today = Calendar.getInstance().getTime();
         try {
             final Date valideDate = formatter.parse(date);
             if ("any".equals(dateType)) {
-                logger.debug("update Date with any date: {}", date);
+                LOGGER.debug("update Date with any date: {}", date);
                 updateText(pageElement, date);
             } else if (formatter.format(today).equals(date) && ("future".equals(dateType) || "today".equals(dateType))) {
-                logger.debug("update Date with today");
+                LOGGER.debug("update Date with today");
                 updateText(pageElement, date);
             } else if (valideDate.after(Calendar.getInstance().getTime()) && ("future".equals(dateType) || "future_strict".equals(dateType))) {
-                logger.debug("update Date with a date after today: {}", date);
+                LOGGER.debug("update Date with a date after today: {}", date);
                 updateText(pageElement, date);
             } else {
                 new Result.Failure<>(date, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNEXPECTED_DATE), Messages.getMessage(Messages.DATE_GREATER_THAN_TODAY)), true,
@@ -544,7 +544,7 @@ public class Step implements IStep {
      *             if the scenario encounters a functional error
      */
     protected void saveElementValue(String field, Page page) throws TechnicalException, FailureException {
-        logger.debug("saveValueInStep: {} in {}.", field, page.getApplication());
+        LOGGER.debug("saveValueInStep: {} in {}.", field, page.getApplication());
         saveElementValue(field, page.getPageKey() + field, page);
     }
 
@@ -566,7 +566,7 @@ public class Step implements IStep {
      *             if the scenario encounters a functional error
      */
     protected void saveElementValue(String field, String targetKey, Page page) throws TechnicalException, FailureException {
-        logger.debug("saveValueInStep: {} to {} in {}.", field, targetKey, page.getApplication());
+        LOGGER.debug("saveValueInStep: {} to {} in {}.", field, targetKey, page.getApplication());
         String txt = "";
         try {
             final WebElement elem = Utilities.findElement(page, field);
@@ -806,7 +806,7 @@ public class Step implements IStep {
                 new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UPLOADING_FILE), path), true, pageElement.getPage().getCallBack());
             }
         } else {
-            logger.debug("Empty data provided. No need to update file upload path. If you want clear data, you need use: \"I clear text in ...\"");
+            LOGGER.debug("Empty data provided. No need to update file upload path. If you want clear data, you need use: \"I clear text in ...\"");
         }
     }
 
@@ -823,11 +823,11 @@ public class Step implements IStep {
      *            is a list of authorized activities
      */
     protected void displayMessageAtTheBeginningOfMethod(String methodName, String act, String concernedActivity, List<String> concernedActivities) {
-        logger.debug("{} {}: {} with {} concernedActivity(ies)", act, methodName, concernedActivity, concernedActivities.size());
+        LOGGER.debug("{} {}: {} with {} concernedActivity(ies)", act, methodName, concernedActivity, concernedActivities.size());
         int i = 0;
         for (final String activity : concernedActivities) {
             i++;
-            logger.debug("  activity N°{}={}", i, activity);
+            LOGGER.debug("  activity N°{}={}", i, activity);
         }
     }
 
@@ -842,11 +842,11 @@ public class Step implements IStep {
      *            is a list of authorized activities
      */
     protected void displayMessageAtTheBeginningOfMethod(String methodName, String act, List<String> concernedActivities) {
-        logger.debug("{}: {} with {} concernedActivity(ies)", act, methodName, concernedActivities.size());
+        LOGGER.debug("{}: {} with {} concernedActivity(ies)", act, methodName, concernedActivities.size());
         int i = 0;
         for (final String activity : concernedActivities) {
             i++;
-            logger.debug("  activity N°{}={}", i, activity);
+            LOGGER.debug("  activity N°{}={}", i, activity);
         }
     }
 
@@ -859,17 +859,17 @@ public class Step implements IStep {
      *            is a list of concerned elements (example: authorized activities)
      */
     protected void displayConcernedElementsAtTheBeginningOfMethod(String methodName, List<String> concernedElements) {
-        logger.debug("{}: with {} concernedElements", methodName, concernedElements.size());
+        LOGGER.debug("{}: with {} concernedElements", methodName, concernedElements.size());
         int i = 0;
         for (final String element : concernedElements) {
             i++;
-            logger.debug("  element N°{}={}", i, element);
+            LOGGER.debug("  element N°{}={}", i, element);
         }
     }
 
     private void displayMessageAtTheBeginningOfMethod(String message, String element, String application) throws TechnicalException {
         try {
-            logger.debug(message, element, application);
+            LOGGER.debug(message, element, application);
         } catch (final Exception te) {
             throw new TechnicalException("Technical problem in the code Messages.formatMessage(String templateMessage, String... args) in NoraUi.", te);
         }

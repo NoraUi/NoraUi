@@ -26,9 +26,9 @@ import javassist.Modifier;
 public class StepInterceptor implements MethodInterceptor {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    private static final Logger logger = LoggerFactory.getLogger(StepInterceptor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(StepInterceptor.class);
 
     /**
      * {@inheritDoc}
@@ -50,25 +50,25 @@ public class StepInterceptor implements MethodInterceptor {
             if (stepAnnotation.annotationType().isAnnotationPresent(StepDefAnnotation.class)) {
                 Matcher matcher = Pattern.compile("value=(.*)\\)").matcher(stepAnnotation.toString());
                 if (matcher.find()) {
-                    logger.info(
-                            "> " + stepAnnotation.annotationType().getSimpleName() + " " + String.format(matcher.group(1).replace("(.*)", "%s").replace("[\\.|\\?]", ""), invocation.getArguments()));
+                    LOGGER.info(
+                            "> " + stepAnnotation.annotationType().getSimpleName() + " " + String.format(matcher.group(1).replace("(.*)", "%s").replace("\\./\\?", ""), invocation.getArguments()));
                 }
             }
         }
         if (m.isAnnotationPresent(RetryOnFailure.class)) {
             RetryOnFailure retryAnnotation = m.getAnnotation(RetryOnFailure.class);
             if (retryAnnotation.verbose()) {
-                logger.info("NORAUI StepInterceptor invoke method " + m);
+                LOGGER.info("NORAUI StepInterceptor invoke method " + m);
             }
             for (int i = 0; i < retryAnnotation.attempts(); i++) {
                 try {
                     if (retryAnnotation.verbose()) {
-                        logger.info("NORAUI StepInterceptor attempt n° " + i);
+                        LOGGER.info("NORAUI StepInterceptor attempt n° " + i);
                     }
                     return invocation.proceed();
                 } catch (FailureException e) {
                     if (retryAnnotation.verbose()) {
-                        logger.info("NORAUI StepInterceptor Exception " + e.getMessage());
+                        LOGGER.info("NORAUI StepInterceptor Exception " + e.getMessage());
                     }
                     if (i == retryAnnotation.attempts() - 1) {
                         e.getFailure().fail();

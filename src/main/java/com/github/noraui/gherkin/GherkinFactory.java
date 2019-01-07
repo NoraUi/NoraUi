@@ -28,9 +28,9 @@ import com.github.noraui.utils.Context;
 public class GherkinFactory {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    private static final Logger logger = LoggerFactory.getLogger(GherkinFactory.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GherkinFactory.class);
 
     private static final String DATA = "#DATA";
     private static final String DATA_END = "#END";
@@ -71,7 +71,7 @@ public class GherkinFactory {
                 }
             }
         } catch (IOException e) {
-            logger.error("error GherkinFactory.injectDataInGherkinExamples()", e);
+            LOGGER.error("error GherkinFactory.injectDataInGherkinExamples()", e);
         }
     }
 
@@ -94,7 +94,7 @@ public class GherkinFactory {
             return examples.length > 2 ? Arrays.copyOfRange(examples, 1, examples.length - 1) : new String[] {};
 
         } catch (IOException e) {
-            logger.error("error GherkinFactory.getExamples()", e);
+            LOGGER.error("error GherkinFactory.getExamples()", e);
         }
         return new String[] {};
     }

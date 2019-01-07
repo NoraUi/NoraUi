@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Properties;
 
 import org.ini4j.Ini;
@@ -66,9 +67,9 @@ import cucumber.api.Scenario;
 public class Context {
 
     /**
-     * Specific logger.
+     * Specific LOGGER.
      */
-    private static final Logger logger = LoggerFactory.getLogger(Context.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Context.class);
 
     public static final String STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME = BrowserSteps.class.getCanonicalName();
     public static final String GO_TO_URL_METHOD_NAME = "goToUrl";
@@ -306,7 +307,7 @@ public class Context {
      * @param propertiesFile
      */
     public synchronized void initializeEnv(String propertiesFile) {
-        logger.info("Context > initializeEnv()");
+        LOGGER.info("Context > initializeEnv()");
 
         iniFiles = new HashMap<>();
         applicationProperties = initPropertiesFile(Thread.currentThread().getContextClassLoader(), propertiesFile);
@@ -336,7 +337,7 @@ public class Context {
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      */
     public synchronized void initializeRobot(Class<?> clazz) throws TechnicalException {
-        logger.info("Context > initializeRobot() with {}", clazz.getCanonicalName());
+        LOGGER.info("Context > initializeRobot() with {}", clazz.getCanonicalName());
         // set browser: chrome,firefox or ie
         browser = getProperty(BROWSER_KEY, applicationProperties);
 
@@ -376,7 +377,7 @@ public class Context {
         // set crypto key
         cryptoKey = System.getProperty(CRYPTO_KEY);
         if (cryptoKey == null) {
-            logger.warn("{} not set. You can not use crypto feature.", CRYPTO_KEY);
+            LOGGER.warn("{} not set. You can not use crypto feature.", CRYPTO_KEY);
         }
 
         // stacktrace configuration
@@ -535,7 +536,7 @@ public class Context {
             try {
                 initDataId(scenarioName);
             } catch (final TechnicalException te) {
-                logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE), te);
+                LOGGER.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE), te);
             }
         }
         getInstance().scenarioName = scenarioName;
@@ -596,15 +597,15 @@ public class Context {
             final Properties props = new Properties();
             try {
                 if (in == null) {
-                    logger.error(Messages.getMessage(CONTEXT_PROPERTIES_FILE_NOT_FOUND), propertiesFileName);
+                    LOGGER.error(Messages.getMessage(CONTEXT_PROPERTIES_FILE_NOT_FOUND), propertiesFileName);
                 } else {
-                    logger.info("Reading properties file ({}).", propertiesFileName);
+                    LOGGER.info("Reading properties file ({}).", propertiesFileName);
                     props.load(in);
                 }
             } catch (final IOException e) {
-                logger.error("error Context.initPropertiesFile()", e);
+                LOGGER.error("error Context.initPropertiesFile()", e);
             }
-            logger.info("Loaded properties from {} = {}.", propertiesFileName, props);
+            LOGGER.info("Loaded properties from {} = {}.", propertiesFileName, props);
             return props;
         }
         return null;
@@ -622,7 +623,7 @@ public class Context {
         }
         final String p = propertyFile.getProperty(key);
         if (p == null) {
-            logger.error("{}{}", key, Messages.getMessage(NOT_SET_LABEL));
+            LOGGER.error("{}{}", key, Messages.getMessage(NOT_SET_LABEL));
         }
         return p;
     }
@@ -637,10 +638,10 @@ public class Context {
         final String property = propertyFile.getProperty(key);
         int p = 0;
         if (property == null) {
-            logger.error("{}{}", key, Messages.getMessage(NOT_SET_LABEL));
+            LOGGER.error("{}{}", key, Messages.getMessage(NOT_SET_LABEL));
         } else {
             p = Integer.parseInt(property);
-            logger.info("{} = {}", key, p);
+            LOGGER.info("{} = {}", key, p);
         }
         return p;
     }
@@ -665,9 +666,9 @@ public class Context {
                 iniFiles.put(applicationKey, ini);
             }
         } catch (final InvalidFileFormatException e) {
-            logger.error("error Context.initApplicationDom()", e);
+            LOGGER.error("error Context.initApplicationDom()", e);
         } catch (final IOException e) {
-            logger.error(Messages.getMessage(CONTEXT_APP_INI_FILE_NOT_FOUND), applicationKey, e);
+            LOGGER.error(Messages.getMessage(CONTEXT_APP_INI_FILE_NOT_FOUND), applicationKey, e);
         }
     }
 
@@ -743,18 +744,19 @@ public class Context {
      * @return url in a string
      */
     public static String getUrlByPagekey(String pageKey) {
-        if (pageKey != null) {
-            for (final Map.Entry<String, Application> application : getInstance().applications.entrySet()) {
-                for (final Map.Entry<String, String> urlPage : application.getValue().getUrlPages().entrySet()) {
-                    if (pageKey.equals(urlPage.getKey())) {
-                        return Auth.usingAuthentication(urlPage.getValue());
-                    }
-                }
-            }
-        } else {
-            return null;
-        }
-        return null;
+        return getInstance().applications.values().stream().map(Application::getUrlPages).map(urlPages -> urlPages.get(pageKey)).filter(Objects::nonNull).findFirst().orElse(null);
+        // if (pageKey != null) {
+        // for (final Map.Entry<String, Application> application : getInstance().applications.entrySet()) {
+        // for (final Map.Entry<String, String> urlPage : application.getValue().getUrlPages().entrySet()) {
+        // if (pageKey.equals(urlPage.getKey())) {
+        // return Auth.usingAuthentication(urlPage.getValue());
+        // }
+        // }
+        // }
+        // } else {
+        // return null;
+        // }
+        // return null;
     }
 
     /**
@@ -765,18 +767,19 @@ public class Context {
      * @return application name in a string
      */
     public static String getApplicationByPagekey(String pageKey) {
-        if (pageKey != null) {
-            for (final Map.Entry<String, Application> application : getInstance().applications.entrySet()) {
-                for (final Map.Entry<String, String> urlPage : application.getValue().getUrlPages().entrySet()) {
-                    if (pageKey.equals(urlPage.getKey())) {
-                        return application.getKey();
-                    }
-                }
-            }
-        } else {
-            return null;
-        }
-        return null;
+        return getInstance().applications.entrySet().stream().filter(a -> a.getValue().getUrlPages().get(pageKey) != null).map(Entry::getKey).findFirst().orElse(null);
+//        if (pageKey != null) {
+//            for (final Map.Entry<String, Application> application : getInstance().applications.entrySet()) {
+//                for (final Map.Entry<String, String> urlPage : application.getValue().getUrlPages().entrySet()) {
+//                    if (pageKey.equals(urlPage.getKey())) {
+//                        return application.getKey();
+//                    }
+//                }
+//            }
+//        } else {
+//            return null;
+//        }
+//        return null;
     }
 
     /**
@@ -803,7 +806,7 @@ public class Context {
                         indexData.add(new DataIndex(dataIndex, e.getValue().getIds()));
                     }
                 } else {
-                    logger.error(Messages.getMessage(ScenarioInitiator.SCENARIO_INITIATOR_ERROR_EMPTY_FILE));
+                    LOGGER.error(Messages.getMessage(ScenarioInitiator.SCENARIO_INITIATOR_ERROR_EMPTY_FILE));
                 }
             } else {
                 for (int i = 1; i < Context.getDataInputProvider().getNbLines(); i++) {
@@ -833,7 +836,7 @@ public class Context {
         } else {
             currentLocale = Locale.getDefault();
         }
-        logger.info(Messages.getMessage(CONTEXT_LOCALE_USED), currentLocale);
+        LOGGER.info(Messages.getMessage(CONTEXT_LOCALE_USED), currentLocale);
     }
 
     /**
@@ -890,7 +893,7 @@ public class Context {
                 }
             }
         } catch (final Exception e) {
-            logger.error(Messages.getMessage(CONTEXT_ERROR_WHEN_PLUGING_DATA_PROVIDER), e);
+            LOGGER.error(Messages.getMessage(CONTEXT_ERROR_WHEN_PLUGING_DATA_PROVIDER), e);
         }
     }
 

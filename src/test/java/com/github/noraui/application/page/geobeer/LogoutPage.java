@@ -22,7 +22,7 @@ public class LogoutPage extends Page {
     /**
      * Specific logger
      */
-    private static final Logger logger = LoggerFactory.getLogger(LogoutPage.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogoutPage.class);
 
     public final PageElement signOutMessage = new PageElement("-sign_out_message");
 
@@ -42,7 +42,7 @@ public class LogoutPage extends Page {
             Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(signOutMessage)));
             return true;
         } catch (Exception e) {
-            logger.error("signOut message not found", e);
+            LOGGER.error("signOut message not found", e);
             return false;
         }
     }

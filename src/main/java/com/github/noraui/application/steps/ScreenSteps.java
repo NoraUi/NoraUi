@@ -35,9 +35,9 @@ import cucumber.api.java.fr.Et;
 public class ScreenSteps extends Step {
 
     /**
-     * Specific logger.
+     * Specific LOGGER.
      */
-    private static final Logger logger = LoggerFactory.getLogger(ScreenSteps.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ScreenSteps.class);
 
     @Inject
     private ScreenService screenService;
@@ -49,10 +49,10 @@ public class ScreenSteps extends Step {
      *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
      */
     @Conditioned
-    @Et("Je prends une capture d'écran[\\.|\\?]")
-    @And("I take a screenshot[\\.|\\?]")
+    @Et("Je prends une capture d'écran\\./\\?")
+    @And("I take a screenshot\\./\\?")
     public void takeScreenshot(List<GherkinStepCondition> conditions) {
-        logger.debug("I take a screenshot for [{}] scenario.", Context.getCurrentScenario());
+        LOGGER.debug("I take a screenshot for [{}] scenario.", Context.getCurrentScenario());
         screenService.takeScreenshot(Context.getCurrentScenario());
     }
 
@@ -67,20 +67,18 @@ public class ScreenSteps extends Step {
      *             if file or directory is wrong.
      */
     @Conditioned
-    @Et("Je sauvegarde une capture d'écran dans '(.*)'[\\.|\\?]")
-    @And("I save a screenshot in '(.*)'[\\.|\\?]")
+    @Et("Je sauvegarde une capture d\'écran dans {string}\\./\\?")
+    @And("I save a screenshot in {string}\\./\\?")
     public void saveScreenshot(String screenName, List<GherkinStepCondition> conditions) throws IOException {
-        logger.debug("I save a screenshot in [{}].", screenName);
+        LOGGER.debug("I save a screenshot in [{}].", screenName);
         screenService.saveScreenshot(screenName);
     }
 
     /**
      * Save a screenshot of one element only and add to DOWNLOAD_FILES_FOLDER folder.
      * 
-     * @param page
-     *            The concerned page of field
-     * @param element
-     *            is key of PageElement concerned
+     * @param pageElement
+     *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}). * list of 'expected' values condition and 'actual' values
      *            ({@link com.github.noraui.gherkin.GherkinStepCondition}).
@@ -90,10 +88,12 @@ public class ScreenSteps extends Step {
      * @throws FailureException
      */
     @Conditioned
-    @Et("Je sauvegarde une capture d'écran de '(.*)-(.*)' dans '(.*)'[\\.|\\?]")
-    @And("I save a screenshot of '(.*)-(.*)' in '(.*)'[\\.|\\?]")
-    public void saveWebElementInScreenshot(String page, String element, String screenName, List<GherkinStepCondition> conditions) throws IOException, FailureException, TechnicalException {
-        logger.debug("I save a screenshot of [{}-{}] in [{}.jpg]", page, element, screenName);
+    @Et("Je sauvegarde une capture d'écran de {string} dans {string}\\./\\?")
+    @And("I save a screenshot of {string} in {string}\\./\\?")
+    public void saveWebElementInScreenshot(String pageElement, String screenName, List<GherkinStepCondition> conditions) throws IOException, FailureException, TechnicalException {
+        String page = pageElement.split("-")[0];
+        String element = pageElement.split("-")[1];
+        LOGGER.debug("I save a screenshot of [{}-{}] in [{}.jpg]", page, element, screenName);
         try {
             screenService.saveScreenshot(screenName, Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + element)))));
         } catch (Exception e) {
@@ -114,10 +114,10 @@ public class ScreenSteps extends Step {
      *             if configuration video file is wrong.
      */
     @Conditioned
-    @Et("Je commence la capture vidéo dans '(.*)'[\\.|\\?]")
-    @And("I start video capture in '(.*)'[\\.|\\?]")
+    @Et("Je commence la capture vidéo dans {string}\\./\\?")
+    @And("I start video capture in {string}\\./\\?")
     public void startVideoCapture(String screenName, List<GherkinStepCondition> conditions) throws IOException, AWTException {
-        logger.debug("I start video capture in [{}].", screenName);
+        LOGGER.debug("I start video capture in [{}].", screenName);
         screenService.startVideoCapture(screenName);
     }
 
@@ -129,10 +129,10 @@ public class ScreenSteps extends Step {
      * @throws IOException
      */
     @Conditioned
-    @Et("Je stop la capture vidéo[\\.|\\?]")
-    @And("I stop video capture[\\.|\\?]")
+    @Et("Je stop la capture vidéo\\./\\?")
+    @And("I stop video capture\\./\\?")
     public void stopVideoCapture(List<GherkinStepCondition> conditions) throws IOException {
-        logger.debug("I stop video capture.");
+        LOGGER.debug("I stop video capture.");
         screenService.stopVideoCapture();
     }
 

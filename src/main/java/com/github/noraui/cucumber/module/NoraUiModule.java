@@ -31,20 +31,20 @@ import com.google.inject.matcher.Matchers;
 public class NoraUiModule implements Module {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    private static final Logger logger = LoggerFactory.getLogger(NoraUiModule.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NoraUiModule.class);
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void configure(Binder binder) {
-        logger.debug("NORAUI NoraUiModule configure");
+        LOGGER.debug("NORAUI NoraUiModule configure");
         binder.bindInterceptor(any(), annotatedWith(Conditioned.class), new ConditionedInterceptor());
         binder.bindInterceptor(Matchers.subclassesOf(com.github.noraui.application.steps.Step.class).or(Matchers.subclassesOf(BrowserSteps.class)), any(), new StepInterceptor());
 
-        logger.debug("NORAUI service binding");
+        LOGGER.debug("NORAUI service binding");
         binder.bind(CryptoService.class).to(CryptoServiceImpl.class).asEagerSingleton();
         binder.bind(HttpService.class).to(HttpServiceImpl.class).asEagerSingleton();
         binder.bind(ScreenService.class).to(ScreenServiceImpl.class).asEagerSingleton();

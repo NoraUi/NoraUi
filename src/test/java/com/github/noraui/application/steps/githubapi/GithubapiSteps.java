@@ -24,7 +24,7 @@ public class GithubapiSteps extends Step {
     /**
      * Specific logger
      */
-    private static final Logger logger = LoggerFactory.getLogger(GithubapiSteps.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GithubapiSteps.class);
 
     @Inject
     private GithubapiPage githubapiPage;
@@ -35,7 +35,7 @@ public class GithubapiSteps extends Step {
         if (!githubapiPage.checkPage()) {
             new Result.Failure<>("GITHUBAPI", Messages.getMessage(Messages.FAIL_MESSAGE_UNKNOWN_CREDENTIALS), true, this.githubapiPage.getCallBack());
         }
-        logger.debug("The GITHUBAPI portal is displayed.");
+        LOGGER.debug("The GITHUBAPI portal is displayed.");
     }
 
 }

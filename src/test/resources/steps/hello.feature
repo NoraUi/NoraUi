@@ -159,6 +159,8 @@ Feature: hello (Function to validate the environment.)
     Then I click on 'demo.DemoPage-staleButton'.
     And I wait staleness of 'demo.DemoPage-disappearButton' with timeout of '10' seconds.
 
+    And I update text 'demo.DemoPage-input_text_field' with ramdom match 'noraui[a-zA-Z0-9]{6}'.
+
     When I clear text in 'demo.DemoPage-input_text_field'.
     When I update text 'demo.DemoPage-input_text_field' with '℗:AMAapQjwjKaAGUkO6rbttg=='.
     And I check text 'demo.DemoPage-input_text_field' with 'foot'.

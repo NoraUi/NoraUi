@@ -77,14 +77,14 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
     Quand Je clique sur 'demo.DemoPage-<element>'.
     Et Je vérifie le message 'OK' sur l'alerte
     Et Je vérifie le texte 'demo.DemoPage-input_current_date' avec '4'.
-    
+
     Lorsque test pour 'Annulée'
-    
+
     Alors Si '' vérifie '', je fais '2' fois:
         |key|step|expected|actual|
         |1|Je patiente '3' secondes.|1|1|
         |2|Je patiente '4' secondes.|1|2|
-    
+
     Alors Si '' vérifie '', je fais jusqu'à 'myOutLoopKey' respecte 'Rennes' avec '4' essais maxi: 
         |key|step|expected|actual|
         |1|Je patiente '3' secondes.|1|1|
@@ -96,7 +96,7 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
         |key|step|expected|actual|
         |1|I wait '1' seconds?|||
         |2|I wait '1' seconds?|(Rennes\|Paris\|New York)|<city>|
-        
+
     Lorsque Si '<author>' vérifie '.+', Tant que 'demo.DemoPage-big_title' respecte 'This is a demo for NORAUI.*' je fais avec '3' essais maxi:
         |key|step|expected|actual|
         |1|I wait '1' seconds?|||
@@ -149,6 +149,10 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
 
     Quand Je clique sur 'demo.DemoPage-changeValueButton'.
     Alors Je m'attends à avoir 'demo.DemoPage-changeValueButton' avec le texte 'My value has changed'.
+
+    Et Je prends une capture d'écran.
+    Et Je sauvegarde une capture d'écran dans 'myScreenshot-<id>'.
+    Et Je sauvegarde une capture d'écran de 'demo.DemoPage-changeValueButton' dans 'changeValueButton<id>'.
 
     Quand Je clique sur 'demo.DemoPage-disappearButton'.
     Et Je patiente l'invisibilité de 'demo.DemoPage-disappearButton' avec un timeout de '10' secondes.

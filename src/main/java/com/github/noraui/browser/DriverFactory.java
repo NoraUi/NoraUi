@@ -43,9 +43,9 @@ import com.github.noraui.utils.Utilities.SystemArchitecture;
 public class DriverFactory {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    private static final Logger logger = LoggerFactory.getLogger(DriverFactory.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DriverFactory.class);
 
     /** Default web drivers implicit wait **/
     public static final long IMPLICIT_WAIT = 500;
@@ -76,7 +76,7 @@ public class DriverFactory {
             try {
                 driver = generateWebDriver(driverName);
             } catch (final TechnicalException e) {
-                logger.error("error DriverFactory.getDriver()", e);
+                LOGGER.error("error DriverFactory.getDriver()", e);
             }
         } else {
             driver = drivers.get(driverName);
@@ -107,7 +107,7 @@ public class DriverFactory {
         if (!new File(pathWebdriver).setExecutable(true)) {
             throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_WEBDRIVER_SET_EXECUTABLE));
         }
-        logger.info("Generating IE driver ({}) ...", pathWebdriver);
+        LOGGER.info("Generating IE driver ({}) ...", pathWebdriver);
 
         System.setProperty(Driver.IE.getDriverName(), pathWebdriver);
 
@@ -144,7 +144,7 @@ public class DriverFactory {
         if (!new File(pathWebdriver).setExecutable(true)) {
             throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_WEBDRIVER_SET_EXECUTABLE));
         }
-        logger.info("Generating Chrome driver ({}) ...", pathWebdriver);
+        LOGGER.info("Generating Chrome driver ({}) ...", pathWebdriver);
 
         System.setProperty(Driver.CHROME.getDriverName(), pathWebdriver);
 
@@ -210,7 +210,7 @@ public class DriverFactory {
         if (!new File(pathWebdriver).setExecutable(true)) {
             throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_WEBDRIVER_SET_EXECUTABLE));
         }
-        logger.info("Generating Firefox driver ({}) ...", pathWebdriver);
+        LOGGER.info("Generating Firefox driver ({}) ...", pathWebdriver);
 
         System.setProperty(Driver.FIREFOX.getDriverName(), pathWebdriver);
 

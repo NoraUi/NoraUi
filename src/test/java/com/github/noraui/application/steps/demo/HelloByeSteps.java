@@ -44,7 +44,7 @@ public class HelloByeSteps extends Step {
     /**
      * Specific logger
      */
-    private static final Logger logger = LoggerFactory.getLogger(HelloByeSteps.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HelloByeSteps.class);
 
     @Inject
     private DemoPage demoPage;
@@ -64,7 +64,7 @@ public class HelloByeSteps extends Step {
         if (!f.exists()) {
             f.createNewFile();
         } else {
-            logger.warn("File already exists");
+            LOGGER.warn("File already exists");
         }
     }
 
@@ -74,13 +74,13 @@ public class HelloByeSteps extends Step {
     @Etantdonné("j'ai un bonjour, s'il vous plaît. Cordialement '(.*)'[\\.|\\?]")
     @Given("me a hello, please. Best Regards '(.*)'[\\.|\\?]")
     public void hello(String name, List<GherkinStepCondition> conditions) {
-        logger.info("Hello " + name + "!");
+        LOGGER.info("Hello " + name + "!");
     }
 
     @Lorsque("moi un chat, s'il vous plaît, meilleures salutations '(.*)'.")
     @Given("me a cat, please. Best Regards '(.*)'.")
     public void hello(String name) {
-        logger.info("Take my cat " + name + "!");
+        LOGGER.info("Take my cat " + name + "!");
     }
 
     @Lorsque("j'ai un au revoir, s'il vous plaît. Cordialement '(.*)':")
@@ -89,9 +89,9 @@ public class HelloByeSteps extends Step {
         int i = 0;
         for (Map.Entry<String, String> entry : params.entrySet()) {
             i++;
-            logger.info(String.format("  Key N°%d: %s   Value:%s", i, entry.getKey(), entry.getValue()));
+            LOGGER.info(String.format("  Key N°%d: %s   Value:%s", i, entry.getKey(), entry.getValue()));
         }
-        logger.info("Bye " + name + "!");
+        LOGGER.info("Bye " + name + "!");
     }
 
     @Lorsque("moi une erreur si '(.*)' est Paris.")
@@ -111,8 +111,8 @@ public class HelloByeSteps extends Step {
             if ("anonymous".equals(article.getAuthor())) {
                 new Result.Failure<>("anonymous", "anonymous is prohibited in demo blog!!", true, this.demoPage.getCallBack());
             } else {
-                logger.info("> " + blog);
-                logger.info("    > " + article.getTitle() + ": " + article.getText());
+                LOGGER.info("> " + blog);
+                LOGGER.info("    > " + article.getTitle() + ": " + article.getText());
             }
         }
     }
@@ -120,7 +120,7 @@ public class HelloByeSteps extends Step {
     @Lorsque("test pour '(.*)'")
     @Given("test for '(.*)'")
     public void testforCancel(String word) {
-        logger.info("testforCancel: " + word);
+        LOGGER.info("testforCancel: " + word);
     }
 
 }
