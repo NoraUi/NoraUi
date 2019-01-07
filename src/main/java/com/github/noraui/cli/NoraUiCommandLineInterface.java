@@ -286,7 +286,7 @@ public class NoraUiCommandLineInterface {
         if (applications != null) {
             for (String app : applications) {
                 if (verbose) {
-                    LOGGER.info("CLI File [{}] found.", app);
+                    LOGGER.info("Application CLI File [{}] found.", app);
                 }
                 try (BufferedReader bufferedReader = new BufferedReader(new FileReader(CLI_FILES_DIR + File.separator + CLI_APPLICATIONS_FILES_DIR + File.separator + app))) {
                     NoraUiApplicationFile noraUiApplicationFile = gson.fromJson(bufferedReader, NoraUiApplicationFile.class);
@@ -312,7 +312,7 @@ public class NoraUiCommandLineInterface {
         if (scenarios != null) {
             for (String s : scenarios) {
                 if (verbose) {
-                    LOGGER.info("CLI File [{}] found.", s);
+                    LOGGER.info("Scenario CLI File [{}] found.", s);
                 }
                 try (BufferedReader bufferedReader = new BufferedReader(new FileReader(CLI_FILES_DIR + File.separator + CLI_SCENARIOS_FILES_DIR + File.separator + s))) {
                     NoraUiScenarioFile noraUiScenarioFile = gson.fromJson(bufferedReader, NoraUiScenarioFile.class);
@@ -366,7 +366,7 @@ public class NoraUiCommandLineInterface {
         try {
             FileUtils.forceDelete(new File(CLI_FILES_DIR + File.separator + CLI_APPLICATIONS_FILES_DIR + File.separator + noraUiApplicationFile.getName() + JSON));
             if (verbose) {
-                LOGGER.info("File [{}.json] removed with success.", noraUiApplicationFile.getName());
+                LOGGER.info("Application File [{}.json] removed with success.", noraUiApplicationFile.getName());
             }
         } catch (Exception e) {
             LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
@@ -388,11 +388,11 @@ public class NoraUiCommandLineInterface {
             if (!applicationFile.exists()) {
                 Files.asCharSink(applicationFile, Charsets.UTF_8).write(gson.toJson(noraUiApplicationFile));
                 if (verbose) {
-                    LOGGER.info("File [{}.json] created with success.", noraUiApplicationFile.getName());
+                    LOGGER.info("Applications File [{}.json] created with success.", noraUiApplicationFile.getName());
                 }
             } else {
                 if (verbose) {
-                    LOGGER.info("File [{}.json] already exist.", noraUiApplicationFile.getName());
+                    LOGGER.info("Applications File [{}.json] already exist.", noraUiApplicationFile.getName());
                 }
             }
         } catch (Exception e) {
@@ -430,7 +430,7 @@ public class NoraUiCommandLineInterface {
             if (new File(CLI_FILES_DIR + File.separator + CLI_SCENARIOS_FILES_DIR + File.separator + noraUiScenarioFile.getName() + JSON).exists() && !noraUiScenarioFile.getStatus()) {
                 deleteFileScenarioNoraUiCliFiles(verbose, noraUiScenarioFile);
             }
-            if (!noraUiScenarioFile.getStatus()) {
+            if (noraUiScenarioFile.getStatus()) {
                 createFileScenarioNoraUiCliFiles(verbose, gson, noraUiScenarioFile);
                 updateFileScenarioNoraUiCliFiles(gson, noraUiScenarioFile);
             }
@@ -447,7 +447,7 @@ public class NoraUiCommandLineInterface {
         try {
             FileUtils.forceDelete(new File(CLI_FILES_DIR + File.separator + CLI_SCENARIOS_FILES_DIR + File.separator + noraUiScenarioFile.getName() + JSON));
             if (verbose) {
-                LOGGER.info("File [{}.json] removed with success.", noraUiScenarioFile.getName());
+                LOGGER.info("Scenario File [{}.json] removed with success.", noraUiScenarioFile.getName());
             }
         } catch (Exception e) {
             LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
@@ -469,11 +469,11 @@ public class NoraUiCommandLineInterface {
             if (!applicationFile.exists()) {
                 Files.asCharSink(applicationFile, Charsets.UTF_8).write(gson.toJson(noraUiScenarioFile));
                 if (verbose) {
-                    LOGGER.info("File [{}.json] created with success.", noraUiScenarioFile.getName());
+                    LOGGER.info("Scenario File [{}.json] created with success.", noraUiScenarioFile.getName());
                 }
             } else {
                 if (verbose) {
-                    LOGGER.info("File [{}.json] already exist.", noraUiScenarioFile.getName());
+                    LOGGER.info("Scenario File [{}.json] already exist.", noraUiScenarioFile.getName());
                 }
             }
         } catch (Exception e) {
