@@ -121,9 +121,7 @@ SNAPSHOT:
 
 # License
 
-[![license](https://img.shields.io/github/license/NoraUi/NoraUi.svg)](https://github.com/NoraUi/NoraUi/blob/master/LICENSE) See LICENSE for details
-
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FNoraUi%2FNoraUi.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FNoraUi%2FNoraUi?ref=badge_large)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FNoraUi%2FNoraUi.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FNoraUi%2FNoraUi?ref=badge_shield) [![license](https://img.shields.io/github/license/NoraUi/NoraUi.svg)](https://github.com/NoraUi/NoraUi/blob/master/LICENSE) See LICENSE for details
 
 # Contributing
 
