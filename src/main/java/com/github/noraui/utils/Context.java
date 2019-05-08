@@ -745,18 +745,6 @@ public class Context {
      */
     public static String getUrlByPagekey(String pageKey) {
         return getInstance().applications.values().stream().map(Application::getUrlPages).map(urlPages -> urlPages.get(pageKey)).filter(Objects::nonNull).findFirst().orElse(null);
-        // if (pageKey != null) {
-        // for (final Map.Entry<String, Application> application : getInstance().applications.entrySet()) {
-        // for (final Map.Entry<String, String> urlPage : application.getValue().getUrlPages().entrySet()) {
-        // if (pageKey.equals(urlPage.getKey())) {
-        // return Auth.usingAuthentication(urlPage.getValue());
-        // }
-        // }
-        // }
-        // } else {
-        // return null;
-        // }
-        // return null;
     }
 
     /**
@@ -768,18 +756,6 @@ public class Context {
      */
     public static String getApplicationByPagekey(String pageKey) {
         return getInstance().applications.entrySet().stream().filter(a -> a.getValue().getUrlPages().get(pageKey) != null).map(Entry::getKey).findFirst().orElse(null);
-//        if (pageKey != null) {
-//            for (final Map.Entry<String, Application> application : getInstance().applications.entrySet()) {
-//                for (final Map.Entry<String, String> urlPage : application.getValue().getUrlPages().entrySet()) {
-//                    if (pageKey.equals(urlPage.getKey())) {
-//                        return application.getKey();
-//                    }
-//                }
-//            }
-//        } else {
-//            return null;
-//        }
-//        return null;
     }
 
     /**
