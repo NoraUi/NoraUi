@@ -70,8 +70,8 @@ public class LogoGameSteps extends Step {
     }
 
     @Time()
-    @Alors("J'ajoute '(.*)' marque\\(s\\) aléatoire\\(s\\)")
-    @Then("I add '(.*)' random brand")
+    @Alors("J'ajoute {int} marque(s) aléatoire(s)")
+    @Then("I add {int} random brand(s)")
     public void addRandomBrand(@TimeValue("nb") int nb) throws FailureException {
         for (int i = 0; i < nb; i++) {
             try {

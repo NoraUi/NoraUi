@@ -25,7 +25,7 @@ import io.cucumber.datatable.CucumberDataTableException;
 import io.cucumber.datatable.UndefinedDataTableTypeException;
 import io.cucumber.stepexpression.Argument;
 
-class PickleStepDefinitionMatch extends Match implements StepDefinitionMatch {
+public class PickleStepDefinitionMatch extends Match implements StepDefinitionMatch {
     
     /**
      * Specific logger

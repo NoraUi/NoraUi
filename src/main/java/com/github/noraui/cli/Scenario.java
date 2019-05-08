@@ -405,7 +405,7 @@ public class Scenario extends AbstractNoraUiCli {
         sb.append("    Given I check that user '<user>' is not empty.").append(System.lineSeparator());
         sb.append("    Given I check that password '<password>' is not empty.").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
-        sb.append("    Given '" + applicationName.toUpperCase() + "_HOME' is opened.").append(System.lineSeparator());
+        sb.append("    Given '" + applicationName.toUpperCase() + "_HOME' is opened").append(System.lineSeparator());
         sb.append("    Then The " + applicationName.toUpperCase() + " home page is displayed").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
         sb.append("    And I go back to '" + applicationName.toUpperCase() + "_HOME'").append(System.lineSeparator());

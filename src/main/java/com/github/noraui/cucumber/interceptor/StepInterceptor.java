@@ -51,7 +51,7 @@ public class StepInterceptor implements MethodInterceptor {
                 Matcher matcher = Pattern.compile("value=(.*)\\)").matcher(stepAnnotation.toString());
                 if (matcher.find()) {
                     LOGGER.info(
-                            "> " + stepAnnotation.annotationType().getSimpleName() + " " + String.format(matcher.group(1).replace("(.*)", "%s").replace("\\./\\?", ""), invocation.getArguments()));
+                            "> " + stepAnnotation.annotationType().getSimpleName() + " " + String.format(matcher.group(1).replace("(.*)", "%s").replace("(\\?)", ""), invocation.getArguments()));
                 }
             }
         }

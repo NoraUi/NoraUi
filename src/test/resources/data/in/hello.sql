@@ -2,7 +2,7 @@
 UNION
 (select t.author as "author", t.zip as "zip", t.city as "city", t.element as "element", t.element2 as "element2", t.date as "date", t.title as "title", '26' as Result from hello t where t.city = 'Lorient')
 UNION
-(select t.author as "author", t.zip as "zip", t.city as "city", t.element as "element", t.element2 as "element2", t.date as "date", t.title as "title", '41' as Result from hello t where t.element = 'noExistElement')
+(select t.author as "author", t.zip as "zip", t.city as "city", t.element as "element", t.element2 as "element2", t.date as "date", t.title as "title", '38' as Result from hello t where t.element = 'noExistElement')
 UNION
 (select t.author as "author", t.zip as "zip", t.city as "city", t.element as "element", t.element2 as "element2", t.date as "date", t.title as "title", '' as Result from hello t where t.city <> 'Paris' AND t.city <> 'Lorient' AND t.element <> 'noExistElement')
 UNION
@@ -10,5 +10,5 @@ UNION
 UNION
 (select t.author as "author", t.zip as "zip", t.city as "city", t.element as "element", t.element2 as "element2", t.date as "date", t.title as "title", '4' as Result from hello t where t.element = '' and t.element2 = '')
 UNION
-(select t.author as "author", t.zip as "zip", t.city as "city", t.element as "element", t.element2 as "element2", t.date as "date", t.title as "title", '57' as Result from hello t where t.zip = '')
+(select t.author as "author", t.zip as "zip", t.city as "city", t.element as "element", t.element2 as "element2", t.date as "date", t.title as "title", '54' as Result from hello t where t.zip = '')
 ORDER BY "author"

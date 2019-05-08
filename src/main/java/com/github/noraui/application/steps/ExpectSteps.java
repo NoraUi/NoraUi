@@ -34,10 +34,8 @@ public class ExpectSteps extends Step {
     /**
      * Checks if an html element contains expected value.
      *
-     * @param page
-     *            The concerned page of elementName
-     * @param elementName
-     *            The key of the PageElement to check
+     * @param pageElement
+     *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
      * @param textOrKey
      *            Is the new data (text or text in context (after a save))
      * @param conditions
@@ -49,8 +47,8 @@ public class ExpectSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Et("Je m'attends à avoir {string} avec le texte {string}\\./\\?")
-    @And("I expect to have {string} with the text {string}\\./\\?")
+    @Et("Je m'attends à avoir {string} avec le texte {string}(\\?)")
+    @And("I expect to have {string} with the text {string}(\\?)")
     public void expectText(String pageElement, String textOrKey, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];

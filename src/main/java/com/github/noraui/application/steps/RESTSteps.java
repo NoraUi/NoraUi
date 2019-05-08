@@ -59,8 +59,8 @@ public class RESTSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Et("Je sauvegarde la valeur de cette API REST {string} {string} {string} dans {string} du contexte\\./\\?")
-    @And("I save the value of REST API {string} {string} {string} in {string} context key\\./\\?")
+    @Et("Je sauvegarde la valeur de cette API REST {string} {string} {string} dans {string} du contexte(\\?)")
+    @And("I save the value of REST API {string} {string} {string} in {string} context key(\\?)")
     public void saveValue(String method, String pageKey, String uri, String targetKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         LOGGER.debug("saveValue of REST API with method [{}].", method);
         LOGGER.debug("saveValue of REST API with pageKey [{}].", pageKey);
@@ -96,8 +96,8 @@ public class RESTSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Et("Je sauvegarde la valeur de cette API REST {string} {string} {string} dans {string} du fournisseur de données en sortie\\./\\?")
-    @And("I save the value of REST API {string} {string} {string} in {string} column of data output provider\\./\\?")
+    @Et("Je sauvegarde la valeur de cette API REST {string} {string} {string} dans {string} du fournisseur de données en sortie(\\?)")
+    @And("I save the value of REST API {string} {string} {string} in {string} column of data output provider(\\?)")
     public void saveValueInDataOutputProvider(String method, String pageKey, String uri, String targetColumn, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         LOGGER.debug("saveValue of REST API with method [{}].", method);
         LOGGER.debug("saveValue of REST API with pageKey [{}].", pageKey);

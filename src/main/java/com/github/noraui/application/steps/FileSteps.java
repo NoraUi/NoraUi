@@ -51,8 +51,8 @@ public class FileSteps extends Step {
      *            List of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
      */
     @Conditioned
-    @Lorsque("Je vide le repertoire des téléchargements\\./\\?")
-    @Given("I clean download directory\\./\\?")
+    @Lorsque("Je vide le repertoire des téléchargements(\\?)")
+    @Given("I clean download directory(\\?)")
     public void cleanDownloadDirectory(List<GherkinStepCondition> conditions) {
         try {
             FileUtils.forceMkdir(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
@@ -72,8 +72,8 @@ public class FileSteps extends Step {
      * @throws IOException
      */
     @Conditioned
-    @Lorsque("Je supprime le fichier {string} dans repertoire des téléchargements\\./\\?")
-    @Given("I remove {string} file in download directory\\./\\?")
+    @Lorsque("Je supprime le fichier {string} dans repertoire des téléchargements(\\?)")
+    @Given("I remove {string} file in download directory(\\?)")
     public void removefileInDownloadDirectory(String file, List<GherkinStepCondition> conditions) throws IOException {
         FileUtils.forceDelete(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + file));
     }
@@ -93,8 +93,8 @@ public class FileSteps extends Step {
      * @throws FailureException
      */
     @Conditioned
-    @Alors("Le fichier {string} encodé en {string} vérifie {string}\\./\\?")
-    @Then("The file {string} encoded in {string} matches {string}\\./\\?")
+    @Alors("Le fichier {string} encodé en {string} vérifie {string}(\\?)")
+    @Then("The file {string} encoded in {string} matches {string}(\\?)")
     public void checkFile(String file, String encoding, String regexp, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         try {
             final Matcher m = Pattern.compile(regexp)
@@ -122,8 +122,8 @@ public class FileSteps extends Step {
      * @throws FailureException
      */
     @Conditioned
-    @Lorsque("Je patiente que le fichier nommé {string} soit téléchargé avec un timeout de {string} secondes\\./\\?")
-    @Then("I wait file named {string} to be downloaded with timeout of {string} seconds\\./\\?")
+    @Lorsque("Je patiente que le fichier nommé {string} soit téléchargé avec un timeout de {int} seconde(s)(\\?)")
+    @Then("I wait file named {string} to be downloaded with timeout of {int} second(s)(\\?)")
     public void waitDownloadFile(String file, int timeout, List<GherkinStepCondition> conditions) throws InterruptedException, FailureException, TechnicalException {
         File f;
         int nbTry = 0;
@@ -153,8 +153,8 @@ public class FileSteps extends Step {
      * @throws FailureException
      */
     @Conditioned
-    @Lorsque("J'utilise l'élément {string} pour uploader le fichier {string}\\./\\?")
-    @Then("I use {string} element to upload {string} file\\./\\?")
+    @Lorsque("J'utilise l'élément {string} pour uploader le fichier {string}(\\?)")
+    @Then("I use {string} element to upload {string} file(\\?)")
     public void uploadFile(String pageElement, String filename, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];

@@ -18,7 +18,7 @@ public class GherkinConditionedLoopedStepUT {
     public void testCheckConditionsEquals() {
         String expected = "123";
         String actual = "123";
-        GherkinConditionedLoopedStep gherkinConditionedLoopedStep = new GherkinConditionedLoopedStep("1", "I wait '4' seconds.", expected, actual);
+        GherkinConditionedLoopedStep gherkinConditionedLoopedStep = new GherkinConditionedLoopedStep("1", "I wait 4 seconds?", expected, actual);
         Assert.assertTrue(gherkinConditionedLoopedStep.checkCondition());
     }
 
@@ -26,7 +26,7 @@ public class GherkinConditionedLoopedStepUT {
     public void testCheckConditionsFalseEquals() {
         String expected = "yes";
         String actual = "no";
-        GherkinConditionedLoopedStep gherkinConditionedLoopedStep = new GherkinConditionedLoopedStep("1", "I wait '4' seconds.", expected, actual);
+        GherkinConditionedLoopedStep gherkinConditionedLoopedStep = new GherkinConditionedLoopedStep("1", "I wait 4 seconds?", expected, actual);
         Assert.assertFalse(gherkinConditionedLoopedStep.checkCondition());
     }
 
@@ -34,7 +34,7 @@ public class GherkinConditionedLoopedStepUT {
     public void testCheckConditionsEqualsIgnoreCase() {
         String expected = "abc";
         String actual = "Abc";
-        GherkinConditionedLoopedStep gherkinConditionedLoopedStep = new GherkinConditionedLoopedStep("1", "I wait '4' seconds.", expected, actual);
+        GherkinConditionedLoopedStep gherkinConditionedLoopedStep = new GherkinConditionedLoopedStep("1", "I wait 4 seconds?", expected, actual);
         Assert.assertTrue(gherkinConditionedLoopedStep.checkCondition());
     }
 
@@ -42,7 +42,7 @@ public class GherkinConditionedLoopedStepUT {
     public void testCheckConditionsNotNull() {
         String expected = "^$";
         String actual = "";
-        GherkinConditionedLoopedStep gherkinConditionedLoopedStep = new GherkinConditionedLoopedStep("1", "I wait '4' seconds.", expected, actual);
+        GherkinConditionedLoopedStep gherkinConditionedLoopedStep = new GherkinConditionedLoopedStep("1", "I wait 4 seconds?", expected, actual);
         Assert.assertTrue(gherkinConditionedLoopedStep.checkCondition());
     }
 
@@ -50,7 +50,7 @@ public class GherkinConditionedLoopedStepUT {
     public void testCheckConditionsFalseNotNull() {
         String expected = "^$";
         String actual = "stub";
-        GherkinConditionedLoopedStep gherkinConditionedLoopedStep = new GherkinConditionedLoopedStep("1", "I wait '4' seconds.", expected, actual);
+        GherkinConditionedLoopedStep gherkinConditionedLoopedStep = new GherkinConditionedLoopedStep("1", "I wait 4 seconds?", expected, actual);
         Assert.assertFalse(gherkinConditionedLoopedStep.checkCondition());
     }
 
@@ -58,7 +58,7 @@ public class GherkinConditionedLoopedStepUT {
     public void testCheckConditionsNotEmpty() {
         String expected = ".+";
         String actual = "stub";
-        GherkinConditionedLoopedStep gherkinConditionedLoopedStep = new GherkinConditionedLoopedStep("1", "I wait '4' seconds.", expected, actual);
+        GherkinConditionedLoopedStep gherkinConditionedLoopedStep = new GherkinConditionedLoopedStep("1", "I wait '4' seconds?", expected, actual);
         Assert.assertTrue(gherkinConditionedLoopedStep.checkCondition());
     }
 
@@ -66,7 +66,7 @@ public class GherkinConditionedLoopedStepUT {
     public void testCheckConditionsFalseNotEmpty() {
         String expected = ".+";
         String actual = "";
-        GherkinConditionedLoopedStep gherkinConditionedLoopedStep = new GherkinConditionedLoopedStep("1", "I wait '4' seconds.", expected, actual);
+        GherkinConditionedLoopedStep gherkinConditionedLoopedStep = new GherkinConditionedLoopedStep("1", "I wait '4' seconds?", expected, actual);
         Assert.assertFalse(gherkinConditionedLoopedStep.checkCondition());
     }
 
@@ -74,7 +74,7 @@ public class GherkinConditionedLoopedStepUT {
     public void testCheckConditionsDoNotMatchString() {
         String expected = DO_NOT_MATCH_STRING;
         String actual = "stub";
-        GherkinConditionedLoopedStep gherkinConditionedLoopedStep = new GherkinConditionedLoopedStep("1", "I wait '4' seconds.", expected, actual);
+        GherkinConditionedLoopedStep gherkinConditionedLoopedStep = new GherkinConditionedLoopedStep("1", "I wait '4' seconds?", expected, actual);
         Assert.assertTrue(gherkinConditionedLoopedStep.checkCondition());
     }
 
@@ -82,7 +82,7 @@ public class GherkinConditionedLoopedStepUT {
     public void testCheckConditionsFalseDoNotMatchStringIPADSL() {
         String expected = DO_NOT_MATCH_STRING;
         String actual = "stub IPADSL";
-        GherkinConditionedLoopedStep gherkinConditionedLoopedStep = new GherkinConditionedLoopedStep("1", "I wait '4' seconds.", expected, actual);
+        GherkinConditionedLoopedStep gherkinConditionedLoopedStep = new GherkinConditionedLoopedStep("1", "I wait '4' seconds?", expected, actual);
         Assert.assertFalse(gherkinConditionedLoopedStep.checkCondition());
     }
 

@@ -80,8 +80,8 @@ public class MailSteps extends Step {
     @Experimental(name = "validActivationEmail")
     @RetryOnFailure(attempts = 3, delay = 60)
     @Conditioned
-    //@Et("Je valide le mail d activation {string}\\./\\?")
-    //@And("I valid activation email {string}\\./\\?")
+    //@Et("Je valide le mail d activation {string}(\\?)")
+    //@And("I valid activation email {string}(\\?)")
     public void validActivationEmail(String mailHost, String mailUser, String mailPassword, String senderMail, String subjectMail, String firstCssQuery, List<GherkinStepCondition> conditions)
             throws FailureException, TechnicalException {
         try {
