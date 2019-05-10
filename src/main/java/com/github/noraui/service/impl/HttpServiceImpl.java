@@ -49,7 +49,8 @@ public class HttpServiceImpl implements HttpService {
             response.close();
             return jsonResponse;
         } catch (IOException e) {
-            throw new HttpServiceException(Messages.format(Messages.getMessage(HttpServiceException.HTTP_SERVICE_ERROR_MESSAGE)), e);
+            logger.error(Messages.getMessage(HttpServiceException.HTTP_SERVICE_ERROR_MESSAGE), e);
+            throw new HttpServiceException(Messages.getMessage(HttpServiceException.HTTP_SERVICE_ERROR_MESSAGE), e);
         }
     }
 
@@ -75,7 +76,8 @@ public class HttpServiceImpl implements HttpService {
             response.close();
             return jsonResponse;
         } catch (IOException e) {
-            throw new HttpServiceException(Messages.format(Messages.getMessage(HttpServiceException.HTTP_SERVICE_ERROR_MESSAGE)), e);
+            logger.error(Messages.getMessage(HttpServiceException.HTTP_SERVICE_ERROR_MESSAGE), e);
+            throw new HttpServiceException(Messages.getMessage(HttpServiceException.HTTP_SERVICE_ERROR_MESSAGE), e);
         }
     }
 
