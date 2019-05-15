@@ -141,10 +141,8 @@ public class FileSteps extends Step {
     /**
      * Waits the full download of a file with a maximum timeout in seconds.
      *
-     * @param page
-     *            The page to upload the file from
-     * @param element
-     *            The file input field
+     * @param pageElement
+     *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
      * @param filename
      *            The name of the file to upload (from the default downloaded files directory)
      * @param conditions
