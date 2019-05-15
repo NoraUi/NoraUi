@@ -3,8 +3,8 @@
 Fonctionnalité: bonjour (Fonction pour valider l environnement.) 
 
   Plan du Scénario: Function to validate the environment.
-    Lorsque Je vérifie que author '<author>' n'est pas vide
-    Lorsque Je vérifie que city '<city>' n'est pas vide
+    Lorsque Je vérifie que 'l\'auteur' '<author>' n'est pas vide
+    Lorsque Je vérifie que 'la ville' '<city>' n'est pas vide
 
     Lorsque Je commence la capture vidéo dans 'hello'?
         |key|expected|actual|

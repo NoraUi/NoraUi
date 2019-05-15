@@ -2,8 +2,8 @@
 Feature: hello (Function to validate the environment.) 
 
   Scenario Outline: Function to validate the environment.
-    Given I check that author '<author>' is not empty
-    Given I check that city '<city>' is not empty
+    Given I check that 'author' '<author>' is not empty
+    Given I check that 'city' '<city>' is not empty
 
     Given I start video capture in 'hello'?
         |key|expected|actual|
