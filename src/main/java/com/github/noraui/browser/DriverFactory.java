@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.Proxy.ProxyType;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
@@ -24,12 +25,13 @@ import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxDriverLogLevel;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -111,24 +113,23 @@ public class DriverFactory {
 
         System.setProperty(Driver.IE.getDriverName(), pathWebdriver);
 
-        final DesiredCapabilities capabilities = DesiredCapabilities.internetExplorer();
-        capabilities.setCapability(InternetExplorerDriver.IE_ENSURE_CLEAN_SESSION, true);
-        capabilities.setCapability(InternetExplorerDriver.IGNORE_ZOOM_SETTING, true);
-        capabilities.setCapability(InternetExplorerDriver.REQUIRE_WINDOW_FOCUS, true);
-        capabilities.setCapability(InternetExplorerDriver.NATIVE_EVENTS, false);
-        capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
-        capabilities.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
-        capabilities.setCapability("disable-popup-blocking", true);
-        capabilities.setJavascriptEnabled(true);
+        final InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions();
+        internetExplorerOptions.setCapability(InternetExplorerDriver.IE_ENSURE_CLEAN_SESSION, true);
+        internetExplorerOptions.setCapability(InternetExplorerDriver.IGNORE_ZOOM_SETTING, true);
+        internetExplorerOptions.setCapability(InternetExplorerDriver.REQUIRE_WINDOW_FOCUS, true);
+        internetExplorerOptions.setCapability(InternetExplorerDriver.NATIVE_EVENTS, false);
+        internetExplorerOptions.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
+        internetExplorerOptions.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
+        internetExplorerOptions.setCapability("disable-popup-blocking", true);
 
-        setLoggingLevel(capabilities);
+        setLoggingLevel(internetExplorerOptions);
 
         // Proxy configuration
         if (Context.getProxy().getProxyType() != ProxyType.UNSPECIFIED && Context.getProxy().getProxyType() != ProxyType.AUTODETECT) {
-            capabilities.setCapability(CapabilityType.PROXY, Context.getProxy());
+            internetExplorerOptions.setCapability(CapabilityType.PROXY, Context.getProxy());
         }
 
-        return new InternetExplorerDriver(capabilities);
+        return new InternetExplorerDriver(internetExplorerOptions);
     }
 
     /**
@@ -149,11 +150,10 @@ public class DriverFactory {
         System.setProperty(Driver.CHROME.getDriverName(), pathWebdriver);
 
         final ChromeOptions chromeOptions = new ChromeOptions();
-        final DesiredCapabilities capabilities = DesiredCapabilities.chrome();
-        capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
-        capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
+        chromeOptions.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
+        chromeOptions.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
 
-        setLoggingLevel(capabilities);
+        setLoggingLevel(chromeOptions);
 
         if (Context.isHeadless()) {
             chromeOptions.addArguments("--headless");
@@ -161,27 +161,8 @@ public class DriverFactory {
 
         // Proxy configuration
         if (Context.getProxy().getProxyType() != ProxyType.UNSPECIFIED && Context.getProxy().getProxyType() != ProxyType.AUTODETECT) {
-            capabilities.setCapability(CapabilityType.PROXY, Context.getProxy());
+            chromeOptions.setCapability(CapabilityType.PROXY, Context.getProxy());
         }
-
-        setChromeOptions(capabilities, chromeOptions);
-
-        final String withWhitelistedIps = Context.getWebdriversProperties("withWhitelistedIps");
-        if (withWhitelistedIps != null && !"".equals(withWhitelistedIps)) {
-            final ChromeDriverService service = new ChromeDriverService.Builder().withWhitelistedIps(withWhitelistedIps).withVerbose(false).build();
-            return new ChromeDriver(service, capabilities);
-        } else {
-            return new ChromeDriver(capabilities);
-        }
-    }
-
-    /**
-     * Sets the target browser binary path in chromeOptions if it exists in configuration.
-     *
-     * @param capabilities
-     *            The global DesiredCapabilities
-     */
-    private void setChromeOptions(final DesiredCapabilities capabilities, ChromeOptions chromeOptions) {
 
         // Set custom downloaded file path. When you check content of downloaded file by robot.
         final HashMap<String, Object> chromePrefs = new HashMap<>();
@@ -194,7 +175,13 @@ public class DriverFactory {
             chromeOptions.setBinary(targetBrowserBinaryPath);
         }
 
-        capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
+        final String withWhitelistedIps = Context.getWebdriversProperties("withWhitelistedIps");
+        if (withWhitelistedIps != null && !"".equals(withWhitelistedIps)) {
+            final ChromeDriverService service = new ChromeDriverService.Builder().withWhitelistedIps(withWhitelistedIps).withVerbose(false).build();
+            return new ChromeDriver(service, chromeOptions);
+        } else {
+            return new ChromeDriver(chromeOptions);
+        }
     }
 
     /**
@@ -217,26 +204,24 @@ public class DriverFactory {
         final FirefoxOptions firefoxOptions = new FirefoxOptions();
         final FirefoxBinary firefoxBinary = new FirefoxBinary();
 
-        final DesiredCapabilities capabilities = DesiredCapabilities.firefox();
-        capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
-        capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
+        // final DesiredCapabilities capabilities = DesiredCapabilities.firefox();
+        firefoxOptions.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
+        firefoxOptions.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
 
-        setLoggingLevel(capabilities);
+        setLoggingLevel(firefoxOptions);
 
         // Proxy configuration
         if (Context.getProxy().getProxyType() != ProxyType.UNSPECIFIED && Context.getProxy().getProxyType() != ProxyType.AUTODETECT) {
-            capabilities.setCapability(CapabilityType.PROXY, Context.getProxy());
+            firefoxOptions.setCapability(CapabilityType.PROXY, Context.getProxy());
         }
 
         if (Context.isHeadless()) {
             firefoxBinary.addCommandLineOptions("--headless");
             firefoxOptions.setBinary(firefoxBinary);
         }
-        firefoxOptions.setLogLevel(Level.OFF);
+        firefoxOptions.setLogLevel(FirefoxDriverLogLevel.FATAL);
 
-        capabilities.setCapability(FirefoxOptions.FIREFOX_OPTIONS, firefoxOptions);
-
-        return new FirefoxDriver(capabilities);
+        return new FirefoxDriver(firefoxOptions);
     }
 
     /**
@@ -273,11 +258,11 @@ public class DriverFactory {
      * Sets the logging level of the generated web driver.
      *
      * @param caps
-     *            The web driver's capabilities
+     *            The web driver's MutableCapabilities (FirefoxOptions)
      * @param level
      *            The logging level
      */
-    private void setLoggingLevel(DesiredCapabilities caps) {
+    private void setLoggingLevel(MutableCapabilities caps) {
         final LoggingPreferences logPrefs = new LoggingPreferences();
         logPrefs.enable(LogType.BROWSER, Level.ALL);
         logPrefs.enable(LogType.CLIENT, Level.OFF);
