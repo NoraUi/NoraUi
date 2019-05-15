@@ -94,8 +94,8 @@ public class BrowserSteps {
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    @Et("Je retourne vers '(.*)'")
-    @And("I go back to '(.*)'")
+    @Et("Je retourne vers {string}")
+    @And("I go back to {string}")
     public void goToUrl(String pageKey) throws TechnicalException, FailureException {
         goToUrl(pageKey, true);
     }
@@ -114,8 +114,8 @@ public class BrowserSteps {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Quand("Je passe à la fenêtre '(.*)'(\\?)")
-    @When("I switch to '(.*)' window(\\?)")
+    @Quand("Je passe à la fenêtre {string}(\\?)")
+    @When("I switch to {string} window(\\?)")
     public void switchWindow(String windowKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         switchWindow(windowKey);
     }
@@ -144,8 +144,8 @@ public class BrowserSteps {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Lorsque("Je ferme la fenêtre actuelle et passe à la fenêtre '(.*)'(\\?)")
-    @Then("I close current window and switch to '(.*)' window(\\?)")
+    @Lorsque("Je ferme la fenêtre actuelle et passe à la fenêtre {string}(\\?)")
+    @Then("I close current window and switch to {string} window(\\?)")
     public void closeWindowAndSwitchTo(String key, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         closeWindowAndSwitchTo(key);
     }
@@ -164,8 +164,8 @@ public class BrowserSteps {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Lorsque("Je ferme toutes les fenêtres sauf '(.*)'(\\?)")
-    @Then("I close all windows except '(.*)'(\\?)")
+    @Lorsque("Je ferme toutes les fenêtres sauf {string}(\\?)")
+    @Then("I close all windows except {string}(\\?)")
     public void closeAllWindowsAndSwitchTo(String key, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         closeAllWindowsAndSwitchTo(key);
     }
