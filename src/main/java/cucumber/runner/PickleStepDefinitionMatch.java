@@ -52,14 +52,10 @@ public class PickleStepDefinitionMatch extends Match implements StepDefinitionMa
         List<Argument> arguments = getArguments();
         int argumentCount = arguments.size();
         
-//        if (!arguments.isEmpty()) {
-//            argumentCount++;
-//        }
-
         Integer parameterCount = stepDefinition.getParameterCount();
-        LOGGER.info("parameterCount:{} argumentCount:{}", step.getText(), parameterCount, argumentCount);
+        LOGGER.debug("parameterCount:{} argumentCount:{}", step.getText(), parameterCount, argumentCount);
         for (Argument ar : arguments) {
-            LOGGER.info("Argument: {}", ar);
+            LOGGER.debug("Argument: {}", ar);
         }
         
         if (parameterCount != null && (argumentCount > parameterCount || argumentCount + 1 < parameterCount)) {
@@ -69,7 +65,7 @@ public class PickleStepDefinitionMatch extends Match implements StepDefinitionMa
         List<Object> result = new ArrayList<>();
         try {
             for (Argument argument : arguments) {
-                LOGGER.info("add argument {} to result", argument.getValue());
+                LOGGER.debug("add argument {} to result", argument.getValue());
                 result.add(argument.getValue());
             }
             // add List<GherkinStepCondition> or parameters Map<String, String>
@@ -96,7 +92,7 @@ public class PickleStepDefinitionMatch extends Match implements StepDefinitionMa
         }
 
         try {
-            LOGGER.info("stepDefinition.execute {}", result.size());
+            LOGGER.debug("stepDefinition.execute {}", result.size());
             stepDefinition.execute(result.toArray(new Object[0]));
         } catch (CucumberException e) {
             LOGGER.error("CucumberException when stepDefinition.execute: {}", e);
