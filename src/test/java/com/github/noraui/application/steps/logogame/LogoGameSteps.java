@@ -98,8 +98,8 @@ public class LogoGameSteps extends Step {
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    @Lorsque("Je vérifie que toutes les marques '(.*)' ne sont pas interdites")
-    @Given("I check that all brands '(.*)' are not prohibited")
+    @Lorsque("Je vérifie que toutes les marques {string} ne sont pas interdites")
+    @Given("I check that all brands {string} are not prohibited")
     public void checkThatAllBrandsIsNotProhibited(String jsonLogos) throws TechnicalException, FailureException {
         Logos logos = new Logos();
         logos.deserialize(jsonLogos);
@@ -111,8 +111,8 @@ public class LogoGameSteps extends Step {
         }
     }
 
-    @Alors("Je joue avec mon fichier d'entrée '(.*)'")
-    @Then("I play with my input file '(.*)'")
+    @Alors("Je joue avec mon fichier d'entrée {string}")
+    @Then("I play with my input file {string}")
     public void playWithMyInputFile(String jsonLogos) throws TechnicalException {
         Logos logos = new Logos();
         logos.deserialize(jsonLogos);

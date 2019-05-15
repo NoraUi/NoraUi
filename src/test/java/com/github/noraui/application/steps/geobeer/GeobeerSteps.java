@@ -66,8 +66,8 @@ public class GeobeerSteps extends Step {
      * @throws FailureException
      *             if the scenario encounters a functional error.
      */
-    @Alors("Je me connect sur GEOBEER avec '(.*)' '(.*)'")
-    @Then("I log in to GEOBEER as '(.*)' '(.*)'")
+    @Alors("Je me connect sur GEOBEER avec {string} {string}")
+    @Then("I log in to GEOBEER as {string} {string}")
     public void logInToGeobeer(String login, String password) throws FailureException {
         try {
             Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(geobeerPage.signInButton)));

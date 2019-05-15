@@ -71,20 +71,20 @@ public class HelloByeSteps extends Step {
     @Time
     @SpeedRegulators({ @SpeedRegulator(application = "DEMO2", costString = "${demo2.cost}", verbose = true), @SpeedRegulator(application = "DEMO3", cost = 2, unit = TimeUnit.SECONDS) })
     @Conditioned
-    @Etantdonné("j'ai un bonjour, s'il vous plaît. Cordialement '(.*)'(\\?)")
-    @Given("me a hello, please. Best Regards '(.*)'(\\?)")
+    @Etantdonné("j'ai un bonjour, s'il vous plaît. Cordialement {string}(\\?)")
+    @Given("me a hello, please. Best Regards {string}(\\?)")
     public void hello(String name, List<GherkinStepCondition> conditions) {
         LOGGER.info("Hello " + name + "!");
     }
 
-    @Lorsque("moi un chat, s'il vous plaît, meilleures salutations '(.*)'.")
-    @Given("me a cat, please. Best Regards '(.*)'.")
+    @Lorsque("moi un chat, s'il vous plaît, meilleures salutations {string}.")
+    @Given("me a cat, please. Best Regards {string}.")
     public void hello(String name) {
         LOGGER.info("Take my cat " + name + "!");
     }
 
-    @Lorsque("j'ai un au revoir, s'il vous plaît. Cordialement '(.*)':")
-    @Given("me a bye, please. Best Regards '(.*)':")
+    @Lorsque("j'ai un au revoir, s'il vous plaît. Cordialement {string}:")
+    @Given("me a bye, please. Best Regards {string}:")
     public void bye(String name, Map<String, String> params) {
         int i = 0;
         for (Map.Entry<String, String> entry : params.entrySet()) {
@@ -94,8 +94,8 @@ public class HelloByeSteps extends Step {
         LOGGER.info("Bye " + name + "!");
     }
 
-    @Lorsque("moi une erreur si '(.*)' est Paris.")
-    @Given("me a error if '(.*)' is Paris.")
+    @Lorsque("moi une erreur si {string} est Paris.")
+    @Given("me a error if {string} is Paris.")
     public void error(String city) throws FailureException {
         if ("Paris".equals(city)) {
             new Result.Failure<>(city, "The city is Paris!!", true, this.demoPage.getCallBack());
@@ -103,7 +103,7 @@ public class HelloByeSteps extends Step {
     }
 
     @RetryOnFailure(attempts = 3)
-    @Given("me any article, please. '(.*)' of '(.*)'.")
+    @Given("me any article, please. {string} of {string}.")
     public void readBlog(String jsonArticles, String blog) throws FailureException {
         Articles articles = new Articles();
         articles.deserialize(jsonArticles);
@@ -117,8 +117,8 @@ public class HelloByeSteps extends Step {
         }
     }
 
-    @Lorsque("test pour '(.*)'")
-    @Given("test for '(.*)'")
+    @Lorsque("test pour {string}")
+    @Given("test for {string}")
     public void testforCancel(String word) {
         LOGGER.info("testforCancel: " + word);
     }
