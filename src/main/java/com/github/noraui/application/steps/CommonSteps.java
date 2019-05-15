@@ -55,12 +55,6 @@ public class CommonSteps extends Step {
     private static final Logger LOGGER = LoggerFactory.getLogger(CommonSteps.class);
 
     
-    @Lorsque("I poc.")
-    @Then("I poc.")
-    public void poc(int time) throws InterruptedException {
-        Thread.sleep((long) time * 1000);
-    }
-    
     /**
      * Waits a time in second.
      *
@@ -230,8 +224,8 @@ public class CommonSteps extends Step {
      */
     @Conditioned
     @Time(name = "{textOrKey}")
-    @Lorsque("Je vérifie que (.*) {string} n'est pas vide(\\?)")
-    @Given("I check that (.*) {string} is not empty(\\?)")
+    @Lorsque("Je vérifie que {string} {string} n'est pas vide(\\?)")
+    @Given("I check that {string} {string} is not empty(\\?)")
     public void checkNotEmpty(String data, @TimeName("textOrKey") String textOrKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         if (!"".equals(data)) {
             final String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
