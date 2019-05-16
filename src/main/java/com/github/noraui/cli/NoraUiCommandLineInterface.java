@@ -432,7 +432,7 @@ public class NoraUiCommandLineInterface {
             if (new File(CLI_FILES_DIR + File.separator + CLI_SCENARIOS_FILES_DIR + File.separator + noraUiScenarioFile.getName() + JSON).exists() && !noraUiScenarioFile.getStatus()) {
                 deleteFileScenarioNoraUiCliFiles(verbose, gson, noraUiScenarioFile);
             }
-            if (!noraUiScenarioFile.getStatus()) {
+            if (noraUiScenarioFile.getStatus()) {
                 createFileScenarioNoraUiCliFiles(verbose, gson, noraUiScenarioFile);
                 updateFileScenarioNoraUiCliFiles(gson, noraUiScenarioFile);
             }
