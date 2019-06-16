@@ -1,6 +1,6 @@
 /**
  * NoraUi is licensed under the license GNU AFFERO GENERAL PUBLIC LICENSE
- * 
+ *
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
@@ -49,7 +49,7 @@ public class InputGherkinDataProvider extends CommonDataProvider implements Data
         examples = GherkinFactory.getExamples(scenario);
         try {
             initColumns();
-        } catch (EmptyDataFileContentException e) {
+        } catch (final EmptyDataFileContentException e) {
             logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION), e);
             System.exit(-1);
         }

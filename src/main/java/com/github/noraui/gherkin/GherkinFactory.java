@@ -37,6 +37,7 @@ public class GherkinFactory {
     private static final String DATA = "#DATA";
     private static final String DATA_END = "#END";
     private static final String SCENARIO_OUTLINE_SPLIT = "Scenario Outline:";
+    private static final String SCENARIO_EXAMPLE_COLUMNS_SEPARATOR = "|";
 
     /**
      * Private constructor
@@ -48,7 +49,8 @@ public class GherkinFactory {
      * @param filename
      *            name of input Gherkin file.
      * @param examplesTable
-     *            is a table of data (line by line and without headers).
+     *            is a table of data without headers. Various examples can be present in a single file.
+     *            In this case, the key of each entry if the Hashtable matches the position of the examples table in the Gherkin file.
      */
     public static void injectDataInGherkinExamples(String filename, Hashtable<Integer, List<String[]>> examplesTable) {
         try {
@@ -61,30 +63,23 @@ public class GherkinFactory {
                     examplesString = new StringBuilder();
                     examplesString.append("    ");
                     for (int j = 0; j < examples.getValue().size(); j++) {
-                        examplesString.append("|");
+                        examplesString.append(SCENARIO_EXAMPLE_COLUMNS_SEPARATOR);
                         examplesString.append(j + 1);
                         for (final String col : examples.getValue().get(j)) {
-                            examplesString.append("|");
+                            examplesString.append(SCENARIO_EXAMPLE_COLUMNS_SEPARATOR);
                             examplesString.append(col);
                         }
-                        examplesString.append("|\n    ");
+                        examplesString.append(SCENARIO_EXAMPLE_COLUMNS_SEPARATOR + "\n    ");
                     }
 
-                    scenarioOutlines[examples.getKey()] = scenarioOutlines[examples.getKey()].replaceAll("(" + DATA + "\r?\n.*\r?\n)[\\s\\S]*(" + DATA_END + ")",
+                    scenarioOutlines[examples.getKey() + 1] = scenarioOutlines[examples.getKey() + 1].replaceAll("(" + DATA + "\r?\n.*\r?\n)[\\s\\S]*(" + DATA_END + ")",
                             "$1" + examplesString.toString() + "$2");
-
-                    // final Pattern pattern = Pattern.compile("(" + DATA + "\\r?\\n.*\\r?\\n)[\\s\\S]*(" + DATA_END + ")");
-                    // final Matcher m = pattern.matcher(fileContent);
-                    // System.err.println("Matches : " + m.find());
-                    // for (int g = 0; g <= m.groupCount(); g++) {
-                    // System.err.println("Groupe : " + g + " : " + m.group(g));
-                    // }
-                    // fileContent = fileContent.replaceAll("(" + DATA + "\r?\n.*\r?\n)[\\s\\S]*(" + DATA_END + ")", "$1" + examplesString.toString() + "$2");
                 }
 
                 try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath.toString()), Charset.forName(Constants.DEFAULT_ENDODING)));) {
                     int i = 0;
                     bw.write(scenarioOutlines[i]);
+
                     while (++i < scenarioOutlines.length) {
                         bw.write(SCENARIO_OUTLINE_SPLIT + scenarioOutlines[i]);
                     }
