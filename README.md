@@ -123,6 +123,26 @@ SNAPSHOT:
 
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FNoraUi%2FNoraUi.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FNoraUi%2FNoraUi?ref=badge_shield) [![license](https://img.shields.io/github/license/NoraUi/NoraUi.svg)](https://github.com/NoraUi/NoraUi/blob/master/LICENSE) See LICENSE for details
 
+**/!\ CAUTION: NoraUi V2.x.x is prohibited.**
+
+These versions use the following dependency whose copyrights are not respected.
+```
+     <GroupId>com.github.noraui</groupId>
+     <ArtifactId>cucumber-metrics</artifactId>
+```
+
+This dependency comes from a Pull Request (Cucumber-JVM: Metrics) proposal by [sgrillon14](https://github.com/sgrillon14) to open source library "[Cucumber-JVM](https://github.com/cucumber/cucumber-jvm)". Nobody has permission to copy this code let alone claim to be creator of it. This was noted in the README.md of the GitHub repository. This part has been officially integrated into NoraUi in V3.x.x which has an AGPL license.
+
+These versions use the following dependency whose copyrights are not respected.
+
+```
+    <GroupId>com.github.noraui</groupId>
+    <ArtifactId>ojdbc7</artifactId>
+```
+
+The NoraUi project had the temporary authorization of sonatype to publish this version. This was temporary because Oracle finally did not agree. Oracle has declined NoraUi's proposal and the deposit is now removed. The use by the NoraUi team was tolerated until the end of 2017 (It was noted in the README.md of the GitHub repository.) But is now forbidden for all.
+
+
 # Contributing
 
 Before create issue check [![Ask at StackOverflow](https://img.shields.io/badge/StackOverflow-noraui-F5C10E.svg?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAnFBMVEUAAADs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PHs8PG3iEVjAAAAM3RSTlMAAQMGBwkLDA0QExweKS4wMzc4PkdJT1JdY2dvc3WDjpiam6avtcfMz9ng4ubp7fHz9/tqGqSaAAAAfUlEQVQYGV3BBw6CQABFwb/YUOy9IIpgb8i7/92ErBLCjKzGKzAqa185tVTmhCR9/ZmoJy1gY2QN4DIy3oNjXVY3gvu0HfN09dPZwXsdRsqNb8GkY5rblE9NuRWZNF7O9r4sx5sfEjKeJJDlDv2zAwJREAhEQSBQCYgKUfEFJ7oYF2usUEAAAAAASUVORK5CYII=)](https://stackoverflow.com/questions/ask?tags=noraui)
