@@ -69,13 +69,16 @@ public class FileSteps extends Step {
      *            The name of the file removed.
      * @param conditions
      *            List of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
-     * @throws IOException
      */
     @Conditioned
     @Lorsque("Je supprime le fichier '(.*)' dans repertoire des téléchargements[\\.|\\?]")
     @Given("I remove '(.*)' file in download directory[\\.|\\?]")
-    public void removefileInDownloadDirectory(String file, List<GherkinStepCondition> conditions) throws IOException {
-        FileUtils.forceDelete(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + file));
+    public void removefileInDownloadDirectory(String file, List<GherkinStepCondition> conditions) {
+        try {
+            FileUtils.forceDelete(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + file));
+        } catch (IOException e) {
+            logger.warn("IOException in removefileInDownloadDirectory", e);
+        }
     }
 
     /**
