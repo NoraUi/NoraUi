@@ -19,14 +19,15 @@ See [change log](https://noraui.github.io/changelog.txt) for details
 * 2018-02-05: NoraUi [3.0.2] is released.
 * 2017-12-07: NoraUi [3.0.1] is released.
 * 2017-11-12: NoraUi [3.0.0] is released.
-* 2017-09-21: NoraUi [2.6.3] is released.
+* 2017-09-21: NoraUi [2.6.3] **is prohibited.**
 
 # How to migrate from [3.x.x] to [4.x.x]
 
 * You can use all new features from cucumber v4.x.x. (Use Cucumber Expressions)
-* You need use java 8.
+* You need use Cucumber Expressions instead of regular expressions
+* You need use java 8 instead of java 7.
 
-# How to migrate from [2.x.x] to [3.x.x]
+# How to migrate from [2.x.x] to [3.x.x] (mandatory)
 
 * -Dcucumber.options="--tags '@tag1 or @tag2 or @tag3 or @tag4'"
 * NoraUi use Oracle Jdbc Driver
@@ -34,15 +35,15 @@ See [change log](https://noraui.github.io/changelog.txt) for details
 2. if you do not use Oracle Db provider, just exclude com.oracle.jdbc:ojdbc8 dependency in the noraui dependency call within your pom.xml. You can follow these instructions at https://maven.apache.org/guides/introduction/introduction-to-optional-and-excludes-dependencies.html. It should look something like that :
 ```xml
 <dependency>
-        <groupId>com.github.noraui</groupId>
-	<artifactId>noraui</artifactId>
-	<version>${noraui.version}</version>
-	<exclusions>
-	        <exclusion>
-	                <groupId>com.oracle.jdbc</groupId>
-	          	<artifactId>ojdbc8</artifactId>
-	        </exclusion>
-      	</exclusions>
+    <groupId>com.github.noraui</groupId>
+    <artifactId>noraui</artifactId>
+    <version>${noraui.version}</version>
+    <exclusions>
+        <exclusion>
+            <groupId>com.oracle.jdbc</groupId>
+            <artifactId>ojdbc8</artifactId>
+        </exclusion>
+    </exclusions>
 </dependency>
 ```
 * Change all "noraui" import to "com.github.noraui"
