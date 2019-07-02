@@ -12,7 +12,9 @@ public interface UserNameService {
 
     /**
      * @param name
+     *            1st name comparing.
      * @param otherName
+     *            2nd name comparing.
      * @return true or false
      */
     boolean comparingNames(String name, String otherName);
