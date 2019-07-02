@@ -21,6 +21,7 @@ public abstract class AbstractNoraUiCli {
      * Specific logger
      */
     private static final Logger logger = LoggerFactory.getLogger(AbstractNoraUiCli.class);
+	
     protected static final String RESOURCES = "resources";
 
     protected String getJavaClassHeaders(String noraRobotName) {
@@ -36,7 +37,9 @@ public abstract class AbstractNoraUiCli {
 
     /**
      * @param propertiesfilePath
+     *            path of properties file.	 
      * @param sb
+     *            is stringBuilder contain all data.	 
      */
     protected void updateFile(String propertiesfilePath, StringBuilder sb) {
         try (FileWriter fw = new FileWriter(propertiesfilePath)) {
