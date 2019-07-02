@@ -16,7 +16,9 @@ public interface HttpService {
      *            is full url
      * @return json string
      * @throws HttpServiceException
+     *             is thrown if you have a technical error (IOException on GET) in NoraUi.
      * @throws TechnicalException
+     *             is thrown if you have a technical error (get wrong message) in NoraUi.
      */
     String get(String url) throws HttpServiceException, TechnicalException;
 
@@ -27,7 +29,9 @@ public interface HttpService {
      *            end of the url
      * @return json string
      * @throws HttpServiceException
+     *             is thrown if you have a technical error (IOException on GET) in NoraUi.
      * @throws TechnicalException
+     *             is thrown if you have a technical error (get wrong message) in NoraUi.
      */
     String get(String baseUrl, String uri) throws HttpServiceException, TechnicalException;
 
@@ -38,7 +42,9 @@ public interface HttpService {
      *            body string
      * @return json string
      * @throws HttpServiceException
+     *             is thrown if you have a technical error (IOException on POST) in NoraUi.
      * @throws TechnicalException
+     *             is thrown if you have a technical error (get wrong message) in NoraUi.
      */
     String post(String url, String json) throws HttpServiceException, TechnicalException;
 
