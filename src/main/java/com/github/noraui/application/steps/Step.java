@@ -284,6 +284,8 @@ public class Step implements IStep {
      * @throws FailureException
      *             if the scenario encounters a functional error
      * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} message (with screenshot, no exception)
      */
     protected boolean checkInputText(PageElement pageElement, String textOrKey) throws FailureException, TechnicalException {
         WebElement inputText = null;
@@ -306,6 +308,10 @@ public class Step implements IStep {
      * @throws FailureException
      *             if the scenario encounters a functional error
      * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} message (with screenshot, no exception) or with
+     *             {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_WRONG_EXPECTED_VALUE} message
+     *             (with screenshot, with exception)
      */
     protected void expectText(PageElement pageElement, String textOrKey) throws FailureException, TechnicalException {
         WebElement element = null;
@@ -1021,6 +1027,7 @@ public class Step implements IStep {
      *            Is the new data (text or text in context (after a save))
      * @return a string from context or not (and crypted or not).
      * @throws TechnicalException
+     *             is thrown if you have a technical error (decrypt value) in NoraUi.
      */
     protected String getTextOrKey(String textOrKey) throws TechnicalException {
         String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
