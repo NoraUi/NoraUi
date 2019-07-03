@@ -1,6 +1,6 @@
 /**
  * NoraUi is licensed under the license GNU AFFERO GENERAL PUBLIC LICENSE
- * 
+ *
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
@@ -37,6 +37,8 @@ public class DemoPage extends Page {
     public final PageElement message = new PageElement("-message", "message");
     public final PageElement xpathContainPercentChar = new PageElement("-xpathContainPercentChar");
     public final PageElement changeValueButton = new PageElement("-changeValueButton");
+    public final PageElement disappearButton = new PageElement("-disappearButton");
+    public final PageElement staleButton = new PageElement("-staleButton");
 
     private static final String TITLE_PAGE = "NoraUi Demo";
 
@@ -58,7 +60,7 @@ public class DemoPage extends Page {
                 logger.error("HTML title is not good");
                 return false;
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             logger.error("HTML title Exception", e);
             return false;
         }
@@ -68,7 +70,7 @@ public class DemoPage extends Page {
             }
             logger.error("Big title is not good");
             return false;
-        } catch (Exception e) {
+        } catch (final Exception e) {
             logger.error("Big title Exception", e);
             return false;
         }

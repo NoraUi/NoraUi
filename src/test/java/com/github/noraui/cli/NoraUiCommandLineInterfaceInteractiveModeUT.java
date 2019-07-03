@@ -22,6 +22,7 @@ import org.junit.contrib.java.lang.system.TextFromStandardInputStream;
 import org.junit.runners.MethodSorters;
 
 import com.github.noraui.exception.TechnicalException;
+import com.github.noraui.indus.UnitTest4CLICounter;
 import com.github.noraui.utils.UnitTest4CLIContext;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -55,21 +56,22 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         systemInMock.provideText(humanResponse.toString());
 
         String[] args = { "-h" };
-        cli.runCli(UnitTest4CLIContext.class, args);
+        cli.runCli(UnitTest4CLIContext.class, UnitTest4CLICounter.class, args);
 
         StringBuilder expectedCliAsk = new StringBuilder();
         expectedCliAsk.append("-h: Display this help").append(System.lineSeparator());
         expectedCliAsk.append("--verbose: Add debug informations in console.").append(System.lineSeparator());
-        expectedCliAsk.append("-f: features 1 => add new application").append(System.lineSeparator());
-        expectedCliAsk.append("             0 => exit NoraUi CLI").append(System.lineSeparator());
-        expectedCliAsk.append("             1 => add new application").append(System.lineSeparator());
-        expectedCliAsk.append("             2 => add new scenario").append(System.lineSeparator());
-        expectedCliAsk.append("             3 => add new model").append(System.lineSeparator());
-        expectedCliAsk.append("             4 => remove application").append(System.lineSeparator());
-        expectedCliAsk.append("             5 => remove scenario").append(System.lineSeparator());
-        expectedCliAsk.append("             6 => remove model").append(System.lineSeparator());
-        expectedCliAsk.append("             7 => encrypt data").append(System.lineSeparator());
-        expectedCliAsk.append("             8 => decrypt data").append(System.lineSeparator());
+        expectedCliAsk.append("--update: Use NoraUi CLI files for update your robot.").append(System.lineSeparator());
+        expectedCliAsk.append("-f: features").append(System.lineSeparator());
+        expectedCliAsk.append("    0 => exit NoraUi CLI").append(System.lineSeparator());
+        expectedCliAsk.append("    1 => add new application").append(System.lineSeparator());
+        expectedCliAsk.append("    2 => add new scenario").append(System.lineSeparator());
+        expectedCliAsk.append("    3 => add new model").append(System.lineSeparator());
+        expectedCliAsk.append("    4 => remove application").append(System.lineSeparator());
+        expectedCliAsk.append("    5 => remove scenario").append(System.lineSeparator());
+        expectedCliAsk.append("    6 => remove model").append(System.lineSeparator());
+        expectedCliAsk.append("    7 => encrypt data").append(System.lineSeparator());
+        expectedCliAsk.append("    8 => decrypt data").append(System.lineSeparator());
         expectedCliAsk.append("-s: Scenario Name").append(System.lineSeparator());
         expectedCliAsk.append("-u: Url").append(System.lineSeparator());
         expectedCliAsk.append("-d: Description").append(System.lineSeparator());
@@ -78,6 +80,9 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("-m: Model Name").append(System.lineSeparator());
         expectedCliAsk.append("-fi: Field list of model").append(System.lineSeparator());
         expectedCliAsk.append("-re: Result list of model").append(System.lineSeparator());
+        expectedCliAsk.append(
+                "-interactiveMode: (boolean) When the NoraUi CLI goal is executed in interactive mode, it will prompt the user for all the previously listed parameters. When interactiveMode is false, the NoraUi CLI goal will use the values passed in from the command line.")
+                .append(System.lineSeparator());
         expectedCliAsk.append("What do you want ?").append(System.lineSeparator());
         expectedCliAsk.append("    0 => exit NoraUi CLI").append(System.lineSeparator());
         expectedCliAsk.append("    1 => add new application").append(System.lineSeparator());
@@ -92,7 +97,6 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("Exit NoraUi Command Line Interface with success.").append(System.lineSeparator());
 
         Assert.assertTrue(stdOutLog.getLog().contains(expectedCliAsk));
-
     }
 
     @Test
@@ -104,7 +108,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         humanResponse.append("0").append(System.lineSeparator());
         systemInMock.provideText(humanResponse.toString());
 
-        cli.runCli(UnitTest4CLIContext.class);
+        cli.runCli(UnitTest4CLIContext.class, UnitTest4CLICounter.class);
 
         StringBuilder expectedCliAsk = new StringBuilder();
         expectedCliAsk.append("What do you want ?").append(System.lineSeparator());
@@ -119,7 +123,8 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("    8 => decrypt data").append(System.lineSeparator());
         expectedCliAsk.append("Enter application name:").append(System.lineSeparator());
         expectedCliAsk.append("Enter url:").append(System.lineSeparator());
-        expectedCliAsk.append("Add a new application named [google] with this url: [http://www.google.fr]").append(System.lineSeparator());
+        expectedCliAsk.append("Add a new application named [google] with this url: [http://www.google.fr]")
+                .append(System.lineSeparator());
         expectedCliAsk.append(System.lineSeparator());
         expectedCliAsk.append("NoraUi Command Line Interface finished with success.").append(System.lineSeparator());
         expectedCliAsk.append(System.lineSeparator());
@@ -137,7 +142,6 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("Exit NoraUi Command Line Interface with success.").append(System.lineSeparator());
 
         Assert.assertTrue(stdOutLog.getLog().contains(expectedCliAsk));
-
     }
 
     @Test
@@ -150,7 +154,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         humanResponse.append("0").append(System.lineSeparator());
         systemInMock.provideText(humanResponse.toString());
 
-        cli.runCli(UnitTest4CLIContext.class);
+        cli.runCli(UnitTest4CLIContext.class, UnitTest4CLICounter.class);
 
         StringBuilder expectedCliAsk = new StringBuilder();
         expectedCliAsk.append("What do you want ?").append(System.lineSeparator());
@@ -167,7 +171,9 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("    1) google").append(System.lineSeparator());
         expectedCliAsk.append("Enter scenario name:").append(System.lineSeparator());
         expectedCliAsk.append("Enter description:").append(System.lineSeparator());
-        expectedCliAsk.append("Add a new scenario named [loginSample] on [google] application with this description: [description for login to google sample]").append(System.lineSeparator());
+        expectedCliAsk.append(
+                "Add a new scenario named [loginSample] on [google] application with this description: [description for login to google sample]")
+                .append(System.lineSeparator());
         expectedCliAsk.append("dataProvider.in.type is [EXCEL]").append(System.lineSeparator());
         expectedCliAsk.append("dataProvider.out.type is [EXCEL]").append(System.lineSeparator());
         expectedCliAsk.append(System.lineSeparator());
@@ -187,7 +193,6 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("Exit NoraUi Command Line Interface with success.").append(System.lineSeparator());
 
         Assert.assertTrue(stdOutLog.getLog().contains(expectedCliAsk));
-
     }
 
     @Test
@@ -201,7 +206,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         humanResponse.append("0").append(System.lineSeparator());
         systemInMock.provideText(humanResponse.toString());
 
-        cli.runCli(UnitTest4CLIContext.class);
+        cli.runCli(UnitTest4CLIContext.class, UnitTest4CLICounter.class);
 
         StringBuilder expectedCliAsk = new StringBuilder();
         expectedCliAsk.append("What do you want ?").append(System.lineSeparator());
@@ -218,8 +223,9 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("    1) google").append(System.lineSeparator());
         expectedCliAsk.append("Enter model name:").append(System.lineSeparator());
         expectedCliAsk.append("Enter field list:").append(System.lineSeparator());
-        expectedCliAsk.append("Enter result list:").append(System.lineSeparator());
-        expectedCliAsk.append("Add a new model named [foo] in application named [google]").append(System.lineSeparator());
+        expectedCliAsk.append("Enter result list (optional):").append(System.lineSeparator());
+        expectedCliAsk.append("Add a new model named [foo] in application named [google]")
+                .append(System.lineSeparator());
         expectedCliAsk.append("field: [field1]").append(System.lineSeparator());
         expectedCliAsk.append("field: [field2]").append(System.lineSeparator());
         expectedCliAsk.append("result: [result1]").append(System.lineSeparator());
@@ -240,7 +246,6 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("Exit NoraUi Command Line Interface with success.").append(System.lineSeparator());
 
         Assert.assertTrue(stdOutLog.getLog().contains(expectedCliAsk));
-
     }
 
     @Test
@@ -254,7 +259,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         humanResponse.append("0").append(System.lineSeparator());
         systemInMock.provideText(humanResponse.toString());
 
-        cli.runCli(UnitTest4CLIContext.class);
+        cli.runCli(UnitTest4CLIContext.class, UnitTest4CLICounter.class);
 
         StringBuilder expectedCliAsk = new StringBuilder();
         expectedCliAsk.append("What do you want ?").append(System.lineSeparator());
@@ -291,18 +296,17 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("Exit NoraUi Command Line Interface with success.").append(System.lineSeparator());
 
         Assert.assertTrue(stdOutLog.getLog().contains(expectedCliAsk));
-
     }
 
     @Test
     public void testCliStep005_RemoveScenario() throws TechnicalException {
         StringBuilder humanResponse = new StringBuilder();
         humanResponse.append("5").append(System.lineSeparator());
-        humanResponse.append("loginSample").append(System.lineSeparator());
+        humanResponse.append("1").append(System.lineSeparator());
         humanResponse.append("0").append(System.lineSeparator());
         systemInMock.provideText(humanResponse.toString());
 
-        cli.runCli(UnitTest4CLIContext.class);
+        cli.runCli(UnitTest4CLIContext.class, UnitTest4CLICounter.class);
 
         StringBuilder expectedCliAsk = new StringBuilder();
         expectedCliAsk.append("What do you want ?").append(System.lineSeparator());
@@ -315,7 +319,15 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("    6 => remove model").append(System.lineSeparator());
         expectedCliAsk.append("    7 => encrypt data").append(System.lineSeparator());
         expectedCliAsk.append("    8 => decrypt data").append(System.lineSeparator());
-        expectedCliAsk.append("Enter scenario name:").append(System.lineSeparator());
+        expectedCliAsk.append("Enter index scenario number:").append(System.lineSeparator());
+        expectedCliAsk.append("    1) loginSample").append(System.lineSeparator());
+        expectedCliAsk.append("    2) hello").append(System.lineSeparator());
+        expectedCliAsk.append("    3) blog").append(System.lineSeparator());
+        expectedCliAsk.append("    4) bonjour").append(System.lineSeparator());
+        expectedCliAsk.append("    5) playToLogoGame").append(System.lineSeparator());
+        expectedCliAsk.append("    6) jouerAuJeuDesLogos").append(System.lineSeparator());
+        expectedCliAsk.append("    7) LoginLogout").append(System.lineSeparator());
+        expectedCliAsk.append("    8) sampleRESTAPI").append(System.lineSeparator());
         expectedCliAsk.append("Remove a scenario named [loginSample].").append(System.lineSeparator());
         expectedCliAsk.append("dataProvider.in.type is [EXCEL]").append(System.lineSeparator());
         expectedCliAsk.append("dataProvider.out.type is [EXCEL]").append(System.lineSeparator());
@@ -336,7 +348,6 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("Exit NoraUi Command Line Interface with success.").append(System.lineSeparator());
 
         Assert.assertTrue(stdOutLog.getLog().contains(expectedCliAsk));
-
     }
 
     @Test
@@ -347,7 +358,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         humanResponse.append("0").append(System.lineSeparator());
         systemInMock.provideText(humanResponse.toString());
 
-        cli.runCli(UnitTest4CLIContext.class);
+        cli.runCli(UnitTest4CLIContext.class, UnitTest4CLICounter.class);
 
         StringBuilder expectedCliAsk = new StringBuilder();
         expectedCliAsk.append("What do you want ?").append(System.lineSeparator());
@@ -380,6 +391,5 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("Exit NoraUi Command Line Interface with success.").append(System.lineSeparator());
 
         Assert.assertTrue(stdOutLog.getLog().contains(expectedCliAsk));
-
     }
 }

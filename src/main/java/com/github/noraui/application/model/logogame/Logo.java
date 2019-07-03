@@ -7,12 +7,12 @@
 package com.github.noraui.application.model.logogame;
 
 import com.github.noraui.annotation.Column;
-import com.github.noraui.application.model.DemoModel;
+import com.github.noraui.application.model.CommonModel;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 
-public class Logo extends DemoModel implements Comparable<Logo> {
+public class Logo extends CommonModel implements Comparable<Logo> {
 
     @Expose(serialize = false, deserialize = false)
     private Integer nid;

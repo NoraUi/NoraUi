@@ -141,13 +141,28 @@ public abstract class Page implements IPage {
     }
 
     public class PageElement implements IPageElement {
+
         private String key = "";
         private String label = "";
 
+        /**
+         * The PageElement is the object that makes the link between the selector of the ini file and the use java side.
+         * 
+         * @param key
+         *            The key that is used to find the right selector in the ini file.
+         */
         public PageElement(String key) {
             this.key = key;
         }
 
+        /**
+         * The PageElement is the object that makes the link between the selector of the ini file and the use java side.
+         * 
+         * @param key
+         *            The key that is used to find the right selector in the ini file.
+         * @param label
+         *            The wording that is displayed in the report.
+         */
         public PageElement(String key, String label) {
             this.key = key;
             this.label = label;

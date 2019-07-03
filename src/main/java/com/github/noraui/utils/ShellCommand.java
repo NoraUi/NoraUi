@@ -1,6 +1,6 @@
 /**
  * NoraUi is licensed under the license GNU AFFERO GENERAL PUBLIC LICENSE
- * 
+ *
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
@@ -53,7 +53,6 @@ public class ShellCommand {
             return p.waitFor();
         } catch (IOException | InterruptedException e) {
             logger.error("error ShellCommand.run()", e);
-            Thread.currentThread().interrupt();
             throw new TechnicalException(e.getMessage(), e);
         }
     }

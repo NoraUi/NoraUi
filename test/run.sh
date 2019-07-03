@@ -51,9 +51,9 @@ git clone --bare https://github.com/NoraUi/countries-app-sample.git
 cd $(dirname $0)
 cd ..
 if [ "$TRAVIS_REPO_SLUG" == 'NoraUi/NoraUi' ] && [ "$TRAVIS_BRANCH" == 'master' ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ]; then
-    mvn -e -U clean org.jacoco:jacoco-maven-plugin:prepare-agent package javadoc:javadoc sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=noraui -Dsonar.login=$SONAR_TOKEN -Dcucumber.options="--tags '@hello or @bonjour or @blog or @playToLogoGame or @jouerAuJeuDesLogos'" -PscenarioInitiator,javadoc,unit-tests --settings test/mvnsettings.xml -Dmaven.test.failure.ignore=true -Dcrypto.key=${CRYPTO_KEY}
+    mvn -e -U clean org.jacoco:jacoco-maven-plugin:prepare-agent package javadoc:javadoc sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=noraui -Dsonar.login=$SONAR_TOKEN -Dcucumber.options="--tags '@hello or @bonjour or @blog or @playToLogoGame or @jouerAuJeuDesLogos or @sampleRESTAPI'" -PscenarioInitiator,javadoc,unit-tests --settings test/mvnsettings.xml -Dmaven.test.failure.ignore=true -Dcrypto.key=${CRYPTO_KEY}
 else
-    mvn -e -U clean package javadoc:javadoc -Dpullrequest -Dcucumber.options="--tags '@hello or @bonjour or @blog or @playToLogoGame or @jouerAuJeuDesLogos'" -PscenarioInitiator,javadoc,unit-tests --settings test/mvnsettings.xml -Dmaven.test.failure.ignore=true -Dcrypto.key=my-secret
+    mvn -e -U clean package javadoc:javadoc -Dpullrequest -Dcucumber.options="--tags '@hello or @bonjour or @blog or @playToLogoGame or @jouerAuJeuDesLogos or @sampleRESTAPI'" -PscenarioInitiator,javadoc,unit-tests --settings test/mvnsettings.xml -Dmaven.test.failure.ignore=true -Dcrypto.key=my-secret
 fi
 
 #

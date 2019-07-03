@@ -40,3 +40,12 @@ INSERT INTO blog VALUES (2, 'Blog 1', 'Article 2', 'text 2', 'Peter', '10');
 INSERT INTO blog VALUES (3, 'Blog 2', 'Article 3', 'text 3', 'Peter', '8');
 INSERT INTO blog VALUES (4, 'Blog 2', 'Article 4', 'text 4', 'anonymous', '2');
 INSERT INTO blog VALUES (5, 'Blog 1', 'Article 5', 'text 5', 'Peter', '9');
+
+CREATE TABLE sampleRESTAPI (
+    id int primary key not null,
+    location text,
+    language text,
+    data text
+);
+INSERT INTO sampleRESTAPI VALUES (1, 'rennes', 'java', '');
+INSERT INTO sampleRESTAPI VALUES (2, 'rennes', 'javascript', '');

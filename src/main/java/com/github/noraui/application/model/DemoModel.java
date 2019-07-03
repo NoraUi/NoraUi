@@ -10,6 +10,11 @@ import com.github.noraui.model.Model;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+/**
+ * @deprecated since NoraUi 3.3.0, because DemoModel renamed to CommonModel.
+ *             {@link com.github.noraui.application.model.CommonModel} instead.
+ */
+@Deprecated
 public abstract class DemoModel implements Model {
 
     /**

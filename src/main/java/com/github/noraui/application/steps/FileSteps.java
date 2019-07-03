@@ -45,18 +45,40 @@ public class FileSteps extends Step {
     private static final Logger logger = LoggerFactory.getLogger(CommonSteps.class);
 
     /**
-     * Empties the default downloaded files folder
+     * Empties the default downloaded files folder.
      *
      * @param conditions
      *            List of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
-     * @throws IOException
      */
     @Conditioned
     @Lorsque("Je vide le repertoire des téléchargements[\\.|\\?]")
     @Given("I clean download directory[\\.|\\?]")
-    public void cleanDownloadDirectory(List<GherkinStepCondition> conditions) throws IOException {
-        FileUtils.forceMkdir(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
-        FileUtils.cleanDirectory(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
+    public void cleanDownloadDirectory(List<GherkinStepCondition> conditions) {
+        try {
+            FileUtils.forceMkdir(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
+            FileUtils.cleanDirectory(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
+        } catch (IOException e) {
+            logger.warn("IOException in cleanDownloadDirectory", e);
+        }
+    }
+
+    /**
+     * Remove a file in the default downloaded files folder
+     * 
+     * @param file
+     *            The name of the file removed.
+     * @param conditions
+     *            List of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
+     */
+    @Conditioned
+    @Lorsque("Je supprime le fichier '(.*)' dans repertoire des téléchargements[\\.|\\?]")
+    @Given("I remove '(.*)' file in download directory[\\.|\\?]")
+    public void removefileInDownloadDirectory(String file, List<GherkinStepCondition> conditions) {
+        try {
+            FileUtils.forceDelete(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + file));
+        } catch (IOException e) {
+            logger.warn("IOException in removefileInDownloadDirectory", e);
+        }
     }
 
     /**
@@ -103,7 +125,7 @@ public class FileSteps extends Step {
      * @throws FailureException
      */
     @Conditioned
-    @Lorsque("J'attends que le fichier nommé '(.*)' soit téléchargé avec un timeout de '(.*)' secondes[\\.|\\?]")
+    @Lorsque("Je patiente que le fichier nommé '(.*)' soit téléchargé avec un timeout de '(.*)' secondes[\\.|\\?]")
     @Then("I wait file named '(.*)' to be downloaded with timeout of '(.*)' seconds[\\.|\\?]")
     public void waitDownloadFile(String file, int timeout, List<GherkinStepCondition> conditions) throws InterruptedException, FailureException, TechnicalException {
         File f;
@@ -138,6 +160,6 @@ public class FileSteps extends Step {
     @Then("I use '(.*)-(.*)' element to upload '(.*)' file[\\.|\\?]")
     public void uploadFile(String page, String element, String filename, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
         uploadFile(Page.getInstance(page).getPageElementByKey('-' + element), filename);
-
     }
+
 }

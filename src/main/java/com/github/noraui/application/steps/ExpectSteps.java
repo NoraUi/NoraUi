@@ -100,8 +100,8 @@ public class ExpectSteps extends Step {
                     for (final By b : locators) {
                         try {
                             element = driver.findElement(b);
+                            break;
                         } catch (final Exception e) {
-                            continue;
                         }
                     }
                 }

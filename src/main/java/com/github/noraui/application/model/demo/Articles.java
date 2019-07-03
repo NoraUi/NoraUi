@@ -11,14 +11,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.github.noraui.application.model.DemosModel;
+import com.github.noraui.application.model.CommonModels;
 import com.github.noraui.model.Model;
 import com.github.noraui.model.ModelList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-public class Articles extends DemosModel<Article> implements ModelList {
+public class Articles extends CommonModels<Article> implements ModelList {
 
     /**
      *
@@ -29,7 +29,7 @@ public class Articles extends DemosModel<Article> implements ModelList {
         super();
     }
 
-    public Articles(DemosModel<Article> inputList) {
+    public Articles(CommonModels<Article> inputList) {
         super(inputList);
     }
 

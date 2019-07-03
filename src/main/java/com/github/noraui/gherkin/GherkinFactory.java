@@ -106,7 +106,7 @@ public class GherkinFactory {
             }
             final String[] examples = lines.split("\\n");
             // Return lines - #DATA - #END
-            return (examples.length > 2) ? Arrays.copyOfRange(examples, 1, examples.length - 1) : new String[] {};
+            return examples.length > 2 ? Arrays.copyOfRange(examples, 1, examples.length - 1) : new String[] {};
 
         } catch (final IOException e) {
             logger.error("error GherkinFactory.getExamples()", e);

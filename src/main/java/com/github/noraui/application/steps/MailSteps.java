@@ -1,6 +1,6 @@
 /**
  * NoraUi is licensed under the license GNU AFFERO GENERAL PUBLIC LICENSE
- * 
+ *
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
@@ -88,30 +88,23 @@ public class MailSteps extends Step {
     public void validActivationEmail(String mailHost, String mailUser, String mailPassword, String senderMail, String subjectMail, String firstCssQuery, List<GherkinStepCondition> conditions)
             throws FailureException, TechnicalException {
         try {
-            Properties props = System.getProperties();
+            final Properties props = System.getProperties();
             props.setProperty("mail.store.protocol", "imap");
-            Session session = Session.getDefaultInstance(props, null);
-            Store store = session.getStore("imaps");
+            final Session session = Session.getDefaultInstance(props, null);
+            final Store store = session.getStore("imaps");
             store.connect(mailHost, mailUser, mailPassword);
-            Folder inbox = store.getFolder("Inbox");
+            final Folder inbox = store.getFolder("Inbox");
             inbox.open(Folder.READ_ONLY);
-            SearchTerm filterA = new FlagTerm(new Flags(Flags.Flag.SEEN), false);
-            SearchTerm filterB = new FromTerm(new InternetAddress(senderMail));
-            SearchTerm filterC = new SubjectTerm(subjectMail);
-            SearchTerm[] filters = { filterA, filterB, filterC };
-            SearchTerm searchTerm = new AndTerm(filters);
-            Message[] messages = inbox.search(searchTerm);
-            for (Message message : messages) {
-                Document doc = Jsoup.parse(getTextFromMessage(message));
-                Element link = doc.selectFirst(firstCssQuery);
-                try {
-                    String response = httpService.get(link.attr("href"));
-                } catch (HttpServiceException e) {
-                    logger.error(Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_MAIL_ACTIVATION), subjectMail), e);
-                    new Result.Failure<>("", Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_MAIL_ACTIVATION), subjectMail), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
-                }
+            final SearchTerm filterA = new FlagTerm(new Flags(Flags.Flag.SEEN), false);
+            final SearchTerm filterB = new FromTerm(new InternetAddress(senderMail));
+            final SearchTerm filterC = new SubjectTerm(subjectMail);
+            final SearchTerm[] filters = { filterA, filterB, filterC };
+            final SearchTerm searchTerm = new AndTerm(filters);
+            final Message[] messages = inbox.search(searchTerm);
+            for (final Message message : messages) {
+                validateActivationLink(subjectMail, firstCssQuery, message);
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             new Result.Failure<>("", Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_MAIL_ACTIVATION), subjectMail), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
     }
@@ -127,7 +120,7 @@ public class MailSteps extends Step {
         if (message.isMimeType("text/plain")) {
             result = message.getContent().toString();
         } else if (message.isMimeType("multipart/*")) {
-            MimeMultipart mimeMultipart = (MimeMultipart) message.getContent();
+            final MimeMultipart mimeMultipart = (MimeMultipart) message.getContent();
             result = getTextFromMimeMultipart(mimeMultipart);
         }
         return result;
@@ -140,10 +133,10 @@ public class MailSteps extends Step {
      * @throws IOException
      */
     private static String getTextFromMimeMultipart(MimeMultipart mimeMultipart) throws MessagingException, IOException {
-        StringBuilder result = new StringBuilder();
-        int count = mimeMultipart.getCount();
+        final StringBuilder result = new StringBuilder();
+        final int count = mimeMultipart.getCount();
         for (int i = 0; i < count; i++) {
-            BodyPart bodyPart = mimeMultipart.getBodyPart(i);
+            final BodyPart bodyPart = mimeMultipart.getBodyPart(i);
             if (bodyPart.isMimeType("text/plain")) {
                 result.append("\n");
                 result.append(bodyPart.getContent());
@@ -157,4 +150,15 @@ public class MailSteps extends Step {
         return result.toString();
     }
 
+    private void validateActivationLink(String subjectMail, String firstCssQuery, Message message) throws MessagingException, IOException, TechnicalException, FailureException {
+        final Document doc = Jsoup.parse(getTextFromMessage(message));
+        final Element link = doc.selectFirst(firstCssQuery);
+        try {
+            final String response = httpService.get(link.attr("href"));
+            logger.debug("response is {}.", response);
+        } catch (final HttpServiceException e) {
+            logger.error(Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_MAIL_ACTIVATION), subjectMail), e);
+            new Result.Failure<>("", Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_MAIL_ACTIVATION), subjectMail), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+        }
+    }
 }

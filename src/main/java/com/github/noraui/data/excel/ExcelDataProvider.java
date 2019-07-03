@@ -78,7 +78,7 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
      * {@inheritDoc}
      */
     @Override
-    public void writeFailedResult(int line, String value) throws TechnicalException {
+    public void writeFailedResult(int line, String value) {
         logger.debug("writeFailedResult => line:{} value:{}", line, value);
         writeValue(resultColumnName, line, value, styleFailed);
     }
@@ -87,13 +87,13 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
      * {@inheritDoc}
      */
     @Override
-    public void writeSuccessResult(int line) throws TechnicalException {
+    public void writeSuccessResult(int line) {
         logger.debug("writeSuccessResult => line:{}", line);
         writeValue(resultColumnName, line, Messages.getMessage(Messages.SUCCESS_MESSAGE), styleSuccess);
     }
 
     @Override
-    public void writeWarningResult(int line, String value) throws TechnicalException {
+    public void writeWarningResult(int line, String value) {
         logger.debug("writeWarningResult => line:{}", line);
         writeValue(resultColumnName, line, value, styleWarning);
     }
@@ -102,7 +102,7 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
      * {@inheritDoc}
      */
     @Override
-    public void writeDataResult(String column, int line, String value) throws TechnicalException {
+    public void writeDataResult(String column, int line, String value) {
         logger.debug("writeDataResult => column:{} line:{} value:{}", column, line, value);
         writeValue(column, line, value, null);
     }

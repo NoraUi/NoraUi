@@ -85,7 +85,7 @@ public class HttpServiceImpl implements HttpService {
     private OkHttpClient getClient() {
         OkHttpClient client;
         org.openqa.selenium.Proxy proxy = Context.getProxy();
-        if (proxy.getHttpProxy() != null && !"".equals(proxy.getHttpProxy())) {
+        if (proxy != null && proxy.getHttpProxy() != null && !"".equals(proxy.getHttpProxy())) {
             String[] p = proxy.getHttpProxy().split(":");
             client = new OkHttpClient.Builder().proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(p[0], Integer.parseInt(p[1])))).build();
         } else {

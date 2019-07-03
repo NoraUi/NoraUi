@@ -27,6 +27,7 @@ public class TechnicalException extends Exception {
     public static final String TECHNICAL_ERROR_MESSAGE_ENCRYPT_EXCEPTION = "TECHNICAL_ERROR_MESSAGE_ENCRYPT_EXCEPTION";
     public static final String TECHNICAL_ERROR_MESSAGE_DECRYPT_EXCEPTION = "TECHNICAL_ERROR_MESSAGE_DECRYPT_EXCEPTION";
     public static final String TECHNICAL_ERROR_MESSAGE_DECRYPT_CONFIGURATION_EXCEPTION = "TECHNICAL_ERROR_MESSAGE_DECRYPT_CONFIGURATION_EXCEPTION";
+    public static final String TECHNICAL_IO_EXCEPTION = "IOException {}";
 
     /**
      * Construit un objet <code>TechnicalException</code>.
