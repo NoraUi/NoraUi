@@ -66,12 +66,12 @@ public interface IPage {
     interface IPageElement {
 
         /**
-         * @return key of page element
+         * @return key of page element (The key that is used to find the right selector in the ini file).
          */
         String getKey();
 
         /**
-         * @return label of page element
+         * @return label of page element (The wording that is displayed in the report).
          */
         String getLabel();
 

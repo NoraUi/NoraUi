@@ -19,6 +19,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.Cookie;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.github.noraui.Runner;
 import com.github.noraui.browser.steps.BrowserSteps;
@@ -82,7 +84,7 @@ public class AuthUT {
             Assert.assertTrue("The requested page content must not respond 'OK'.", notOKResponse);
 
         } catch (final Exception e) {
-            Assert.assertTrue("Exception thrown after authentication failure should be an instance of 'exception.FailureException' !", (e instanceof FailureException));
+            Assert.assertTrue("Exception thrown after authentication failure should be an instance of 'exception.FailureException' !", e instanceof FailureException);
         }
 
     }
@@ -178,12 +180,18 @@ class TestServer {
     }
 
     class CookieTestHttpHandler implements HttpHandler {
+
+        /**
+         * Specific logger
+         */
+        private final Logger logger = LoggerFactory.getLogger(CookieTestHttpHandler.class);
+
         @Override
         public void handle(HttpExchange t) throws IOException {
             final Set<Entry<String, List<String>>> headers = t.getRequestHeaders().entrySet();
             final OutputStream os = t.getResponseBody();
             for (final Entry<String, List<String>> h : headers) {
-                System.out.println(h);
+                logger.debug("key:[{}] and value:[{}]", h.getKey(), h.getValue());
                 if ("Cookie".equals(h.getKey()) && h.getValue().contains("auth=ok")) {
                     t.getRequestBody();
                     final String response = "OK";

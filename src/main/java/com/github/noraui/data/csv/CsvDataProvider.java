@@ -1,6 +1,6 @@
 /**
  * NoraUi is licensed under the license GNU AFFERO GENERAL PUBLIC LICENSE
- * 
+ *
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
@@ -74,9 +74,9 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
     @Override
     public int getNbLines() {
         try {
-            CSVReader reader = openInputData();
+            final CSVReader reader = openInputData();
             return reader.readAll().size();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             return 0;
         }
 
@@ -86,48 +86,12 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
      * {@inheritDoc}
      */
     @Override
-    public void writeFailedResult(int line, String value) {
-        logger.debug("WriteFailedResult => line:{} value:{}", line, value);
-        writeValue(resultColumnName, line, value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void writeSuccessResult(int line) {
-        logger.debug("Write Success result => line:{}", line);
-        writeValue(resultColumnName, line, Messages.getMessage(Messages.SUCCESS_MESSAGE));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void writeWarningResult(int line, String value) throws TechnicalException {
-        logger.debug("writeWarningResult => line:{} value:{}", line, value);
-        writeValue(resultColumnName, line, value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void writeDataResult(String column, int line, String value) {
-        logger.debug("writeDataResult => column:{} line:{} value:{}", column, line, value);
-        writeValue(column, line, value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public String readValue(String column, int line) throws TechnicalException {
-        int colIndex = columns.indexOf(column);
+        final int colIndex = columns.indexOf(column);
         try {
-            CSVReader reader = openInputData();
+            final CSVReader reader = openInputData();
             return reader.readAll().get(line)[colIndex];
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), e);
         }
     }
@@ -139,22 +103,22 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
     public String[] readLine(int line, boolean readResult) {
         logger.debug("readLine at line {}", line);
         try {
-            CSVReader reader = openInputData();
-            List<String[]> a = reader.readAll();
+            final CSVReader reader = openInputData();
+            final List<String[]> a = reader.readAll();
             if (line >= a.size()) {
                 return null;
             }
-            String[] row = a.get(line);
+            final String[] row = a.get(line);
             if ("".equals(row[0])) {
                 return null;
             } else {
-                String[] ret = readResult ? new String[columns.size()] : new String[columns.size() - 1];
+                final String[] ret = readResult ? new String[columns.size()] : new String[columns.size() - 1];
                 for (int i = 0; i < ret.length; i++) {
                     ret[i] = row[i];
                 }
                 return ret;
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             logger.error("error CsvDataProvider.readLine()", e);
             return null;
         }
@@ -162,9 +126,9 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
 
     private void initColumns() throws EmptyDataFileContentException, WrongDataFileFormatException, IOException {
         columns = new ArrayList<>();
-        CSVReader reader = openInputData();
-        String[] headers = reader.readNext();
-        for (String header : headers) {
+        final CSVReader reader = openInputData();
+        final String[] headers = reader.readNext();
+        for (final String header : headers) {
             if (!"".equals(header)) {
                 columns.add(header);
             }
@@ -179,17 +143,21 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
         }
     }
 
-    private void writeValue(String column, int line, String value) {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void writeValue(String column, int line, String value) {
         logger.debug("Writing: [{}] at line [{}] in column [{}]", value, line, column);
-        int colIndex = columns.indexOf(column);
+        final int colIndex = columns.indexOf(column);
         CSVReader reader;
         try {
             reader = openOutputData();
-            List<String[]> csvBody = reader.readAll();
+            final List<String[]> csvBody = reader.readAll();
             csvBody.get(line)[colIndex] = value;
             reader.close();
             writeValue(column, line, value, csvBody);
-        } catch (IOException e1) {
+        } catch (final IOException e1) {
             logger.error(Messages.getMessage(CSV_DATA_PROVIDER_WRITING_IN_CSV_ERROR_MESSAGE), column, line, value, e1);
         }
     }
@@ -198,7 +166,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
         try (CSVWriter writer = new CSVWriter(new FileWriter(new File(dataOutPath + scenarioName + "." + CSV_TYPE)), CSV_CHAR_SEPARATOR, CSV_CHAR_QUOTE, CSV_CHAR_ESCAPE, CSV_CHAR_LINEEND);) {
             writer.writeAll(csvBody);
             writer.flush();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             logger.error(Messages.getMessage(CSV_DATA_PROVIDER_WRITING_IN_CSV_ERROR_MESSAGE), column, line, value, e);
         }
     }

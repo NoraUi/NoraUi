@@ -1,6 +1,6 @@
 /**
  * NoraUi is licensed under the license GNU AFFERO GENERAL PUBLIC LICENSE
- * 
+ *
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
@@ -19,9 +19,9 @@ import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.exception.data.EmptyDataFileContentException;
 import com.github.noraui.exception.data.WebServicesException;
 import com.github.noraui.service.HttpService;
+import com.github.noraui.service.impl.HttpServiceImpl;
 import com.github.noraui.utils.Messages;
 import com.google.gson.Gson;
-import com.google.inject.Inject;
 
 public class RestDataProvider extends CommonDataProvider implements DataInputProvider, DataOutputProvider {
 
@@ -38,7 +38,6 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
 
     private final String norauiWebServicesApi;
 
-    @Inject
     private HttpService httpService;
 
     public enum types {
@@ -60,6 +59,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
     public RestDataProvider(String type, String host, String port) throws WebServicesException {
         logger.info(Messages.getMessage(REST_DATA_PROVIDER_USED));
         this.norauiWebServicesApi = host + ":" + port + NORAUI_API;
+        this.httpService = new HttpServiceImpl();
         if (!types.JSON.toString().equals(type) && !types.XML.toString().equals(type)) {
             throw new WebServicesException(String.format(Messages.getMessage(WebServicesException.TECHNICAL_ERROR_MESSAGE_UNKNOWN_WEB_SERVICES_TYPE), type));
         }
@@ -91,42 +91,6 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
             return 0;
         }
 
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void writeFailedResult(int line, String value) {
-        logger.debug("Write Failed result => line:{} value:{}", line, value);
-        writeValue(resultColumnName, line, value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void writeSuccessResult(int line) {
-        logger.debug("Write Success result => line:{}", line);
-        writeValue(resultColumnName, line, Messages.getMessage(Messages.SUCCESS_MESSAGE));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void writeWarningResult(int line, String value) throws TechnicalException {
-        logger.debug("Write Warning result => line:{} value:{}", line, value);
-        writeValue(resultColumnName, line, value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void writeDataResult(String column, int line, String value) {
-        logger.debug("Write Data result => column:{} line:{} value:{}", column, line, value);
-        writeValue(column, line, value);
     }
 
     /**
@@ -176,12 +140,17 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
         }
     }
 
-    private void writeValue(String column, int line, String value) {
-        logger.debug("Writing: [{}] at line [{}] in column [{}]", value, line, column);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void writeValue(String column, int line, String value) {
+        logger.info("Writing: [{}] at line [{}] in column [{}]", value, line, column);
         final int colIndex = columns.indexOf(column);
         final String url = this.norauiWebServicesApi + scenarioName + COLUMN + colIndex + LINE + line;
+        logger.info("url: [{}]", url);
         try {
-            DataModel dataModel = new Gson().fromJson(httpService.post(url, value), DataModel.class);
+            final DataModel dataModel = new Gson().fromJson(httpService.post(url, value), DataModel.class);
             if (resultColumnName.equals(column)) {
                 if (value.equals(dataModel.getRows().get(line - 1).getResult())) {
                     logger.info(Messages.getMessage(REST_DATA_PROVIDER_WRITING_IN_REST_WS_ERROR_MESSAGE), column, line, value);
@@ -196,7 +165,12 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
         }
     }
 
-    // for Mock
+    /**
+     * HttpService setter for mock
+     *
+     * @param httpService
+     *            The HTTP Service
+     */
     protected void setHttpService(HttpService httpService) {
         this.httpService = httpService;
     }

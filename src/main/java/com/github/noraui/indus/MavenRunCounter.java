@@ -35,9 +35,9 @@ import com.github.noraui.utils.Messages;
 public class MavenRunCounter {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    private static final Logger logger = LoggerFactory.getLogger(MavenRunCounter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MavenRunCounter.class);
 
     private static final String STEP_KEYWORDS = "(Given|When|Then|And|But|Soit|Lorsqu|Quand|Alors|Et|Mais)";
     private static final String NEW_SCENARIO_OUTLINE = "(Scenario Outline:|Plan du Scénario:)";
@@ -98,7 +98,7 @@ public class MavenRunCounter {
                         }
                     }
                 } catch (final IOException e) {
-                    logger.error("IOException error: ", e);
+                    LOGGER.error("IOException error: ", e);
                 }
                 if (counter != null) {
                     countAndAddToList(manager, result, scenarioName, nbStep, counter);
@@ -139,11 +139,11 @@ public class MavenRunCounter {
             failures += counter.getFailures();
             skipped += counter.getSkipped();
             scenarios += counter.getNbCas();
-            logger.info("Scenario: {} => step: {} and cases: {} -->  runs: {}, failures: {}, errors: 0 and skips: {}", counter.getScenarioName(), counter.getNbStep(), counter.getNbCas(),
+            LOGGER.info("Scenario: {} => step: {} and cases: {} -->  runs: {}, failures: {}, errors: 0 and skips: {}", counter.getScenarioName(), counter.getNbStep(), counter.getNbCas(),
                     counter.getRun(), counter.getFailures(), counter.getSkipped());
         }
-        logger.info("{}", generateExpected1(type, failures, scenarios));
-        logger.info("{}", generateExpected2(type, run, failures, skipped, scenarios));
+        LOGGER.info("{}", generateExpected1(type, failures, scenarios));
+        LOGGER.info("{}", generateExpected2(type, run, failures, skipped, scenarios));
     }
 
     public static List<String> listFilesForFolder(final List<String> versionControlSystemsBlacklist, final File folder) {
@@ -166,7 +166,10 @@ public class MavenRunCounter {
         final StringBuilder expectedResults2 = new StringBuilder(100);
         int passed;
         expectedResults2.append("[").append(type).append("] > <EXPECTED_RESULTS_2>");
-        expectedResults2.append(run - scenarios).append(" Steps (");
+        expectedResults2.append(run - scenarios).append(" Step");
+        if (scenarios > 0) {
+            expectedResults2.append("s (");
+        }
         if (failures > 0) {
             expectedResults2.append(failures).append(" failed, ");
             expectedResults2.append(skipped).append(" skipped, ");
@@ -174,12 +177,11 @@ public class MavenRunCounter {
         passed = run - scenarios - failures - skipped;
         if (passed > 0) {
             expectedResults2.append(passed).append(" passed");
-        } else {
-            if (failures == 0) {
-                expectedResults2.deleteCharAt(expectedResults2.length() - 1);
-            }
         }
-        expectedResults2.append(")</EXPECTED_RESULTS_2>");
+        if (scenarios > 0) {
+            expectedResults2.append(")");
+        }
+        expectedResults2.append("</EXPECTED_RESULTS_2>");
         return expectedResults2.toString();
     }
 
@@ -187,7 +189,10 @@ public class MavenRunCounter {
         final StringBuilder expectedResults1 = new StringBuilder(100);
         int passed;
         expectedResults1.append("[").append(type).append("] > <EXPECTED_RESULTS_1>");
-        expectedResults1.append(scenarios).append(" Scenarios (");
+        expectedResults1.append(scenarios).append(" Scenario");
+        if (scenarios > 0) {
+            expectedResults1.append("s (");
+        }
         if (failures > 0) {
             expectedResults1.append(failures).append(" failed, ");
         }
@@ -195,10 +200,15 @@ public class MavenRunCounter {
         if (passed > 0) {
             expectedResults1.append(passed).append(" passed");
         } else {
-            expectedResults1.deleteCharAt(expectedResults1.length() - 1);
-            expectedResults1.deleteCharAt(expectedResults1.length() - 1);
+            if (failures > 0) {
+                expectedResults1.deleteCharAt(expectedResults1.length() - 1);
+                expectedResults1.deleteCharAt(expectedResults1.length() - 1);
+            }
         }
-        expectedResults1.append(")</EXPECTED_RESULTS_1>");
+        if (scenarios > 0) {
+            expectedResults1.append(")");
+        }
+        expectedResults1.append("</EXPECTED_RESULTS_1>");
         return expectedResults1.toString();
     }
 
@@ -300,6 +310,15 @@ public class MavenRunCounter {
 
     }
 
+    private void countNbCasFailuresAndSkipped(String scenarioName, Counter counter, int nbStep) {
+        final Counter nb = countNbCasFailuresAndSkipped(scenarioName, nbStep);
+        counter.setNbStep(nbStep);
+        counter.setNbcas(nb.getNbCas());
+        counter.setRun(nbStep * nb.getNbCas() + nb.getNbCas());
+        counter.setFailures(nb.getFailures());
+        counter.setSkipped(nb.getSkipped());
+    }
+
     private static MavenRunCounter.Counter countNbCasFailuresAndSkipped(String scenarioName, int nbScenario, int nbStep) {
         final Counter result = new MavenRunCounter().new Counter("", nbScenario);
         final List<DataIndex> indexData = new ArrayList<>();
@@ -312,7 +331,7 @@ public class MavenRunCounter {
                 countWithoutModel(nbStep, result, indexData);
             }
         } catch (final Exception e) {
-            logger.error("error MavenRunCounter.countNbCasFailuresAndSkipped()", e);
+            LOGGER.error("error MavenRunCounter.countNbCasFailuresAndSkipped()", e);
         }
         return result;
     }
@@ -365,7 +384,7 @@ public class MavenRunCounter {
                 }
             }
         } else {
-            logger.error(Messages.getMessage(ScenarioInitiator.SCENARIO_INITIATOR_ERROR_EMPTY_FILE));
+            LOGGER.error(Messages.getMessage(ScenarioInitiator.SCENARIO_INITIATOR_ERROR_EMPTY_FILE));
         }
         result.setNbcas(indexData.size());
         result.setFailures(failures);

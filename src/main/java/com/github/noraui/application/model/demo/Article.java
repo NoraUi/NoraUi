@@ -7,12 +7,12 @@
 package com.github.noraui.application.model.demo;
 
 import com.github.noraui.annotation.Column;
-import com.github.noraui.application.model.DemoModel;
+import com.github.noraui.application.model.CommonModel;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 
-public class Article extends DemoModel implements Comparable<Article> {
+public class Article extends CommonModel implements Comparable<Article> {
 
     @Expose(serialize = false, deserialize = false)
     private Integer nid;

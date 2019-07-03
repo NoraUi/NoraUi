@@ -1,9 +1,14 @@
+/**
+ * NoraUi is licensed under the license GNU AFFERO GENERAL PUBLIC LICENSE
+ * 
+ * @author Nicolas HALLOUIN
+ * @author Stéphane GRILLON
+ */
 package com.github.noraui.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.noraui.application.Application;
 import com.github.noraui.application.page.Page;
 import com.github.noraui.exception.TechnicalException;
 
@@ -29,7 +34,7 @@ public class UnitTest4CLIContext extends Context {
      * {@inheritDoc}
      */
     @Override
-    public synchronized void initializeRobot(Class clazz) throws TechnicalException {
+    public synchronized void initializeRobot(Class<?> clazz) throws TechnicalException {
         super.initializeRobot(clazz);
         logger.info("NoraRobotContext > initializeRobot()");
 

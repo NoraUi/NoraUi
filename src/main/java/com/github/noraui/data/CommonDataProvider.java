@@ -1,6 +1,6 @@
 /**
  * NoraUi is licensed under the license GNU AFFERO GENERAL PUBLIC LICENSE
- * 
+ *
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
@@ -61,7 +61,7 @@ public abstract class CommonDataProvider implements DataProvider {
      */
     @Override
     public DataIndex getIndexData(int dataLine) {
-        for (DataIndex id : indexData) {
+        for (final DataIndex id : indexData) {
             if (id.getDataLine() == dataLine) {
                 return id;
             }
@@ -76,18 +76,18 @@ public abstract class CommonDataProvider implements DataProvider {
     @Override
     public Class<Model> getModel(String modelPackagesCsv) throws TechnicalException {
         if (modelPackagesCsv != null && !"".equals(modelPackagesCsv)) {
-            String[] packages = modelPackagesCsv.split(";");
+            final String[] packages = modelPackagesCsv.split(";");
             try {
                 if (packages.length > 0) {
                     Set<Class<?>> returnedClasses;
                     logger.debug("packages length is {}", packages.length);
-                    for (String p : packages) {
+                    for (final String p : packages) {
                         returnedClasses = getClasses(p);
                         logger.debug("package [{}] return {} classes", p, returnedClasses.size());
-                        for (Class<?> c : returnedClasses) {
+                        for (final Class<?> c : returnedClasses) {
                             if (Model.class.isAssignableFrom(c)) {
                                 boolean mappingOK = false;
-                                for (Field f : c.getDeclaredFields()) {
+                                for (final Field f : c.getDeclaredFields()) {
                                     if (f.isAnnotationPresent(Column.class)) {
                                         mappingOK = columns.contains(f.getAnnotation(Column.class).name());
                                     }
@@ -100,7 +100,7 @@ public abstract class CommonDataProvider implements DataProvider {
                     }
                 }
                 return null;
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION), e);
             }
         } else {
@@ -130,6 +130,71 @@ public abstract class CommonDataProvider implements DataProvider {
     @Override
     public String getResultColumnName() {
         return resultColumnName;
+    }
+
+    /**
+     * Writes a fail result
+     *
+     * @param line
+     *            The line number
+     * @param value
+     *            The value
+     */
+    public void writeFailedResult(int line, String value) {
+        logger.debug("Write Failed result => line:{} value:{}", line, value);
+        writeValue(resultColumnName, line, value);
+    }
+
+    /**
+     * Writes a success result
+     *
+     * @param line
+     *            The line number
+     */
+    public void writeSuccessResult(int line) {
+        logger.debug("Write Success result => line:{}", line);
+        writeValue(resultColumnName, line, Messages.getMessage(Messages.SUCCESS_MESSAGE));
+    }
+
+    /**
+     * Writes a warning result
+     *
+     * @param line
+     *            The line number
+     * @param value
+     *            The value
+     */
+    public void writeWarningResult(int line, String value) {
+        logger.debug("Write Warning result => line:{} value:{}", line, value);
+        writeValue(resultColumnName, line, value);
+    }
+
+    /**
+     * Writes some data as result.
+     *
+     * @param column
+     *            The column name
+     * @param line
+     *            The line number
+     * @param value
+     *            The data value
+     */
+    public void writeDataResult(String column, int line, String value) {
+        logger.debug("Write Data result => column:{} line:{} value:{}", column, line, value);
+        writeValue(column, line, value);
+    }
+
+    /**
+     * Defines how to write values. This method is a stub and must be overridden by children classes.
+     *
+     * @param column
+     *            The column name
+     * @param line
+     *            The line number
+     * @param value
+     *            The value to write
+     */
+    protected void writeValue(String column, int line, String value) {
     }
 
     /**

@@ -1,6 +1,6 @@
 /**
  * NoraUi is licensed under the license GNU AFFERO GENERAL PUBLIC LICENSE
- * 
+ *
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
@@ -28,11 +28,20 @@ public class Callbacks extends HashMap<String, Callback> {
      */
     private static final Logger logger = LoggerFactory.getLogger(Callback.class);
 
+    /**
+     * @deprecated (Only used for demo application for testing purposes, use {@link #CLOSE_WINDOW_AND_SWITCH_TO_GEOBEER_HOME} instead)
+     */
     @Deprecated
     public static final String CLOSE_WINDOW_AND_SWITCH_TO_DEMO_HOME = "CLOSE_WINDOW_AND_SWITCH_TO_DEMO_HOME";
+
+    /**
+     * @deprecated (Only used for demo application for testing purposes, use {@link #CLOSE_WINDOW_AND_SWITCH_TO_GEOBEER_HOME} instead)
+     */
     @Deprecated
     public static final String CLOSE_WINDOW_AND_SWITCH_TO_LOGOGAME_HOME = "CLOSE_WINDOW_AND_SWITCH_TO_LOGOGAME_HOME";
-    public static final String CLOSE_WINDOW_AND_SWITCH_TO_COUNTRIES_HOME = "CLOSE_WINDOW_AND_SWITCH_TO_COUNTRIES_HOME";
+
+    public static final String CLOSE_WINDOW_AND_SWITCH_TO_GEOBEER_HOME = "CLOSE_WINDOW_AND_SWITCH_TO_GEOBEER_HOME";
+    public static final String CLOSE_WINDOW_AND_SWITCH_TO_GITHUBAPI_HOME = "CLOSE_WINDOW_AND_SWITCH_TO_GITHUBAPI_HOME";
     public static final String RESTART_WEB_DRIVER = "RESTART_WEB_DRIVER";
 
     public Callbacks() {
@@ -68,13 +77,13 @@ public class Callbacks extends HashMap<String, Callback> {
                 logger.debug("ExceptionCallback with full name of class: {}", strClass);
                 this.objectClass = Class.forName(strClass);
 
-                Class<?>[] paramClasses = new Class<?>[parameters.length];
+                final Class<?>[] paramClasses = new Class<?>[parameters.length];
                 for (int i = 0; i < parameters.length; i++) {
                     paramClasses[i] = parameters[i].getClass();
                 }
                 this.method = objectClass.getDeclaredMethod(strMethod, paramClasses);
                 this.parameters = parameters;
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 logger.error("error Callback()", e);
             }
         }
@@ -85,9 +94,9 @@ public class Callbacks extends HashMap<String, Callback> {
         public void call() {
             try {
                 method.invoke(objectClass.newInstance(), parameters);
-            } catch (InvocationTargetException ite) {
+            } catch (final InvocationTargetException ite) {
                 logger.error("error InvocationTargetException", ite);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 logger.error("error Callback.call()", e);
             }
         }

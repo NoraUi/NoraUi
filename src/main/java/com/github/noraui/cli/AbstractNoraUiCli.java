@@ -1,4 +1,12 @@
+/**
+ * NoraUi is licensed under the license GNU AFFERO GENERAL PUBLIC LICENSE
+ * 
+ * @author Nicolas HALLOUIN
+ * @author Stéphane GRILLON
+ */
 package com.github.noraui.cli;
+
+import static com.github.noraui.exception.TechnicalException.TECHNICAL_IO_EXCEPTION;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -13,6 +21,7 @@ public abstract class AbstractNoraUiCli {
      * Specific logger
      */
     private static final Logger logger = LoggerFactory.getLogger(AbstractNoraUiCli.class);
+    protected static final String RESOURCES = "resources";
 
     protected String getJavaClassHeaders(String noraRobotName) {
         StringBuilder sb = new StringBuilder();
@@ -29,15 +38,14 @@ public abstract class AbstractNoraUiCli {
      * @param propertiesfilePath
      * @param sb
      */
-    protected void updatePropertiesFile(String propertiesfilePath, StringBuilder sb) {
+    protected void updateFile(String propertiesfilePath, StringBuilder sb) {
         try (FileWriter fw = new FileWriter(propertiesfilePath)) {
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(sb.toString().substring(0, sb.toString().length() - System.lineSeparator().length()));
             bw.flush();
             bw.close();
         } catch (IOException e) {
-            logger.error("IOException {}", e.getMessage(), e);
-            System.exit(1);
+            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 

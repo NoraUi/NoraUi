@@ -8,6 +8,7 @@ package com.github.noraui.utils;
 
 import static com.github.noraui.utils.Constants.DATA_IN;
 import static com.github.noraui.utils.Constants.DATA_OUT;
+import static com.github.noraui.utils.Constants.SCENARIO_FILE;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -88,13 +89,13 @@ public class Context {
     /**
      * DEMO
      *
-     * @deprecated because use {@link #COUNTRIES_KEY} instead.
+     * @deprecated because use {@link #GEOBEER_KEY} instead.
      */
     @Deprecated
     public static final String DEMO_KEY = "demo";
 
     /**
-     * @deprecated because use {@link #COUNTRIES_HOME} instead.
+     * @deprecated because use {@link #GEOBEER_HOME} instead.
      */
     @Deprecated
     public static final String DEMO_HOME = "DEMO_HOME";
@@ -102,22 +103,22 @@ public class Context {
     /**
      * LOGOGAME
      *
-     * @deprecated because use {@link #COUNTRIES_KEY} instead.
+     * @deprecated because use {@link #GEOBEER_KEY} instead.
      */
     @Deprecated
     public static final String LOGOGAME_KEY = "logogame";
 
     /**
-     * @deprecated because use {@link #COUNTRIES_HOME} instead.
+     * @deprecated because use {@link #GEOBEER_HOME} instead.
      */
     @Deprecated
     public static final String LOGOGAME_HOME = "LOGOGAME_HOME";
 
     /**
-     * COUNTRIES
+     * GEOBEER
      */
-    public static final String COUNTRIES_KEY = "countries";
-    public static final String COUNTRIES_HOME = "COUNTRIES_HOME";
+    public static final String GEOBEER_KEY = "geobeer";
+    public static final String GEOBEER_HOME = "GEOBEER_HOME";
 
     /**
      * GITHUBAPI
@@ -301,6 +302,9 @@ public class Context {
         return instance;
     }
 
+    /**
+     * @param propertiesFile
+     */
     public synchronized void initializeEnv(String propertiesFile) {
         logger.info("Context > initializeEnv()");
 
@@ -326,6 +330,11 @@ public class Context {
 
     }
 
+    /**
+     * @param clazz
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     */
     public synchronized void initializeRobot(Class<?> clazz) throws TechnicalException {
         logger.info("Context > initializeRobot() with {}", clazz.getCanonicalName());
         // set browser: chrome,firefox or ie
@@ -335,7 +344,7 @@ public class Context {
         initializeWebdriversProperties(Thread.currentThread().getContextClassLoader());
 
         // wait delay until web element is displayed.
-        timeout = setIntProperty(TIMEOUT_KEY, applicationProperties);
+        timeout = getIntProperty(TIMEOUT_KEY, applicationProperties);
 
         // set version of selectors used to deliver several versions
         selectorsVersion = getProperty(SELECTORS_VERSION, applicationProperties);
@@ -380,16 +389,19 @@ public class Context {
         exceptionCallbacks.put(Callbacks.RESTART_WEB_DRIVER, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, RESTART_WEB_DRIVER_METHOD_NAME);
         exceptionCallbacks.put(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_DEMO_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, DEMO_HOME);
         exceptionCallbacks.put(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_LOGOGAME_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, LOGOGAME_HOME);
-        exceptionCallbacks.put(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_COUNTRIES_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, COUNTRIES_HOME);
+        exceptionCallbacks.put(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_GITHUBAPI_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, GITHUBAPI_HOME);
+        exceptionCallbacks.put(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_GEOBEER_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, GEOBEER_HOME);
+
         // init applications
+        final String indexPage = "/index.html";
         initApplicationDom(clazz.getClassLoader(), selectorsVersion, DEMO_KEY);
-        applications.put(DEMO_KEY, new Application(DEMO_HOME, getProperty(DEMO_KEY, applicationProperties) + "/index.html"));
+        applications.put(DEMO_KEY, new Application(DEMO_HOME, getProperty(DEMO_KEY, applicationProperties) + indexPage));
 
         initApplicationDom(clazz.getClassLoader(), selectorsVersion, LOGOGAME_KEY);
-        applications.put(LOGOGAME_KEY, new Application(LOGOGAME_HOME, getProperty(LOGOGAME_KEY, applicationProperties) + "/index.html"));
+        applications.put(LOGOGAME_KEY, new Application(LOGOGAME_HOME, getProperty(LOGOGAME_KEY, applicationProperties) + indexPage));
 
-        initApplicationDom(clazz.getClassLoader(), selectorsVersion, COUNTRIES_KEY);
-        applications.put(COUNTRIES_KEY, new Application(COUNTRIES_HOME, getProperty(COUNTRIES_KEY, applicationProperties) + "/index.html"));
+        initApplicationDom(clazz.getClassLoader(), selectorsVersion, GEOBEER_KEY);
+        applications.put(GEOBEER_KEY, new Application(GEOBEER_HOME, getProperty(GEOBEER_KEY, applicationProperties) + indexPage));
 
         applications.put(GITHUBAPI_KEY, new Application(GITHUBAPI_HOME, getProperty(GITHUBAPI_KEY, applicationProperties)));
 
@@ -502,6 +514,9 @@ public class Context {
         getInstance().currentScenarioData = current;
     }
 
+    /**
+     * 
+     */
     public static void goToNextFeature() {
         getInstance().currentScenarioData = 0;
         getInstance().nbFailure = 0;
@@ -512,6 +527,9 @@ public class Context {
         return getInstance().scenarioName;
     }
 
+    /**
+     * @param scenarioName
+     */
     public static void setScenarioName(String scenarioName) {
         if (getInstance().scenarioName == null || !getInstance().scenarioName.equals(scenarioName)) {
             try {
@@ -567,6 +585,11 @@ public class Context {
         getInstance().dataOutputProvider = dataOutputProvider;
     }
 
+    /**
+     * @param loader
+     * @param propertiesFileName
+     * @return Properties Object contain all properties.
+     */
     protected static Properties initPropertiesFile(ClassLoader loader, String propertiesFileName) {
         if (loader != null) {
             final InputStream in = loader.getResourceAsStream(propertiesFileName);
@@ -587,6 +610,12 @@ public class Context {
         return null;
     }
 
+    /**
+     * @param key
+     *            of property
+     * @param propertyFile
+     * @return String property
+     */
     public static String getProperty(String key, Properties propertyFile) {
         if (propertyFile == null) {
             return null;
@@ -598,10 +627,36 @@ public class Context {
         return p;
     }
 
+    /**
+     * @param key
+     *            of property
+     * @param propertyFile
+     * @return int property
+     */
+    private static int getIntProperty(String key, Properties propertyFile) {
+        final String property = propertyFile.getProperty(key);
+        int p = 0;
+        if (property == null) {
+            logger.error("{}{}", key, Messages.getMessage(NOT_SET_LABEL));
+        } else {
+            p = Integer.parseInt(property);
+            logger.info("{} = {}", key, p);
+        }
+        return p;
+    }
+
     public static String getResourcesPath() {
         return getInstance().resourcesPath;
     }
 
+    /**
+     * @param loader
+     *            is class loader
+     * @param version
+     *            is version of selector (target application version).
+     * @param applicationKey
+     *            unic key of application
+     */
     protected static void initApplicationDom(ClassLoader loader, String version, String applicationKey) {
         try {
             final InputStream data = loader.getResourceAsStream("selectors/" + version + "/" + applicationKey + ".ini");
@@ -621,7 +676,7 @@ public class Context {
     }
 
     public static void initializeScenarioProperties(ClassLoader loader) {
-        scenariosProperties = initPropertiesFile(loader, "scenarios.properties");
+        scenariosProperties = initPropertiesFile(loader, SCENARIO_FILE);
     }
 
     public static String getWebdriversProperties(String key) {
@@ -680,6 +735,13 @@ public class Context {
         return getInstance().applications.get(applicationKey);
     }
 
+    /**
+     * Get url name in a string by page key.
+     * 
+     * @param pageKey
+     *            is key of page
+     * @return url in a string
+     */
     public static String getUrlByPagekey(String pageKey) {
         if (pageKey != null) {
             for (final Map.Entry<String, Application> application : getInstance().applications.entrySet()) {
@@ -695,6 +757,13 @@ public class Context {
         return null;
     }
 
+    /**
+     * Get application name in a string by page key.
+     * 
+     * @param pageKey
+     *            is key of page
+     * @return application name in a string
+     */
     public static String getApplicationByPagekey(String pageKey) {
         if (pageKey != null) {
             for (final Map.Entry<String, Application> application : getInstance().applications.entrySet()) {
@@ -710,18 +779,14 @@ public class Context {
         return null;
     }
 
-    private static int setIntProperty(String key, Properties propertyFile) {
-        final String property = propertyFile.getProperty(key);
-        int p = 0;
-        if (property == null) {
-            logger.error("{}{}", key, Messages.getMessage(NOT_SET_LABEL));
-        } else {
-            p = Integer.parseInt(property);
-            logger.info("{} = {}", key, p);
-        }
-        return p;
-    }
-
+    /**
+     * init all Data index (by model).
+     * 
+     * @param scenarioName
+     *            name of scenario.
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     */
     private static void initDataId(String scenarioName) throws TechnicalException {
         final List<DataIndex> indexData = new ArrayList<>();
         try {
@@ -755,6 +820,9 @@ public class Context {
         }
     }
 
+    /**
+     * initialize Locale (fr, en).
+     */
     private void initializeLocale() {
         final String locale = getProperty(LOCALE, applicationProperties);
         if (locale != null && !"".equals(locale)) {
@@ -770,6 +838,9 @@ public class Context {
         logger.info(Messages.getMessage(CONTEXT_LOCALE_USED), currentLocale);
     }
 
+    /**
+     * @param applicationProperties
+     */
     private void plugDataProvider(Properties applicationProperties) {
         try {
             final String dataIn = getProperty("dataProvider.in.type", applicationProperties);
@@ -824,4 +895,5 @@ public class Context {
             logger.error(Messages.getMessage(CONTEXT_ERROR_WHEN_PLUGING_DATA_PROVIDER), e);
         }
     }
+
 }
