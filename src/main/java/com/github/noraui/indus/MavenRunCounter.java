@@ -92,7 +92,7 @@ public class MavenRunCounter {
                                 nbStep++;
                                 matcher = recommendedPattern.matcher(sCurrentLine);
                                 if (!matcher.find()) {
-                                    logger.error("{} : {}", Messages.getMessage(Messages.SCENARIO_ERROR_MESSAGE_ILLEGAL_TAB_FORMAT), sCurrentLine);
+                                    LOGGER.error("{} : {}", Messages.getMessage(Messages.SCENARIO_ERROR_MESSAGE_ILLEGAL_TAB_FORMAT), sCurrentLine);
                                 }
                             }
                         }
