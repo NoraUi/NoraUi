@@ -310,15 +310,6 @@ public class MavenRunCounter {
 
     }
 
-    private void countNbCasFailuresAndSkipped(String scenarioName, Counter counter, int nbStep) {
-        final Counter nb = countNbCasFailuresAndSkipped(scenarioName, nbStep);
-        counter.setNbStep(nbStep);
-        counter.setNbcas(nb.getNbCas());
-        counter.setRun(nbStep * nb.getNbCas() + nb.getNbCas());
-        counter.setFailures(nb.getFailures());
-        counter.setSkipped(nb.getSkipped());
-    }
-
     private static MavenRunCounter.Counter countNbCasFailuresAndSkipped(String scenarioName, int nbScenario, int nbStep) {
         final Counter result = new MavenRunCounter().new Counter("", nbScenario);
         final List<DataIndex> indexData = new ArrayList<>();
