@@ -35,7 +35,7 @@ public class Application extends AbstractNoraUiCli {
     private static final Logger logger = LoggerFactory.getLogger(Application.class);
     public static final String SUFFIX_HOME = "_HOME\";";
     public static final String SUFFIX_KEY = "_KEY;";
-            
+
     private String mainPath;
 
     public Application() {
@@ -74,6 +74,7 @@ public class Application extends AbstractNoraUiCli {
      * @param applicationName
      *            name of application added.
      * @param url
+     *            of target application.
      * @param robotContext
      *            Context class from robot.
      * @param verbose
@@ -574,12 +575,13 @@ public class Application extends AbstractNoraUiCli {
         updateFile(propertiesfilePath, sb);
     }
 
-    
     /**
      * @param applicationName
      *            name of application added.
      * @param url
+     *            of target application.
      * @param env
+     *            is dev, ci, prod, ...
      * @param verbose
      *            boolean to activate verbose mode (show more traces).
      */
@@ -591,7 +593,9 @@ public class Application extends AbstractNoraUiCli {
      * @param applicationName
      *            name of application removed.
      * @param url
+     *            of target application.
      * @param env
+     *            is dev, ci, prod, ...
      * @param verbose
      *            boolean to activate verbose mode (show more traces).
      */
@@ -604,7 +608,9 @@ public class Application extends AbstractNoraUiCli {
      * @param applicationName
      *            name of application.
      * @param url
+     *            of target application.
      * @param env
+     *            is dev, ci, prod, ...
      * @param verbose
      *            boolean to activate verbose mode (show more traces).
      */

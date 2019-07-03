@@ -303,13 +303,14 @@ public class Context {
     }
 
     /**
-     * @param propertiesFile
+     * @param propertiesFileName
+     *            is name of properties file.	 
      */
-    public synchronized void initializeEnv(String propertiesFile) {
+    public synchronized void initializeEnv(String propertiesFileName) {
         logger.info("Context > initializeEnv()");
 
         iniFiles = new HashMap<>();
-        applicationProperties = initPropertiesFile(Thread.currentThread().getContextClassLoader(), propertiesFile);
+        applicationProperties = initPropertiesFile(Thread.currentThread().getContextClassLoader(), propertiesFileName);
 
         // init locale
         initializeLocale();
@@ -332,6 +333,7 @@ public class Context {
 
     /**
      * @param clazz
+     *            used to find class loader.
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      */
@@ -514,9 +516,6 @@ public class Context {
         getInstance().currentScenarioData = current;
     }
 
-    /**
-     * 
-     */
     public static void goToNextFeature() {
         getInstance().currentScenarioData = 0;
         getInstance().nbFailure = 0;
@@ -529,6 +528,7 @@ public class Context {
 
     /**
      * @param scenarioName
+     *            name of scenario as a string.
      */
     public static void setScenarioName(String scenarioName) {
         if (getInstance().scenarioName == null || !getInstance().scenarioName.equals(scenarioName)) {
@@ -587,7 +587,9 @@ public class Context {
 
     /**
      * @param loader
+     *            is class loader.
      * @param propertiesFileName
+     *            is name of properties file.
      * @return Properties Object contain all properties.
      */
     protected static Properties initPropertiesFile(ClassLoader loader, String propertiesFileName) {
@@ -614,6 +616,7 @@ public class Context {
      * @param key
      *            of property
      * @param propertyFile
+     *            object representing the properties file. 
      * @return String property
      */
     public static String getProperty(String key, Properties propertyFile) {
@@ -631,6 +634,7 @@ public class Context {
      * @param key
      *            of property
      * @param propertyFile
+     *            object representing the properties file.
      * @return int property
      */
     private static int getIntProperty(String key, Properties propertyFile) {
