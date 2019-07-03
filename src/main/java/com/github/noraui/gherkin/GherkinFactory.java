@@ -37,7 +37,9 @@ public class GherkinFactory {
     private static final String DATA = "#DATA";
     private static final String DATA_END = "#END";
     private static final String SCENARIO_OUTLINE_SPLIT = "Scenario Outline:";
+    private static final String SCENARIO_OUTLINE_SPLIT_FR = "Plan du Scénario:";
     private static final String SCENARIO_EXAMPLE_COLUMNS_SEPARATOR = "|";
+    private static final String GHERKIN_LANGUAGE_REGEX = "#[\\s]*language[\\s]*:[\\s]*(\\S*)";
 
     /**
      * Private constructor
@@ -57,8 +59,9 @@ public class GherkinFactory {
             if (!examplesTable.isEmpty()) {
                 final Path filePath = getFeaturePath(filename);
                 final String fileContent = new String(Files.readAllBytes(filePath), Charset.forName(Constants.DEFAULT_ENDODING));
+                String lang = getFeatureLanguage(fileContent);
                 StringBuilder examplesString;
-                final String[] scenarioOutlines = fileContent.split(SCENARIO_OUTLINE_SPLIT);
+                final String[] scenarioOutlines = "fr".equals(lang) ? fileContent.split(SCENARIO_OUTLINE_SPLIT_FR) : fileContent.split(SCENARIO_OUTLINE_SPLIT);
                 for (final Entry<Integer, List<String[]>> examples : examplesTable.entrySet()) {
                     examplesString = new StringBuilder();
                     examplesString.append("    ");
@@ -81,7 +84,11 @@ public class GherkinFactory {
                     bw.write(scenarioOutlines[i]);
 
                     while (++i < scenarioOutlines.length) {
-                        bw.write(SCENARIO_OUTLINE_SPLIT + scenarioOutlines[i]);
+                        if ("fr".equals(lang)) {
+                            bw.write(SCENARIO_OUTLINE_SPLIT_FR + scenarioOutlines[i]);
+                        } else {
+                            bw.write(SCENARIO_OUTLINE_SPLIT_FR + scenarioOutlines[i]);
+                        }
                     }
                 }
             }
@@ -92,6 +99,18 @@ public class GherkinFactory {
 
     public static int getNumberOfGherkinExamples(String filename) {
         return getExamples(filename).length;
+    }
+
+    public static String getFeatureLanguage(String featureContent) {
+        final Pattern pattern = Pattern.compile(GHERKIN_LANGUAGE_REGEX, Pattern.MULTILINE);
+        final Matcher matcher = pattern.matcher(featureContent);
+
+        if (matcher.find()) {
+            if (matcher.groupCount() == 1) {
+                return matcher.group(1);
+            }
+        }
+        return "";
     }
 
     public static String[] getExamples(String filename) {
