@@ -1,6 +1,6 @@
 /**
  * NoraUi is licensed under the license GNU AFFERO GENERAL PUBLIC LICENSE
- * 
+ *
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
@@ -10,6 +10,7 @@ import static com.github.noraui.utils.Constants.USER_DIR;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -50,11 +51,11 @@ public class ScenarioInitiator {
             processInjection(scenarioName);
         } else {
             logger.warn(Messages.getMessage(SCENARIO_INITIATOR_USAGE));
-            String cucumberOptions = System.getProperty("cucumber.options");
+            final String cucumberOptions = System.getProperty("cucumber.options");
             if (cucumberOptions != null && cucumberOptions.contains("--tags")) {
-                Matcher matcher = Pattern.compile(".*--tags '(.*)'.*").matcher(cucumberOptions);
+                final Matcher matcher = Pattern.compile(".*--tags '(.*)'.*").matcher(cucumberOptions);
                 if (matcher.find() && matcher.groupCount() > 0) {
-                    String tags = matcher.group(1).replace("not ", "").replace(")", "").replace("(", "").replace(" and ", " ").replace(" or ", " ").replace("@", "");
+                    final String tags = matcher.group(1).replace("not ", "").replace(")", "").replace("(", "").replace(" and ", " ").replace(" or ", " ").replace("@", "");
                     for (final String s : tags.split(" ")) {
                         if (!s.startsWith("~")) {
                             processInjection(s);
@@ -84,25 +85,46 @@ public class ScenarioInitiator {
     }
 
     private static void injectWithoutModel(String scenarioName) throws TechnicalException {
-        final List<String[]> examples = new ArrayList<>();
-        String[] example;
-        for (int i = 1; (example = Context.getDataInputProvider().readLine(i, false)) != null; i++) {
-            examples.add(example);
+        final String[] headers = Context.getDataInputProvider().readLine(0, false);
+        if (headers != null) {
+            List<String[]> examples = new ArrayList<>();
+            final Hashtable<Integer, List<String[]>> examplesTable = new Hashtable<>();
+            String[] example;
+            int i = 1;
+            int j = 0;
+            do {
+                example = Context.getDataInputProvider().readLine(i, false);
+                if (example == null) {
+                    examplesTable.put(Integer.valueOf(j++), examples);
+                    examples = new ArrayList<>();
+                } else {
+                    examples.add(example);
+                }
+            } while (Context.getDataInputProvider().readLine(++i, false) != null || example != null);
+
+            GherkinFactory.injectDataInGherkinExamples(scenarioName, examplesTable);
+        } else {
+            logger.error(Messages.getMessage(SCENARIO_INITIATOR_ERROR_EMPTY_FILE));
         }
-        GherkinFactory.injectDataInGherkinExamples(scenarioName, examples);
     }
 
     private static void injectWithModel(String scenarioName, Class<Model> model) throws TechnicalException {
         try {
             final String[] headers = Context.getDataInputProvider().readLine(0, false);
             if (headers != null) {
-                final List<String[]> examples = new ArrayList<>();
+                List<String[]> examples = new ArrayList<>();
                 final Constructor<Model> modelConstructor = DataUtils.getModelConstructor(model, headers);
-                final Map<String, ModelList> fusionedData = DataUtils.fusionProcessor(model, modelConstructor);
-                for (final Entry<String, ModelList> e : fusionedData.entrySet()) {
-                    examples.add(new String[] { e.getKey(), e.getValue().serialize() });
+                final Map<Integer, Map<String, ModelList>> fusionedData = DataUtils.fusionProcessor(model, modelConstructor);
+                final Hashtable<Integer, List<String[]>> examplesTable = new Hashtable<>();
+
+                for (final Entry<Integer, Map<String, ModelList>> e : fusionedData.entrySet()) {
+                    for (final Entry<String, ModelList> e2 : e.getValue().entrySet()) {
+                        examples.add(new String[] { e2.getKey(), e2.getValue().serialize() });
+                    }
+                    examplesTable.put(e.getKey(), examples);
+                    examples = new ArrayList<>();
                 }
-                GherkinFactory.injectDataInGherkinExamples(scenarioName, examples);
+                GherkinFactory.injectDataInGherkinExamples(scenarioName, examplesTable);
             } else {
                 logger.error(Messages.getMessage(SCENARIO_INITIATOR_ERROR_EMPTY_FILE));
             }

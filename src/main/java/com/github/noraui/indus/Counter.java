@@ -13,6 +13,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 
@@ -28,7 +29,7 @@ public class Counter {
     private Counter() {
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws TechnicalException {
         if (args.length == 1) {
             final List<String> manager = new ArrayList<>();
             final List<String> scenarioBlacklist = new ArrayList<>();
