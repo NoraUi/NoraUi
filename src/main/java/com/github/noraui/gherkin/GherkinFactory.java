@@ -60,6 +60,7 @@ public class GherkinFactory {
                 final Path filePath = getFeaturePath(filename);
                 final String fileContent = new String(Files.readAllBytes(filePath), Charset.forName(Constants.DEFAULT_ENDODING));
                 String lang = getFeatureLanguage(fileContent);
+                logger.info(lang);
                 StringBuilder examplesString;
                 final String[] scenarioOutlines = "fr".equals(lang) ? fileContent.split(SCENARIO_OUTLINE_SPLIT_FR) : fileContent.split(SCENARIO_OUTLINE_SPLIT);
                 for (final Entry<Integer, List<String[]>> examples : examplesTable.entrySet()) {
@@ -87,7 +88,7 @@ public class GherkinFactory {
                         if ("fr".equals(lang)) {
                             bw.write(SCENARIO_OUTLINE_SPLIT_FR + scenarioOutlines[i]);
                         } else {
-                            bw.write(SCENARIO_OUTLINE_SPLIT_FR + scenarioOutlines[i]);
+                            bw.write(SCENARIO_OUTLINE_SPLIT + scenarioOutlines[i]);
                         }
                     }
                 }
