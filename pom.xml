@@ -46,7 +46,7 @@
 
     <properties>
         <cucumber.options>--tags @TOSPECIFY</cucumber.options>
-        <jenkinsresourcespath>src/test/resources</jenkinsresourcespath>
+        <ciToolResourcesPath>src/test/resources</ciToolResourcesPath>
         <crypto.key>@TOSPECIFY</crypto.key>
         <scenario.name>@TOSPECIFY</scenario.name>
         <cucumber.version>4.3.0</cucumber.version>
@@ -571,7 +571,7 @@
                                     <systemProperties>
                                         <systemProperty>
                                             <key>resourcespath</key>
-                                            <value>${jenkinsresourcespath}</value>
+                                            <value>${ciToolResourcesPath}</value>
                                         </systemProperty>
                                     </systemProperties>
                                 </configuration>
@@ -590,7 +590,7 @@
                                     <systemProperties>
                                         <systemProperty>
                                             <key>resourcespath</key>
-                                            <value>${jenkinsresourcespath}</value>
+                                            <value>${ciToolResourcesPath}</value>
                                         </systemProperty>
                                     </systemProperties>
                                 </configuration>
@@ -609,7 +609,7 @@
                                     <systemProperties>
                                         <systemProperty>
                                             <key>resourcespath</key>
-                                            <value>${jenkinsresourcespath}</value>
+                                            <value>${ciToolResourcesPath}</value>
                                         </systemProperty>
                                     </systemProperties>
                                 </configuration>
@@ -628,7 +628,7 @@
                                     <systemProperties>
                                         <systemProperty>
                                             <key>resourcespath</key>
-                                            <value>${jenkinsresourcespath}</value>
+                                            <value>${ciToolResourcesPath}</value>
                                         </systemProperty>
                                     </systemProperties>
                                 </configuration>
@@ -647,7 +647,7 @@
                             <!-- <systemProperties> -->
                             <!-- <systemProperty> -->
                             <!-- <key>resourcespath</key> -->
-                            <!-- <value>${jenkinsresourcespath}</value> -->
+                            <!-- <value>${ciToolResourcesPath}</value> -->
                             <!-- </systemProperty> -->
                             <!-- </systemProperties> -->
                             <!-- </configuration> -->
@@ -666,7 +666,7 @@
                             <!-- <systemProperties> -->
                             <!-- <systemProperty> -->
                             <!-- <key>resourcespath</key> -->
-                            <!-- <value>${jenkinsresourcespath}</value> -->
+                            <!-- <value>${ciToolResourcesPath}</value> -->
                             <!-- </systemProperty> -->
                             <!-- </systemProperties> -->
                             <!-- </configuration> -->
@@ -702,7 +702,7 @@
                                     <systemProperties>
                                         <systemProperty>
                                             <key>resourcespath</key>
-                                            <value>${jenkinsresourcespath}</value>
+                                            <value>${ciToolResourcesPath}</value>
                                         </systemProperty>
                                         <systemProperty>
                                             <key>crypto.key</key>
@@ -756,7 +756,7 @@
                         <version>${maven-surefire-plugin.version}</version>
                         <configuration>
                             <systemPropertyVariables>
-                                <resourcespath>${jenkinsresourcespath}</resourcespath>
+                                <resourcespath>${ciToolResourcesPath}</resourcespath>
                                 <cucumber.options>${cucumber.options}</cucumber.options>
                                 <webdriver.ie.driver>src/test/resources/drivers/%s/internetexplorer/%s/IEDriverServer%s</webdriver.ie.driver>
                                 <webdriver.chrome.driver>src/test/resources/drivers/%s/googlechrome/%s/chromedriver%s</webdriver.chrome.driver>
@@ -771,7 +771,7 @@
                                 <role>${role}</role>
                             </systemPropertyVariables>
                             <includes>
-                                <!-- include>**/*UT.java</include -->
+                                <include>**/*UT.java</include>
                                 <include>**/Runner.java</include>
                             </includes>
                             <argLine>-Dfile.encoding=UTF-8 ${surefireArgLine}</argLine>

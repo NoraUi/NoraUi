@@ -322,12 +322,10 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("Enter index scenario number:").append(System.lineSeparator());
         expectedCliAsk.append("    1) loginSample").append(System.lineSeparator());
         expectedCliAsk.append("    2) hello").append(System.lineSeparator());
-        expectedCliAsk.append("    3) blog").append(System.lineSeparator());
-        expectedCliAsk.append("    4) bonjour").append(System.lineSeparator());
-        expectedCliAsk.append("    5) playToLogoGame").append(System.lineSeparator());
-        expectedCliAsk.append("    6) jouerAuJeuDesLogos").append(System.lineSeparator());
-        expectedCliAsk.append("    7) LoginLogout").append(System.lineSeparator());
-        expectedCliAsk.append("    8) sampleRESTAPI").append(System.lineSeparator());
+        expectedCliAsk.append("    3) bonjour").append(System.lineSeparator());
+        expectedCliAsk.append("    4) blog").append(System.lineSeparator());
+        expectedCliAsk.append("    5) LoginLogout").append(System.lineSeparator());
+        expectedCliAsk.append("    6) sampleRESTAPI").append(System.lineSeparator());
         expectedCliAsk.append("Remove a scenario named [loginSample].").append(System.lineSeparator());
         expectedCliAsk.append("dataProvider.in.type is [EXCEL]").append(System.lineSeparator());
         expectedCliAsk.append("dataProvider.out.type is [EXCEL]").append(System.lineSeparator());

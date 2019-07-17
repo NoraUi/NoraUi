@@ -30,7 +30,7 @@ public class StepUT {
 
     public static final String DEMO_PAGE_NAME = "demo.DemoPage";
 
-    private Step step;
+    private StepSample step;
     private ConditionedInterceptor ci;
     private GherkinStepCondition gherkinCondition;
     private List<GherkinStepCondition> conditions;
@@ -41,7 +41,7 @@ public class StepUT {
 
     @Before
     public void setUp() {
-        step = new Step();
+         step = new StepSample();
         ci = new ConditionedInterceptor();
         gherkinCondition = new GherkinStepCondition();
         conditions = new ArrayList<>();
@@ -387,4 +387,8 @@ public class StepUT {
     // TODO ajouter un test sur les loop en lancant une méthode qui existe dans le liste getCucumberMethods().
     // Cela nécessite une initialisation complexe
 
+}
+
+class StepSample extends Step{
+    
 }

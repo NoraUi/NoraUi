@@ -4,9 +4,10 @@
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
-package com.github.noraui.application.page.geobeer;
+package com.github.noraui.application.page.bakery;
 
-import static com.github.noraui.utils.Context.GEOBEER_KEY;
+import static com.github.noraui.utils.Context.BAKERY_KEY;
+import static com.github.noraui.utils.Context.BAKERY_REF;
 
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
@@ -17,21 +18,21 @@ import com.github.noraui.exception.Callbacks;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Utilities;
 
-public class DashboardPage extends Page {
+public class ReferencerPage extends Page {
 
     /**
      * Specific logger
      */
-    protected static final Logger logger = LoggerFactory.getLogger(DashboardPage.class);
+    protected static final Logger logger = LoggerFactory.getLogger(ReferencerPage.class);
 
-    public final PageElement signInMessage = new PageElement("-sign_in_message");
-    public final PageElement signoutMenu = new PageElement("-signoutMenu", "Sign-out menu");
+    public final PageElement titleMessage = new PageElement("-title_message");
+    public final PageElement signOutMenu = new PageElement("-signout_menu");
 
-    public DashboardPage() {
+    public ReferencerPage() {
         super();
-        this.application = GEOBEER_KEY;
-        this.pageKey = "GEOBEER_DAS";
-        this.callBack = Context.getCallBack(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_GEOBEER_HOME);
+        this.application = BAKERY_KEY;
+        this.pageKey = BAKERY_REF;
+        this.callBack = Context.getCallBack(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_BAKERY_HOME);
     }
 
     /**
@@ -40,7 +41,7 @@ public class DashboardPage extends Page {
     @Override
     public boolean checkPage(Object... elements) {
         try {
-            Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(signInMessage)));
+            Context.waitUntil(ExpectedConditions.visibilityOfElementLocated(Utilities.getLocator(titleMessage)));
             return true;
         } catch (Exception e) {
             logger.error("signIn message not found", e);

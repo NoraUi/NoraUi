@@ -20,11 +20,11 @@ INSERT INTO hello VALUES (8, 'Jenkins T8', '', 'Rennes', 'smile', 'smile', '', '
 CREATE TABLE LoginLogout (
     id int primary key not null,
     user text,
-    password text
+    password text,
+	profile text
 );
-INSERT INTO LoginLogout VALUES (1, 'demo', 'demo');
-INSERT INTO LoginLogout VALUES (2, 'demo', 'demo');
-INSERT INTO LoginLogout VALUES (3, 'demo', 'demo');
+INSERT INTO LoginLogout VALUES (1, 'sgrillon', '℗:qmTAYKS9UG87rNuUQ0Ao6Q==');
+INSERT INTO LoginLogout VALUES (2, 'sgrillon2', '℗:qmTAYKS9UG87rNuUQ0Ao6Q==');
 
 CREATE TABLE blog (
     id int primary key not null,

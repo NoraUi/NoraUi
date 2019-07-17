@@ -11,7 +11,6 @@ import static com.github.noraui.utils.Constants.USER_DIR;
 import static com.github.noraui.utils.Constants.VALUE;
 
 import java.io.File;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.text.DateFormat;
@@ -20,12 +19,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,8 +32,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.reflections.Reflections;
-import org.reflections.scanners.SubTypesScanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,7 +39,6 @@ import com.github.noraui.application.page.IPage;
 import com.github.noraui.application.page.Page;
 import com.github.noraui.application.page.Page.PageElement;
 import com.github.noraui.browser.DriverFactory;
-import com.github.noraui.browser.steps.BrowserSteps;
 import com.github.noraui.cucumber.annotation.Conditioned;
 import com.github.noraui.cucumber.injector.NoraUiInjector;
 import com.github.noraui.exception.FailureException;
@@ -61,22 +54,19 @@ import com.github.noraui.utils.Messages;
 import com.github.noraui.utils.Utilities;
 import com.google.inject.Inject;
 
-import cucumber.api.CucumberOptions;
-import cucumber.runtime.java.StepDefAnnotation;
-
-public class Step implements IStep {
+public abstract class Step implements IStep {
 
     /**
      * Specific LOGGER
      */
     protected static final Logger LOGGER = LoggerFactory.getLogger(Step.class);
-    private static final String SECURE_MASK = "[secure]";
+    protected static final String SECURE_MASK = "[secure]";
 
     @Inject
-    private UserNameService userNameService;
+    protected UserNameService userNameService;
 
     @Inject
-    private CryptoService cryptoService;
+    protected CryptoService cryptoService;
 
     protected Step() {
     }
@@ -867,27 +857,6 @@ public class Step implements IStep {
         }
     }
 
-    private void displayMessageAtTheBeginningOfMethod(String message, String element, String application) throws TechnicalException {
-        try {
-            LOGGER.debug(message, element, application);
-        } catch (final Exception te) {
-            throw new TechnicalException("Technical problem in the code Messages.formatMessage(String templateMessage, String... args) in NoraUi.", te);
-        }
-    }
-
-    private void setDropDownValue(PageElement element, String text) throws TechnicalException, FailureException {
-        final WebElement select = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(element)));
-        final Select dropDown = new Select(select);
-        final int index = userNameService.findOptionByIgnoreCaseText(text, dropDown);
-        if (index != -1) {
-            dropDown.selectByIndex(index);
-        } else {
-            new Result.Failure<>(text.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : text,
-                    Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_VALUE_NOT_AVAILABLE_IN_THE_LIST), element, element.getPage().getApplication()), false, element.getPage().getCallBack());
-        }
-
-    }
-
     /**
      * Checks that a given page displays a html alert.
      * CAUTION: This check do not work with IE: https://github.com/SeleniumHQ/selenium/issues/468
@@ -982,41 +951,6 @@ public class Step implements IStep {
     }
 
     /**
-     * Gets all Cucumber methods.
-     *
-     * @param clazz
-     *            Class which is the main point of the application (Decorated with the annotation {@link cucumber.api.CucumberOptions})
-     * @return a Map of all Cucumber glue code methods of the application. First part of the entry is the Gherkin matching regular expression.
-     *         Second part is the corresponding invokable method.
-     */
-    public static Map<String, Method> getAllCucumberMethods(Class<?> clazz) {
-        final Map<String, Method> result = new HashMap<>();
-        final CucumberOptions co = clazz.getAnnotation(CucumberOptions.class);
-        final Set<Class<?>> classes = getClasses(co.glue());
-        classes.add(BrowserSteps.class);
-
-        for (final Class<?> c : classes) {
-            final Method[] methods = c.getDeclaredMethods();
-            for (final Method method : methods) {
-                for (final Annotation stepAnnotation : method.getAnnotations()) {
-                    if (stepAnnotation.annotationType().isAnnotationPresent(StepDefAnnotation.class)) {
-                        result.put(stepAnnotation.toString(), method);
-                    }
-                }
-            }
-        }
-        return result;
-    }
-
-    private static Set<Class<?>> getClasses(String[] packagesName) {
-        final Set<Class<?>> result = new HashSet<>();
-        for (final String packageName : packagesName) {
-            result.addAll(new Reflections(packageName, new SubTypesScanner(false)).getSubTypesOf(Step.class));
-        }
-        return result;
-    }
-
-    /**
      * @param textOrKey
      *            Is the new data (text or text in context (after a save))
      * @return a string from context or not (and crypted or not).
@@ -1029,5 +963,27 @@ public class Step implements IStep {
         }
         return value;
     }
+
+    private void displayMessageAtTheBeginningOfMethod(String message, String element, String application) throws TechnicalException {
+        try {
+            LOGGER.debug(message, element, application);
+        } catch (final Exception te) {
+            throw new TechnicalException("Technical problem in the code Messages.formatMessage(String templateMessage, String... args) in NoraUi.", te);
+        }
+    }
+
+    private void setDropDownValue(PageElement element, String text) throws TechnicalException, FailureException {
+        final WebElement select = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(element)));
+        final Select dropDown = new Select(select);
+        final int index = userNameService.findOptionByIgnoreCaseText(text, dropDown);
+        if (index != -1) {
+            dropDown.selectByIndex(index);
+        } else {
+            new Result.Failure<>(text.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : text,
+                    Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_VALUE_NOT_AVAILABLE_IN_THE_LIST), element, element.getPage().getApplication()), false, element.getPage().getCallBack());
+        }
+
+    }
+    
 
 }
