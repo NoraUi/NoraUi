@@ -21,10 +21,10 @@ CREATE TABLE LoginLogout (
     id int primary key not null,
     user text,
     password text,
-	profile text
+    profile text
 );
-INSERT INTO LoginLogout VALUES (1, 'sgrillon', '℗:qmTAYKS9UG87rNuUQ0Ao6Q==');
-INSERT INTO LoginLogout VALUES (2, 'sgrillon2', '℗:qmTAYKS9UG87rNuUQ0Ao6Q==');
+INSERT INTO LoginLogout VALUES (1, 'sgrillon', '℗:qmTAYKS9UG87rNuUQ0Ao6Q==', 'admin');
+INSERT INTO LoginLogout VALUES (2, 'sgrillon2', '℗:qmTAYKS9UG87rNuUQ0Ao6Q==', 'referencer');
 
 CREATE TABLE blog (
     id int primary key not null,
