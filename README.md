@@ -26,6 +26,7 @@ See [change log](https://noraui.github.io/changelog.txt) for details
 * You can use all new features from cucumber v4.x.x. (Use Cucumber Expressions)
 * You need use Cucumber Expressions instead of regular expressions
 * You need use java 8 instead of java 7.
+* Rename all `jenkinsresourcespath` by `ciToolResourcesPath` in your CI/CD
 
 # How to migrate from [2.x.x] to [3.x.x] (mandatory)
 
