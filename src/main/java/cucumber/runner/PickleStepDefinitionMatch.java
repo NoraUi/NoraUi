@@ -47,7 +47,7 @@ public class PickleStepDefinitionMatch extends Match implements StepDefinitionMa
 
     @Override
     public void runStep(Scenario scenario) throws Throwable {
-        LOGGER.info("runStep {}", step.getText());
+        LOGGER.debug("runStep {}", step.getText());
         
         List<Argument> arguments = getArguments();
         int argumentCount = arguments.size();
@@ -80,7 +80,7 @@ public class PickleStepDefinitionMatch extends Match implements StepDefinitionMa
                     LOGGER.error("arityMismatch in add List<GherkinStepCondition> or parameters Map<String, String>: {}", parameterCount);
                     throw arityMismatch(parameterCount);
                 }
-                LOGGER.info("add argument {} to result in add List<GherkinStepCondition> or parameters Map<String, String>", obj);
+                LOGGER.debug("add argument {} to result in add List<GherkinStepCondition> or parameters Map<String, String>", obj);
                 result.add(obj);
             }
         } catch (UndefinedDataTableTypeException e) {

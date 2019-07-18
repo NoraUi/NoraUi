@@ -49,8 +49,8 @@ public class HelloByeSteps extends Step {
     @Inject
     private DemoPage demoPage;
 
-    @Alors("Le portail DEMO est affiché.")
-    @Then("The DEMO portal is displayed.")
+    @Alors("Le portail DEMO est affiché")
+    @Then("The DEMO portal is displayed")
     public void checkDemoPortalPage() throws FailureException {
         if (!demoPage.checkPage()) {
             new Result.Failure<>("DEMO", Messages.getMessage(Messages.FAIL_MESSAGE_UNKNOWN_CREDENTIALS), true, this.demoPage.getCallBack());

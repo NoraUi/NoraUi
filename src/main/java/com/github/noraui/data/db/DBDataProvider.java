@@ -136,7 +136,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
             }
             while (rs.next() && rs.getRow() < line) {
             }
-            LOGGER.info("column: {}", column);
+            LOGGER.debug("column: {}", column);
             return rs.getString(column);
         } catch (final SQLException e) {
             LOGGER.error("error DBDataProvider.readValue({}, {})", column, line, e);

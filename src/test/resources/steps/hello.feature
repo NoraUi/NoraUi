@@ -19,7 +19,7 @@ Feature: hello (Function to validate the environment.)
     Then I wait 1 seconds
 
     Given 'DEMO_HOME' is opened
-    Then The DEMO portal is displayed.
+    Then The DEMO portal is displayed
 
     Given me a hello, please. Best Regards '<author>'
     Given me a hello, please. Best Regards '<author>'?
@@ -69,7 +69,6 @@ Feature: hello (Function to validate the environment.)
     And I check text 'demo.DemoPage-input_current_date' with '1'
 
     When I click by js on xpath './/*[@name=\'smilejs\' and @title=\'smilejs\']' from 'demo.DemoPage' page
-
     And I check message 'OK' on alert
     And I check text 'demo.DemoPage-input_current_date' with '2'
 
@@ -79,7 +78,6 @@ Feature: hello (Function to validate the environment.)
 
     When I click on 'demo.DemoPage-<element>'
     And I check message 'OK' on alert
-
     And I check text 'demo.DemoPage-input_current_date' with '4'
 
     Given test for 'Annulée'
