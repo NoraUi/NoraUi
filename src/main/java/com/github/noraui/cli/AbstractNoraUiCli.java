@@ -36,7 +36,9 @@ public abstract class AbstractNoraUiCli {
 
     /**
      * @param propertiesfilePath
+     *            path of properties file.	 
      * @param sb
+     *            is stringBuilder contain all data.	 
      */
     protected void updateFile(String propertiesfilePath, StringBuilder sb) {
         try (FileWriter fw = new FileWriter(propertiesfilePath)) {

@@ -14,7 +14,7 @@ import com.google.gson.GsonBuilder;
 
 /**
  * @deprecated since NoraUi 3.3.0, because DemosModel renamed to CommonModels.
- *             {@link com.github.noraui.application.model.CommonModels<T>} instead.
+ *             ({@link com.github.noraui.application.model.CommonModels}) instead.
  */
 @Deprecated
 public abstract class DemosModel<T> extends ArrayList<T> implements ModelList {

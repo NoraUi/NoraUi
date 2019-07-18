@@ -302,11 +302,11 @@ public class Context {
      * @param propertiesFileName
      *            is name of properties file.	 
      */
-    public synchronized void initializeEnv(String propertiesFile) {
+    public synchronized void initializeEnv(String propertiesFileName) {
         LOGGER.info("Context > initializeEnv()");
 
         iniFiles = new HashMap<>();
-        applicationProperties = initPropertiesFile(Thread.currentThread().getContextClassLoader(), propertiesFile);
+        applicationProperties = initPropertiesFile(Thread.currentThread().getContextClassLoader(), propertiesFileName);
 
         // init locale
         initializeLocale();
@@ -505,9 +505,6 @@ public class Context {
         getInstance().currentScenarioData = current;
     }
 
-    /**
-     * 
-     */
     public static void goToNextFeature() {
         getInstance().currentScenarioData = 0;
         getInstance().nbFailure = 0;
@@ -770,11 +767,13 @@ public class Context {
                 final String[] headers = Context.getDataInputProvider().readLine(0, false);
                 if (headers != null) {
                     final Constructor<Model> modelConstructor = DataUtils.getModelConstructor(model, headers);
-                    final Map<String, ModelList> fusionedData = DataUtils.fusionProcessor(model, modelConstructor);
+                    final Map<Integer, Map<String, ModelList>> fusionedData = DataUtils.fusionProcessor(model, modelConstructor);
                     int dataIndex = 0;
-                    for (final Entry<String, ModelList> e : fusionedData.entrySet()) {
-                        dataIndex++;
-                        indexData.add(new DataIndex(dataIndex, e.getValue().getIds()));
+                    for (final Entry<Integer, Map<String, ModelList>> e : fusionedData.entrySet()) {
+                        for (final Entry<String, ModelList> e2 : e.getValue().entrySet()) {
+                            dataIndex++;
+                            indexData.add(new DataIndex(dataIndex, e2.getValue().getIds()));
+                        }
                     }
                 } else {
                     LOGGER.error(Messages.getMessage(ScenarioInitiator.SCENARIO_INITIATOR_ERROR_EMPTY_FILE));

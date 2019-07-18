@@ -2,6 +2,7 @@
 Feature: hello (Function to validate the environment.) 
 
   Scenario Outline: Function to validate the environment.
+
     Given I check that 'author' '<author>' is not empty
     Given I check that 'city' '<city>' is not empty
 
@@ -36,6 +37,7 @@ Feature: hello (Function to validate the environment.)
     Given me a cat, please. Best Regards '<author>'.
 
     Given I create test.txt file in download directory
+
     When I use 'demo.DemoPage-file_input_text_field' element to upload 'test.txt' file
     And I click on 'demo.DemoPage-send'
     Then I check text 'demo.DemoPage-input_text_field' with 'test.txt'
@@ -50,6 +52,7 @@ Feature: hello (Function to validate the environment.)
     Then I update date 'demo.DemoPage-input_text_field' with a 'future' date '<date>'
 
     And I update radio list 'demo.DemoPage-rate' with 'day'
+
     Then I update checkboxes and check radio list 'DEMO_HOME-agree' with 'yes':
         |yes|true|
         |no|false|
@@ -66,6 +69,7 @@ Feature: hello (Function to validate the environment.)
     And I check text 'demo.DemoPage-input_current_date' with '1'
 
     When I click by js on xpath './/*[@name=\'smilejs\' and @title=\'smilejs\']' from 'demo.DemoPage' page
+
     And I check message 'OK' on alert
     And I check text 'demo.DemoPage-input_current_date' with '2'
 
@@ -75,6 +79,7 @@ Feature: hello (Function to validate the environment.)
 
     When I click on 'demo.DemoPage-<element>'
     And I check message 'OK' on alert
+
     And I check text 'demo.DemoPage-input_current_date' with '4'
 
     Given test for 'Annulée'

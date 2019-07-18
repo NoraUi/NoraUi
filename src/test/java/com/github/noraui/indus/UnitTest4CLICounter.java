@@ -10,19 +10,20 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.noraui.utils.UnitTest4CLIContext;
-
-import com.github.noraui.indus.MavenRunCounter;
+import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.utils.Context;
+import com.github.noraui.utils.UnitTest4CLIContext;
+import com.github.noraui.indus.MavenRunCounter;
 
 public class UnitTest4CLICounter {
 
-    public static void main(String[] args) {
-        List<String> manager = new ArrayList<>();
+    public static void main(String[] args) throws TechnicalException {
 
+        List<String> manager = new ArrayList<>();
+		
+		// You can add non running scenario here
         List<String> scenarioBlacklist = new ArrayList<>();
-        // you can add not run scenario here
-        // scenarioBlacklist.add("---  you can add not run scenario here ---");
+        // scenarioBlacklist.add("--- You can add non running scenario here ---");
 
         List<String> versionControlSystemsBlacklist = new ArrayList<>();
         versionControlSystemsBlacklist.add(".svn");

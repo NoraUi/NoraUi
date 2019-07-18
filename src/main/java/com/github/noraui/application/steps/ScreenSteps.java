@@ -79,13 +79,18 @@ public class ScreenSteps extends Step {
      * 
      * @param pageElement
      *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
+     * @param screenName
+     *            name of screenshot file.
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}). * list of 'expected' values condition and 'actual' values
      *            ({@link com.github.noraui.gherkin.GherkinStepCondition}).
      * @throws IOException
      *             if file or directory is wrong.
-     * @throws TechnicalException
      * @throws FailureException
+     *             if the scenario encounters a functional error
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} message (with screenshot, no exception)
      */
     @Conditioned
     @Et("Je sauvegarde une capture d'écran de {string} dans {string}(\\?)")
@@ -127,6 +132,7 @@ public class ScreenSteps extends Step {
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
      * @throws IOException
+     *             if file or directory is wrong.
      */
     @Conditioned
     @Et("Je stop la capture vidéo(\\?)")

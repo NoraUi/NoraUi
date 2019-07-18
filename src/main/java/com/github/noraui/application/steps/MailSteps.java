@@ -67,6 +67,10 @@ public class MailSteps extends Step {
      *            login of mail box
      * @param mailPassword
      *            password of mail box
+     * @param senderMail
+     *            sender of mail box
+     * @param subjectMail
+     *            subject of mail box                        
      * @param firstCssQuery
      *            the first matching element
      * @param conditions

@@ -40,6 +40,7 @@ public class Messages {
      */
     public static final String SCENARIO_ERROR_MESSAGE_TYPE_NOT_IMPLEMENTED = "SCENARIO_ERROR_MESSAGE_TYPE_NOT_IMPLEMENTED";
     public static final String SCENARIO_ERROR_MESSAGE_ILLEGAL_TAB_FORMAT = "SCENARIO_ERROR_MESSAGE_ILLEGAL_TAB_FORMAT";
+    public static final String SCENARIO_ERROR_MESSAGE_SCENARIO_OUTLINE_IS_MANDATORY = "SCENARIO_ERROR_MESSAGE_SCENARIO_OUTLINE_IS_MANDATORY";
 
     /**
      * CLI.
@@ -176,5 +177,4 @@ public class Messages {
             return 0;
         }
     }
-
 }

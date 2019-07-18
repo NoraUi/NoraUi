@@ -69,13 +69,16 @@ public class FileSteps extends Step {
      *            The name of the file removed.
      * @param conditions
      *            List of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
-     * @throws IOException
      */
     @Conditioned
     @Lorsque("Je supprime le fichier {string} dans repertoire des téléchargements(\\?)")
     @Given("I remove {string} file in download directory(\\?)")
     public void removefileInDownloadDirectory(String file, List<GherkinStepCondition> conditions) throws IOException {
-        FileUtils.forceDelete(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + file));
+        try {
+            FileUtils.forceDelete(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + file));
+        } catch (IOException e) {
+            LOGGER.warn("IOException in removefileInDownloadDirectory", e);
+        }
     }
 
     /**
@@ -89,8 +92,11 @@ public class FileSteps extends Step {
      *            The pattern to match
      * @param conditions
      *            List of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
-     * @throws TechnicalException
      * @throws FailureException
+     *             if the scenario encounters a functional error
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_FILE_NOT_MATCHES} message (with screenshot, no exception)
      */
     @Conditioned
     @Alors("Le fichier {string} encodé en {string} vérifie {string}(\\?)")
@@ -118,8 +124,11 @@ public class FileSteps extends Step {
      *            List of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
      * @throws InterruptedException
      *             Exception for the sleep
-     * @throws TechnicalException
      * @throws FailureException
+     *             if the scenario encounters a functional error
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_DOWNLOADED_FILE_NOT_FOUND} message (with screenshot, no exception)
      */
     @Conditioned
     @Lorsque("Je patiente que le fichier nommé {string} soit téléchargé avec un timeout de {int} seconde(s)(\\?)")
@@ -147,8 +156,11 @@ public class FileSteps extends Step {
      *            The name of the file to upload (from the default downloaded files directory)
      * @param conditions
      *            List of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
-     * @throws TechnicalException
      * @throws FailureException
+     *             if the scenario encounters a functional error
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UPLOADING_FILE} message (with screenshot, no exception)
      */
     @Conditioned
     @Lorsque("J'utilise l'élément {string} pour uploader le fichier {string}(\\?)")
