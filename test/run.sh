@@ -37,14 +37,6 @@ if diff -w test/expected_hello_columns.xml actual_hello_columns.xml
 fi
 echo "******** noraui-datas-webservices STARTED"
 
-# take noraui-datas-webservices from Maven Central and Start Web Services (REST)
-wget -O countries-app-sample-0.0.1.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=com.github.noraui&a=countries-app-sample&v=0.0.1-SNAPSHOT&p=jar'
-
-java -jar countries-app-sample-0.0.1.jar &
-PIDcountries=$!
-sleep 30
-
-git clone --bare https://github.com/NoraUi/countries-app-sample.git
 #
 #
 # start NoraUi part =>
@@ -60,11 +52,6 @@ fi
 # kill Web Services (REST)
 kill -9 $PID
 echo "******** noraui-datas-webservices STOPED"
-
-#
-# kill countries Application
-kill -9 $PIDcountries
-echo "******** countries-app-sample STOPED"
 
 #
 # read Maven console
