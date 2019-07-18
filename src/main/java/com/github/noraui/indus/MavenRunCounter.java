@@ -58,6 +58,8 @@ public class MavenRunCounter {
      * @return
      *         a list of {@link Counter}
      * @throws TechnicalException
+     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with message and with screenshot and with exception if functional error but no screenshot and no exception if technical error.
      */
     public List<Counter> count(List<String> versionControlSystemsBlacklist, List<String> blacklist, List<String> manager, File scenarioFolder) throws TechnicalException {
         final List<Counter> result = new ArrayList<>();
