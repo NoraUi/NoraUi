@@ -29,8 +29,8 @@ public class GithubapiSteps extends Step {
     @Inject
     private GithubapiPage githubapiPage;
 
-    @Alors("Le portail GITHUBAPI est affiché.")
-    @Then("The GITHUBAPI portal is displayed.")
+    @Alors("Le portail GITHUBAPI est affiché")
+    @Then("The GITHUBAPI portal is displayed")
     public void checkGithubapi() throws FailureException {
         if (!githubapiPage.checkPage()) {
             new Result.Failure<>("GITHUBAPI", Messages.getMessage(Messages.FAIL_MESSAGE_UNKNOWN_CREDENTIALS), true, this.githubapiPage.getCallBack());
