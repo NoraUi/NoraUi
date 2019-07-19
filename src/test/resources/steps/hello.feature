@@ -82,7 +82,7 @@ Feature: hello (Function to validate the environment.)
 
     Given test for 'Annulée'
 
-    Then If '' matches '', I do '2' times:
+    Then If '' matches '', I do 2 times:
         |key|step|expected|actual|
         |1|I wait 3 seconds?|1|1|
         |2|I wait 4 seconds?|1|2|
@@ -91,8 +91,8 @@ Feature: hello (Function to validate the environment.)
         |key|step|expected|actual|
         |1|I wait 3 seconds?|1|1|
         |2|I wait 4 seconds?|1|2|
-        |3|I update select list 'demo.DemoPage-input_select_field' with '<city>'.|||
-        |4|I save the value of 'demo.DemoPage-input_select_field' in 'myOutLoopKey' context key.|||
+        |3|I update select list 'demo.DemoPage-input_select_field' with '<city>'|||
+        |4|I save the value of 'demo.DemoPage-input_select_field' in 'myOutLoopKey' context key|||
 
     Then If '<author>' matches '.+', I do until 'demo.DemoPage-big_title' respects 'This is a demo for NORAUI.*' with 3 max tries:
         |key|step|expected|actual|

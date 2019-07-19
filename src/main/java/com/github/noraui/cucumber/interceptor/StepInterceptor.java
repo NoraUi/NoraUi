@@ -1,6 +1,6 @@
 /**
  * NoraUi is licensed under the license GNU AFFERO GENERAL PUBLIC LICENSE
- * 
+ *
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
@@ -50,8 +50,8 @@ public class StepInterceptor implements MethodInterceptor {
             if (stepAnnotation.annotationType().isAnnotationPresent(StepDefAnnotation.class)) {
                 Matcher matcher = Pattern.compile("value=(.*)\\)").matcher(stepAnnotation.toString());
                 if (matcher.find()) {
-                    LOGGER.info(
-                            "> " + stepAnnotation.annotationType().getSimpleName() + " " + String.format(matcher.group(1).replace("(.*)", "%s").replace("(\\?)", ""), invocation.getArguments()));
+                    LOGGER.info("---> " + stepAnnotation.annotationType().getSimpleName() + " "
+                            + String.format(matcher.group(1).replaceAll("\\{\\S+\\}", "{%s}").replace("(\\?)", ""), invocation.getArguments()));
                 }
             }
         }

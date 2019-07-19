@@ -54,7 +54,6 @@ public class CommonSteps extends Step {
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(CommonSteps.class);
 
-    
     /**
      * Waits a time in second.
      *
@@ -128,8 +127,8 @@ public class CommonSteps extends Step {
      * @param steps
      *            List of steps run in a loop.
      */
-    @Lorsque("Si {string} vérifie {string}, je fais {string} fois:")
-    @Then("If {string} matches {string}, I do {string} times:")
+    @Lorsque("Si {string} vérifie {string}, je fais {int} fois:")
+    @Then("If {string} matches {string}, I do {int} times:")
     public void loop(String actual, String expected, int times, List<GherkinConditionedLoopedStep> steps) {
         try {
             if (new GherkinStepCondition("loopKey", expected, actual).checkCondition()) {
@@ -657,12 +656,10 @@ public class CommonSteps extends Step {
         final PageElement pe = Page.getInstance(page).getPageElementByKey('-' + elementName);
         if ("text".equals(type)) {
             if (!checkMandatoryTextField(pe)) {
-                new Result.Failure<>(pe, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_EMPTY_MANDATORY_FIELD), pe, pe.getPage().getApplication()), true,
-                        pe.getPage().getCallBack());
+                new Result.Failure<>(pe, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_EMPTY_MANDATORY_FIELD), pe, pe.getPage().getApplication()), true, pe.getPage().getCallBack());
             }
         } else {
-            new Result.Failure<>(type, Messages.format(Messages.getMessage(Messages.SCENARIO_ERROR_MESSAGE_TYPE_NOT_IMPLEMENTED), type, "checkMandatoryField"), false,
-                    pe.getPage().getCallBack());
+            new Result.Failure<>(type, Messages.format(Messages.getMessage(Messages.SCENARIO_ERROR_MESSAGE_TYPE_NOT_IMPLEMENTED), type, "checkMandatoryField"), false, pe.getPage().getCallBack());
         }
 
     }
@@ -887,10 +884,10 @@ public class CommonSteps extends Step {
     @Conditioned
     @Lorsque("Je mets à jour la case à cocher {string} avec {string}(\\?)")
     @Then("I update checkbox {string} with {string}(\\?)")
-    public void selectCheckbox(String pageElement, boolean value, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+    public void selectCheckbox(String pageElement, String value, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        selectCheckbox(Page.getInstance(page).getPageElementByKey('-' + elementName), value);
+        selectCheckbox(Page.getInstance(page).getPageElementByKey('-' + elementName), Boolean.parseBoolean(value));
     }
 
     /**

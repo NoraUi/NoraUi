@@ -52,7 +52,7 @@ public class ShellCommand {
             }
             return p.waitFor();
         } catch (IOException | InterruptedException e) {
-            LOGGER.error("error ShellCommand.run()", e);
+            LOGGER.error("ShellCommand.run():", e);
             throw new TechnicalException(e.getMessage(), e);
         }
     }

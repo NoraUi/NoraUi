@@ -12,7 +12,6 @@ import static com.github.noraui.utils.Constants.VALUE;
 
 import java.io.File;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,6 +24,7 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -48,6 +48,7 @@ import com.github.noraui.gherkin.GherkinConditionedLoopedStep;
 import com.github.noraui.gherkin.GherkinStepCondition;
 import com.github.noraui.service.CryptoService;
 import com.github.noraui.service.UserNameService;
+import com.github.noraui.service.impl.CucumberExpressionServiceImpl;
 import com.github.noraui.utils.Constants;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
@@ -127,8 +128,8 @@ public abstract class Step implements IStep {
         displayMessageAtTheBeginningOfMethod("clickOnByJs: %s in %s", toClick.toString(), toClick.getPage().getApplication());
         try {
             Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(toClick, args)));
-            ((JavascriptExecutor) getDriver())
-                    .executeScript("document.evaluate(\"" + Utilities.getLocatorValue(toClick, args) + "\", document, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click();");
+            ((JavascriptExecutor) getDriver()).executeScript("document.evaluate(\"" + StringEscapeUtils.escapeJava(Utilities.getLocatorValue(toClick, args))
+                    + "\", document, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click();");
         } catch (final Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK), toClick, toClick.getPage().getApplication()), true,
                     toClick.getPage().getCallBack());
@@ -892,10 +893,13 @@ public abstract class Step implements IStep {
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      */
     protected void runAllStepsInLoop(List<GherkinConditionedLoopedStep> loopedSteps) throws TechnicalException {
+        CucumberExpressionServiceImpl cesi = new CucumberExpressionServiceImpl();
         for (final GherkinConditionedLoopedStep loopedStep : loopedSteps) {
             final List<GherkinStepCondition> stepConditions = new ArrayList<>();
             final String[] expecteds = loopedStep.getExpected().split(";");
             final String[] actuals = loopedStep.getActual().split(";");
+
+            // For step conditions, if the number of actuals and expecteds, it is an error
             if (actuals.length != expecteds.length) {
                 throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_EXPECTED_ACTUAL_SIZE_DIFFERENT));
             }
@@ -903,30 +907,25 @@ public abstract class Step implements IStep {
                 stepConditions.add(new GherkinStepCondition(loopedStep.getKey(), expecteds[i], actuals[i]));
             }
             boolean found = false;
+
+            // We look in all existing Cucumber methods the right one to run
             for (final Entry<String, Method> elem : Context.getCucumberMethods().entrySet()) {
                 final Matcher matcher = Pattern.compile("value=(.*)\\)").matcher(elem.getKey());
                 if (matcher.find()) {
-                    final Matcher matcher2 = Pattern.compile(matcher.group(1)).matcher(loopedStep.getStep());
-                    if (matcher2.find()) {
+                    List<?> params = cesi.match(matcher.group(1), loopedStep.getStep());
+                    if (params != null) {
                         Object[] tab;
                         if (elem.getValue().isAnnotationPresent(Conditioned.class)) {
-                            tab = new Object[matcher2.groupCount() + 1];
-                            tab[matcher2.groupCount()] = stepConditions;
+                            tab = new Object[params.size() + 1];
+                            int i = 0;
+                            for (Object o : params) {
+                                tab[i++] = o;
+                            }
+                            tab[params.size()] = stepConditions;
                         } else {
-                            tab = new Object[matcher2.groupCount()];
+                            tab = params.toArray();
                         }
 
-                        for (int i = 0; i < matcher2.groupCount(); i++) {
-                            final Parameter param = elem.getValue().getParameters()[i];
-                            if (param.getType() == int.class) {
-                                final int ii = Integer.parseInt(matcher2.group(i + 1));
-                                tab[i] = ii;
-                            } else if (param.getType() == boolean.class) {
-                                tab[i] = Boolean.parseBoolean(matcher2.group(i + 1));
-                            } else {
-                                tab[i] = matcher2.group(i + 1);
-                            }
-                        }
                         try {
                             found = true;
                             elem.getValue().invoke(NoraUiInjector.getNoraUiInjectorSource().getInstance(elem.getValue().getDeclaringClass()), tab);
@@ -991,6 +990,5 @@ public abstract class Step implements IStep {
         }
 
     }
-    
 
 }
