@@ -114,7 +114,7 @@ public class Context {
     public static final String BAKERY_KEY = "bakery";
     public static final String BAKERY_HOME = "BAKERY_HOME";
     public static final String BAKERY_ADMIN = "BAKERY_ADMIN";
-    public static final String BAKERY_REF= "BAKERY_REF";
+    public static final String BAKERY_REF = "BAKERY_REF";
 
     /**
      * GITHUBAPI
@@ -300,7 +300,7 @@ public class Context {
 
     /**
      * @param propertiesFileName
-     *            is name of properties file.	 
+     *            is name of properties file.
      */
     public synchronized void initializeEnv(String propertiesFileName) {
         LOGGER.info("Context > initializeEnv()");
@@ -399,7 +399,7 @@ public class Context {
         // read and init all cucumber methods
         cucumberMethods = getAllCucumberMethods(clazz);
     }
-    
+
     /**
      * Clear context
      */
@@ -605,7 +605,7 @@ public class Context {
      * @param key
      *            of property
      * @param propertyFile
-     *            object representing the properties file. 
+     *            object representing the properties file.
      * @return String property
      */
     public static String getProperty(String key, Properties propertyFile) {
@@ -730,18 +730,19 @@ public class Context {
 
     /**
      * Get url name in a string by page key.
-     * 
+     *
      * @param pageKey
      *            is key of page
      * @return url in a string
      */
     public static String getUrlByPagekey(String pageKey) {
-        return getInstance().applications.values().stream().map(Application::getUrlPages).map(urlPages -> urlPages.get(pageKey)).filter(Objects::nonNull).findFirst().orElse(null);
+        return getInstance().applications.values().stream().map(Application::getUrlPages).map(urlPages -> urlPages.get(pageKey)).filter(Objects::nonNull)
+                .map(urlPage -> Auth.usingAuthentication(urlPage)).findFirst().orElse(null);
     }
 
     /**
      * Get application name in a string by page key.
-     * 
+     *
      * @param pageKey
      *            is key of page
      * @return application name in a string
@@ -752,7 +753,7 @@ public class Context {
 
     /**
      * init all Data index (by model).
-     * 
+     *
      * @param scenarioName
      *            name of scenario.
      * @throws TechnicalException
@@ -866,7 +867,7 @@ public class Context {
             LOGGER.error(Messages.getMessage(CONTEXT_ERROR_WHEN_PLUGING_DATA_PROVIDER), e);
         }
     }
-    
+
     /**
      * Gets all Cucumber methods.
      *
@@ -893,7 +894,7 @@ public class Context {
         }
         return result;
     }
-    
+
     private static Set<Class<?>> getClasses(String[] packagesName) {
         final Set<Class<?>> result = new HashSet<>();
         for (final String packageName : packagesName) {
