@@ -85,24 +85,24 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
 
     Alors Si '' vérifie '', je fais 2 fois:
         |key|step|expected|actual|
-        |1|Je patiente '3' secondes?|1|1|
-        |2|Je patiente '4' secondes?|1|2|
+        |1|Je patiente 3 secondes?|1|1|
+        |2|Je patiente 4 secondes?|1|2|
 
     Alors Si '' vérifie '', je fais jusqu'à 'myOutLoopKey' respecte 'Rennes' avec 4 essais maxi: 
         |key|step|expected|actual|
-        |1|Je patiente '3' secondes?|1|1|
-        |2|Je patiente '4' secondes?|1|2|
+        |1|Je patiente 3 secondes?|1|1|
+        |2|Je patiente 4 secondes?|1|2|
         |3|Je mets à jour la liste déroulante 'demo.DemoPage-input_select_field' avec '<city>'|||
         |4|Je sauvegarde la valeur de 'demo.DemoPage-input_select_field' dans la clé 'myOutLoopKey' du contexte|||
 
     Lorsque Si '<author>' vérifie '.+', je fais jusqu'à 'demo.DemoPage-big_title' respecte 'This is a demo for NORAUI.*' avec 3 essais maxi:
         |key|step|expected|actual|
-        |1|I wait 1 second?|||
+        |1|I wait 1 second|||
         |2|I wait 1 second?|(Rennes\|Paris\|New York)|<city>|
 
     Lorsque Si '<author>' vérifie '.+', Tant que 'demo.DemoPage-big_title' respecte 'This is a demo for NORAUI.*' je fais avec 3 essais maxi:
         |key|step|expected|actual|
-        |1|I wait 1 second?|||
+        |1|I wait 1 second|||
         |2|I wait 1 second?|(Rennes\|Paris\|New York)|<city>|        
 
     Et Je sauvegarde la valeur de 'demo.DemoPage-big_title' dans la colonne 'title' du fournisseur de données en sortie

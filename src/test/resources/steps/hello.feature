@@ -96,12 +96,12 @@ Feature: hello (Function to validate the environment.)
 
     Then If '<author>' matches '.+', I do until 'demo.DemoPage-big_title' respects 'This is a demo for NORAUI.*' with 3 max tries:
         |key|step|expected|actual|
-        |1|I wait 1 second?|||
+        |1|I wait 1 second|||
         |2|I wait 1 second?|(Rennes\|Paris\|New York)|<city>|
 
     Then If '<author>' matches '.+', While 'demo.DemoPage-big_title' respects 'This is a demo for NORAUI.*' I do with 3 max tries:    
         |key|step|expected|actual|
-        |1|I wait 1 second?|||
+        |1|I wait 1 second|||
         |2|I wait 1 second?|(Rennes\|Paris\|New York)|<city>|
 
     And I save the value of 'demo.DemoPage-big_title' in 'title' column of data output provider
