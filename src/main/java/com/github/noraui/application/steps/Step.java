@@ -47,8 +47,8 @@ import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.GherkinConditionedLoopedStep;
 import com.github.noraui.gherkin.GherkinStepCondition;
 import com.github.noraui.service.CryptoService;
+import com.github.noraui.service.CucumberExpressionService;
 import com.github.noraui.service.UserNameService;
-import com.github.noraui.service.impl.CucumberExpressionServiceImpl;
 import com.github.noraui.utils.Constants;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
@@ -68,6 +68,9 @@ public abstract class Step implements IStep {
 
     @Inject
     protected CryptoService cryptoService;
+    
+    @Inject
+    protected CucumberExpressionService cucumberExpressionService;
 
     protected Step() {
     }
@@ -893,7 +896,6 @@ public abstract class Step implements IStep {
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      */
     protected void runAllStepsInLoop(List<GherkinConditionedLoopedStep> loopedSteps) throws TechnicalException {
-        CucumberExpressionServiceImpl cesi = new CucumberExpressionServiceImpl();
         for (final GherkinConditionedLoopedStep loopedStep : loopedSteps) {
             final List<GherkinStepCondition> stepConditions = new ArrayList<>();
             final String[] expecteds = loopedStep.getExpected().split(";");
@@ -912,7 +914,7 @@ public abstract class Step implements IStep {
             for (final Entry<String, Method> elem : Context.getCucumberMethods().entrySet()) {
                 final Matcher matcher = Pattern.compile("value=(.*)\\)").matcher(elem.getKey());
                 if (matcher.find()) {
-                    List<?> params = cesi.match(matcher.group(1), loopedStep.getStep());
+                    List<?> params = cucumberExpressionService.match(matcher.group(1), loopedStep.getStep());
                     if (params != null) {
                         Object[] tab;
                         if (elem.getValue().isAnnotationPresent(Conditioned.class)) {
