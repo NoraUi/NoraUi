@@ -113,13 +113,18 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
     public String[] readLine(int line, boolean readResult) {
         LOGGER.debug("readLine at line {}", line);
         try {
-            final String url = this.norauiWebServicesApi + scenarioName + LINE + line;
-            final Row row = new Gson().fromJson(httpService.get(url), DataModel.class).getRows().get(0);
-            final List<String> l = row.getColumns();
-            final String[] response = l.toArray(new String[l.size() + 1]);
-            response[l.size()] = String.valueOf(row.getErrorStepIndex());
-            return response;
-        } catch (TechnicalException | NumberFormatException | HttpServiceException e) {
+            String httpResponse = httpService.get(this.norauiWebServicesApi + scenarioName + LINE + line);
+            List<Row> rows = new Gson().fromJson(httpResponse, DataModel.class).getRows();
+            if (rows != null) {
+                List<String> l = rows.get(0).getColumns();
+                String[] response = l.toArray(new String[l.size() + 1]);
+                response[l.size()] = String.valueOf(rows.get(0).getErrorStepIndex());
+                return response;
+            }
+            return null;
+        } catch (TechnicalException | NumberFormatException |
+
+                HttpServiceException e) {
             LOGGER.error("readLine error at line {}", line, e);
             return null;
         }
