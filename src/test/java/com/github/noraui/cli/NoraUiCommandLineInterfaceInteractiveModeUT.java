@@ -290,7 +290,6 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append(System.lineSeparator());
         expectedCliAsk.append("Exit NoraUi Command Line Interface with success.").append(System.lineSeparator());
 
-        System.err.println(stdOutLog.getLog());
         Assert.assertTrue(stdOutLog.getLog().contains(expectedCliAsk));
     }
 

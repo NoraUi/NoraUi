@@ -124,7 +124,7 @@ public class MavenRunCounter {
     private void countNbCasFailuresAndSkipped(String scenarioName, Counter counter, int nbStep) {
         final Counter nb = countNbCasFailuresAndSkipped(scenarioName, counter.getNbScenario(), nbStep);
         counter.setNbStep(nbStep);
-        counter.setNbcas(nb.getNbCas());
+        counter.setNbCas(nb.getNbCas());
         counter.setRun(nbStep * nb.getNbCas() + nb.getNbCas());
         counter.setFailures(nb.getFailures());
         counter.setSkipped(nb.getSkipped());
@@ -274,7 +274,7 @@ public class MavenRunCounter {
             return nbCas;
         }
 
-        public void setNbcas(int nbCas) {
+        public void setNbCas(int nbCas) {
             this.nbCas = nbCas;
         }
 
@@ -333,7 +333,6 @@ public class MavenRunCounter {
         int failures = 0;
         int skipped = 0;
         int currentNbScenario = 1;
-
         for (int i = 1; i < Context.getDataInputProvider().getNbLines() + result.getNbScenario(); i++) {
             if (null == Context.getDataInputProvider().readLine(i, true)) {
                 currentNbScenario++;
@@ -351,7 +350,7 @@ public class MavenRunCounter {
             }
 
         }
-        result.setNbcas(indexData.size());
+        result.setNbCas(indexData.size());
         result.setFailures(failures);
         result.setSkipped(skipped);
     }
@@ -379,7 +378,7 @@ public class MavenRunCounter {
         } else {
             LOGGER.error(Messages.getMessage(ScenarioInitiator.SCENARIO_INITIATOR_ERROR_EMPTY_FILE));
         }
-        result.setNbcas(indexData.size());
+        result.setNbCas(indexData.size());
         result.setFailures(failures);
         result.setSkipped(skipped);
     }
