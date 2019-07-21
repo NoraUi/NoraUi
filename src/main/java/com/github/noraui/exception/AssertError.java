@@ -18,7 +18,7 @@ public class AssertError extends java.lang.AssertionError {
     }
 
     @Override
-    public Throwable fillInStackTrace() {
+    public synchronized Throwable fillInStackTrace() {
         return null;
     }
 }
