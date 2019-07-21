@@ -20,9 +20,9 @@ import com.github.noraui.utils.Messages;
 public class Counter {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    private static final Logger logger = LoggerFactory.getLogger(Counter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Counter.class);
 
     private static final String COUNTER_USAGE_WARNING_MESSAGE = "COUNTER_USAGE_WARNING_MESSAGE";
 
@@ -43,8 +43,6 @@ public class Counter {
             if (args[0].contains("Db") || args[0].contains("RestJson") || args[0].contains("Gherkin")) {
                 scenarioBlacklist.add("blog");
                 scenarioBlacklist.add("bonjour");
-                scenarioBlacklist.add("jouerAuJeuDesLogos");
-                scenarioBlacklist.add("playToLogoGame");
             }
             scenarioBlacklist.add("LoginLogout");
 
@@ -53,7 +51,7 @@ public class Counter {
             mavenRunCounter.print(counters, args[0]);
             Context.clear();
         } else {
-            logger.warn(Messages.getMessage(COUNTER_USAGE_WARNING_MESSAGE));
+            LOGGER.warn(Messages.getMessage(COUNTER_USAGE_WARNING_MESSAGE));
         }
 
     }

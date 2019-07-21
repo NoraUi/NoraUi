@@ -1,6 +1,6 @@
 /**
  * NoraUi is licensed under the license GNU AFFERO GENERAL PUBLIC LICENSE
- * 
+ *
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
@@ -123,8 +123,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("    8 => decrypt data").append(System.lineSeparator());
         expectedCliAsk.append("Enter application name:").append(System.lineSeparator());
         expectedCliAsk.append("Enter url:").append(System.lineSeparator());
-        expectedCliAsk.append("Add a new application named [google] with this url: [http://www.google.fr]")
-                .append(System.lineSeparator());
+        expectedCliAsk.append("Add a new application named [google] with this url: [http://www.google.fr]").append(System.lineSeparator());
         expectedCliAsk.append(System.lineSeparator());
         expectedCliAsk.append("NoraUi Command Line Interface finished with success.").append(System.lineSeparator());
         expectedCliAsk.append(System.lineSeparator());
@@ -171,9 +170,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("    1) google").append(System.lineSeparator());
         expectedCliAsk.append("Enter scenario name:").append(System.lineSeparator());
         expectedCliAsk.append("Enter description:").append(System.lineSeparator());
-        expectedCliAsk.append(
-                "Add a new scenario named [loginSample] on [google] application with this description: [description for login to google sample]")
-                .append(System.lineSeparator());
+        expectedCliAsk.append("Add a new scenario named [loginSample] on [google] application with this description: [description for login to google sample]").append(System.lineSeparator());
         expectedCliAsk.append("dataProvider.in.type is [EXCEL]").append(System.lineSeparator());
         expectedCliAsk.append("dataProvider.out.type is [EXCEL]").append(System.lineSeparator());
         expectedCliAsk.append(System.lineSeparator());
@@ -224,8 +221,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("Enter model name:").append(System.lineSeparator());
         expectedCliAsk.append("Enter field list:").append(System.lineSeparator());
         expectedCliAsk.append("Enter result list (optional):").append(System.lineSeparator());
-        expectedCliAsk.append("Add a new model named [foo] in application named [google]")
-                .append(System.lineSeparator());
+        expectedCliAsk.append("Add a new model named [foo] in application named [google]").append(System.lineSeparator());
         expectedCliAsk.append("field: [field1]").append(System.lineSeparator());
         expectedCliAsk.append("field: [field2]").append(System.lineSeparator());
         expectedCliAsk.append("result: [result1]").append(System.lineSeparator());
@@ -275,7 +271,6 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("Enter index application number:").append(System.lineSeparator());
         expectedCliAsk.append("    1) demo").append(System.lineSeparator());
         expectedCliAsk.append("    2) google").append(System.lineSeparator());
-        expectedCliAsk.append("    3) logogame").append(System.lineSeparator());
         expectedCliAsk.append("Enter index model number:").append(System.lineSeparator());
         expectedCliAsk.append("    1) foo").append(System.lineSeparator());
         expectedCliAsk.append("Remove model named [foo] in application named [google]").append(System.lineSeparator());
@@ -322,12 +317,10 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("Enter index scenario number:").append(System.lineSeparator());
         expectedCliAsk.append("    1) loginSample").append(System.lineSeparator());
         expectedCliAsk.append("    2) hello").append(System.lineSeparator());
-        expectedCliAsk.append("    3) blog").append(System.lineSeparator());
-        expectedCliAsk.append("    4) bonjour").append(System.lineSeparator());
-        expectedCliAsk.append("    5) playToLogoGame").append(System.lineSeparator());
-        expectedCliAsk.append("    6) jouerAuJeuDesLogos").append(System.lineSeparator());
-        expectedCliAsk.append("    7) LoginLogout").append(System.lineSeparator());
-        expectedCliAsk.append("    8) sampleRESTAPI").append(System.lineSeparator());
+        expectedCliAsk.append("    3) bonjour").append(System.lineSeparator());
+        expectedCliAsk.append("    4) blog").append(System.lineSeparator());
+        expectedCliAsk.append("    5) LoginLogout").append(System.lineSeparator());
+        expectedCliAsk.append("    6) sampleRESTAPI").append(System.lineSeparator());
         expectedCliAsk.append("Remove a scenario named [loginSample].").append(System.lineSeparator());
         expectedCliAsk.append("dataProvider.in.type is [EXCEL]").append(System.lineSeparator());
         expectedCliAsk.append("dataProvider.out.type is [EXCEL]").append(System.lineSeparator());

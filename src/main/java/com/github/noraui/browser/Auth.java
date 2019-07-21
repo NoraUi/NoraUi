@@ -20,9 +20,9 @@ import com.github.noraui.utils.Messages;
 public class Auth {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    private static final Logger logger = LoggerFactory.getLogger(Auth.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Auth.class);
 
     private static final String WRONG_URI_SYNTAX = "WRONG_URI_SYNTAX";
 
@@ -148,7 +148,7 @@ public class Auth {
                     final String cookieDomain = new URI(domainUrl).getHost().replaceAll("self.", "");
                     final String cookiePath = cookieStr.substring(indexPath + 6);
                     getInstance().authCookie = new Cookie.Builder(cookieName, cookieValue).domain(cookieDomain).path(cookiePath).build();
-                    logger.debug("New cookie created: {}={} on domain {}{}", cookieName, cookieValue, cookieDomain, cookiePath);
+                    LOGGER.debug("New cookie created: {}={} on domain {}{}", cookieName, cookieValue, cookieDomain, cookiePath);
                 }
             } catch (final URISyntaxException e) {
                 throw new TechnicalException(Messages.getMessage(WRONG_URI_SYNTAX), e);

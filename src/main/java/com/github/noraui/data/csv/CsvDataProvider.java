@@ -36,9 +36,9 @@ import com.opencsv.CSVWriter;
 public class CsvDataProvider extends CommonDataProvider implements DataInputProvider, DataOutputProvider {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    private static final Logger logger = LoggerFactory.getLogger(CsvDataProvider.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CsvDataProvider.class);
 
     public static final String CSV_TYPE = "csv";
     public static final char CSV_CHAR_SEPARATOR = ';';
@@ -51,7 +51,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
 
     public CsvDataProvider() {
         super();
-        logger.info(Messages.getMessage(CSV_DATA_PROVIDER_USED));
+        LOGGER.info(Messages.getMessage(CSV_DATA_PROVIDER_USED));
     }
 
     /**
@@ -63,7 +63,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
         try {
             initColumns();
         } catch (IOException | EmptyDataFileContentException | WrongDataFileFormatException e) {
-            logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION), e);
+            LOGGER.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION), e);
             System.exit(-1);
         }
     }
@@ -101,7 +101,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
      */
     @Override
     public String[] readLine(int line, boolean readResult) {
-        logger.debug("readLine at line {}", line);
+        LOGGER.debug("readLine at line {}", line);
         try {
             final CSVReader reader = openInputData();
             final List<String[]> a = reader.readAll();
@@ -119,7 +119,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
                 return ret;
             }
         } catch (final IOException e) {
-            logger.error("error CsvDataProvider.readLine()", e);
+            LOGGER.error("error CsvDataProvider.readLine()", e);
             return null;
         }
     }
@@ -148,7 +148,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
      */
     @Override
     protected void writeValue(String column, int line, String value) {
-        logger.debug("Writing: [{}] at line [{}] in column [{}]", value, line, column);
+        LOGGER.debug("Writing: [{}] at line [{}] in column [{}]", value, line, column);
         final int colIndex = columns.indexOf(column);
         CSVReader reader;
         try {
@@ -158,7 +158,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
             reader.close();
             writeValue(column, line, value, csvBody);
         } catch (final IOException e1) {
-            logger.error(Messages.getMessage(CSV_DATA_PROVIDER_WRITING_IN_CSV_ERROR_MESSAGE), column, line, value, e1);
+            LOGGER.error(Messages.getMessage(CSV_DATA_PROVIDER_WRITING_IN_CSV_ERROR_MESSAGE), column, line, value, e1);
         }
     }
 
@@ -167,7 +167,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
             writer.writeAll(csvBody);
             writer.flush();
         } catch (final IOException e) {
-            logger.error(Messages.getMessage(CSV_DATA_PROVIDER_WRITING_IN_CSV_ERROR_MESSAGE), column, line, value, e);
+            LOGGER.error(Messages.getMessage(CSV_DATA_PROVIDER_WRITING_IN_CSV_ERROR_MESSAGE), column, line, value, e);
         }
     }
 

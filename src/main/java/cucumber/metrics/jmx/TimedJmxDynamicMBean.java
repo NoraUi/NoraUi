@@ -31,7 +31,8 @@ public class TimedJmxDynamicMBean implements DynamicMBean {
     /**
      * Specific logger
      */
-    private static final Logger logger = LoggerFactory.getLogger(TimedJmxDynamicMBean.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TimedJmxDynamicMBean.class);
+    
     private final ConcurrentMap<String, Long> value = new ConcurrentHashMap<>();
 
     @Override
@@ -111,7 +112,7 @@ public class TimedJmxDynamicMBean implements DynamicMBean {
     }
 
     private void refresh() {
-        logger.info("Refresh Data");
+        LOGGER.info("Refresh Data");
     }
 
 }

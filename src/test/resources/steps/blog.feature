@@ -1,10 +1,11 @@
 @blog 
 Feature: blog (Function to validate the environment.) 
 
-	Scenario Outline: Function to validate the environment.
-    Given 'DEMO_HOME' is opened.
-    Then The DEMO portal is displayed.
-		
+  Scenario Outline: Function to validate the environment.
+    Given 'DEMO_HOME' is opened
+    Then The DEMO portal is displayed
+    Given me any article, please. '<DataJson>' of '<Blog>'.
+
     Given test for 'Cancel'
 		
   Examples:
@@ -15,10 +16,11 @@ Feature: blog (Function to validate the environment.)
     #END
 
   Scenario Outline: Function to validate the environment.
-    Given 'DEMO_HOME' is opened.
-    Then The DEMO portal is displayed.
-		
+    Given 'DEMO_HOME' is opened
+    Then The DEMO portal is displayed
     Given me any article, please. '<DataJson>' of '<Blog>'.
+
+    Given test for 'Annulée'
 		
   Examples:
     #DATA

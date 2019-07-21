@@ -47,7 +47,7 @@ See [change log](https://noraui.github.io/changelog.txt) for details
 </dependency>
 ```
 * Change all "noraui" import to "com.github.noraui"
-* Change all `private static Logger logger = Logger.getLogger` by `private static final Logger logger = LoggerFactory.getLogger`
+* Change all `private static Logger LOGGER = Logger.getLogger` by `private static final Logger LOGGER = LoggerFactory.getLogger`
 * Change all `import org.apache.log4j.Logger;` by `import org.slf4j.Logger;` and `import org.slf4j.LoggerFactory;`
 * Change com.github.noraui.browser.DriverFactory#setProperty(String key, Properties propertyFile) to com.github.noraui.browser.DriverFactory#getProperty(String key, Properties propertyFile)
 * Change com.github.noraui.browser.DriverFactory#setIntProperty(String key, Properties propertyFile) to com.github.noraui.browser.DriverFactory#getIntProperty(String key, Properties propertyFile)

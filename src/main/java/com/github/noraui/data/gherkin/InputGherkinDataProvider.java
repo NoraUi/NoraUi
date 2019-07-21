@@ -24,7 +24,6 @@ import com.github.noraui.utils.Messages;
  * This DataInputProvider can be used if you want to provide Gherkin example by
  * your own. Scenario initiator inserts will be skipped.
  *
- * @author nhallouin
  */
 public class InputGherkinDataProvider extends CommonDataProvider implements DataInputProvider {
 
@@ -142,4 +141,5 @@ public class InputGherkinDataProvider extends CommonDataProvider implements Data
 			resultColumnName = Messages.getMessage(ResultColumnNames.RESULT_COLUMN_NAME);
 		}
 	}
+	
 }

@@ -21,7 +21,7 @@ public class TimeModule extends AbstractMetricsModule {
     /**
      * Specific logger
      */
-    private static final Logger logger = LoggerFactory.getLogger(TimeModule.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(TimeModule.class.getName());
 
     public static final String TIME_ANNOTATION_ENABLE = "Time.annotation.enable";
     public static final String TIMES_ANNOTATION_ENABLE = "Times.annotation.enable";
@@ -31,7 +31,7 @@ public class TimeModule extends AbstractMetricsModule {
 
     @Override
     public void configure(Binder binder) {
-        logger.info("Cucumber Metrics Time configure");
+        LOGGER.info("Cucumber Metrics Time configure");
 
         // TimeInterceptor timeInterceptor = new TimeInterceptor();
         setAnnotation2Interceptors(binder, TIME_ANNOTATION_ENABLE, Time.class, timeInterceptor);

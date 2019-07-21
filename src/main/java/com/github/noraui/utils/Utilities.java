@@ -29,9 +29,9 @@ import com.github.noraui.browser.DriverFactory;
 public class Utilities {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    private static final Logger logger = LoggerFactory.getLogger(Utilities.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Utilities.class);
 
     /**
      * @param applicationKey
@@ -44,8 +44,8 @@ public class Utilities {
      */
     public static String getSelectorValue(String applicationKey, String code, Object... args) {
         String selector = "";
-        logger.debug("getLocator with this application key : {}", applicationKey);
-        logger.debug("getLocator with this locator file : {}", Context.iniFiles.get(applicationKey));
+        LOGGER.debug("getLocator with this application key : {}", applicationKey);
+        LOGGER.debug("getLocator with this locator file : {}", Context.iniFiles.get(applicationKey));
         final Ini ini = Context.iniFiles.get(applicationKey);
 
         final Map<String, String> section = ini.get(code);
@@ -80,8 +80,8 @@ public class Utilities {
      */
     public static By getLocator(String applicationKey, String code, Object... args) {
         By locator = null;
-        logger.debug("getLocator with this application key : {}", applicationKey);
-        logger.debug("getLocator with this locator file : {}", Context.iniFiles.get(applicationKey));
+        LOGGER.debug("getLocator with this application key : {}", applicationKey);
+        LOGGER.debug("getLocator with this locator file : {}", Context.iniFiles.get(applicationKey));
         final Ini ini = Context.iniFiles.get(applicationKey);
 
         final Map<String, String> section = ini.get(code);
@@ -134,9 +134,9 @@ public class Utilities {
      * @return a {@link org.openqa.selenium.By} object (xpath, id, link ...)
      */
     public static By getLocator(PageElement element, Object... args) {
-        logger.debug("getLocator [{}]", element.getPage().getApplication());
-        logger.debug("getLocator [{}]", element.getPage().getPageKey());
-        logger.debug("getLocator [{}]", element.getKey());
+        LOGGER.debug("getLocator [{}]", element.getPage().getApplication());
+        LOGGER.debug("getLocator [{}]", element.getPage().getPageKey());
+        LOGGER.debug("getLocator [{}]", element.getKey());
         return getLocator(element.getPage().getApplication(), element.getPage().getPageKey() + element.getKey(), args);
     }
 
@@ -324,7 +324,7 @@ public class Utilities {
 
         public static SystemArchitecture getCurrentSystemArchitecture() {
             final String currentArchitecture = System.getProperties().getProperty("os.arch");
-            logger.info("os.arch: {}", currentArchitecture);
+            LOGGER.info("os.arch: {}", currentArchitecture);
             return getSystemArchitecture(currentArchitecture);
         }
 

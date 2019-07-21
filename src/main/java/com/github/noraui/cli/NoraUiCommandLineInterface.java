@@ -42,9 +42,9 @@ import com.google.gson.Gson;
 public class NoraUiCommandLineInterface {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    private static final Logger logger = LoggerFactory.getLogger(NoraUiCommandLineInterface.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NoraUiCommandLineInterface.class);
     private static final String JSON = ".json";
     private static final String CLI_TAB = "    {}) {}";
 
@@ -140,7 +140,7 @@ public class NoraUiCommandLineInterface {
                 } else {
                     for (Map.Entry<String, String> f : features.entrySet()) {
                         if (f.getKey().equals(String.valueOf(featureCode))) {
-                            logger.info("Do you want {}? Y", f.getValue().toLowerCase());
+                            LOGGER.info("Do you want {}? Y", f.getValue().toLowerCase());
                             if ("y".equalsIgnoreCase(input.nextLine())) {
                                 featureCode = Integer.parseInt(f.getKey());
                                 break;
@@ -150,12 +150,12 @@ public class NoraUiCommandLineInterface {
                 }
 
                 if (featureCode == -1 && !interactiveMode) {
-                    logger.error("When interactiveMode is false, you need use -f");
+                    LOGGER.error("When interactiveMode is false, you need use -f");
                 } else {
                     if (featureCode == -1) {
-                        logger.info("What do you want ?");
+                        LOGGER.info("What do you want ?");
                         for (Map.Entry<String, String> f : features.entrySet()) {
-                            logger.info("    {} => {}", f.getKey(), f.getValue());
+                            LOGGER.info("    {} => {}", f.getKey(), f.getValue());
                         }
                         featureCode = input.nextInt();
                         input.nextLine();
@@ -183,16 +183,16 @@ public class NoraUiCommandLineInterface {
      * 
      */
     private void displaySplashScreen() {
-        logger.info("");
-        logger.info("  ███╗   ██╗ ██████╗ ██████╗  █████╗ ██╗   ██╗██╗      ██████╗██╗     ██╗ ");
-        logger.info("  ████╗  ██║██╔═══██╗██╔══██╗██╔══██╗██║   ██║██║     ██╔════╝██║     ██║ ");
-        logger.info("  ██╔██╗ ██║██║   ██║██████╔╝███████║██║   ██║██║     ██║     ██║     ██║ ");
-        logger.info("  ██║╚██╗██║██║   ██║██╔══██╗██╔══██║██║   ██║██║     ██║     ██║     ██║ ");
-        logger.info("  ██║ ╚████║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║     ╚██████╗███████╗██║ ");
-        logger.info("  ╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝      ╚═════╝╚══════╝╚═╝ ");
-        logger.info("");
-        logger.info("  NoraUi Command Line Interface =>");
-        logger.info("");
+        LOGGER.info("");
+        LOGGER.info("  ███╗   ██╗ ██████╗ ██████╗  █████╗ ██╗   ██╗██╗      ██████╗██╗     ██╗ ");
+        LOGGER.info("  ████╗  ██║██╔═══██╗██╔══██╗██╔══██╗██║   ██║██║     ██╔════╝██║     ██║ ");
+        LOGGER.info("  ██╔██╗ ██║██║   ██║██████╔╝███████║██║   ██║██║     ██║     ██║     ██║ ");
+        LOGGER.info("  ██║╚██╗██║██║   ██║██╔══██╗██╔══██║██║   ██║██║     ██║     ██║     ██║ ");
+        LOGGER.info("  ██║ ╚████║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║     ╚██████╗███████╗██║ ");
+        LOGGER.info("  ╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝      ╚═════╝╚══════╝╚═╝ ");
+        LOGGER.info("");
+        LOGGER.info("  NoraUi Command Line Interface =>");
+        LOGGER.info("");
     }
 
     /**
@@ -220,22 +220,22 @@ public class NoraUiCommandLineInterface {
      */
     private void displayHelp(String[] args, Map<String, String> features) {
         if (args.length == 1 && (args[0].equals("-h") || args[0].equals("-help"))) {
-            logger.info("-h: Display this help");
-            logger.info("--verbose: Add debug informations in console.");
-            logger.info("--update: Use NoraUi CLI files for update your robot.");
-            logger.info("-f: features");
+            LOGGER.info("-h: Display this help");
+            LOGGER.info("--verbose: Add debug informations in console.");
+            LOGGER.info("--update: Use NoraUi CLI files for update your robot.");
+            LOGGER.info("-f: features");
             for (Map.Entry<String, String> f : features.entrySet()) {
-                logger.info("    {} => {}", f.getKey(), f.getValue());
+                LOGGER.info("    {} => {}", f.getKey(), f.getValue());
             }
-            logger.info("-s: Scenario Name");
-            logger.info("-u: Url");
-            logger.info("-d: Description");
-            logger.info("-k: Crypto key");
-            logger.info("-a: Application Name");
-            logger.info("-m: Model Name");
-            logger.info("-fi: Field list of model");
-            logger.info("-re: Result list of model");
-            logger.info(
+            LOGGER.info("-s: Scenario Name");
+            LOGGER.info("-u: Url");
+            LOGGER.info("-d: Description");
+            LOGGER.info("-k: Crypto key");
+            LOGGER.info("-a: Application Name");
+            LOGGER.info("-m: Model Name");
+            LOGGER.info("-fi: Field list of model");
+            LOGGER.info("-re: Result list of model");
+            LOGGER.info(
                     "-interactiveMode: (boolean) When the NoraUi CLI goal is executed in interactive mode, it will prompt the user for all the previously listed parameters. When interactiveMode is false, the NoraUi CLI goal will use the values passed in from the command line.");
         }
     }
@@ -250,7 +250,7 @@ public class NoraUiCommandLineInterface {
         for (String arg : args) {
             cmd.append(" ").append(arg);
         }
-        logger.info(cmd.toString());
+        LOGGER.info(cmd.toString());
     }
 
     /**
@@ -286,13 +286,13 @@ public class NoraUiCommandLineInterface {
         if (applications != null) {
             for (String app : applications) {
                 if (verbose) {
-                    logger.info("CLI File [{}] found.", app);
+                    LOGGER.info("Application CLI File [{}] found.", app);
                 }
                 try (BufferedReader bufferedReader = new BufferedReader(new FileReader(CLI_FILES_DIR + File.separator + CLI_APPLICATIONS_FILES_DIR + File.separator + app))) {
                     NoraUiApplicationFile noraUiApplicationFile = gson.fromJson(bufferedReader, NoraUiApplicationFile.class);
                     noraUiApplicationFiles.add(noraUiApplicationFile);
                 } catch (IOException e) {
-                    logger.error("noraUiApplicationFiles IOException: {}", e.getMessage(), e);
+                    LOGGER.error("noraUiApplicationFiles IOException: {}", e.getMessage(), e);
                 }
             }
         }
@@ -312,13 +312,13 @@ public class NoraUiCommandLineInterface {
         if (scenarios != null) {
             for (String s : scenarios) {
                 if (verbose) {
-                    logger.info("CLI File [{}] found.", s);
+                    LOGGER.info("Scenario CLI File [{}] found.", s);
                 }
                 try (BufferedReader bufferedReader = new BufferedReader(new FileReader(CLI_FILES_DIR + File.separator + CLI_SCENARIOS_FILES_DIR + File.separator + s))) {
                     NoraUiScenarioFile noraUiScenarioFile = gson.fromJson(bufferedReader, NoraUiScenarioFile.class);
                     noraUiScenarioFiles.add(noraUiScenarioFile);
                 } catch (IOException e) {
-                    logger.error("noraUiScenarioFiles IOException: {}", e.getMessage(), e);
+                    LOGGER.error("noraUiScenarioFiles IOException: {}", e.getMessage(), e);
                 }
             }
         }
@@ -347,7 +347,7 @@ public class NoraUiCommandLineInterface {
     private void writeApplicationsNoraUiCliFiles(NoraUiCliFile noraUiCliFile, boolean verbose, Gson gson) {
         for (NoraUiApplicationFile noraUiApplicationFile : noraUiCliFile.getApplicationFiles()) {
             if (new File(CLI_FILES_DIR + File.separator + CLI_APPLICATIONS_FILES_DIR + File.separator + noraUiApplicationFile.getName() + JSON).exists() && !noraUiApplicationFile.getStatus()) {
-                deleteFileApplicationsNoraUiCliFiles(verbose, gson, noraUiApplicationFile);
+                deleteFileApplicationsNoraUiCliFiles(verbose, noraUiApplicationFile);
             }
             if (noraUiApplicationFile.getStatus()) {
                 createFileApplicationsNoraUiCliFiles(verbose, gson, noraUiApplicationFile);
@@ -359,19 +359,17 @@ public class NoraUiCommandLineInterface {
     /**
      * @param verbose
      *            boolean to activate verbose mode (show more traces).
-     * @param gson
-     *            is singleton json tool.
      * @param noraUiApplicationFile
      *            Object contain a application file from CLI Files.
      */
-    private void deleteFileApplicationsNoraUiCliFiles(boolean verbose, Gson gson, NoraUiApplicationFile noraUiApplicationFile) {
+    private void deleteFileApplicationsNoraUiCliFiles(boolean verbose, NoraUiApplicationFile noraUiApplicationFile) {
         try {
             FileUtils.forceDelete(new File(CLI_FILES_DIR + File.separator + CLI_APPLICATIONS_FILES_DIR + File.separator + noraUiApplicationFile.getName() + JSON));
             if (verbose) {
-                logger.info("File [{}.json] removed with success.", noraUiApplicationFile.getName());
+                LOGGER.info("Application File [{}.json] removed with success.", noraUiApplicationFile.getName());
             }
         } catch (Exception e) {
-            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+            LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 
@@ -390,15 +388,15 @@ public class NoraUiCommandLineInterface {
             if (!applicationFile.exists()) {
                 Files.asCharSink(applicationFile, Charsets.UTF_8).write(gson.toJson(noraUiApplicationFile));
                 if (verbose) {
-                    logger.info("File [{}.json] created with success.", noraUiApplicationFile.getName());
+                    LOGGER.info("Applications File [{}.json] created with success.", noraUiApplicationFile.getName());
                 }
             } else {
                 if (verbose) {
-                    logger.info("File [{}.json] already exist.", noraUiApplicationFile.getName());
+                    LOGGER.info("Applications File [{}.json] already exist.", noraUiApplicationFile.getName());
                 }
             }
         } catch (Exception e) {
-            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+            LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 
@@ -415,7 +413,7 @@ public class NoraUiCommandLineInterface {
             bw.flush();
             bw.close();
         } catch (IOException e) {
-            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+            LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 
@@ -430,7 +428,7 @@ public class NoraUiCommandLineInterface {
     private void writeScenariosNoraUiCliFiles(NoraUiCliFile noraUiCliFile, boolean verbose, Gson gson) {
         for (NoraUiScenarioFile noraUiScenarioFile : noraUiCliFile.getScenarioFiles()) {
             if (new File(CLI_FILES_DIR + File.separator + CLI_SCENARIOS_FILES_DIR + File.separator + noraUiScenarioFile.getName() + JSON).exists() && !noraUiScenarioFile.getStatus()) {
-                deleteFileScenarioNoraUiCliFiles(verbose, gson, noraUiScenarioFile);
+                deleteFileScenarioNoraUiCliFiles(verbose, noraUiScenarioFile);
             }
             if (noraUiScenarioFile.getStatus()) {
                 createFileScenarioNoraUiCliFiles(verbose, gson, noraUiScenarioFile);
@@ -442,19 +440,17 @@ public class NoraUiCommandLineInterface {
     /**
      * @param verbose
      *            boolean to activate verbose mode (show more traces).
-     * @param gson
-     *            is singleton json tool.
      * @param noraUiScenarioFile
      *            Object contain a scenario file from CLI Files.
      */
-    private void deleteFileScenarioNoraUiCliFiles(boolean verbose, Gson gson, NoraUiScenarioFile noraUiScenarioFile) {
+    private void deleteFileScenarioNoraUiCliFiles(boolean verbose, NoraUiScenarioFile noraUiScenarioFile) {
         try {
             FileUtils.forceDelete(new File(CLI_FILES_DIR + File.separator + CLI_SCENARIOS_FILES_DIR + File.separator + noraUiScenarioFile.getName() + JSON));
             if (verbose) {
-                logger.info("File [{}.json] removed with success.", noraUiScenarioFile.getName());
+                LOGGER.info("Scenario File [{}.json] removed with success.", noraUiScenarioFile.getName());
             }
         } catch (Exception e) {
-            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+            LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 
@@ -473,15 +469,15 @@ public class NoraUiCommandLineInterface {
             if (!applicationFile.exists()) {
                 Files.asCharSink(applicationFile, Charsets.UTF_8).write(gson.toJson(noraUiScenarioFile));
                 if (verbose) {
-                    logger.info("File [{}.json] created with success.", noraUiScenarioFile.getName());
+                    LOGGER.info("Scenario File [{}.json] created with success.", noraUiScenarioFile.getName());
                 }
             } else {
                 if (verbose) {
-                    logger.info("File [{}.json] already exist.", noraUiScenarioFile.getName());
+                    LOGGER.info("Scenario File [{}.json] already exist.", noraUiScenarioFile.getName());
                 }
             }
         } catch (Exception e) {
-            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+            LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 
@@ -498,7 +494,7 @@ public class NoraUiCommandLineInterface {
             bw.flush();
             bw.close();
         } catch (IOException e) {
-            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+            LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 
@@ -511,7 +507,7 @@ public class NoraUiCommandLineInterface {
      *            boolean to activate verbose mode (show more traces).
      */
     private void updateRobotFromNoraUiCliFiles(NoraUiCliFile noraUiCliFile, Class<?> robotContext, boolean verbose) {
-        logger.info("updateRobotFromNoraUiCliFiles");
+        LOGGER.info("updateRobotFromNoraUiCliFiles");
         for (NoraUiApplicationFile noraUiApplicationFile : noraUiCliFile.getApplicationFiles()) {
             addApplication(null, noraUiApplicationFile.getName(), noraUiApplicationFile.getUrl(), robotContext, verbose, null, false);
             for (NoraUiModel noraUiModel : noraUiApplicationFile.getModels()) {
@@ -612,17 +608,17 @@ public class NoraUiCommandLineInterface {
     private NoraUiCliFile addApplication(NoraUiCliFile noraUiCliFile, String applicationName, String url, Class<?> robotContext, boolean verbose, Scanner input, boolean interactiveMode) {
         if (interactiveMode) {
             if (applicationName == null || "".equals(applicationName)) {
-                logger.info("Enter application name:");
+                LOGGER.info("Enter application name:");
                 applicationName = input.nextLine();
             }
             if (url == null || "".equals(url)) {
-                logger.info("Enter url:");
+                LOGGER.info("Enter url:");
                 url = input.nextLine();
             }
             application.add(applicationName, url, robotContext, verbose);
         } else {
             if (applicationName == null || "".equals(applicationName) || url == null || "".equals(url)) {
-                logger.error("When you want to add an application with interactiveMode is false, you need use -a and -u");
+                LOGGER.error("When you want to add an application with interactiveMode is false, you need use -a and -u");
             } else {
                 application.add(applicationName, url, robotContext, verbose);
             }
@@ -681,23 +677,23 @@ public class NoraUiCommandLineInterface {
                 if (!appList.isEmpty()) {
                     applicationName = askApplicationNumber(input, appList);
                 } else {
-                    logger.info(CLI_YOU_MUST_CREATE_AN_APPLICATION_FIRST);
+                    LOGGER.info(CLI_YOU_MUST_CREATE_AN_APPLICATION_FIRST);
                 }
             }
             if (applicationName != null && !"".equals(applicationName)) {
                 if (scenarioName == null || "".equals(scenarioName)) {
-                    logger.info("Enter scenario name:");
+                    LOGGER.info("Enter scenario name:");
                     scenarioName = input.nextLine();
                 }
                 if (description == null || "".equals(description)) {
-                    logger.info("Enter description:");
+                    LOGGER.info("Enter description:");
                     description = input.nextLine();
                 }
                 scenario.add(scenarioName, description, applicationName, robotName, verbose);
             }
         } else {
             if (scenarioName == null || "".equals(scenarioName) || description == null || "".equals(description) || applicationName == null || "".equals(applicationName)) {
-                logger.error("When you want to add a scenario with interactiveMode is false, you need use -a, -s and -d");
+                LOGGER.error("When you want to add a scenario with interactiveMode is false, you need use -a, -s and -d");
             } else {
                 if (isApplicationFound(applicationName)) {
                     scenario.add(scenarioName, description, applicationName, robotName, verbose);
@@ -740,9 +736,9 @@ public class NoraUiCommandLineInterface {
      */
     private String askApplicationNumber(Scanner input, List<String> appList) {
         String applicationName;
-        logger.info("Enter index application number:");
+        LOGGER.info("Enter index application number:");
         for (int i = 0; i < appList.size(); i++) {
-            logger.info(CLI_TAB, i + 1, appList.get(i));
+            LOGGER.info(CLI_TAB, i + 1, appList.get(i));
         }
         int appCode = input.nextInt();
         input.nextLine();
@@ -759,9 +755,9 @@ public class NoraUiCommandLineInterface {
      */
     private String askScenarioNumber(Scanner input, List<String> scenarioList) {
         String scenarioName;
-        logger.info("Enter index scenario number:");
+        LOGGER.info("Enter index scenario number:");
         for (int i = 0; i < scenarioList.size(); i++) {
-            logger.info(CLI_TAB, i + 1, scenarioList.get(i));
+            LOGGER.info(CLI_TAB, i + 1, scenarioList.get(i));
         }
         int scenarioCode = input.nextInt();
         input.nextLine();
@@ -801,20 +797,20 @@ public class NoraUiCommandLineInterface {
                 if (!appList.isEmpty()) {
                     applicationName = askApplicationNumber(input, appList);
                 } else {
-                    logger.info(CLI_YOU_MUST_CREATE_AN_APPLICATION_FIRST);
+                    LOGGER.info(CLI_YOU_MUST_CREATE_AN_APPLICATION_FIRST);
                 }
             }
             if (applicationName != null && !"".equals(applicationName)) {
                 if (modelName == null || "".equals(modelName)) {
-                    logger.info("Enter model name:");
+                    LOGGER.info("Enter model name:");
                     modelName = input.nextLine();
                 }
                 if (fields == null || "".equals(fields)) {
-                    logger.info("Enter field list:");
+                    LOGGER.info("Enter field list:");
                     fields = input.nextLine();
                 }
                 if (results == null || "".equals(results)) {
-                    logger.info("Enter result list (optional):");
+                    LOGGER.info("Enter result list (optional):");
                     results = input.nextLine();
                     if ("".equals(results)) {
                         results = null;
@@ -824,7 +820,7 @@ public class NoraUiCommandLineInterface {
             }
         } else {
             if (applicationName == null || "".equals(applicationName) || modelName == null || "".equals(modelName) || fields == null || "".equals(fields)) {
-                logger.error("When you want to add a model with interactiveMode is false, you need use -a, -m, -fi and -re (optional)");
+                LOGGER.error("When you want to add a model with interactiveMode is false, you need use -a, -m, -fi and -re (optional)");
             } else {
                 if (isApplicationFound(applicationName)) {
                     model.add(applicationName, modelName, fields, results, robotContext, verbose);
@@ -874,10 +870,10 @@ public class NoraUiCommandLineInterface {
             if (appList.contains(applicationName)) {
                 applicationFinded = true;
             } else {
-                logger.info("Application [{}] do not exist. You must create an application named [{}] first.", applicationName, applicationName);
+                LOGGER.info("Application [{}] do not exist. You must create an application named [{}] first.", applicationName, applicationName);
             }
         } else {
-            logger.info(CLI_YOU_MUST_CREATE_AN_APPLICATION_FIRST);
+            LOGGER.info(CLI_YOU_MUST_CREATE_AN_APPLICATION_FIRST);
         }
         return applicationFinded;
     }
@@ -907,7 +903,7 @@ public class NoraUiCommandLineInterface {
                 if (!appList.isEmpty()) {
                     applicationName = askApplicationNumber(input, appList);
                 } else {
-                    logger.info("Your robot does not contain applications.");
+                    LOGGER.info("Your robot does not contain applications.");
                 }
             }
             if (applicationName != null && !"".equals(applicationName)) {
@@ -915,7 +911,7 @@ public class NoraUiCommandLineInterface {
             }
         } else {
             if (applicationName == null || "".equals(applicationName)) {
-                logger.error("When you want to remove an application with interactiveMode is false, you need use -a");
+                LOGGER.error("When you want to remove an application with interactiveMode is false, you need use -a");
             } else {
                 application.remove(applicationName, robotContext, verbose);
             }
@@ -967,7 +963,7 @@ public class NoraUiCommandLineInterface {
                     scenarioName = askScenarioNumber(input, scenarioList);
                     scenarioFinded = true;
                 } else {
-                    logger.info("Your robot does not contain scenarios.");
+                    LOGGER.info("Your robot does not contain scenarios.");
                 }
             }
             if (scenarioFinded) {
@@ -975,7 +971,7 @@ public class NoraUiCommandLineInterface {
             }
         } else {
             if (scenarioName == null || "".equals(scenarioName)) {
-                logger.error("When you want to remove a scenario with interactiveMode is false, you need use -s");
+                LOGGER.error("When you want to remove a scenario with interactiveMode is false, you need use -s");
             } else {
                 scenario.remove(scenarioName, robotName, robotCounter, verbose);
             }
@@ -1028,21 +1024,21 @@ public class NoraUiCommandLineInterface {
                     applicationName = askApplicationNumber(input, appList);
                     applicationFinded = true;
                 } else {
-                    logger.info("Your robot does not contain applications.");
+                    LOGGER.info("Your robot does not contain applications.");
                 }
 
                 List<String> modelList = model.getModels(applicationName, robotContext);
                 if (!modelList.isEmpty()) {
-                    logger.info("Enter index model number:");
+                    LOGGER.info("Enter index model number:");
                     for (int i = 0; i < modelList.size(); i++) {
-                        logger.info(CLI_TAB, i + 1, modelList.get(i));
+                        LOGGER.info(CLI_TAB, i + 1, modelList.get(i));
                     }
                     int modelCode = input.nextInt();
                     input.nextLine();
                     modelName = modelList.get(modelCode - 1);
                     modelFinded = true;
                 } else {
-                    logger.info("Your robot does not contain models.");
+                    LOGGER.info("Your robot does not contain models.");
                 }
             }
             if (applicationFinded && modelFinded) {
@@ -1050,7 +1046,7 @@ public class NoraUiCommandLineInterface {
             }
         } else {
             if (applicationName == null || "".equals(applicationName) || modelName == null || "".equals(modelName)) {
-                logger.error("When you want to remove a model with interactiveMode is false, you need use -a and -m");
+                LOGGER.error("When you want to remove a model with interactiveMode is false, you need use -a and -m");
             } else {
                 model.remove(applicationName, modelName, robotContext, verbose);
             }
@@ -1095,21 +1091,21 @@ public class NoraUiCommandLineInterface {
     private void encrypt(String cryptoKey, String data, Scanner input, boolean interactiveMode) throws TechnicalException {
         if (interactiveMode) {
             if (cryptoKey == null || "".equals(cryptoKey)) {
-                logger.info("Enter crypto key:");
+                LOGGER.info("Enter crypto key:");
                 cryptoKey = input.nextLine();
             }
             if (data == null || "".equals(data)) {
-                logger.info("Enter data:");
+                LOGGER.info("Enter data:");
                 data = input.nextLine();
             }
-            logger.info("Encrypt a data [{}] with this crypto key: [{}]", data, cryptoKey);
-            logger.info("Encrypted value is {}", cryptoService.encrypt(cryptoKey, data));
+            LOGGER.info("Encrypt a data [{}] with this crypto key: [{}]", data, cryptoKey);
+            LOGGER.info("Encrypted value is {}", cryptoService.encrypt(cryptoKey, data));
         } else {
             if (cryptoKey == null || "".equals(cryptoKey) || data == null || "".equals(data)) {
-                logger.error("When you want to encrypt data with interactiveMode is false, you need use -d and -k");
+                LOGGER.error("When you want to encrypt data with interactiveMode is false, you need use -d and -k");
             } else {
-                logger.info("Encrypt a data [{}] with this crypto key: [{}]", data, cryptoKey);
-                logger.info("Encrypted value is {}", cryptoService.encrypt(cryptoKey, data));
+                LOGGER.info("Encrypt a data [{}] with this crypto key: [{}]", data, cryptoKey);
+                LOGGER.info("Encrypted value is {}", cryptoService.encrypt(cryptoKey, data));
             }
         }
 
@@ -1135,21 +1131,21 @@ public class NoraUiCommandLineInterface {
     private void decrypt(String cryptoKey, String description, Scanner input, boolean interactiveMode) throws TechnicalException {
         if (interactiveMode) {
             if (cryptoKey == null || "".equals(cryptoKey)) {
-                logger.info("Enter crypto key:");
+                LOGGER.info("Enter crypto key:");
                 cryptoKey = input.nextLine();
             }
             if (description == null || "".equals(description)) {
-                logger.info("Enter data:");
+                LOGGER.info("Enter data:");
                 description = input.nextLine();
             }
-            logger.info("Decrypt a data [{}] with this crypto key: [{}]", description, cryptoKey);
-            logger.info("Decrypted value is {}", cryptoService.decrypt(cryptoKey, description));
+            LOGGER.info("Decrypt a data [{}] with this crypto key: [{}]", description, cryptoKey);
+            LOGGER.info("Decrypted value is {}", cryptoService.decrypt(cryptoKey, description));
         } else {
             if (cryptoKey == null || "".equals(cryptoKey) || description == null || "".equals(description)) {
-                logger.error("When you want to decrypt data with interactiveMode is false, you need use -d and -k");
+                LOGGER.error("When you want to decrypt data with interactiveMode is false, you need use -d and -k");
             } else {
-                logger.info("Decrypt a data [{}] with this crypto key: [{}]", description, cryptoKey);
-                logger.info("Decrypted value is {}", cryptoService.decrypt(cryptoKey, description));
+                LOGGER.info("Decrypt a data [{}] with this crypto key: [{}]", description, cryptoKey);
+                LOGGER.info("Decrypted value is {}", cryptoService.decrypt(cryptoKey, description));
             }
         }
     }
@@ -1158,18 +1154,18 @@ public class NoraUiCommandLineInterface {
      * Display CLI footer.
      */
     private void displayFooter() {
-        logger.info("");
-        logger.info("NoraUi Command Line Interface finished with success.");
-        logger.info("");
+        LOGGER.info("");
+        LOGGER.info("NoraUi Command Line Interface finished with success.");
+        LOGGER.info("");
     }
 
     /**
      * Display end CLI footer.
      */
     private void displayEndFooter() {
-        logger.info("");
-        logger.info("Exit NoraUi Command Line Interface with success.");
-        logger.info("");
+        LOGGER.info("");
+        LOGGER.info("Exit NoraUi Command Line Interface with success.");
+        LOGGER.info("");
     }
 
     // setter for Mock

@@ -12,15 +12,19 @@ import static com.github.noraui.utils.Constants.SCENARIO_FILE;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Properties;
+import java.util.Set;
 
 import org.ini4j.Ini;
 import org.ini4j.InvalidFileFormatException;
@@ -29,6 +33,8 @@ import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,7 +64,9 @@ import com.github.noraui.main.ScenarioInitiator;
 import com.github.noraui.model.Model;
 import com.github.noraui.model.ModelList;
 
+import cucumber.api.CucumberOptions;
 import cucumber.api.Scenario;
+import cucumber.runtime.java.StepDefAnnotation;
 
 /**
  * Cucumber context.
@@ -66,9 +74,9 @@ import cucumber.api.Scenario;
 public class Context {
 
     /**
-     * Specific logger.
+     * Specific LOGGER.
      */
-    private static final Logger logger = LoggerFactory.getLogger(Context.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Context.class);
 
     public static final String STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME = BrowserSteps.class.getCanonicalName();
     public static final String GO_TO_URL_METHOD_NAME = "goToUrl";
@@ -89,36 +97,24 @@ public class Context {
     /**
      * DEMO
      *
-     * @deprecated because use {@link #GEOBEER_KEY} instead.
+     * @deprecated because use {@link #BAKERY_KEY} instead.
      */
     @Deprecated
     public static final String DEMO_KEY = "demo";
 
     /**
-     * @deprecated because use {@link #GEOBEER_HOME} instead.
+     * @deprecated because use {@link #BAKERY_HOME} instead.
      */
     @Deprecated
     public static final String DEMO_HOME = "DEMO_HOME";
 
     /**
-     * LOGOGAME
-     *
-     * @deprecated because use {@link #GEOBEER_KEY} instead.
+     * BAKERY
      */
-    @Deprecated
-    public static final String LOGOGAME_KEY = "logogame";
-
-    /**
-     * @deprecated because use {@link #GEOBEER_HOME} instead.
-     */
-    @Deprecated
-    public static final String LOGOGAME_HOME = "LOGOGAME_HOME";
-
-    /**
-     * GEOBEER
-     */
-    public static final String GEOBEER_KEY = "geobeer";
-    public static final String GEOBEER_HOME = "GEOBEER_HOME";
+    public static final String BAKERY_KEY = "bakery";
+    public static final String BAKERY_HOME = "BAKERY_HOME";
+    public static final String BAKERY_ADMIN = "BAKERY_ADMIN";
+    public static final String BAKERY_REF = "BAKERY_REF";
 
     /**
      * GITHUBAPI
@@ -304,10 +300,10 @@ public class Context {
 
     /**
      * @param propertiesFileName
-     *            is name of properties file.	 
+     *            is name of properties file.
      */
     public synchronized void initializeEnv(String propertiesFileName) {
-        logger.info("Context > initializeEnv()");
+        LOGGER.info("Context > initializeEnv()");
 
         iniFiles = new HashMap<>();
         applicationProperties = initPropertiesFile(Thread.currentThread().getContextClassLoader(), propertiesFileName);
@@ -338,7 +334,7 @@ public class Context {
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      */
     public synchronized void initializeRobot(Class<?> clazz) throws TechnicalException {
-        logger.info("Context > initializeRobot() with {}", clazz.getCanonicalName());
+        LOGGER.info("Context > initializeRobot() with {}", clazz.getCanonicalName());
         // set browser: chrome,firefox or ie
         browser = getProperty(BROWSER_KEY, applicationProperties);
 
@@ -378,7 +374,7 @@ public class Context {
         // set crypto key
         cryptoKey = System.getProperty(CRYPTO_KEY);
         if (cryptoKey == null) {
-            logger.warn("{} not set. You can not use crypto feature.", CRYPTO_KEY);
+            LOGGER.warn("{} not set. You can not use crypto feature.", CRYPTO_KEY);
         }
 
         // stacktrace configuration
@@ -390,25 +386,18 @@ public class Context {
         // init driver callbacks
         exceptionCallbacks.put(Callbacks.RESTART_WEB_DRIVER, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, RESTART_WEB_DRIVER_METHOD_NAME);
         exceptionCallbacks.put(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_DEMO_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, DEMO_HOME);
-        exceptionCallbacks.put(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_LOGOGAME_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, LOGOGAME_HOME);
         exceptionCallbacks.put(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_GITHUBAPI_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, GITHUBAPI_HOME);
-        exceptionCallbacks.put(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_GEOBEER_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, GEOBEER_HOME);
+        exceptionCallbacks.put(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_BAKERY_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, BAKERY_HOME);
 
         // init applications
         final String indexPage = "/index.html";
         initApplicationDom(clazz.getClassLoader(), selectorsVersion, DEMO_KEY);
         applications.put(DEMO_KEY, new Application(DEMO_HOME, getProperty(DEMO_KEY, applicationProperties) + indexPage));
 
-        initApplicationDom(clazz.getClassLoader(), selectorsVersion, LOGOGAME_KEY);
-        applications.put(LOGOGAME_KEY, new Application(LOGOGAME_HOME, getProperty(LOGOGAME_KEY, applicationProperties) + indexPage));
-
-        initApplicationDom(clazz.getClassLoader(), selectorsVersion, GEOBEER_KEY);
-        applications.put(GEOBEER_KEY, new Application(GEOBEER_HOME, getProperty(GEOBEER_KEY, applicationProperties) + indexPage));
-
         applications.put(GITHUBAPI_KEY, new Application(GITHUBAPI_HOME, getProperty(GITHUBAPI_KEY, applicationProperties)));
 
         // read and init all cucumber methods
-        cucumberMethods = Step.getAllCucumberMethods(clazz);
+        cucumberMethods = getAllCucumberMethods(clazz);
     }
 
     /**
@@ -535,7 +524,7 @@ public class Context {
             try {
                 initDataId(scenarioName);
             } catch (final TechnicalException te) {
-                logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE), te);
+                LOGGER.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE), te);
             }
         }
         getInstance().scenarioName = scenarioName;
@@ -598,15 +587,15 @@ public class Context {
             final Properties props = new Properties();
             try {
                 if (in == null) {
-                    logger.error(Messages.getMessage(CONTEXT_PROPERTIES_FILE_NOT_FOUND), propertiesFileName);
+                    LOGGER.error(Messages.getMessage(CONTEXT_PROPERTIES_FILE_NOT_FOUND), propertiesFileName);
                 } else {
-                    logger.info("Reading properties file ({}).", propertiesFileName);
+                    LOGGER.info("Reading properties file ({}).", propertiesFileName);
                     props.load(in);
                 }
             } catch (final IOException e) {
-                logger.error("error Context.initPropertiesFile()", e);
+                LOGGER.error("error Context.initPropertiesFile()", e);
             }
-            logger.info("Loaded properties from {} = {}.", propertiesFileName, props);
+            LOGGER.info("Loaded properties from {} = {}.", propertiesFileName, props);
             return props;
         }
         return null;
@@ -616,7 +605,7 @@ public class Context {
      * @param key
      *            of property
      * @param propertyFile
-     *            object representing the properties file. 
+     *            object representing the properties file.
      * @return String property
      */
     public static String getProperty(String key, Properties propertyFile) {
@@ -625,7 +614,7 @@ public class Context {
         }
         final String p = propertyFile.getProperty(key);
         if (p == null) {
-            logger.error("{}{}", key, Messages.getMessage(NOT_SET_LABEL));
+            LOGGER.error("{}{}", key, Messages.getMessage(NOT_SET_LABEL));
         }
         return p;
     }
@@ -641,10 +630,10 @@ public class Context {
         final String property = propertyFile.getProperty(key);
         int p = 0;
         if (property == null) {
-            logger.error("{}{}", key, Messages.getMessage(NOT_SET_LABEL));
+            LOGGER.error("{}{}", key, Messages.getMessage(NOT_SET_LABEL));
         } else {
             p = Integer.parseInt(property);
-            logger.info("{} = {}", key, p);
+            LOGGER.info("{} = {}", key, p);
         }
         return p;
     }
@@ -669,9 +658,9 @@ public class Context {
                 iniFiles.put(applicationKey, ini);
             }
         } catch (final InvalidFileFormatException e) {
-            logger.error("error Context.initApplicationDom()", e);
+            LOGGER.error("error Context.initApplicationDom()", e);
         } catch (final IOException e) {
-            logger.error(Messages.getMessage(CONTEXT_APP_INI_FILE_NOT_FOUND), applicationKey, e);
+            LOGGER.error(Messages.getMessage(CONTEXT_APP_INI_FILE_NOT_FOUND), applicationKey, e);
         }
     }
 
@@ -741,51 +730,30 @@ public class Context {
 
     /**
      * Get url name in a string by page key.
-     * 
+     *
      * @param pageKey
      *            is key of page
      * @return url in a string
      */
     public static String getUrlByPagekey(String pageKey) {
-        if (pageKey != null) {
-            for (final Map.Entry<String, Application> application : getInstance().applications.entrySet()) {
-                for (final Map.Entry<String, String> urlPage : application.getValue().getUrlPages().entrySet()) {
-                    if (pageKey.equals(urlPage.getKey())) {
-                        return Auth.usingAuthentication(urlPage.getValue());
-                    }
-                }
-            }
-        } else {
-            return null;
-        }
-        return null;
+        return getInstance().applications.values().stream().map(Application::getUrlPages).map(urlPages -> urlPages.get(pageKey)).filter(Objects::nonNull)
+                .map(urlPage -> Auth.usingAuthentication(urlPage)).findFirst().orElse(null);
     }
 
     /**
      * Get application name in a string by page key.
-     * 
+     *
      * @param pageKey
      *            is key of page
      * @return application name in a string
      */
     public static String getApplicationByPagekey(String pageKey) {
-        if (pageKey != null) {
-            for (final Map.Entry<String, Application> application : getInstance().applications.entrySet()) {
-                for (final Map.Entry<String, String> urlPage : application.getValue().getUrlPages().entrySet()) {
-                    if (pageKey.equals(urlPage.getKey())) {
-                        return application.getKey();
-                    }
-                }
-            }
-        } else {
-            return null;
-        }
-        return null;
+        return getInstance().applications.entrySet().stream().filter(a -> a.getValue().getUrlPages().get(pageKey) != null).map(Entry::getKey).findFirst().orElse(null);
     }
 
     /**
      * init all Data index (by model).
-     * 
+     *
      * @param scenarioName
      *            name of scenario.
      * @throws TechnicalException
@@ -809,7 +777,7 @@ public class Context {
                         }
                     }
                 } else {
-                    logger.error(Messages.getMessage(ScenarioInitiator.SCENARIO_INITIATOR_ERROR_EMPTY_FILE));
+                    LOGGER.error(Messages.getMessage(ScenarioInitiator.SCENARIO_INITIATOR_ERROR_EMPTY_FILE));
                 }
             } else {
                 for (int i = 1; i < Context.getDataInputProvider().getNbLines(); i++) {
@@ -839,7 +807,7 @@ public class Context {
         } else {
             currentLocale = Locale.getDefault();
         }
-        logger.info(Messages.getMessage(CONTEXT_LOCALE_USED), currentLocale);
+        LOGGER.info(Messages.getMessage(CONTEXT_LOCALE_USED), currentLocale);
     }
 
     /**
@@ -896,8 +864,43 @@ public class Context {
                 }
             }
         } catch (final Exception e) {
-            logger.error(Messages.getMessage(CONTEXT_ERROR_WHEN_PLUGING_DATA_PROVIDER), e);
+            LOGGER.error(Messages.getMessage(CONTEXT_ERROR_WHEN_PLUGING_DATA_PROVIDER), e);
         }
+    }
+
+    /**
+     * Gets all Cucumber methods.
+     *
+     * @param clazz
+     *            Class which is the main point of the application (Decorated with the annotation {@link cucumber.api.CucumberOptions})
+     * @return a Map of all Cucumber glue code methods of the application. First part of the entry is the Gherkin matching regular expression.
+     *         Second part is the corresponding invokable method.
+     */
+    private static Map<String, Method> getAllCucumberMethods(Class<?> clazz) {
+        final Map<String, Method> result = new HashMap<>();
+        final CucumberOptions co = clazz.getAnnotation(CucumberOptions.class);
+        final Set<Class<?>> classes = getClasses(co.glue());
+        classes.add(BrowserSteps.class);
+
+        for (final Class<?> c : classes) {
+            final Method[] methods = c.getDeclaredMethods();
+            for (final Method method : methods) {
+                for (final Annotation stepAnnotation : method.getAnnotations()) {
+                    if (stepAnnotation.annotationType().isAnnotationPresent(StepDefAnnotation.class)) {
+                        result.put(stepAnnotation.toString(), method);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    private static Set<Class<?>> getClasses(String[] packagesName) {
+        final Set<Class<?>> result = new HashSet<>();
+        for (final String packageName : packagesName) {
+            result.addAll(new Reflections(packageName, new SubTypesScanner(false)).getSubTypesOf(Step.class));
+        }
+        return result;
     }
 
 }

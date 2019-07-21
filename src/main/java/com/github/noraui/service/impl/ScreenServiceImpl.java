@@ -57,9 +57,9 @@ import cucumber.api.Scenario;
 public class ScreenServiceImpl implements ScreenService {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    private static final Logger logger = LoggerFactory.getLogger(Utilities.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Utilities.class);
 
     private ScreenRecorder screenRecorder;
 
@@ -68,7 +68,7 @@ public class ScreenServiceImpl implements ScreenService {
      */
     @Override
     public void takeScreenshot(Scenario scenario) {
-        logger.debug("takeScreenshot with the scenario named [{}]", scenario.getName());
+        LOGGER.debug("takeScreenshot with the scenario named [{}]", scenario.getName());
         final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
         scenario.embed(screenshot, "image/png");
     }
@@ -78,7 +78,7 @@ public class ScreenServiceImpl implements ScreenService {
      */
     @Override
     public void saveScreenshot(String screenName) throws IOException {
-        logger.debug("saveScreenshot with the scenario named [{}]", screenName);
+        LOGGER.debug("saveScreenshot with the scenario named [{}]", screenName);
         final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
         FileUtils.forceMkdir(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
         FileUtils.writeByteArrayToFile(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + screenName + ".jpg"), screenshot);
@@ -89,7 +89,7 @@ public class ScreenServiceImpl implements ScreenService {
      */
     @Override
     public void saveScreenshot(String screenName, WebElement element) throws IOException {
-        logger.debug("saveScreenshot with the scenario named [{}] and element [{}]", screenName, element.getTagName());
+        LOGGER.debug("saveScreenshot with the scenario named [{}] and element [{}]", screenName, element.getTagName());
 
         final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
         FileUtils.forceMkdir(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
@@ -114,7 +114,7 @@ public class ScreenServiceImpl implements ScreenService {
      */
     @Override
     public void startVideoCapture(String screenName) throws IOException, AWTException {
-        logger.debug("startVideoCapture with the scenario named [{}]", screenName);
+        LOGGER.debug("startVideoCapture with the scenario named [{}]", screenName);
         File file = new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Rectangle captureSize = new Rectangle(0, 0, screenSize.width, screenSize.height);
@@ -132,7 +132,7 @@ public class ScreenServiceImpl implements ScreenService {
      */
     @Override
     public void stopVideoCapture() throws IOException {
-        logger.debug("stopVideoCapture");
+        LOGGER.debug("stopVideoCapture");
         this.screenRecorder.stop();
     }
 

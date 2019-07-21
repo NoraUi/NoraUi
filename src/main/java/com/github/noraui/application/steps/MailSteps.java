@@ -45,18 +45,15 @@ import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 import com.google.inject.Inject;
 
-import cucumber.api.java.en.And;
-import cucumber.api.java.fr.Et;
-
 /**
  * This class contains Gherkin callable steps that aim for expecting a specific result.
  */
 public class MailSteps extends Step {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    private static final Logger logger = LoggerFactory.getLogger(MailSteps.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MailSteps.class);
 
     @Inject
     private HttpService httpService;
@@ -87,8 +84,8 @@ public class MailSteps extends Step {
     @Experimental(name = "validActivationEmail")
     @RetryOnFailure(attempts = 3, delay = 60)
     @Conditioned
-    @Et("Je valide le mail d'activation '(.*)'[\\.|\\?]")
-    @And("I valid activation email '(.*)'[\\.|\\?]")
+    //@Et("Je valide le mail d activation {string}(\\?)")
+    //@And("I valid activation email {string}(\\?)")
     public void validActivationEmail(String mailHost, String mailUser, String mailPassword, String senderMail, String subjectMail, String firstCssQuery, List<GherkinStepCondition> conditions)
             throws FailureException, TechnicalException {
         try {
@@ -159,9 +156,9 @@ public class MailSteps extends Step {
         final Element link = doc.selectFirst(firstCssQuery);
         try {
             final String response = httpService.get(link.attr("href"));
-            logger.debug("response is {}.", response);
+            LOGGER.debug("response is {}.", response);
         } catch (final HttpServiceException e) {
-            logger.error(Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_MAIL_ACTIVATION), subjectMail), e);
+            LOGGER.error(Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_MAIL_ACTIVATION), subjectMail), e);
             new Result.Failure<>("", Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_MAIL_ACTIVATION), subjectMail), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
     }

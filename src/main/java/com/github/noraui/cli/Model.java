@@ -28,9 +28,9 @@ import com.google.common.io.Files;
 public class Model extends AbstractNoraUiCli {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    private static final Logger logger = LoggerFactory.getLogger(Model.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Model.class);
 
     private String mainPath;
 
@@ -106,16 +106,16 @@ public class Model extends AbstractNoraUiCli {
      *            boolean to activate verbose mode (show more traces).
      */
     public void add(String applicationName, String modelName, String fields, String results, Class<?> robotContext, boolean verbose) {
-        logger.info("Add a new model named [{}] in application named [{}]", modelName, applicationName);
+        LOGGER.info("Add a new model named [{}] in application named [{}]", modelName, applicationName);
         String[] fieldList = fields.split(" ");
         for (String field : fieldList) {
-            logger.info("field: [{}]", field);
+            LOGGER.info("field: [{}]", field);
         }
         String[] resultList = new String[0];
         if (results != null) {
             resultList = results.split(" ");
             for (String result : resultList) {
-                logger.info("result: [{}]", result);
+                LOGGER.info("result: [{}]", result);
             }
         }
         addModel(applicationName, modelName, fieldList, resultList, robotContext, verbose);
@@ -136,7 +136,7 @@ public class Model extends AbstractNoraUiCli {
      *            boolean to activate verbose mode (show more traces).
      */
     public void remove(String applicationName, String modelName, Class<?> robotContext, boolean verbose) {
-        logger.info("Remove model named [{}] in application named [{}]", modelName, applicationName);
+        LOGGER.info("Remove model named [{}] in application named [{}]", modelName, applicationName);
         String modelPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("utils", "application/model/" + applicationName)
                 .replaceAll("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1)) + ".java";
         String modelsPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("utils", "application/model/" + applicationName)
@@ -144,30 +144,30 @@ public class Model extends AbstractNoraUiCli {
         try {
             FileUtils.forceDelete(new File(modelPath));
             if (verbose) {
-                logger.info("{} removed with success.", modelPath);
+                LOGGER.info("{} removed with success.", modelPath);
             }
         } catch (IOException e) {
-            logger.debug("{} not revove because do not exist.", modelPath);
+            LOGGER.debug("{} not revove because do not exist.", modelPath);
         }
         try {
             FileUtils.forceDelete(new File(modelsPath));
             if (verbose) {
-                logger.info("{} removed with success.", modelsPath);
+                LOGGER.info("{} removed with success.", modelsPath);
             }
         } catch (IOException e) {
-            logger.debug("{} not revove because do not exist.", modelsPath);
+            LOGGER.debug("{} not revove because do not exist.", modelsPath);
         }
         String applicationDirectoryPath = modelPath.substring(0, modelPath.lastIndexOf(File.separator));
         try {
             Collection<File> l = FileUtils.listFiles(new File(applicationDirectoryPath), TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
             if (l.isEmpty()) {
                 if (verbose) {
-                    logger.info("Empty directory, so remove application directory.");
+                    LOGGER.info("Empty directory, so remove application directory.");
                 }
                 FileUtils.deleteDirectory(new File(applicationDirectoryPath));
             }
         } catch (IOException e) {
-            logger.debug("{} not revove because do not exist.", applicationDirectoryPath);
+            LOGGER.debug("{} not revove because do not exist.", applicationDirectoryPath);
         }
 
     }
@@ -379,15 +379,15 @@ public class Model extends AbstractNoraUiCli {
             if (!newSelector.exists()) {
                 Files.asCharSink(newSelector, Charsets.UTF_8).write(sb.toString());
                 if (verbose) {
-                    logger.info("File [{}] created with success.", modelPath);
+                    LOGGER.info("File [{}] created with success.", modelPath);
                 }
             } else {
                 if (verbose) {
-                    logger.info("File [{}] already exist.", modelPath);
+                    LOGGER.info("File [{}] already exist.", modelPath);
                 }
             }
         } catch (Exception e) {
-            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+            LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 
@@ -493,15 +493,15 @@ public class Model extends AbstractNoraUiCli {
             if (!newSelector.exists()) {
                 Files.asCharSink(newSelector, Charsets.UTF_8).write(sb.toString());
                 if (verbose) {
-                    logger.info("File [{}] created with success.", modelsPath);
+                    LOGGER.info("File [{}] created with success.", modelsPath);
                 }
             } else {
                 if (verbose) {
-                    logger.info("File [{}] already exist.", modelsPath);
+                    LOGGER.info("File [{}] already exist.", modelsPath);
                 }
             }
         } catch (Exception e) {
-            logger.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+            LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 

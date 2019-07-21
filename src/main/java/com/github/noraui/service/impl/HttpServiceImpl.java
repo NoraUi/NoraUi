@@ -31,25 +31,25 @@ import okhttp3.Response;
 public class HttpServiceImpl implements HttpService {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    private static final Logger logger = LoggerFactory.getLogger(HttpServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HttpServiceImpl.class);
 
     /**
      * {@inheritDoc}
      */
     @Override
     public String get(String url) throws HttpServiceException, TechnicalException {
-        logger.debug("HttpService GET on url: {}", url);
+        LOGGER.debug("HttpService GET on url: {}", url);
         Response response;
         try {
             response = getClient().newCall(new Request.Builder().url(new URL(url)).header("Accept", "application/json").build()).execute();
             String jsonResponse = response.body().string();
-            logger.info("JSON response is: {}", jsonResponse);
+            LOGGER.info("JSON response is: {}", jsonResponse);
             response.close();
             return jsonResponse;
         } catch (IOException e) {
-            logger.error(Messages.getMessage(HttpServiceException.HTTP_SERVICE_ERROR_MESSAGE), e);
+            LOGGER.error(Messages.getMessage(HttpServiceException.HTTP_SERVICE_ERROR_MESSAGE), e);
             throw new HttpServiceException(Messages.getMessage(HttpServiceException.HTTP_SERVICE_ERROR_MESSAGE), e);
         }
     }
@@ -67,16 +67,16 @@ public class HttpServiceImpl implements HttpService {
      */
     @Override
     public String post(String url, String json) throws HttpServiceException, TechnicalException {
-        logger.debug("HttpService POST on url: {}", url);
+        LOGGER.debug("HttpService POST on url: {}", url);
         Response response;
         try {
             response = getClient().newCall(new Request.Builder().url(url).post(RequestBody.create(MediaType.parse("application/json"), json)).build()).execute();
             String jsonResponse = response.body().string();
-            logger.info("JSON response is: {}", jsonResponse);
+            LOGGER.info("JSON response is: {}", jsonResponse);
             response.close();
             return jsonResponse;
         } catch (IOException e) {
-            logger.error(Messages.getMessage(HttpServiceException.HTTP_SERVICE_ERROR_MESSAGE), e);
+            LOGGER.error(Messages.getMessage(HttpServiceException.HTTP_SERVICE_ERROR_MESSAGE), e);
             throw new HttpServiceException(Messages.getMessage(HttpServiceException.HTTP_SERVICE_ERROR_MESSAGE), e);
         }
     }
