@@ -40,9 +40,9 @@ import cucumber.api.java.fr.Lorsque;
 public class FileSteps extends Step {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    private static final Logger logger = LoggerFactory.getLogger(CommonSteps.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CommonSteps.class);
 
     /**
      * Empties the default downloaded files folder.
@@ -51,14 +51,14 @@ public class FileSteps extends Step {
      *            List of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
      */
     @Conditioned
-    @Lorsque("Je vide le repertoire des téléchargements[\\.|\\?]")
-    @Given("I clean download directory[\\.|\\?]")
+    @Lorsque("Je vide le repertoire des téléchargements(\\?)")
+    @Given("I clean download directory(\\?)")
     public void cleanDownloadDirectory(List<GherkinStepCondition> conditions) {
         try {
             FileUtils.forceMkdir(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
             FileUtils.cleanDirectory(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
         } catch (IOException e) {
-            logger.warn("IOException in cleanDownloadDirectory", e);
+            LOGGER.warn("IOException in cleanDownloadDirectory", e);
         }
     }
 
@@ -69,13 +69,16 @@ public class FileSteps extends Step {
      *            The name of the file removed.
      * @param conditions
      *            List of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
-     * @throws IOException
      */
     @Conditioned
-    @Lorsque("Je supprime le fichier '(.*)' dans repertoire des téléchargements[\\.|\\?]")
-    @Given("I remove '(.*)' file in download directory[\\.|\\?]")
+    @Lorsque("Je supprime le fichier {string} dans repertoire des téléchargements(\\?)")
+    @Given("I remove {string} file in download directory(\\?)")
     public void removefileInDownloadDirectory(String file, List<GherkinStepCondition> conditions) throws IOException {
-        FileUtils.forceDelete(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + file));
+        try {
+            FileUtils.forceDelete(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + file));
+        } catch (IOException e) {
+            LOGGER.warn("IOException in removefileInDownloadDirectory", e);
+        }
     }
 
     /**
@@ -89,12 +92,15 @@ public class FileSteps extends Step {
      *            The pattern to match
      * @param conditions
      *            List of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
-     * @throws TechnicalException
      * @throws FailureException
+     *             if the scenario encounters a functional error
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_FILE_NOT_MATCHES} message (with screenshot, no exception)
      */
     @Conditioned
-    @Alors("Le fichier '(.*)' encodé en '(.*)' vérifie '(.*)'[\\.|\\?]")
-    @Then("The file '(.*)' encoded in '(.*)' matches '(.*)'[\\.|\\?]")
+    @Alors("Le fichier {string} encodé en {string} vérifie {string}(\\?)")
+    @Then("The file {string} encoded in {string} matches {string}(\\?)")
     public void checkFile(String file, String encoding, String regexp, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         try {
             final Matcher m = Pattern.compile(regexp)
@@ -118,12 +124,15 @@ public class FileSteps extends Step {
      *            List of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
      * @throws InterruptedException
      *             Exception for the sleep
-     * @throws TechnicalException
      * @throws FailureException
+     *             if the scenario encounters a functional error
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_DOWNLOADED_FILE_NOT_FOUND} message (with screenshot, no exception)
      */
     @Conditioned
-    @Lorsque("Je patiente que le fichier nommé '(.*)' soit téléchargé avec un timeout de '(.*)' secondes[\\.|\\?]")
-    @Then("I wait file named '(.*)' to be downloaded with timeout of '(.*)' seconds[\\.|\\?]")
+    @Lorsque("Je patiente que le fichier nommé {string} soit téléchargé avec un timeout de {int} seconde(s)(\\?)")
+    @Then("I wait file named {string} to be downloaded with timeout of {int} second(s)(\\?)")
     public void waitDownloadFile(String file, int timeout, List<GherkinStepCondition> conditions) throws InterruptedException, FailureException, TechnicalException {
         File f;
         int nbTry = 0;
@@ -135,28 +144,31 @@ public class FileSteps extends Step {
             f = new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + file);
             nbTry++;
         } while (!(f.exists() && !f.isDirectory()));
-        logger.debug("File downloaded in {} seconds.", nbTry);
+        LOGGER.debug("File downloaded in {} seconds.", nbTry);
     }
 
     /**
      * Waits the full download of a file with a maximum timeout in seconds.
      *
-     * @param page
-     *            The page to upload the file from
-     * @param element
-     *            The file input field
+     * @param pageElement
+     *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
      * @param filename
      *            The name of the file to upload (from the default downloaded files directory)
      * @param conditions
      *            List of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
-     * @throws TechnicalException
      * @throws FailureException
+     *             if the scenario encounters a functional error
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UPLOADING_FILE} message (with screenshot, no exception)
      */
     @Conditioned
-    @Lorsque("J'utilise l'élément '(.*)-(.*)' pour uploader le fichier '(.*)'[\\.|\\?]")
-    @Then("I use '(.*)-(.*)' element to upload '(.*)' file[\\.|\\?]")
-    public void uploadFile(String page, String element, String filename, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
-        uploadFile(Page.getInstance(page).getPageElementByKey('-' + element), filename);
+    @Lorsque("J'utilise l'élément {string} pour uploader le fichier {string}(\\?)")
+    @Then("I use {string} element to upload {string} file(\\?)")
+    public void uploadFile(String pageElement, String filename, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
+        String page = pageElement.split("-")[0];
+        String elementName = pageElement.split("-")[1];
+        uploadFile(Page.getInstance(page).getPageElementByKey('-' + elementName), filename);
     }
 
 }

@@ -1,6 +1,6 @@
 /**
  * NoraUi is licensed under the license GNU AFFERO GENERAL PUBLIC LICENSE
- * 
+ *
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
@@ -17,6 +17,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,67 +35,96 @@ import com.github.noraui.utils.Messages;
 public class MavenRunCounter {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    private static final Logger logger = LoggerFactory.getLogger(MavenRunCounter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MavenRunCounter.class);
+
+    private static final String STEP_KEYWORDS = "(Given|When|Then|And|But|Soit|Lorsqu|Quand|Alors|Et|Mais)";
+    private static final String NEW_SCENARIO_OUTLINE = "(Scenario Outline:|Plan du Scénario:)";
 
     public static final String Z_MANAGER = "zManager";
 
-    public List<Counter> count(List<String> versionControlSystemsBlacklist, List<String> blacklist, List<String> manager, File scenarioFolder) {
+    /**
+     * Runs the counting process to figure out expected test runs results (Runs, Failures, Errors, Skipped).
+     * 
+     * @param versionControlSystemsBlacklist
+     *            a list of control system files that won't be counted
+     * @param blacklist
+     *            a list of scenarios that won't be counted
+     * @param manager
+     *            a list of scenario that should be run at the very end
+     * @param scenarioFolder
+     *            root folder of Gherkin scenarios
+     * @return
+     *         a list of {@link Counter}
+     * @throws TechnicalException
+     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with message and with screenshot and with exception if functional error but no screenshot and no exception if technical error.
+     */
+    public List<Counter> count(List<String> versionControlSystemsBlacklist, List<String> blacklist, List<String> manager, File scenarioFolder) throws TechnicalException {
         final List<Counter> result = new ArrayList<>();
         final List<String> files = listFilesForFolder(versionControlSystemsBlacklist, scenarioFolder);
+
+        final Pattern recommendedPattern = Pattern.compile("^[ ]{4}" + STEP_KEYWORDS);
+        final Pattern requiredPattern = Pattern.compile("^[\\s]*" + STEP_KEYWORDS);
+        final Pattern newScenario = Pattern.compile("^[\\s]*" + NEW_SCENARIO_OUTLINE);
+
         for (final String file : files) {
             final String scenarioName = file.substring(file.lastIndexOf(File.separator) + 1, file.lastIndexOf('.'));
             if (!blacklist.contains(scenarioName)) {
-                Counter counter = new Counter(scenarioName);
-                int nbStep = 0;
+                int nbStep = 0, nbScenario = 0;
+                Counter counter = null;
+                Matcher matcher;
                 try (BufferedReader br = new BufferedReader(new FileReader(file));) {
                     String sCurrentLine;
+
                     while ((sCurrentLine = br.readLine()) != null) {
-                        if (sCurrentLine.startsWith("    Given") || sCurrentLine.startsWith("    Then") || sCurrentLine.startsWith("    When") || sCurrentLine.startsWith("    And")
-                                || sCurrentLine.startsWith("    But") || sCurrentLine.startsWith("    Alors") || sCurrentLine.startsWith("    Et") || sCurrentLine.startsWith("    Lorsqu")
-                                || sCurrentLine.startsWith("    Mais") || sCurrentLine.startsWith("    Quand") || sCurrentLine.startsWith("    Soit")) {
-                            nbStep++;
+                        matcher = newScenario.matcher(sCurrentLine);
+                        if (matcher.find()) {
+                            if (counter != null) {
+                                countAndAddToList(manager, result, scenarioName, nbStep, counter);
+                            }
+                            nbScenario++;
+                            counter = new Counter(scenarioName, nbScenario);
+                            nbStep = 0;
+
                         } else {
-                            sCurrentLine = sCurrentLine.trim();
-                            if (sCurrentLine.startsWith("Given") || sCurrentLine.startsWith("Then") || sCurrentLine.startsWith("When") || sCurrentLine.startsWith("And")
-                                    || sCurrentLine.startsWith("But") || sCurrentLine.startsWith("Alors") || sCurrentLine.startsWith("Et") || sCurrentLine.startsWith("Lorsqu")
-                                    || sCurrentLine.startsWith("Mais") || sCurrentLine.startsWith("Quand") || sCurrentLine.startsWith("Soit")) {
-                                logger.error("{} : {}", Messages.getMessage(Messages.SCENARIO_ERROR_MESSAGE_ILLEGAL_TAB_FORMAT), sCurrentLine);
+                            matcher = requiredPattern.matcher(sCurrentLine);
+                            if (matcher.find()) {
+                                nbStep++;
+                                matcher = recommendedPattern.matcher(sCurrentLine);
+                                if (!matcher.find()) {
+                                    LOGGER.error("{} : {}", Messages.getMessage(Messages.SCENARIO_ERROR_MESSAGE_ILLEGAL_TAB_FORMAT), sCurrentLine);
+                                }
                             }
                         }
                     }
                 } catch (final IOException e) {
-                    logger.error("IOException error: ", e);
+                    LOGGER.error("IOException error: ", e);
                 }
-                countNbCasFailuresAndSkipped(scenarioName, counter, nbStep);
-                result.add(counter);
-                if (manager.contains(scenarioName)) {
-                    counter = countNbCasFailuresAndSkipped4Manager(scenarioName, nbStep);
-                    result.add(counter);
+                if (counter != null) {
+                    countAndAddToList(manager, result, scenarioName, nbStep, counter);
+                } else {
+                    throw new TechnicalException(Messages.format(Messages.getMessage(Messages.SCENARIO_ERROR_MESSAGE_SCENARIO_OUTLINE_IS_MANDATORY, scenarioName)));
                 }
             }
         }
         return result;
     }
 
-    private Counter countNbCasFailuresAndSkipped4Manager(String scenarioName, int nbStep) {
-        Counter counter;
-        Counter nb;
-        counter = new Counter(Z_MANAGER + scenarioName);
-        nb = countNbCasFailuresAndSkipped(Z_MANAGER + scenarioName, nbStep);
-        counter.setNbStep(nbStep);
-        counter.setNbcas(nb.getNbCas());
-        counter.setRun(nbStep * nb.getNbCas() + nb.getNbCas());
-        counter.setFailures(nb.getFailures());
-        counter.setSkipped(nb.getSkipped());
-        return counter;
+    private void countAndAddToList(List<String> manager, final List<Counter> result, final String scenarioName, int nbStep, Counter counter) {
+        countNbCasFailuresAndSkipped(scenarioName, counter, nbStep);
+        result.add(counter);
+        if (manager.contains(scenarioName)) {
+            countNbCasFailuresAndSkipped(Z_MANAGER + scenarioName, new Counter(counter), nbStep);
+            result.add(counter);
+        }
     }
 
     private void countNbCasFailuresAndSkipped(String scenarioName, Counter counter, int nbStep) {
-        final Counter nb = countNbCasFailuresAndSkipped(scenarioName, nbStep);
+        final Counter nb = countNbCasFailuresAndSkipped(scenarioName, counter.getNbScenario(), nbStep);
         counter.setNbStep(nbStep);
-        counter.setNbcas(nb.getNbCas());
+        counter.setNbCas(nb.getNbCas());
         counter.setRun(nbStep * nb.getNbCas() + nb.getNbCas());
         counter.setFailures(nb.getFailures());
         counter.setSkipped(nb.getSkipped());
@@ -104,17 +135,17 @@ public class MavenRunCounter {
         int failures = 0;
         int skipped = 0;
         int scenarios = 0;
-        Collections.sort(counters, new Counter(""));
+        Collections.sort(counters, new Counter("", 1));
         for (final MavenRunCounter.Counter counter : counters) {
             run += counter.getRun();
             failures += counter.getFailures();
             skipped += counter.getSkipped();
             scenarios += counter.getNbCas();
-            logger.info("Scenario: {} => step: {} and cases: {} -->  runs: {}, failures: {}, errors: 0 and skips: {}", counter.getScenarioName(), counter.getNbStep(), counter.getNbCas(),
+            LOGGER.info("Scenario: {} => step: {} and cases: {} -->  runs: {}, failures: {}, errors: 0 and skips: {}", counter.getScenarioName(), counter.getNbStep(), counter.getNbCas(),
                     counter.getRun(), counter.getFailures(), counter.getSkipped());
         }
-        logger.info("{}", generateExpected1(type, failures, scenarios));
-        logger.info("{}", generateExpected2(type, run, failures, skipped, scenarios));
+        LOGGER.info("{}", generateExpected1(type, failures, scenarios));
+        LOGGER.info("{}", generateExpected2(type, run, failures, skipped, scenarios));
     }
 
     public static List<String> listFilesForFolder(final List<String> versionControlSystemsBlacklist, final File folder) {
@@ -134,10 +165,13 @@ public class MavenRunCounter {
     }
 
     protected String generateExpected2(String type, int run, int failures, int skipped, int scenarios) {
-        StringBuilder expectedResults2 = new StringBuilder(100);
+        final StringBuilder expectedResults2 = new StringBuilder(100);
         int passed;
         expectedResults2.append("[").append(type).append("] > <EXPECTED_RESULTS_2>");
-        expectedResults2.append(run - scenarios).append(" Steps (");
+        expectedResults2.append(run - scenarios).append(" Step");
+        if (scenarios > 0) {
+            expectedResults2.append("s (");
+        }
         if (failures > 0) {
             expectedResults2.append(failures).append(" failed, ");
             expectedResults2.append(skipped).append(" skipped, ");
@@ -145,20 +179,22 @@ public class MavenRunCounter {
         passed = run - scenarios - failures - skipped;
         if (passed > 0) {
             expectedResults2.append(passed).append(" passed");
-        } else {
-            if (failures == 0) {
-                expectedResults2.deleteCharAt(expectedResults2.length() - 1);
-            }
         }
-        expectedResults2.append(")</EXPECTED_RESULTS_2>");
+        if (scenarios > 0) {
+            expectedResults2.append(")");
+        }
+        expectedResults2.append("</EXPECTED_RESULTS_2>");
         return expectedResults2.toString();
     }
 
     protected String generateExpected1(String type, int failures, int scenarios) {
-        StringBuilder expectedResults1 = new StringBuilder(100);
+        final StringBuilder expectedResults1 = new StringBuilder(100);
         int passed;
         expectedResults1.append("[").append(type).append("] > <EXPECTED_RESULTS_1>");
-        expectedResults1.append(scenarios).append(" Scenarios (");
+        expectedResults1.append(scenarios).append(" Scenario");
+        if (scenarios > 0) {
+            expectedResults1.append("s (");
+        }
         if (failures > 0) {
             expectedResults1.append(failures).append(" failed, ");
         }
@@ -166,13 +202,24 @@ public class MavenRunCounter {
         if (passed > 0) {
             expectedResults1.append(passed).append(" passed");
         } else {
-            expectedResults1.deleteCharAt(expectedResults1.length() - 1);
-            expectedResults1.deleteCharAt(expectedResults1.length() - 1);
+            if (failures > 0) {
+                expectedResults1.deleteCharAt(expectedResults1.length() - 1);
+                expectedResults1.deleteCharAt(expectedResults1.length() - 1);
+            }
         }
-        expectedResults1.append(")</EXPECTED_RESULTS_1>");
+        if (scenarios > 0) {
+            expectedResults1.append(")");
+        }
+        expectedResults1.append("</EXPECTED_RESULTS_1>");
         return expectedResults1.toString();
     }
 
+    /**
+     * Class representing all expectation counting data for a single scenario in a Feature.
+     * 
+     * @author Nicolas HALLOUIN
+     * @author Stéphane GRILLON
+     */
     public class Counter implements Comparator<Counter> {
         private String scenarioName;
         private int nbStep;
@@ -180,14 +227,26 @@ public class MavenRunCounter {
         private int run;
         private int failures;
         private int skipped;
+        private int nbScenario;
 
-        public Counter(String scenarioName) {
-            this.scenarioName = scenarioName;
+        public Counter(String scenarioName, int nbScenario) {
+            this.scenarioName = scenarioName + "#" + nbScenario;
             this.nbStep = 0;
             this.nbCas = 0;
             this.run = 0;
             this.failures = 0;
             this.skipped = 0;
+            this.nbScenario = nbScenario;
+        }
+
+        public Counter(Counter counter) {
+            this.scenarioName = counter.scenarioName;
+            this.nbStep = counter.nbStep;
+            this.nbCas = counter.nbCas;
+            this.run = counter.run;
+            this.failures = counter.failures;
+            this.skipped = counter.skipped;
+            this.nbScenario = counter.nbScenario;
         }
 
         @Override
@@ -215,7 +274,7 @@ public class MavenRunCounter {
             return nbCas;
         }
 
-        public void setNbcas(int nbCas) {
+        public void setNbCas(int nbCas) {
             this.nbCas = nbCas;
         }
 
@@ -243,10 +302,18 @@ public class MavenRunCounter {
             this.skipped = skipped;
         }
 
+        public int getNbScenario() {
+            return nbScenario;
+        }
+
+        public void setNbScenario(int nbScenario) {
+            this.nbScenario = nbScenario;
+        }
+
     }
 
-    private static MavenRunCounter.Counter countNbCasFailuresAndSkipped(String scenarioName, int nbStep) {
-        final Counter result = new MavenRunCounter().new Counter("");
+    private static MavenRunCounter.Counter countNbCasFailuresAndSkipped(String scenarioName, int nbScenario, int nbStep) {
+        final Counter result = new MavenRunCounter().new Counter("", nbScenario);
         final List<DataIndex> indexData = new ArrayList<>();
         try {
             Context.getDataInputProvider().prepare(scenarioName);
@@ -257,7 +324,7 @@ public class MavenRunCounter {
                 countWithoutModel(nbStep, result, indexData);
             }
         } catch (final Exception e) {
-            logger.error("error MavenRunCounter.countNbCasFailuresAndSkipped()", e);
+            LOGGER.error("error MavenRunCounter.countNbCasFailuresAndSkipped()", e);
         }
         return result;
     }
@@ -265,17 +332,25 @@ public class MavenRunCounter {
     private static void countWithoutModel(int nbStep, Counter result, List<DataIndex> indexData) throws TechnicalException {
         int failures = 0;
         int skipped = 0;
-        for (int i = 1; i < Context.getDataInputProvider().getNbLines(); i++) {
-            final List<Integer> index = new ArrayList<>();
-            index.add(i);
-            indexData.add(new DataIndex(i, index));
-            final String resultColumn = Context.getDataInputProvider().readValue(Context.getDataInputProvider().getResultColumnName(), i);
-            if (!"".equals(resultColumn)) {
-                failures += 1;
-                skipped += nbStep - (int) Double.parseDouble(resultColumn);
+        int currentNbScenario = 1;
+        for (int i = 1; i < Context.getDataInputProvider().getNbLines() + result.getNbScenario(); i++) {
+            if (null == Context.getDataInputProvider().readLine(i, true)) {
+                currentNbScenario++;
+            } else {
+                if (currentNbScenario == result.getNbScenario()) {
+                    final List<Integer> index = new ArrayList<>();
+                    index.add(i);
+                    indexData.add(new DataIndex(i, index));
+                    final String resultColumn = Context.getDataInputProvider().readValue(Context.getDataInputProvider().getResultColumnName(), i);
+                    if (!"".equals(resultColumn)) {
+                        failures += 1;
+                        skipped += nbStep - (int) Double.parseDouble(resultColumn);
+                    }
+                }
             }
+
         }
-        result.setNbcas(indexData.size());
+        result.setNbCas(indexData.size());
         result.setFailures(failures);
         result.setSkipped(skipped);
     }
@@ -286,14 +361,14 @@ public class MavenRunCounter {
         final String[] headers = Context.getDataInputProvider().readLine(0, false);
         if (headers != null) {
             final Constructor<Model> modelConstructor = DataUtils.getModelConstructor(model, headers);
-            final Map<String, ModelList> fusionedData = DataUtils.fusionProcessor(model, modelConstructor);
+            final Map<Integer, Map<String, ModelList>> fusionedData = DataUtils.fusionProcessor(model, modelConstructor);
             int dataIndex = 0;
-            for (final Entry<String, ModelList> e : fusionedData.entrySet()) {
+            for (final Entry<String, ModelList> e2 : fusionedData.get(result.getNbScenario() - 1).entrySet()) {
                 dataIndex++;
-                indexData.add(new DataIndex(dataIndex, e.getValue().getIds()));
-                for (int i = 0; i < e.getValue().getIds().size(); i++) {
-                    final Integer wid = e.getValue().getIds().get(i);
-                    final String resultColumn = Context.getDataInputProvider().readValue(Context.getDataInputProvider().getResultColumnName(), wid);
+                indexData.add(new DataIndex(dataIndex, e2.getValue().getIds()));
+                for (int i = 0; i < e2.getValue().getIds().size(); i++) {
+                    final Integer id = e2.getValue().getIds().get(i);
+                    final String resultColumn = Context.getDataInputProvider().readValue(Context.getDataInputProvider().getResultColumnName(), id);
                     if (!"".equals(resultColumn)) {
                         failures += 1;
                         skipped += nbStep - (int) Double.parseDouble(resultColumn);
@@ -301,9 +376,9 @@ public class MavenRunCounter {
                 }
             }
         } else {
-            logger.error(Messages.getMessage(ScenarioInitiator.SCENARIO_INITIATOR_ERROR_EMPTY_FILE));
+            LOGGER.error(Messages.getMessage(ScenarioInitiator.SCENARIO_INITIATOR_ERROR_EMPTY_FILE));
         }
-        result.setNbcas(indexData.size());
+        result.setNbCas(indexData.size());
         result.setFailures(failures);
         result.setSkipped(skipped);
     }

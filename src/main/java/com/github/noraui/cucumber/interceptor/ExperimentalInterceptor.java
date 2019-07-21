@@ -18,9 +18,9 @@ import com.github.noraui.cucumber.annotation.Experimental;
 public class ExperimentalInterceptor implements MethodInterceptor {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    private static final Logger logger = LoggerFactory.getLogger(ExperimentalInterceptor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExperimentalInterceptor.class);
 
     /**
      * {@inheritDoc}
@@ -31,9 +31,9 @@ public class ExperimentalInterceptor implements MethodInterceptor {
         Method m = invocation.getMethod();
         if (m.isAnnotationPresent(Experimental.class)) {
             Experimental experimentalAnnotation = m.getAnnotation(Experimental.class);
-            logger.warn("CAUTION: You use a experimental generic step named [{}].", experimentalAnnotation.name());
+            LOGGER.warn("CAUTION: You use a experimental generic step named [{}].", experimentalAnnotation.name());
         }
-        logger.debug("NORAUI ExperimentalInterceptor invoke method {}", invocation.getMethod());
+        LOGGER.debug("NORAUI ExperimentalInterceptor invoke method {}", invocation.getMethod());
         return invocation.proceed();
     }
 

@@ -8,6 +8,7 @@ package com.github.noraui.application.steps.demo;
 
 import java.util.Map;
 
+// import com.github.noraui.application.page.Page;
 import com.github.noraui.application.page.demo.DemoPage;
 import com.github.noraui.application.steps.Step;
 import com.github.noraui.exception.FailureException;
@@ -22,12 +23,16 @@ public class DemoSteps extends Step {
     @Inject
     private DemoPage demoPage;
 
-    @Alors("Je mets à jour les checkboxes et vérifie la liste radio 'DEMO_HOME(.*)' avec '(.*)':")
-    @Then("I update checkboxes and check radio list 'DEMO_HOME(.*)' with '(.*)':")
-    public void selectCheckbox(String elementKey, String valueKey, Map<String, Boolean> values) throws TechnicalException, FailureException {
-        selectCheckbox(this.demoPage.getPageElementByKey(elementKey), true);
-        selectCheckbox(this.demoPage.getPageElementByKey(elementKey), valueKey, values);
-        checkRadioList(this.demoPage.getPageElementByKey(elementKey), valueKey);
+    @Alors("Je mets à jour les checkboxes et vérifie la liste radio {string} avec {string}:")
+    @Then("I update checkboxes and check radio list {string} with {string}:")
+    public void selectCheckbox(String pageElement, String valueKey, Map<String, Boolean> values) throws TechnicalException, FailureException {
+        String elementName = pageElement.split("-")[1];
+        // is it a sample with inject page by Guice, but you can use 'demo.DemoPage-agree' instead of 'DEMO_HOME-agree'.
+        // String page = pageElement.split("-")[0];
+        // selectCheckbox(Page.getInstance(page).getPageElementByKey('-' + elementName), true);
+        selectCheckbox(this.demoPage.getPageElementByKey('-' + elementName), true);
+        selectCheckbox(this.demoPage.getPageElementByKey('-' + elementName), valueKey, values);
+        checkRadioList(this.demoPage.getPageElementByKey('-' + elementName), valueKey);
     }
 
 }

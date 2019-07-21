@@ -4,7 +4,7 @@
 
     <groupId>com.github.noraui</groupId>
     <artifactId>noraui</artifactId>
-    <version>3.3.0-SNAPSHOT</version>
+    <version>4.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>NORAUI</name>
@@ -41,15 +41,15 @@
         <connection>scm:git:git://github.com/NoraUi/NoraUi.git</connection>
         <developerConnection>scm:git:git@github.com:NoraUi/NoraUi.git</developerConnection>
         <url>git://github.com/NoraUi/NoraUi.git</url>
-        <tag>v3.3.0</tag>
+        <tag>v4.0.1</tag>
     </scm>
 
     <properties>
         <cucumber.options>--tags @TOSPECIFY</cucumber.options>
-        <jenkinsresourcespath>src/test/resources</jenkinsresourcespath>
+        <ciToolResourcesPath>src/test/resources</ciToolResourcesPath>
         <crypto.key>@TOSPECIFY</crypto.key>
         <scenario.name>@TOSPECIFY</scenario.name>
-        <cucumber.version>2.1.0</cucumber.version>
+        <cucumber.version>4.3.0</cucumber.version>
         <selenium.version>3.12.0</selenium.version>
         <junit.version>4.12</junit.version>
         <ini4j.version>0.5.4</ini4j.version>
@@ -92,7 +92,7 @@
         <sonar.jacoco.reportPaths>${project.testresult.directory}/coverage/jacoco/jacoco.exec</sonar.jacoco.reportPaths>
         <sonar.tests>${project.basedir}/src/test/</sonar.tests>
         <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
-        <sonar.exclusions>**/cucumber/**/*,**/*Exception.*,**/annotation/**/*,**/noraui/model/**/*,**/noraui/data/rest/Row.java,**/noraui/utils/Constants.java,**/noraui/application/steps/MailSteps.java</sonar.exclusions>
+        <sonar.exclusions>**/cucumber/**/*,**/*Exception.*,**/annotation/**/*,**/noraui/model/**/*,**/noraui/data/rest/Row.java,**/noraui/utils/Constants.java,**/noraui/application/steps/MailSteps.java,*.css</sonar.exclusions>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <javadoc.opts>-Xdoclint:none</javadoc.opts>
     </properties>
@@ -361,8 +361,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -571,7 +571,7 @@
                                     <systemProperties>
                                         <systemProperty>
                                             <key>resourcespath</key>
-                                            <value>${jenkinsresourcespath}</value>
+                                            <value>${ciToolResourcesPath}</value>
                                         </systemProperty>
                                     </systemProperties>
                                 </configuration>
@@ -590,7 +590,7 @@
                                     <systemProperties>
                                         <systemProperty>
                                             <key>resourcespath</key>
-                                            <value>${jenkinsresourcespath}</value>
+                                            <value>${ciToolResourcesPath}</value>
                                         </systemProperty>
                                     </systemProperties>
                                 </configuration>
@@ -609,7 +609,7 @@
                                     <systemProperties>
                                         <systemProperty>
                                             <key>resourcespath</key>
-                                            <value>${jenkinsresourcespath}</value>
+                                            <value>${ciToolResourcesPath}</value>
                                         </systemProperty>
                                     </systemProperties>
                                 </configuration>
@@ -628,7 +628,7 @@
                                     <systemProperties>
                                         <systemProperty>
                                             <key>resourcespath</key>
-                                            <value>${jenkinsresourcespath}</value>
+                                            <value>${ciToolResourcesPath}</value>
                                         </systemProperty>
                                     </systemProperties>
                                 </configuration>
@@ -647,7 +647,7 @@
                             <!-- <systemProperties> -->
                             <!-- <systemProperty> -->
                             <!-- <key>resourcespath</key> -->
-                            <!-- <value>${jenkinsresourcespath}</value> -->
+                            <!-- <value>${ciToolResourcesPath}</value> -->
                             <!-- </systemProperty> -->
                             <!-- </systemProperties> -->
                             <!-- </configuration> -->
@@ -666,7 +666,7 @@
                             <!-- <systemProperties> -->
                             <!-- <systemProperty> -->
                             <!-- <key>resourcespath</key> -->
-                            <!-- <value>${jenkinsresourcespath}</value> -->
+                            <!-- <value>${ciToolResourcesPath}</value> -->
                             <!-- </systemProperty> -->
                             <!-- </systemProperties> -->
                             <!-- </configuration> -->
@@ -702,7 +702,7 @@
                                     <systemProperties>
                                         <systemProperty>
                                             <key>resourcespath</key>
-                                            <value>${jenkinsresourcespath}</value>
+                                            <value>${ciToolResourcesPath}</value>
                                         </systemProperty>
                                         <systemProperty>
                                             <key>crypto.key</key>
@@ -756,7 +756,7 @@
                         <version>${maven-surefire-plugin.version}</version>
                         <configuration>
                             <systemPropertyVariables>
-                                <resourcespath>${jenkinsresourcespath}</resourcespath>
+                                <resourcespath>${ciToolResourcesPath}</resourcespath>
                                 <cucumber.options>${cucumber.options}</cucumber.options>
                                 <webdriver.ie.driver>src/test/resources/drivers/%s/internetexplorer/%s/IEDriverServer%s</webdriver.ie.driver>
                                 <webdriver.chrome.driver>src/test/resources/drivers/%s/googlechrome/%s/chromedriver%s</webdriver.chrome.driver>

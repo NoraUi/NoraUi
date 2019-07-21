@@ -23,9 +23,9 @@ import org.slf4j.LoggerFactory;
 public class NoraUiScreenRecorder extends ScreenRecorder {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    private static final Logger logger = LoggerFactory.getLogger(NoraUiScreenRecorder.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NoraUiScreenRecorder.class);
 
     private String name;
 
@@ -40,7 +40,7 @@ public class NoraUiScreenRecorder extends ScreenRecorder {
         if (!movieFolder.exists()) {
             movieFolder.mkdirs();
         } else if (!movieFolder.isDirectory()) {
-            logger.error("\"{}\" is not a directory.", movieFolder);
+            LOGGER.error("\"{}\" is not a directory.", movieFolder);
             throw new IOException("\"" + movieFolder + "\" is not a directory.");
         }
         return new File(movieFolder, name + "-" + new SimpleDateFormat("yyyy-MM-dd HH.mm.ss").format(new Date()) + "." + Registry.getInstance().getExtension(fileFormat));

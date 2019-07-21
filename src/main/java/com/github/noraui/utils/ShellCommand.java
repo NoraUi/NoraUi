@@ -20,9 +20,9 @@ import com.github.noraui.exception.TechnicalException;
 public class ShellCommand {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    private static final Logger logger = LoggerFactory.getLogger(ShellCommand.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ShellCommand.class);
 
     private static final String SHELL_RUNNING_COMMAND = "SHELL_RUNNING_COMMAND";
     private final String command;
@@ -37,9 +37,9 @@ public class ShellCommand {
         final Runtime rt = Runtime.getRuntime();
         final List<String> cmdList = new ArrayList<>();
         cmdList.add(command);
-        logger.info(Messages.getMessage(SHELL_RUNNING_COMMAND), command);
+        LOGGER.info(Messages.getMessage(SHELL_RUNNING_COMMAND), command);
         for (final String param : parameters) {
-            logger.info(param);
+            LOGGER.info(param);
             cmdList.add(param);
         }
         try {
@@ -48,14 +48,14 @@ public class ShellCommand {
 
             String line;
             while ((line = reader.readLine()) != null) {
-                logger.info(line);
+                LOGGER.info(line);
             }
             return p.waitFor();
         } catch (IOException e) {
-            logger.error("IOException error ShellCommand.run()", e);
+            logger.error("IOException error ShellCommand.run():", e);
             throw new TechnicalException(e.getMessage(), e);
         } catch (InterruptedException e) {
-            logger.error("InterruptedException error ShellCommand.run()", e);
+            logger.error("InterruptedException error ShellCommand.run():", e);
             Thread.currentThread().interrupt();
             throw new TechnicalException(e.getMessage(), e);
         }

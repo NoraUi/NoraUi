@@ -11,24 +11,20 @@ import static com.github.noraui.utils.Constants.USER_DIR;
 import static com.github.noraui.utils.Constants.VALUE;
 
 import java.io.File;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -36,8 +32,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.reflections.Reflections;
-import org.reflections.scanners.SubTypesScanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,7 +39,6 @@ import com.github.noraui.application.page.IPage;
 import com.github.noraui.application.page.Page;
 import com.github.noraui.application.page.Page.PageElement;
 import com.github.noraui.browser.DriverFactory;
-import com.github.noraui.browser.steps.BrowserSteps;
 import com.github.noraui.cucumber.annotation.Conditioned;
 import com.github.noraui.cucumber.injector.NoraUiInjector;
 import com.github.noraui.exception.FailureException;
@@ -54,6 +47,7 @@ import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.GherkinConditionedLoopedStep;
 import com.github.noraui.gherkin.GherkinStepCondition;
 import com.github.noraui.service.CryptoService;
+import com.github.noraui.service.CucumberExpressionService;
 import com.github.noraui.service.UserNameService;
 import com.github.noraui.utils.Constants;
 import com.github.noraui.utils.Context;
@@ -61,22 +55,22 @@ import com.github.noraui.utils.Messages;
 import com.github.noraui.utils.Utilities;
 import com.google.inject.Inject;
 
-import cucumber.api.CucumberOptions;
-import cucumber.runtime.java.StepDefAnnotation;
-
-public class Step implements IStep {
+public abstract class Step implements IStep {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    protected static final Logger logger = LoggerFactory.getLogger(Step.class);
-    private static final String SECURE_MASK = "[secure]";
+    protected static final Logger LOGGER = LoggerFactory.getLogger(Step.class);
+    protected static final String SECURE_MASK = "[secure]";
 
     @Inject
-    private UserNameService userNameService;
+    protected UserNameService userNameService;
 
     @Inject
-    private CryptoService cryptoService;
+    protected CryptoService cryptoService;
+    
+    @Inject
+    protected CucumberExpressionService cucumberExpressionService;
 
     protected Step() {
     }
@@ -137,8 +131,8 @@ public class Step implements IStep {
         displayMessageAtTheBeginningOfMethod("clickOnByJs: %s in %s", toClick.toString(), toClick.getPage().getApplication());
         try {
             Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(toClick, args)));
-            ((JavascriptExecutor) getDriver())
-                    .executeScript("document.evaluate(\"" + Utilities.getLocatorValue(toClick, args) + "\", document, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click();");
+            ((JavascriptExecutor) getDriver()).executeScript("document.evaluate(\"" + StringEscapeUtils.escapeJava(Utilities.getLocatorValue(toClick, args))
+                    + "\", document, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click();");
         } catch (final Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK), toClick, toClick.getPage().getApplication()), true,
                     toClick.getPage().getCallBack());
@@ -224,7 +218,7 @@ public class Step implements IStep {
                         pageElement.getPage().getCallBack());
             }
         } else {
-            logger.debug("Empty data provided. No need to update text. If you want clear data, you need use: \"I clear text in ...\"");
+            LOGGER.debug("Empty data provided. No need to update text. If you want clear data, you need use: \"I clear text in ...\"");
         }
     }
 
@@ -284,6 +278,8 @@ public class Step implements IStep {
      * @throws FailureException
      *             if the scenario encounters a functional error
      * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} message (with screenshot, no exception)
      */
     protected boolean checkInputText(PageElement pageElement, String textOrKey) throws FailureException, TechnicalException {
         WebElement inputText = null;
@@ -306,6 +302,10 @@ public class Step implements IStep {
      * @throws FailureException
      *             if the scenario encounters a functional error
      * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} message (with screenshot, no exception) or with
+     *             {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_WRONG_EXPECTED_VALUE} message
+     *             (with screenshot, with exception)
      */
     protected void expectText(PageElement pageElement, String textOrKey) throws FailureException, TechnicalException {
         WebElement element = null;
@@ -318,7 +318,7 @@ public class Step implements IStep {
         try {
             Context.waitUntil(ExpectSteps.textToBeEqualsToExpectedValue(Utilities.getLocator(pageElement), value));
         } catch (final Exception e) {
-            logger.error("error in expectText. element is [{}]", element == null ? null : element.getText());
+            LOGGER.error("error in expectText. element is [{}]", element == null ? null : element.getText());
             new Result.Failure<>(element == null ? null : element.getText(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE), pageElement,
                     textOrKey.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : value, pageElement.getPage().getApplication()), true, pageElement.getPage().getCallBack());
         }
@@ -378,7 +378,7 @@ public class Step implements IStep {
         }
 
         final String innerText = webElement == null ? null : webElement.getText();
-        logger.info("checkText() expected [{}] and found [{}].", textOrKey.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : value, innerText);
+        LOGGER.info("checkText() expected [{}] and found [{}].", textOrKey.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : value, innerText);
         if (!value.equals(innerText)) {
             new Result.Failure<>(innerText, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE), pageElement,
                     textOrKey.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : value, pageElement.getPage().getApplication()), true, pageElement.getPage().getCallBack());
@@ -504,19 +504,19 @@ public class Step implements IStep {
      *             if the scenario encounters a functional error
      */
     protected void updateDateValidated(PageElement pageElement, String dateType, String date) throws TechnicalException, FailureException {
-        logger.debug("updateDateValidated with elementName={}, dateType={} and date={}", pageElement, dateType, date);
+        LOGGER.debug("updateDateValidated with elementName={}, dateType={} and date={}", pageElement, dateType, date);
         final DateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT);
         final Date today = Calendar.getInstance().getTime();
         try {
             final Date valideDate = formatter.parse(date);
             if ("any".equals(dateType)) {
-                logger.debug("update Date with any date: {}", date);
+                LOGGER.debug("update Date with any date: {}", date);
                 updateText(pageElement, date);
             } else if (formatter.format(today).equals(date) && ("future".equals(dateType) || "today".equals(dateType))) {
-                logger.debug("update Date with today");
+                LOGGER.debug("update Date with today");
                 updateText(pageElement, date);
             } else if (valideDate.after(Calendar.getInstance().getTime()) && ("future".equals(dateType) || "future_strict".equals(dateType))) {
-                logger.debug("update Date with a date after today: {}", date);
+                LOGGER.debug("update Date with a date after today: {}", date);
                 updateText(pageElement, date);
             } else {
                 new Result.Failure<>(date, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNEXPECTED_DATE), Messages.getMessage(Messages.DATE_GREATER_THAN_TODAY)), true,
@@ -544,7 +544,7 @@ public class Step implements IStep {
      *             if the scenario encounters a functional error
      */
     protected void saveElementValue(String field, Page page) throws TechnicalException, FailureException {
-        logger.debug("saveValueInStep: {} in {}.", field, page.getApplication());
+        LOGGER.debug("saveValueInStep: {} in {}.", field, page.getApplication());
         saveElementValue(field, page.getPageKey() + field, page);
     }
 
@@ -566,7 +566,7 @@ public class Step implements IStep {
      *             if the scenario encounters a functional error
      */
     protected void saveElementValue(String field, String targetKey, Page page) throws TechnicalException, FailureException {
-        logger.debug("saveValueInStep: {} to {} in {}.", field, targetKey, page.getApplication());
+        LOGGER.debug("saveValueInStep: {} to {} in {}.", field, targetKey, page.getApplication());
         String txt = "";
         try {
             final WebElement elem = Utilities.findElement(page, field);
@@ -806,7 +806,7 @@ public class Step implements IStep {
                 new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UPLOADING_FILE), path), true, pageElement.getPage().getCallBack());
             }
         } else {
-            logger.debug("Empty data provided. No need to update file upload path. If you want clear data, you need use: \"I clear text in ...\"");
+            LOGGER.debug("Empty data provided. No need to update file upload path. If you want clear data, you need use: \"I clear text in ...\"");
         }
     }
 
@@ -823,11 +823,11 @@ public class Step implements IStep {
      *            is a list of authorized activities
      */
     protected void displayMessageAtTheBeginningOfMethod(String methodName, String act, String concernedActivity, List<String> concernedActivities) {
-        logger.debug("{} {}: {} with {} concernedActivity(ies)", act, methodName, concernedActivity, concernedActivities.size());
+        LOGGER.debug("{} {}: {} with {} concernedActivity(ies)", act, methodName, concernedActivity, concernedActivities.size());
         int i = 0;
         for (final String activity : concernedActivities) {
             i++;
-            logger.debug("  activity N°{}={}", i, activity);
+            LOGGER.debug("  activity N°{}={}", i, activity);
         }
     }
 
@@ -842,11 +842,11 @@ public class Step implements IStep {
      *            is a list of authorized activities
      */
     protected void displayMessageAtTheBeginningOfMethod(String methodName, String act, List<String> concernedActivities) {
-        logger.debug("{}: {} with {} concernedActivity(ies)", act, methodName, concernedActivities.size());
+        LOGGER.debug("{}: {} with {} concernedActivity(ies)", act, methodName, concernedActivities.size());
         int i = 0;
         for (final String activity : concernedActivities) {
             i++;
-            logger.debug("  activity N°{}={}", i, activity);
+            LOGGER.debug("  activity N°{}={}", i, activity);
         }
     }
 
@@ -859,33 +859,12 @@ public class Step implements IStep {
      *            is a list of concerned elements (example: authorized activities)
      */
     protected void displayConcernedElementsAtTheBeginningOfMethod(String methodName, List<String> concernedElements) {
-        logger.debug("{}: with {} concernedElements", methodName, concernedElements.size());
+        LOGGER.debug("{}: with {} concernedElements", methodName, concernedElements.size());
         int i = 0;
         for (final String element : concernedElements) {
             i++;
-            logger.debug("  element N°{}={}", i, element);
+            LOGGER.debug("  element N°{}={}", i, element);
         }
-    }
-
-    private void displayMessageAtTheBeginningOfMethod(String message, String element, String application) throws TechnicalException {
-        try {
-            logger.debug(message, element, application);
-        } catch (final Exception te) {
-            throw new TechnicalException("Technical problem in the code Messages.formatMessage(String templateMessage, String... args) in NoraUi.", te);
-        }
-    }
-
-    private void setDropDownValue(PageElement element, String text) throws TechnicalException, FailureException {
-        final WebElement select = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(element)));
-        final Select dropDown = new Select(select);
-        final int index = userNameService.findOptionByIgnoreCaseText(text, dropDown);
-        if (index != -1) {
-            dropDown.selectByIndex(index);
-        } else {
-            new Result.Failure<>(text.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : text,
-                    Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_VALUE_NOT_AVAILABLE_IN_THE_LIST), element, element.getPage().getApplication()), false, element.getPage().getCallBack());
-        }
-
     }
 
     /**
@@ -921,6 +900,8 @@ public class Step implements IStep {
             final List<GherkinStepCondition> stepConditions = new ArrayList<>();
             final String[] expecteds = loopedStep.getExpected().split(";");
             final String[] actuals = loopedStep.getActual().split(";");
+
+            // For step conditions, if the number of actuals and expecteds, it is an error
             if (actuals.length != expecteds.length) {
                 throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_EXPECTED_ACTUAL_SIZE_DIFFERENT));
             }
@@ -928,30 +909,25 @@ public class Step implements IStep {
                 stepConditions.add(new GherkinStepCondition(loopedStep.getKey(), expecteds[i], actuals[i]));
             }
             boolean found = false;
+
+            // We look in all existing Cucumber methods the right one to run
             for (final Entry<String, Method> elem : Context.getCucumberMethods().entrySet()) {
                 final Matcher matcher = Pattern.compile("value=(.*)\\)").matcher(elem.getKey());
                 if (matcher.find()) {
-                    final Matcher matcher2 = Pattern.compile(matcher.group(1)).matcher(loopedStep.getStep());
-                    if (matcher2.find()) {
+                    List<?> params = cucumberExpressionService.match(matcher.group(1), loopedStep.getStep());
+                    if (params != null) {
                         Object[] tab;
                         if (elem.getValue().isAnnotationPresent(Conditioned.class)) {
-                            tab = new Object[matcher2.groupCount() + 1];
-                            tab[matcher2.groupCount()] = stepConditions;
+                            tab = new Object[params.size() + 1];
+                            int i = 0;
+                            for (Object o : params) {
+                                tab[i++] = o;
+                            }
+                            tab[params.size()] = stepConditions;
                         } else {
-                            tab = new Object[matcher2.groupCount()];
+                            tab = params.toArray();
                         }
 
-                        for (int i = 0; i < matcher2.groupCount(); i++) {
-                            final Parameter param = elem.getValue().getParameters()[i];
-                            if (param.getType() == int.class) {
-                                final int ii = Integer.parseInt(matcher2.group(i + 1));
-                                tab[i] = ii;
-                            } else if (param.getType() == boolean.class) {
-                                tab[i] = Boolean.parseBoolean(matcher2.group(i + 1));
-                            } else {
-                                tab[i] = matcher2.group(i + 1);
-                            }
-                        }
                         try {
                             found = true;
                             elem.getValue().invoke(NoraUiInjector.getNoraUiInjectorSource().getInstance(elem.getValue().getDeclaringClass()), tab);
@@ -982,45 +958,11 @@ public class Step implements IStep {
     }
 
     /**
-     * Gets all Cucumber methods.
-     *
-     * @param clazz
-     *            Class which is the main point of the application (Decorated with the annotation {@link cucumber.api.CucumberOptions})
-     * @return a Map of all Cucumber glue code methods of the application. First part of the entry is the Gherkin matching regular expression.
-     *         Second part is the corresponding invokable method.
-     */
-    public static Map<String, Method> getAllCucumberMethods(Class<?> clazz) {
-        final Map<String, Method> result = new HashMap<>();
-        final CucumberOptions co = clazz.getAnnotation(CucumberOptions.class);
-        final Set<Class<?>> classes = getClasses(co.glue());
-        classes.add(BrowserSteps.class);
-
-        for (final Class<?> c : classes) {
-            final Method[] methods = c.getDeclaredMethods();
-            for (final Method method : methods) {
-                for (final Annotation stepAnnotation : method.getAnnotations()) {
-                    if (stepAnnotation.annotationType().isAnnotationPresent(StepDefAnnotation.class)) {
-                        result.put(stepAnnotation.toString(), method);
-                    }
-                }
-            }
-        }
-        return result;
-    }
-
-    private static Set<Class<?>> getClasses(String[] packagesName) {
-        final Set<Class<?>> result = new HashSet<>();
-        for (final String packageName : packagesName) {
-            result.addAll(new Reflections(packageName, new SubTypesScanner(false)).getSubTypesOf(Step.class));
-        }
-        return result;
-    }
-
-    /**
      * @param textOrKey
      *            Is the new data (text or text in context (after a save))
      * @return a string from context or not (and crypted or not).
      * @throws TechnicalException
+     *             is thrown if you have a technical error (decrypt value) in NoraUi.
      */
     protected String getTextOrKey(String textOrKey) throws TechnicalException {
         String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
@@ -1028,6 +970,27 @@ public class Step implements IStep {
             value = cryptoService.decrypt(value);
         }
         return value;
+    }
+
+    private void displayMessageAtTheBeginningOfMethod(String message, String element, String application) throws TechnicalException {
+        try {
+            LOGGER.debug(message, element, application);
+        } catch (final Exception te) {
+            throw new TechnicalException("Technical problem in the code Messages.formatMessage(String templateMessage, String... args) in NoraUi.", te);
+        }
+    }
+
+    private void setDropDownValue(PageElement element, String text) throws TechnicalException, FailureException {
+        final WebElement select = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(element)));
+        final Select dropDown = new Select(select);
+        final int index = userNameService.findOptionByIgnoreCaseText(text, dropDown);
+        if (index != -1) {
+            dropDown.selectByIndex(index);
+        } else {
+            new Result.Failure<>(text.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : text,
+                    Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_VALUE_NOT_AVAILABLE_IN_THE_LIST), element, element.getPage().getApplication()), false, element.getPage().getCallBack());
+        }
+
     }
 
 }

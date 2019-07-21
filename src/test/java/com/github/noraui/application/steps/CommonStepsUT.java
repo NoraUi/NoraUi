@@ -39,14 +39,14 @@ public class CommonStepsUT {
     @Test
     public void checkMandatoryFieldTextTypeTest() throws TechnicalException {
         try {
-            s.checkMandatoryField("demo.DemoSteps", "mockField", "text", new ArrayList<GherkinStepCondition>());
+            s.checkMandatoryField("demo.DemoSteps-mockField", "text", new ArrayList<GherkinStepCondition>());
         } catch (final TechnicalException e) {
             Assert.assertEquals(String.format(Messages.getMessage("PAGE_UNABLE_TO_RETRIEVE"), "demo.DemoSteps"), e.getMessage());
         } catch (final FailureException a) {
             Assert.assertFalse("checkMandatoryField must return TechnicalException", true);
         }
         try {
-            s.checkMandatoryField("demo.DemoPage", "mockField", "text", new ArrayList<GherkinStepCondition>());
+            s.checkMandatoryField("demo.DemoPage-mockField", "text", new ArrayList<GherkinStepCondition>());
         } catch (final FailureException a) {
             Assert.assertEquals(Messages.getMessage("FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT") + " [-mockField]", a.getMessage());
         }

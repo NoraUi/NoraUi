@@ -17,7 +17,7 @@ public class UnitTest4CLIContext extends Context {
     /**
      * Specific logger
      */
-    private static final Logger logger = LoggerFactory.getLogger(UnitTest4CLIContext.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UnitTest4CLIContext.class);
 
     // applications
 
@@ -36,10 +36,10 @@ public class UnitTest4CLIContext extends Context {
     @Override
     public synchronized void initializeRobot(Class<?> clazz) throws TechnicalException {
         super.initializeRobot(clazz);
-        logger.info("NoraRobotContext > initializeRobot()");
+        LOGGER.info("NoraRobotContext > initializeRobot()");
 
         // This line is here as an example to show how to do with internationalization using messages bundles.
-        logger.info(Messages.format(Messages.getMessage("HELLO", "UnitTest4CLI"), "UnitTest4CLI"));
+        LOGGER.info(Messages.format(Messages.getMessage("HELLO", "UnitTest4CLI"), "UnitTest4CLI"));
 
         // Urls configuration
 
