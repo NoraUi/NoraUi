@@ -18,7 +18,7 @@ public interface IStep {
      * @param page
      *            is the target page
      */
-    public void checkStep(IPage page);
+    void checkStep(IPage page);
 
     /**
      * Quick getter to the global web driver

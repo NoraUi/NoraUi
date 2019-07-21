@@ -17,15 +17,15 @@ import com.github.noraui.utils.Messages;
 public class InputExcelDataProvider extends ExcelDataProvider {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    private static final Logger logger = LoggerFactory.getLogger(InputExcelDataProvider.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(InputExcelDataProvider.class);
 
     private static final String EXCEL_INPUT_DATA_PROVIDER_USED = "EXCEL_INPUT_DATA_PROVIDER_USED";
 
     public InputExcelDataProvider() {
         super();
-        logger.info(Messages.getMessage(EXCEL_INPUT_DATA_PROVIDER_USED));
+        LOGGER.info(Messages.getMessage(EXCEL_INPUT_DATA_PROVIDER_USED));
     }
 
     /**
@@ -38,7 +38,7 @@ public class InputExcelDataProvider extends ExcelDataProvider {
             openInputData();
             initColumns();
         } catch (EmptyDataFileContentException | WrongDataFileFormatException e) {
-            logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION), e);
+            LOGGER.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION), e);
             System.exit(-1);
         }
     }

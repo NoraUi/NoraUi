@@ -31,9 +31,9 @@ import com.google.inject.Singleton;
 public class CryptoServiceImpl implements CryptoService {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    private static final Logger logger = LoggerFactory.getLogger(Utilities.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Utilities.class);
 
     /**
      * {@inheritDoc}
@@ -69,7 +69,7 @@ public class CryptoServiceImpl implements CryptoService {
             aesKey = buildKey16char(cryptoKey);
         }
         if (aesKey == null) {
-            logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE_DECRYPT_CONFIGURATION_EXCEPTION);
+            LOGGER.error(TechnicalException.TECHNICAL_ERROR_MESSAGE_DECRYPT_CONFIGURATION_EXCEPTION);
             throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DECRYPT_CONFIGURATION_EXCEPTION));
         }
         try {
@@ -77,7 +77,7 @@ public class CryptoServiceImpl implements CryptoService {
             cipher.init(Cipher.ENCRYPT_MODE, aesKey);
             return getPrefix() + Base64.encodeBase64String(cipher.doFinal(text.getBytes()));
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
-            logger.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_ENCRYPT_EXCEPTION), e);
+            LOGGER.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_ENCRYPT_EXCEPTION), e);
             throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_ENCRYPT_EXCEPTION), e);
         }
     }
@@ -88,7 +88,7 @@ public class CryptoServiceImpl implements CryptoService {
     @Override
     public String decrypt(String cryptoKey, String encrypted) throws TechnicalException {
         if (!encrypted.startsWith(getPrefix())) {
-            logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE_DECRYPT_EXCEPTION);
+            LOGGER.error(TechnicalException.TECHNICAL_ERROR_MESSAGE_DECRYPT_EXCEPTION);
             throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DECRYPT_EXCEPTION));
         }
         Key aesKey = null;
@@ -96,7 +96,7 @@ public class CryptoServiceImpl implements CryptoService {
             aesKey = buildKey16char(cryptoKey);
         }
         if (aesKey == null) {
-            logger.error(TechnicalException.TECHNICAL_ERROR_MESSAGE_DECRYPT_CONFIGURATION_EXCEPTION);
+            LOGGER.error(TechnicalException.TECHNICAL_ERROR_MESSAGE_DECRYPT_CONFIGURATION_EXCEPTION);
             throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DECRYPT_CONFIGURATION_EXCEPTION));
         }
         try {

@@ -102,7 +102,7 @@ public class NoraUiCommandLineInterfaceUT {
         Assert.assertTrue(result.getApplicationFiles().get(0).getModels().get(0).getResults().size() == 1);
         Assert.assertEquals("ccc", result.getApplicationFiles().get(0).getModels().get(0).getResults().get(0).getName());
 
-        Assert.assertTrue(result.getScenarioFiles().size() == 1);
+        Assert.assertEquals(1, result.getScenarioFiles().size());
         Assert.assertEquals("stubSenario", result.getScenarioFiles().get(0).getName());
         Assert.assertEquals("stubDescription", result.getScenarioFiles().get(0).getDescription());
         Assert.assertEquals("stubapp", result.getScenarioFiles().get(0).getApplication());

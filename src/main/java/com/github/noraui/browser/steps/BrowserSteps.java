@@ -48,8 +48,8 @@ public class BrowserSteps {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Quand("J'ouvre une nouvelle fenêtre[\\.|\\?]")
-    @When("I open a new window[\\.|\\?]")
+    @Quand("J'ouvre une nouvelle fenêtre(\\?)")
+    @When("I open a new window(\\?)")
     public void openNewWindow(List<GherkinStepCondition> conditions) throws FailureException {
         try {
             Set<String> initialWindows = Context.getDriver().getWindowHandles();
@@ -77,8 +77,8 @@ public class BrowserSteps {
      */
     @Times({ @Time(name = "AM"), @Time(name = "{pageKey}") })
     @Conditioned
-    @Lorsque("'(.*)' est ouvert[\\.|\\?]")
-    @Given("'(.*)' is opened[\\.|\\?]")
+    @Lorsque("{string} est ouvert(\\?)")
+    @Given("{string} is opened(\\?)")
     public void openUrlIfDifferent(@TimeName("pageKey") String pageKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         goToUrl(pageKey, false);
     }
@@ -94,8 +94,8 @@ public class BrowserSteps {
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    @Et("Je retourne vers '(.*)'")
-    @And("I go back to '(.*)'")
+    @Et("Je retourne vers {string}")
+    @And("I go back to {string}")
     public void goToUrl(String pageKey) throws TechnicalException, FailureException {
         goToUrl(pageKey, true);
     }
@@ -104,7 +104,7 @@ public class BrowserSteps {
      * Switch window when the scenario contain more one windows (one more application for example).
      *
      * @param windowKey
-     *            the key of window (popup, ...) Example: GEOBEER.
+     *            the key of window (popup, ...) Example: BAKERY.
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
@@ -114,8 +114,8 @@ public class BrowserSteps {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Quand("Je passe à la fenêtre '(.*)'[\\.|\\?]")
-    @When("I switch to '(.*)' window[\\.|\\?]")
+    @Quand("Je passe à la fenêtre {string}(\\?)")
+    @When("I switch to {string} window(\\?)")
     public void switchWindow(String windowKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         switchWindow(windowKey);
     }
@@ -144,8 +144,8 @@ public class BrowserSteps {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Lorsque("Je ferme la fenêtre actuelle et passe à la fenêtre '(.*)'[\\.|\\?]")
-    @Then("I close current window and switch to '(.*)' window[\\.|\\?]")
+    @Lorsque("Je ferme la fenêtre actuelle et passe à la fenêtre {string}(\\?)")
+    @Then("I close current window and switch to {string} window(\\?)")
     public void closeWindowAndSwitchTo(String key, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         closeWindowAndSwitchTo(key);
     }
@@ -164,8 +164,8 @@ public class BrowserSteps {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Lorsque("Je ferme toutes les fenêtres sauf '(.*)'[\\.|\\?]")
-    @Then("I close all windows except '(.*)'[\\.|\\?]")
+    @Lorsque("Je ferme toutes les fenêtres sauf {string}(\\?)")
+    @Then("I close all windows except {string}(\\?)")
     public void closeAllWindowsAndSwitchTo(String key, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         closeAllWindowsAndSwitchTo(key);
     }
@@ -290,7 +290,7 @@ public class BrowserSteps {
 
     /**
      * @param windowKey
-     *            the key of window (popup, ...) Example: GEOBEER.
+     *            the key of window (popup, ...) Example: BAKERY.
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_SWITCH_WINDOW} message (with screenshot, with exception)

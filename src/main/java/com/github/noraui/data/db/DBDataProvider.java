@@ -32,9 +32,9 @@ import com.github.noraui.utils.Messages;
 public class DBDataProvider extends CommonDataProvider implements DataInputProvider {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    private static final Logger logger = LoggerFactory.getLogger(DBDataProvider.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DBDataProvider.class);
 
     private static final String DB_DATA_PROVIDER_USED = "DB_DATA_PROVIDER_USED";
     private static final String DATABASE_ERROR_FORBIDDEN_WORDS_IN_QUERY = "DATABASE_ERROR_FORBIDDEN_WORDS_IN_QUERY";
@@ -64,10 +64,10 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
                 throw new DatabaseException(String.format(Messages.getMessage(DatabaseException.TECHNICAL_ERROR_MESSAGE_UNKNOWN_DATABASE_TYPE), type));
             }
         } catch (final Exception e) {
-            logger.error(Messages.getMessage(DatabaseException.TECHNICAL_ERROR_MESSAGE_DATABASE_EXCEPTION), e);
+            LOGGER.error(Messages.getMessage(DatabaseException.TECHNICAL_ERROR_MESSAGE_DATABASE_EXCEPTION), e);
             throw new TechnicalException(Messages.getMessage(DatabaseException.TECHNICAL_ERROR_MESSAGE_DATABASE_EXCEPTION), e);
         }
-        logger.info(Messages.getMessage(DB_DATA_PROVIDER_USED), type);
+        LOGGER.info(Messages.getMessage(DB_DATA_PROVIDER_USED), type);
     }
 
     public Connection getConnection() throws SQLException {
@@ -108,7 +108,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
                 ResultSet rs = statement.executeQuery(sqlRequest);) {
             return rs.last() ? rs.getRow() + 1 : 0;
         } catch (final SQLException e) {
-            logger.error("error DBDataProvider.getNbLines()", e);
+            LOGGER.error("error DBDataProvider.getNbLines()", e);
             return 0;
         }
     }
@@ -121,7 +121,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
      */
     @Override
     public String readValue(String column, int line) throws TechnicalException {
-        logger.debug("readValue: column:[{}] and line:[{}] ", column, line);
+        LOGGER.debug("readValue: column:[{}] and line:[{}] ", column, line);
         String sqlRequest;
         try {
             final Path file = Paths.get(dataInPath + scenarioName + ".sql");
@@ -136,10 +136,10 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
             }
             while (rs.next() && rs.getRow() < line) {
             }
-            logger.info("column: {}", column);
+            LOGGER.debug("column: {}", column);
             return rs.getString(column);
         } catch (final SQLException e) {
-            logger.error("error DBDataProvider.readValue({}, {})", column, line, e);
+            LOGGER.error("error DBDataProvider.readValue({}, {})", column, line, e);
             return "";
         }
     }
@@ -175,7 +175,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
             }
             return ret;
         } catch (final SQLException e) {
-            logger.debug("In DBDataProvider, this catch aims for testing the end of provided data. DBDataProvider.readLine({}, {})", line, readResult, e);
+            LOGGER.debug("In DBDataProvider, this catch aims for testing the end of provided data. DBDataProvider.readLine({}, {})", line, readResult, e);
             return null;
         }
     }
