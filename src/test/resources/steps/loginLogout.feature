@@ -1,5 +1,5 @@
-@LoginLogout
-Feature: LoginLogout (Scenario that login and logout with any good user.) 
+@loginLogout
+Feature: loginLogout (Scenario that login and logout with any good user.) 
 
 	Scenario Outline:  Scenario that login and logout with any good user.
 	

@@ -17,14 +17,14 @@ INSERT INTO hello VALUES (6, 'Jenkins T6', '35000', '', 'smile', 'smile', '', ''
 INSERT INTO hello VALUES (7, 'Jenkins T7', '35000', '', '', '', '', '');
 INSERT INTO hello VALUES (8, 'Jenkins T8', '', 'Rennes', 'smile', 'smile', '', '');
 
-CREATE TABLE LoginLogout (
+CREATE TABLE loginLogout (
     id int primary key not null,
     user text,
     password text,
     profile text
 );
-INSERT INTO LoginLogout VALUES (1, 'sgrillon', '℗:qmTAYKS9UG87rNuUQ0Ao6Q==', 'admin');
-INSERT INTO LoginLogout VALUES (2, 'sgrillon2', '℗:qmTAYKS9UG87rNuUQ0Ao6Q==', 'referencer');
+INSERT INTO loginLogout VALUES (1, 'sgrillon', '℗:qmTAYKS9UG87rNuUQ0Ao6Q==', 'admin');
+INSERT INTO loginLogout VALUES (2, 'sgrillon2', '℗:qmTAYKS9UG87rNuUQ0Ao6Q==', 'referencer');
 
 CREATE TABLE blog (
     id int primary key not null,
