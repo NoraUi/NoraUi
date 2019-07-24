@@ -73,8 +73,8 @@ public class BakerySteps extends Step {
      * @throws FailureException
      *             if the scenario encounters a functional error.
      */
-    @Alors("Je me connect sur BAKERY avec '(.*)' '(.*)'")
-    @Then("I log in to BAKERY as '(.*)' '(.*)'")
+    @Alors("Je me connect sur BAKERY avec {string} {string}")
+    @Then("I log in to BAKERY as {string} {string}")
     public void logInToBakery(String login, String password) throws FailureException {
         try {
             Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(bakeryPage.signInButton)));
