@@ -58,8 +58,9 @@ public class NoraUiModel {
                 r.add(new NoraUiField(element));
             }
             this.fields = r;
+        } else {
+            this.fields = null;
         }
-        this.fields = null;
     }
 
     public List<NoraUiResult> getResults() {
@@ -97,8 +98,10 @@ public class NoraUiModel {
                 r.add(new NoraUiResult(element));
             }
             this.results = r;
+        } else {
+            this.results = null;
         }
-        this.results = null;
+        
     }
 
 }
