@@ -188,13 +188,7 @@ public class Model extends AbstractNoraUiCli {
         String modelPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("utils", "application/model/" + applicationName)
                 .replaceAll("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1)) + ".java";
         StringBuilder sb = new StringBuilder();
-        sb.append("/**").append(System.lineSeparator());
-        sb.append(" * " + robotContext.getSimpleName().replaceAll("Context", "") + " generated free by NoraUi Organization https://github.com/NoraUi").append(System.lineSeparator());
-        sb.append(" * " + robotContext.getSimpleName().replaceAll("Context", "") + " is licensed under the license BSD.").append(System.lineSeparator());
-        sb.append(" * ").append(System.lineSeparator());
-        sb.append(" * CAUTION: " + robotContext.getSimpleName().replaceAll("Context", "") + " use NoraUi library. This project is licensed under the license GNU AFFERO GENERAL PUBLIC LICENSE")
-                .append(System.lineSeparator());
-        sb.append(" */").append(System.lineSeparator());
+        sb.append(getJavaClassHeaders(robotContext.getSimpleName().replaceAll("Context", ""))).append(System.lineSeparator());
         sb.append(robotContext.getPackage().toString().replaceAll("utils", "application.model." + applicationName) + ";").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
         sb.append("import org.apache.commons.lang3.builder.EqualsBuilder;").append(System.lineSeparator());
