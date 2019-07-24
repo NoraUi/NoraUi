@@ -30,7 +30,9 @@ import org.slf4j.LoggerFactory;
 
 import com.github.noraui.cli.model.NoraUiApplicationFile;
 import com.github.noraui.cli.model.NoraUiCliFile;
+import com.github.noraui.cli.model.NoraUiField;
 import com.github.noraui.cli.model.NoraUiModel;
+import com.github.noraui.cli.model.NoraUiResult;
 import com.github.noraui.cli.model.NoraUiScenarioFile;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.service.CryptoService;
@@ -208,6 +210,7 @@ public class NoraUiCommandLineInterface {
         features.put("6", "remove model");
         features.put("7", "encrypt data");
         features.put("8", "decrypt data");
+        features.put("9", "status");
         features.put("0", "exit NoraUi CLI");
         return features;
     }
@@ -527,7 +530,7 @@ public class NoraUiCommandLineInterface {
      * @param featureCode
      *            is -f arg ("1" is "add new application", "2" is "add new scenario", "3" is "add new model", "4" is
      *            "remove application", "5" is "remove scenario", "6" is "remove model", "7" is
-     *            "encrypt data", "8" is "decrypt data" and "0" is "exit NoraUi CLI").
+     *            "encrypt data", "8" is "decrypt data", "9" is "status" and "0" is "exit NoraUi CLI").
      * @param applicationName
      *            name of application.
      * @param scenarioName
@@ -547,7 +550,7 @@ public class NoraUiCommandLineInterface {
      * @param robotContext
      *            Context class from robot.
      * @param robotCounter
-     *            Counter class from robot.          
+     *            Counter class from robot.
      * @param verbose
      *            boolean to activate verbose mode (show more traces).
      * @param input
@@ -581,6 +584,8 @@ public class NoraUiCommandLineInterface {
             encrypt(cryptoKey, description, input, interactiveMode);
         } else if (featureCode == 8) {
             decrypt(cryptoKey, description, input, interactiveMode);
+        } else if (featureCode == 9) {
+            status(noraUiCliFile);
         }
         return noraUiCliFile;
     }
@@ -942,7 +947,7 @@ public class NoraUiCommandLineInterface {
      * @param robotName
      *            is name of target Robot.
      * @param robotCounter
-     *            Counter class from robot.           
+     *            Counter class from robot.
      * @param verbose
      *            boolean to activate verbose mode (show more traces).
      * @param input
@@ -1147,6 +1152,35 @@ public class NoraUiCommandLineInterface {
                 LOGGER.info("Decrypt a data [{}] with this crypto key: [{}]", description, cryptoKey);
                 LOGGER.info("Decrypted value is {}", cryptoService.decrypt(cryptoKey, description));
             }
+        }
+    }
+
+    /**
+     * CLI status feature display all datas from NoraUi CLI files (.noraui folder at the root of robot).
+     * 
+     * @param noraUiCliFile
+     *            Object contain all data from CLI Files.
+     */
+    private void status(NoraUiCliFile noraUiCliFile) {
+        List<NoraUiApplicationFile> applications = noraUiCliFile.getApplicationFiles();
+        for (NoraUiApplicationFile application : applications) {
+            LOGGER.info("Application: [{}]",  application.getName());
+            LOGGER.info(" - url: [{}]",  application.getUrl());
+            for (NoraUiModel model : application.getModels()) {
+                LOGGER.info(" - model: [{}]",  model.getName());
+                for (NoraUiField field : model.getFields()) {
+                    LOGGER.info("   - field: [{}]",  field.getName());
+                }
+                for (NoraUiResult result : model.getResults()) {
+                    LOGGER.info("   - result: [{}]",  result.getName());
+                }
+            }
+        }
+        List<NoraUiScenarioFile> scenarios = noraUiCliFile.getScenarioFiles();
+        for (NoraUiScenarioFile scenario : scenarios) {
+            LOGGER.info("Scenario: [{}]", scenario.getName());
+            LOGGER.info(" - description: [{}]", scenario.getDescription());
+            LOGGER.info(" - application: [{}]", scenario.getApplication());
         }
     }
 

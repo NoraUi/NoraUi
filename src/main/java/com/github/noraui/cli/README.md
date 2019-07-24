@@ -17,6 +17,7 @@ Command Line Interface for NoraUi
     6 => remove model
     7 => encrypt data
     8 => decrypt data
+    9 => status
 -s: Scenario Name
 -u: Url
 -d: Description

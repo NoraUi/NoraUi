@@ -8,9 +8,24 @@ package com.github.noraui.cli.model;
 
 public class NoraUiScenarioFile {
 
+    /**
+     * Scenario name.
+     */
     private String name;
+    
+    /**
+     * description of application.
+     */
     private String description;
+    
+    /**
+     * application name use by this scenario.
+     */
     private String application;
+
+    /**
+     * Sets the status parameter to false when deleting to delete the corresponding file at the end of the algorithm
+     */
     private boolean status;
 
     public NoraUiScenarioFile() {

@@ -72,6 +72,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("    6 => remove model").append(System.lineSeparator());
         expectedCliAsk.append("    7 => encrypt data").append(System.lineSeparator());
         expectedCliAsk.append("    8 => decrypt data").append(System.lineSeparator());
+        expectedCliAsk.append("    9 => status").append(System.lineSeparator());
         expectedCliAsk.append("-s: Scenario Name").append(System.lineSeparator());
         expectedCliAsk.append("-u: Url").append(System.lineSeparator());
         expectedCliAsk.append("-d: Description").append(System.lineSeparator());
@@ -93,6 +94,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("    6 => remove model").append(System.lineSeparator());
         expectedCliAsk.append("    7 => encrypt data").append(System.lineSeparator());
         expectedCliAsk.append("    8 => decrypt data").append(System.lineSeparator());
+        expectedCliAsk.append("    9 => status").append(System.lineSeparator());
         expectedCliAsk.append(System.lineSeparator());
         expectedCliAsk.append("Exit NoraUi Command Line Interface with success.").append(System.lineSeparator());
 
@@ -100,7 +102,48 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
     }
 
     @Test
-    public void testCliStep001_AddApplication() throws TechnicalException {
+    public void testCliStep001_DisplayStatus() throws TechnicalException {
+        StringBuilder humanResponse = new StringBuilder();
+        humanResponse.append("9").append(System.lineSeparator());
+        humanResponse.append("0").append(System.lineSeparator());
+        systemInMock.provideText(humanResponse.toString());
+
+        cli.runCli(UnitTest4CLIContext.class, UnitTest4CLICounter.class);
+
+        StringBuilder expectedCliAsk = new StringBuilder();
+        expectedCliAsk.append("What do you want ?").append(System.lineSeparator());
+        expectedCliAsk.append("    0 => exit NoraUi CLI").append(System.lineSeparator());
+        expectedCliAsk.append("    1 => add new application").append(System.lineSeparator());
+        expectedCliAsk.append("    2 => add new scenario").append(System.lineSeparator());
+        expectedCliAsk.append("    3 => add new model").append(System.lineSeparator());
+        expectedCliAsk.append("    4 => remove application").append(System.lineSeparator());
+        expectedCliAsk.append("    5 => remove scenario").append(System.lineSeparator());
+        expectedCliAsk.append("    6 => remove model").append(System.lineSeparator());
+        expectedCliAsk.append("    7 => encrypt data").append(System.lineSeparator());
+        expectedCliAsk.append("    8 => decrypt data").append(System.lineSeparator());
+        expectedCliAsk.append("    9 => status").append(System.lineSeparator());
+        expectedCliAsk.append(System.lineSeparator());
+        expectedCliAsk.append("NoraUi Command Line Interface finished with success.").append(System.lineSeparator());
+        expectedCliAsk.append(System.lineSeparator());
+        expectedCliAsk.append("What do you want ?").append(System.lineSeparator());
+        expectedCliAsk.append("    0 => exit NoraUi CLI").append(System.lineSeparator());
+        expectedCliAsk.append("    1 => add new application").append(System.lineSeparator());
+        expectedCliAsk.append("    2 => add new scenario").append(System.lineSeparator());
+        expectedCliAsk.append("    3 => add new model").append(System.lineSeparator());
+        expectedCliAsk.append("    4 => remove application").append(System.lineSeparator());
+        expectedCliAsk.append("    5 => remove scenario").append(System.lineSeparator());
+        expectedCliAsk.append("    6 => remove model").append(System.lineSeparator());
+        expectedCliAsk.append("    7 => encrypt data").append(System.lineSeparator());
+        expectedCliAsk.append("    8 => decrypt data").append(System.lineSeparator());
+        expectedCliAsk.append("    9 => status").append(System.lineSeparator());
+        expectedCliAsk.append(System.lineSeparator());
+        expectedCliAsk.append("Exit NoraUi Command Line Interface with success.").append(System.lineSeparator());
+
+        Assert.assertTrue(stdOutLog.getLog().contains(expectedCliAsk));
+    }
+
+    @Test
+    public void testCliStep002_AddApplication() throws TechnicalException {
         StringBuilder humanResponse = new StringBuilder();
         humanResponse.append("1").append(System.lineSeparator());
         humanResponse.append("google").append(System.lineSeparator());
@@ -121,6 +164,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("    6 => remove model").append(System.lineSeparator());
         expectedCliAsk.append("    7 => encrypt data").append(System.lineSeparator());
         expectedCliAsk.append("    8 => decrypt data").append(System.lineSeparator());
+        expectedCliAsk.append("    9 => status").append(System.lineSeparator());
         expectedCliAsk.append("Enter application name:").append(System.lineSeparator());
         expectedCliAsk.append("Enter url:").append(System.lineSeparator());
         expectedCliAsk.append("Add a new application named [google] with this url: [http://www.google.fr]").append(System.lineSeparator());
@@ -137,6 +181,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("    6 => remove model").append(System.lineSeparator());
         expectedCliAsk.append("    7 => encrypt data").append(System.lineSeparator());
         expectedCliAsk.append("    8 => decrypt data").append(System.lineSeparator());
+        expectedCliAsk.append("    9 => status").append(System.lineSeparator());
         expectedCliAsk.append(System.lineSeparator());
         expectedCliAsk.append("Exit NoraUi Command Line Interface with success.").append(System.lineSeparator());
 
@@ -144,7 +189,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
     }
 
     @Test
-    public void testCliStep002_AddScenario() throws TechnicalException {
+    public void testCliStep003_AddScenario() throws TechnicalException {
         StringBuilder humanResponse = new StringBuilder();
         humanResponse.append("2").append(System.lineSeparator());
         humanResponse.append("1").append(System.lineSeparator());
@@ -166,6 +211,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("    6 => remove model").append(System.lineSeparator());
         expectedCliAsk.append("    7 => encrypt data").append(System.lineSeparator());
         expectedCliAsk.append("    8 => decrypt data").append(System.lineSeparator());
+        expectedCliAsk.append("    9 => status").append(System.lineSeparator());
         expectedCliAsk.append("Enter index application number:").append(System.lineSeparator());
         expectedCliAsk.append("    1) google").append(System.lineSeparator());
         expectedCliAsk.append("Enter scenario name:").append(System.lineSeparator());
@@ -186,6 +232,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("    6 => remove model").append(System.lineSeparator());
         expectedCliAsk.append("    7 => encrypt data").append(System.lineSeparator());
         expectedCliAsk.append("    8 => decrypt data").append(System.lineSeparator());
+        expectedCliAsk.append("    9 => status").append(System.lineSeparator());
         expectedCliAsk.append(System.lineSeparator());
         expectedCliAsk.append("Exit NoraUi Command Line Interface with success.").append(System.lineSeparator());
 
@@ -193,7 +240,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
     }
 
     @Test
-    public void testCliStep003_AddModel() throws TechnicalException {
+    public void testCliStep004_AddModel() throws TechnicalException {
         StringBuilder humanResponse = new StringBuilder();
         humanResponse.append("3").append(System.lineSeparator());
         humanResponse.append("1").append(System.lineSeparator());
@@ -216,6 +263,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("    6 => remove model").append(System.lineSeparator());
         expectedCliAsk.append("    7 => encrypt data").append(System.lineSeparator());
         expectedCliAsk.append("    8 => decrypt data").append(System.lineSeparator());
+        expectedCliAsk.append("    9 => status").append(System.lineSeparator());
         expectedCliAsk.append("Enter index application number:").append(System.lineSeparator());
         expectedCliAsk.append("    1) google").append(System.lineSeparator());
         expectedCliAsk.append("Enter model name:").append(System.lineSeparator());
@@ -238,6 +286,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("    6 => remove model").append(System.lineSeparator());
         expectedCliAsk.append("    7 => encrypt data").append(System.lineSeparator());
         expectedCliAsk.append("    8 => decrypt data").append(System.lineSeparator());
+        expectedCliAsk.append("    9 => status").append(System.lineSeparator());
         expectedCliAsk.append(System.lineSeparator());
         expectedCliAsk.append("Exit NoraUi Command Line Interface with success.").append(System.lineSeparator());
 
@@ -245,7 +294,57 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
     }
 
     @Test
-    public void testCliStep004_RemoveModel() throws TechnicalException {
+    public void testCliStep005_DisplayStatus() throws TechnicalException {
+        StringBuilder humanResponse = new StringBuilder();
+        humanResponse.append("9").append(System.lineSeparator());
+        humanResponse.append("0").append(System.lineSeparator());
+        systemInMock.provideText(humanResponse.toString());
+
+        cli.runCli(UnitTest4CLIContext.class, UnitTest4CLICounter.class);
+
+        StringBuilder expectedCliAsk = new StringBuilder();
+        expectedCliAsk.append("What do you want ?").append(System.lineSeparator());
+        expectedCliAsk.append("    0 => exit NoraUi CLI").append(System.lineSeparator());
+        expectedCliAsk.append("    1 => add new application").append(System.lineSeparator());
+        expectedCliAsk.append("    2 => add new scenario").append(System.lineSeparator());
+        expectedCliAsk.append("    3 => add new model").append(System.lineSeparator());
+        expectedCliAsk.append("    4 => remove application").append(System.lineSeparator());
+        expectedCliAsk.append("    5 => remove scenario").append(System.lineSeparator());
+        expectedCliAsk.append("    6 => remove model").append(System.lineSeparator());
+        expectedCliAsk.append("    7 => encrypt data").append(System.lineSeparator());
+        expectedCliAsk.append("    8 => decrypt data").append(System.lineSeparator());
+        expectedCliAsk.append("    9 => status").append(System.lineSeparator());
+        expectedCliAsk.append("Application: [google]").append(System.lineSeparator());
+        expectedCliAsk.append(" - url: [http://www.google.fr]").append(System.lineSeparator());
+        expectedCliAsk.append(" - model: [foo]").append(System.lineSeparator());
+        expectedCliAsk.append("   - field: [field1]").append(System.lineSeparator());
+        expectedCliAsk.append("   - field: [field2]").append(System.lineSeparator());
+        expectedCliAsk.append("   - result: [result1]").append(System.lineSeparator());
+        expectedCliAsk.append("Scenario: [loginSample]").append(System.lineSeparator());
+        expectedCliAsk.append(" - description: [description for login to google sample]").append(System.lineSeparator());
+        expectedCliAsk.append(" - application: [google]").append(System.lineSeparator());
+        expectedCliAsk.append(System.lineSeparator());
+        expectedCliAsk.append("NoraUi Command Line Interface finished with success.").append(System.lineSeparator());
+        expectedCliAsk.append(System.lineSeparator());
+        expectedCliAsk.append("What do you want ?").append(System.lineSeparator());
+        expectedCliAsk.append("    0 => exit NoraUi CLI").append(System.lineSeparator());
+        expectedCliAsk.append("    1 => add new application").append(System.lineSeparator());
+        expectedCliAsk.append("    2 => add new scenario").append(System.lineSeparator());
+        expectedCliAsk.append("    3 => add new model").append(System.lineSeparator());
+        expectedCliAsk.append("    4 => remove application").append(System.lineSeparator());
+        expectedCliAsk.append("    5 => remove scenario").append(System.lineSeparator());
+        expectedCliAsk.append("    6 => remove model").append(System.lineSeparator());
+        expectedCliAsk.append("    7 => encrypt data").append(System.lineSeparator());
+        expectedCliAsk.append("    8 => decrypt data").append(System.lineSeparator());
+        expectedCliAsk.append("    9 => status").append(System.lineSeparator());
+        expectedCliAsk.append(System.lineSeparator());
+        expectedCliAsk.append("Exit NoraUi Command Line Interface with success.").append(System.lineSeparator());
+
+        Assert.assertTrue(stdOutLog.getLog().contains(expectedCliAsk));
+    }
+
+    @Test
+    public void testCliStep006_RemoveModel() throws TechnicalException {
         StringBuilder humanResponse = new StringBuilder();
         humanResponse.append("6").append(System.lineSeparator());
         // 2 is google
@@ -268,6 +367,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("    6 => remove model").append(System.lineSeparator());
         expectedCliAsk.append("    7 => encrypt data").append(System.lineSeparator());
         expectedCliAsk.append("    8 => decrypt data").append(System.lineSeparator());
+        expectedCliAsk.append("    9 => status").append(System.lineSeparator());
         expectedCliAsk.append("Enter index application number:").append(System.lineSeparator());
         expectedCliAsk.append("    1) demo").append(System.lineSeparator());
         expectedCliAsk.append("    2) google").append(System.lineSeparator());
@@ -287,6 +387,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("    6 => remove model").append(System.lineSeparator());
         expectedCliAsk.append("    7 => encrypt data").append(System.lineSeparator());
         expectedCliAsk.append("    8 => decrypt data").append(System.lineSeparator());
+        expectedCliAsk.append("    9 => status").append(System.lineSeparator());
         expectedCliAsk.append(System.lineSeparator());
         expectedCliAsk.append("Exit NoraUi Command Line Interface with success.").append(System.lineSeparator());
 
@@ -294,7 +395,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
     }
 
     @Test
-    public void testCliStep005_RemoveScenario() throws TechnicalException {
+    public void testCliStep007_RemoveScenario() throws TechnicalException {
         StringBuilder humanResponse = new StringBuilder();
         humanResponse.append("5").append(System.lineSeparator());
         humanResponse.append("1").append(System.lineSeparator());
@@ -314,12 +415,13 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("    6 => remove model").append(System.lineSeparator());
         expectedCliAsk.append("    7 => encrypt data").append(System.lineSeparator());
         expectedCliAsk.append("    8 => decrypt data").append(System.lineSeparator());
+        expectedCliAsk.append("    9 => status").append(System.lineSeparator());
         expectedCliAsk.append("Enter index scenario number:").append(System.lineSeparator());
         expectedCliAsk.append("    1) loginSample").append(System.lineSeparator());
         expectedCliAsk.append("    2) hello").append(System.lineSeparator());
         expectedCliAsk.append("    3) bonjour").append(System.lineSeparator());
         expectedCliAsk.append("    4) blog").append(System.lineSeparator());
-        expectedCliAsk.append("    5) LoginLogout").append(System.lineSeparator());
+        expectedCliAsk.append("    5) loginLogout").append(System.lineSeparator());
         expectedCliAsk.append("    6) sampleRESTAPI").append(System.lineSeparator());
         expectedCliAsk.append("Remove a scenario named [loginSample].").append(System.lineSeparator());
         expectedCliAsk.append("dataProvider.in.type is [EXCEL]").append(System.lineSeparator());
@@ -337,6 +439,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("    6 => remove model").append(System.lineSeparator());
         expectedCliAsk.append("    7 => encrypt data").append(System.lineSeparator());
         expectedCliAsk.append("    8 => decrypt data").append(System.lineSeparator());
+        expectedCliAsk.append("    9 => status").append(System.lineSeparator());
         expectedCliAsk.append(System.lineSeparator());
         expectedCliAsk.append("Exit NoraUi Command Line Interface with success.").append(System.lineSeparator());
 
@@ -344,7 +447,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
     }
 
     @Test
-    public void testCliStep006_RemoveApplication() throws TechnicalException {
+    public void testCliStep008_RemoveApplication() throws TechnicalException {
         StringBuilder humanResponse = new StringBuilder();
         humanResponse.append("4").append(System.lineSeparator());
         humanResponse.append("1").append(System.lineSeparator());
@@ -364,6 +467,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("    6 => remove model").append(System.lineSeparator());
         expectedCliAsk.append("    7 => encrypt data").append(System.lineSeparator());
         expectedCliAsk.append("    8 => decrypt data").append(System.lineSeparator());
+        expectedCliAsk.append("    9 => status").append(System.lineSeparator());
         expectedCliAsk.append("Enter index application number:").append(System.lineSeparator());
         expectedCliAsk.append("    1) google").append(System.lineSeparator());
         expectedCliAsk.append("Remove application named [google].").append(System.lineSeparator());
@@ -380,6 +484,48 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         expectedCliAsk.append("    6 => remove model").append(System.lineSeparator());
         expectedCliAsk.append("    7 => encrypt data").append(System.lineSeparator());
         expectedCliAsk.append("    8 => decrypt data").append(System.lineSeparator());
+        expectedCliAsk.append("    9 => status").append(System.lineSeparator());
+        expectedCliAsk.append(System.lineSeparator());
+        expectedCliAsk.append("Exit NoraUi Command Line Interface with success.").append(System.lineSeparator());
+
+        Assert.assertTrue(stdOutLog.getLog().contains(expectedCliAsk));
+    }
+
+    @Test
+    public void testCliStep009_DisplayStatus() throws TechnicalException {
+        StringBuilder humanResponse = new StringBuilder();
+        humanResponse.append("9").append(System.lineSeparator());
+        humanResponse.append("0").append(System.lineSeparator());
+        systemInMock.provideText(humanResponse.toString());
+
+        cli.runCli(UnitTest4CLIContext.class, UnitTest4CLICounter.class);
+
+        StringBuilder expectedCliAsk = new StringBuilder();
+        expectedCliAsk.append("What do you want ?").append(System.lineSeparator());
+        expectedCliAsk.append("    0 => exit NoraUi CLI").append(System.lineSeparator());
+        expectedCliAsk.append("    1 => add new application").append(System.lineSeparator());
+        expectedCliAsk.append("    2 => add new scenario").append(System.lineSeparator());
+        expectedCliAsk.append("    3 => add new model").append(System.lineSeparator());
+        expectedCliAsk.append("    4 => remove application").append(System.lineSeparator());
+        expectedCliAsk.append("    5 => remove scenario").append(System.lineSeparator());
+        expectedCliAsk.append("    6 => remove model").append(System.lineSeparator());
+        expectedCliAsk.append("    7 => encrypt data").append(System.lineSeparator());
+        expectedCliAsk.append("    8 => decrypt data").append(System.lineSeparator());
+        expectedCliAsk.append("    9 => status").append(System.lineSeparator());
+        expectedCliAsk.append(System.lineSeparator());
+        expectedCliAsk.append("NoraUi Command Line Interface finished with success.").append(System.lineSeparator());
+        expectedCliAsk.append(System.lineSeparator());
+        expectedCliAsk.append("What do you want ?").append(System.lineSeparator());
+        expectedCliAsk.append("    0 => exit NoraUi CLI").append(System.lineSeparator());
+        expectedCliAsk.append("    1 => add new application").append(System.lineSeparator());
+        expectedCliAsk.append("    2 => add new scenario").append(System.lineSeparator());
+        expectedCliAsk.append("    3 => add new model").append(System.lineSeparator());
+        expectedCliAsk.append("    4 => remove application").append(System.lineSeparator());
+        expectedCliAsk.append("    5 => remove scenario").append(System.lineSeparator());
+        expectedCliAsk.append("    6 => remove model").append(System.lineSeparator());
+        expectedCliAsk.append("    7 => encrypt data").append(System.lineSeparator());
+        expectedCliAsk.append("    8 => decrypt data").append(System.lineSeparator());
+        expectedCliAsk.append("    9 => status").append(System.lineSeparator());
         expectedCliAsk.append(System.lineSeparator());
         expectedCliAsk.append("Exit NoraUi Command Line Interface with success.").append(System.lineSeparator());
 
