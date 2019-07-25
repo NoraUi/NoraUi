@@ -21,9 +21,9 @@ import com.github.noraui.utils.Utilities;
 public class ReferencerPage extends Page {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    protected static final Logger logger = LoggerFactory.getLogger(ReferencerPage.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(ReferencerPage.class);
 
     public final PageElement titleMessage = new PageElement("-title_message");
     public final PageElement signOutMenu = new PageElement("-signout_menu");
@@ -44,7 +44,7 @@ public class ReferencerPage extends Page {
             Context.waitUntil(ExpectedConditions.visibilityOfElementLocated(Utilities.getLocator(titleMessage)));
             return true;
         } catch (Exception e) {
-            logger.error("signIn message not found", e);
+            LOGGER.error("signIn message not found", e);
             return false;
         }
     }

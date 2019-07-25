@@ -27,15 +27,15 @@ import cucumber.api.java.Before;
 public class CucumberHooks {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    private static final Logger logger = LoggerFactory.getLogger(CucumberHooks.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CucumberHooks.class);
     private static final String PROGRESS_MESSAGE = "PROGRESS_MESSAGE";
     private static final String SUCCESS_MESSAGE_BY_DEFAULT = "SUCCESS_MESSAGE_BY_DEFAULT";
 
     @Before()
     public static void setUpScenario(Scenario scenario) throws TechnicalException {
-        logger.debug("setUpScenario {} scenario.", scenario.getName());
+        LOGGER.debug("setUpScenario {} scenario.", scenario.getName());
         if (Context.getCurrentScenarioData() == 0) {
             // Retrieve input data provider (by scenario name) to read
             String scenarioName = System.getProperty("scenario.name") != null ? System.getProperty("scenario.name") : getFirstNonEnvironmentTag(scenario.getSourceTagNames());
@@ -54,15 +54,15 @@ public class CucumberHooks {
 
     @After()
     public static void tearDown(Scenario scenario) {
-        logger.debug("tearDown {} scenario.", scenario.getName());
-        logger.debug("Context.getCurrentScenarioData()={}", Context.getCurrentScenarioData());
-        logger.debug("ExcelFactory.getNbLines()={}", Context.getDataInputProvider().getNbGherkinExample());
+        LOGGER.debug("tearDown {} scenario.", scenario.getName());
+        LOGGER.debug("Context.getCurrentScenarioData()={}", Context.getCurrentScenarioData());
+        LOGGER.debug("ExcelFactory.getNbLines()={}", Context.getDataInputProvider().getNbGherkinExample());
         printProgressBuild(scenario);
         if (Context.getCurrentScenarioData() >= Context.getDataInputProvider().getNbGherkinExample()) {
-            logger.debug("Go to next feature");
+            LOGGER.debug("Go to next feature");
             Context.goToNextFeature();
         } else {
-            logger.debug("No go to next feature");
+            LOGGER.debug("No go to next feature");
         }
     }
 
@@ -84,12 +84,12 @@ public class CucumberHooks {
         }
         postStar.append("*");
 
-        logger.info("{}", star);
-        logger.info("{}", postStar);
-        logger.info(message, scenario.getSourceTagNames(), Context.getCurrentScenarioData(), Context.getDataInputProvider().getNbGherkinExample(), Context.getNbFailure(), Context.getNbWarning(),
+        LOGGER.info("{}", star);
+        LOGGER.info("{}", postStar);
+        LOGGER.info(message, scenario.getSourceTagNames(), Context.getCurrentScenarioData(), Context.getDataInputProvider().getNbGherkinExample(), Context.getNbFailure(), Context.getNbWarning(),
                 remainingTime);
-        logger.info("{}", postStar);
-        logger.info("{}", star);
+        LOGGER.info("{}", postStar);
+        LOGGER.info("{}", star);
     }
 
     protected static int getRemainingTime() {

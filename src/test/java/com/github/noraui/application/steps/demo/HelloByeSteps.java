@@ -42,7 +42,7 @@ import cucumber.metrics.annotation.time.Time;
 public class HelloByeSteps extends Step {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(HelloByeSteps.class);
 

@@ -22,7 +22,7 @@ import cucumber.api.java.fr.Alors;
 public class GithubapiSteps extends Step {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(GithubapiSteps.class);
 

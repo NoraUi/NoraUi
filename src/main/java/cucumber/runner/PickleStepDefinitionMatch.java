@@ -28,7 +28,7 @@ import io.cucumber.stepexpression.Argument;
 public class PickleStepDefinitionMatch extends Match implements StepDefinitionMatch {
     
     /**
-     * Specific logger
+     * Specific LOGGER
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(TimeModule.class.getName());
     

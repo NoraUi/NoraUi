@@ -36,16 +36,16 @@ import cucumber.api.java.fr.Quand;
 public class BakerySteps extends Step {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    private static final Logger logger = LoggerFactory.getLogger(BakerySteps.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BakerySteps.class);
 
     @Inject
     private BakeryPage bakeryPage;
 
     @Inject
     private AdminPage adminPage;
-    
+
     @Inject
     private ReferencerPage referencerPage;
 
@@ -86,6 +86,11 @@ public class BakerySteps extends Step {
         }
     }
 
+    /**
+     * @param conditions list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
+     * @throws FailureException
+     *             if the scenario encounters a functional error.
+     */
     @Conditioned
     @Alors("La partie administrateur du portail BAKERY est affichée(\\?)")
     @Then("The administrator part of the BAKERY portal is displayed(\\?)")
@@ -104,6 +109,11 @@ public class BakerySteps extends Step {
         Auth.setConnected(true);
     }
 
+    /**
+     * @param conditions list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
+     * @throws FailureException
+     *             if the scenario encounters a functional error.
+     */
     @Conditioned
     @Alors("La partie referenceur du portail BAKERY est affichée(\\?)")
     @Then("The referencer part of the BAKERY portal is displayed(\\?)")
@@ -121,7 +131,7 @@ public class BakerySteps extends Step {
         }
         Auth.setConnected(true);
     }
-    
+
     /**
      * Logout of Bakery.
      * 
@@ -139,9 +149,8 @@ public class BakerySteps extends Step {
             WebElement outMenu = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(this.adminPage.signOutMenu)));
             outMenu.click();
         } else {
-            // TODO
-            //Context.getCurrentScenario().write(Messages.getMessage("..."));
-            Context.getCurrentScenario().write("not connected");
+            LOGGER.warn(Messages.getMessage("USER_WAS_ALREADY_LOGOUT", "robot"));
+            Context.getCurrentScenario().write(Messages.getMessage("USER_WAS_ALREADY_LOGOUT", "robot"));
         }
     }
 
@@ -149,6 +158,7 @@ public class BakerySteps extends Step {
      * Check Logout page.
      * 
      * @throws FailureException
+     *             if the scenario encounters a functional error.
      */
     @Alors("La page de déconnexion de BAKERY est affichée")
     @Then("The BAKERY logout page is displayed")

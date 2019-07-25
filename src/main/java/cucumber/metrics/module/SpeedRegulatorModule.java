@@ -18,16 +18,16 @@ import cucumber.metrics.interceptor.SpeedRegulatorInterceptor;
 public class SpeedRegulatorModule extends AbstractMetricsModule {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    private final Logger logger = LoggerFactory.getLogger(SpeedRegulatorModule.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(SpeedRegulatorModule.class);
 
     public static final String SPEED_REGULATOR_ANNOTATION_ENABLE = "SpeedRegulator.annotation.enable";
     public static final String SPEED_REGULATORS_ANNOTATION_ENABLE = "SpeedRegulators.annotation.enable";
 
     @Override
     public void configure(Binder binder) {
-        logger.info("Cucumber Metrics SpeedRegulator configure");
+        LOGGER.info("Cucumber Metrics SpeedRegulator configure");
 
         SpeedRegulatorInterceptor speedRegulatorInterceptor = new SpeedRegulatorInterceptor();
         setAnnotation2Interceptors(binder, SPEED_REGULATOR_ANNOTATION_ENABLE, SpeedRegulator.class, speedRegulatorInterceptor);

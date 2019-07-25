@@ -19,7 +19,7 @@ import cucumber.metrics.interceptor.TimeInterceptor;
 public class TimeModule extends AbstractMetricsModule {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(TimeModule.class.getName());
 

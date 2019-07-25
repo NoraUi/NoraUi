@@ -22,9 +22,9 @@ import com.google.inject.Singleton;
 public class DemoPage extends Page {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    protected static final Logger logger = LoggerFactory.getLogger(DemoPage.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(DemoPage.class);
 
     public final PageElement bigTitle = new PageElement("-big_title", "This is a demo for NORAUI (Non-Regression Automation for User Interfaces).");
     public final PageElement inputSelect = new PageElement("-input_select_field", "Input Select field");
@@ -57,21 +57,21 @@ public class DemoPage extends Page {
         try {
             Context.waitUntil(ExpectedConditions.not(ExpectedConditions.titleIs("")));
             if (!TITLE_PAGE.equals(getDriver().getTitle())) {
-                logger.error("HTML title is not good");
+                LOGGER.error("HTML title is not good");
                 return false;
             }
         } catch (final Exception e) {
-            logger.error("HTML title Exception", e);
+            LOGGER.error("HTML title Exception", e);
             return false;
         }
         try {
             if (bigTitle.getLabel().equals(Utilities.findElement(bigTitle).getText())) {
                 return true;
             }
-            logger.error("Big title is not good");
+            LOGGER.error("Big title is not good");
             return false;
         } catch (final Exception e) {
-            logger.error("Big title Exception", e);
+            LOGGER.error("Big title Exception", e);
             return false;
         }
     }

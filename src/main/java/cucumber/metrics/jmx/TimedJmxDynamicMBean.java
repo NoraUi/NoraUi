@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
 public class TimedJmxDynamicMBean implements DynamicMBean {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(TimedJmxDynamicMBean.class);
     

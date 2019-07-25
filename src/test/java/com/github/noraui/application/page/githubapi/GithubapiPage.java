@@ -22,9 +22,9 @@ import com.google.inject.Singleton;
 public class GithubapiPage extends Page {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    protected static final Logger logger = LoggerFactory.getLogger(GithubapiPage.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(GithubapiPage.class);
 
     public GithubapiPage() {
         super();
@@ -40,10 +40,10 @@ public class GithubapiPage extends Page {
     public boolean checkPage(Object... elements) {
         try {
             Context.waitUntil(ExpectSteps.waitForLoad());
-            logger.debug("GitHub API loaded.");
+            LOGGER.debug("GitHub API loaded.");
             return true;
         } catch (Exception e) {
-            logger.error("GitHub API not loaded.", e);
+            LOGGER.error("GitHub API not loaded.", e);
             return false;
         }
     }

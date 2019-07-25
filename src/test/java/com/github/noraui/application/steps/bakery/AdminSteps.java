@@ -16,9 +16,9 @@ import com.google.inject.Inject;
 public class AdminSteps extends Step {
     
     /**
-     * Specific logger
+     * Specific LOGGER
      */
-    private static final Logger logger = LoggerFactory.getLogger(BakerySteps.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BakerySteps.class);
 
     @Inject
     private AdminPage adminPage;

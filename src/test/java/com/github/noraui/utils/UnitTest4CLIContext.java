@@ -15,7 +15,7 @@ import com.github.noraui.exception.TechnicalException;
 public class UnitTest4CLIContext extends Context {
 
     /**
-     * Specific logger
+     * Specific LOGGER
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(UnitTest4CLIContext.class);
 
