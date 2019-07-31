@@ -15,6 +15,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.model.Model;
 import com.github.noraui.model.ModelList;
@@ -22,6 +25,11 @@ import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 
 public class DataUtils {
+    
+    /**
+     * Specific LOGGER
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(DataUtils.class);
 
     private DataUtils() {
     }
@@ -54,6 +62,9 @@ public class DataUtils {
                 } else {
                     final String key = example[0];
                     final Object[] data = addStringToBeginningOfObjectArray(String.valueOf(i), Arrays.copyOfRange(example, 1, example.length));
+                    LOGGER.info("data: {}", data);
+                    LOGGER.info("fusionedData: {}", fusionedData);
+                    LOGGER.info("key: {}", key);
                     if (fusionedData.containsKey(key)) {
                         fusionedData.put(key, fusionedData.get(key).addModel(modelConstructor.newInstance(data)));
                     } else {
