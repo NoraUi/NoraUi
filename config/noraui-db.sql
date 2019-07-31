@@ -1,12 +1,12 @@
 CREATE TABLE hello (
     id int primary key not null,
-    "author" text,
-    "zip" text,
-    "city" text,
-    "element" text,
-    "element2" text,
-    "date" text,
-    "title" text
+    author text,
+    zip text,
+    city text,
+    element text,
+    element2 text,
+    date text,
+    title text
 );
 INSERT INTO hello VALUES (1, 'Jenkins T1', '35000', 'Rennes', 'smile', 'smile', '16/01/2020', '');
 INSERT INTO hello VALUES (2, 'Jenkins T2', '75000', 'Paris', 'smile', 'smile', '', '');
