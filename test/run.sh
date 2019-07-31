@@ -6,7 +6,7 @@ google-chrome --version
 
 #
 # take noraui-datas-webservices from Maven Central and Start Web Services (REST)
-wget -O -q noraui-datas-webservices-1.0.0.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=com.github.noraui&a=noraui-datas-webservices&v=1.0.0-SNAPSHOT&p=jar'
+wget -q -O noraui-datas-webservices-1.0.0.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=com.github.noraui&a=noraui-datas-webservices&v=1.0.0-SNAPSHOT&p=jar'
 
 java -jar noraui-datas-webservices-1.0.0.jar &
 PID=$!
