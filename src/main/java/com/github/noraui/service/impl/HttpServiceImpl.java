@@ -44,10 +44,16 @@ public class HttpServiceImpl implements HttpService {
         Response response;
         try {
             response = getClient().newCall(new Request.Builder().url(new URL(url)).header("Accept", "application/json").build()).execute();
-            String jsonResponse = response.body().string();
-            LOGGER.info("JSON response is: {}", jsonResponse);
-            response.close();
-            return jsonResponse;
+            if(response.code() == 200) {
+                String jsonResponse = response.body().string();
+                LOGGER.info("JSON response code:[{}] and body:[{}]", response.code(), jsonResponse);
+                response.close();
+                return jsonResponse;
+            } else {
+                LOGGER.info("JSON response code:[{}]", response.code());
+                response.close();
+                return "";
+            }
         } catch (IOException e) {
             LOGGER.error(Messages.getMessage(HttpServiceException.HTTP_SERVICE_ERROR_MESSAGE), e);
             throw new HttpServiceException(Messages.getMessage(HttpServiceException.HTTP_SERVICE_ERROR_MESSAGE), e);

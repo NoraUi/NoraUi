@@ -71,6 +71,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
     @Override
     public void prepare(String scenario) throws TechnicalException {
         scenarioName = scenario;
+        LOGGER.info("prepare scenario [{}]", scenarioName);
         try {
             initColumns();
         } catch (final EmptyDataFileContentException e) {
@@ -98,6 +99,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
      */
     @Override
     public String readValue(String column, int line) {
+        LOGGER.debug("readValue at line [{}] in column [{}]", line, column);
         final String url = this.norauiWebServicesApi + scenarioName + COLUMN + (columns.indexOf(column) + 1) + LINE + line;
         try {
             return httpService.get(url);
@@ -111,33 +113,39 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
      */
     @Override
     public String[] readLine(int line, boolean readResult) {
-        LOGGER.debug("readLine at line {}", line);
+        LOGGER.debug("readLine at line [{}]", line);
         try {
             String httpResponse = httpService.get(this.norauiWebServicesApi + scenarioName + LINE + line);
-            List<Row> rows = new Gson().fromJson(httpResponse, DataModel.class).getRows();
-            if (rows != null) {
-                List<String> l = rows.get(0).getColumns();
-                String[] response = l.toArray(new String[l.size() + 1]);
-                response[l.size()] = String.valueOf(rows.get(0).getErrorStepIndex());
-                return response;
+            if (!"".equals(httpResponse)) {
+                List<Row> rows = new Gson().fromJson(httpResponse, DataModel.class).getRows();
+                if (rows != null) {
+                    List<String> l = rows.get(0).getColumns();
+                    String[] response = l.toArray(new String[l.size() + 1]);
+                    response[l.size()] = String.valueOf(rows.get(0).getErrorStepIndex());
+                    return response;
+                }
             }
             return null;
-        } catch (TechnicalException | NumberFormatException |
-
-                HttpServiceException e) {
-            LOGGER.error("readLine error at line {}", line, e);
+        } catch (TechnicalException | NumberFormatException | HttpServiceException e) {
+            LOGGER.error("readLine error at line [{}]", line, e);
             return null;
         }
     }
 
     private void initColumns() throws EmptyDataFileContentException {
         final String url = this.norauiWebServicesApi + scenarioName + "/columns";
-        LOGGER.debug("initColumns with this url: [{}]", url);
+        LOGGER.debug("initColumns with this url [{}]", url);
         try {
-            columns = new Gson().fromJson(httpService.get(url), DataModel.class).getColumns();
-            resultColumnName = Messages.getMessage(ResultColumnNames.RESULT_COLUMN_NAME);
-            columns.add(resultColumnName);
-            if (columns.size() < 2) {
+            String httpResponse = httpService.get(url);
+            if (!"".equals(httpResponse)) {
+                columns = new Gson().fromJson(httpResponse, DataModel.class).getColumns();
+                if(columns != null && columns.size() > 0) {
+                    resultColumnName = Messages.getMessage(ResultColumnNames.RESULT_COLUMN_NAME);
+                    columns.add(resultColumnName);
+                } else {
+                    throw new EmptyDataFileContentException(Messages.getMessage(EmptyDataFileContentException.EMPTY_DATA_FILE_CONTENT_ERROR_MESSAGE));
+                }
+            } else {
                 throw new EmptyDataFileContentException(Messages.getMessage(EmptyDataFileContentException.EMPTY_DATA_FILE_CONTENT_ERROR_MESSAGE));
             }
         } catch (TechnicalException | NumberFormatException | HttpServiceException e) {
