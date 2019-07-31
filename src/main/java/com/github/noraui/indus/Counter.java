@@ -46,7 +46,7 @@ public class Counter {
                 // scenarioBlacklist.add("bonjour");
             }
             scenarioBlacklist.add("loginLogout");
-            scenarioBlacklist.add("sampleRESTAPI");
+            // scenarioBlacklist.add("sampleRESTAPI");
 
             final MavenRunCounter mavenRunCounter = new MavenRunCounter();
             final List<MavenRunCounter.Counter> counters = mavenRunCounter.count(versionControlSystemsBlacklist, scenarioBlacklist, manager, new File(Context.getResourcesPath() + "/steps"));
