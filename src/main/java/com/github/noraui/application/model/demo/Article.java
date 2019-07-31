@@ -14,19 +14,22 @@ import com.google.gson.annotations.Expose;
 
 public class Article extends CommonModel implements Comparable<Article> {
 
+    /**
+     * NoraUi id.
+     */
     @Expose(serialize = false, deserialize = false)
     private Integer nid;
 
     @Expose
-    @Column(name = "Titre")
+    @Column(name = "Title")
     private String title;
 
     @Expose
-    @Column(name = "Texte")
+    @Column(name = "Text")
     private String text;
 
     @Expose
-    @Column(name = "Auteur")
+    @Column(name = "Author")
     private String author;
 
     @Expose

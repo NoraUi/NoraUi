@@ -1,41 +1,41 @@
 # language: fr
 @bonjour
-Fonctionnalité: bonjour (Fonction pour valider l environnement.) 
+Fonctionnalité: bonjour (Fonction pour valider l'environnement.) 
 
-  Plan du Scénario: Function to validate the environment.
+  Plan du Scénario: Fonction pour valider l'environnement.
 
-    Lorsque Je vérifie que 'l\'auteur' '<author>' n'est pas vide
-    Lorsque Je vérifie que 'la ville' '<city>' n'est pas vide
+    Lorsque Je vérifie que 'l\'auteur' '<auteur>' n'est pas vide
+    Lorsque Je vérifie que 'la ville' '<ville>' n'est pas vide
 
-    Lorsque Je commence la capture vidéo dans 'hello'?
+    Lorsque Je commence la capture vidéo dans 'bonjour'?
         |key|expected|actual|
         |id|1|<id>|
 
     Lorsque Je vérifie les champs obligatoires:
-        |author|<author>|
-        |city|<city>|
-        |element|<element>|
-        |element2|<element2>|
+        |auteur|<auteur>|
+        |ville|<ville>|
+        |élément|<élément>|
+        |élément2|<élément2>|
 
     Alors Je patiente 1 secondes
 
     Lorsque 'DEMO_HOME' est ouvert
     Alors Le portail DEMO est affiché
 
-    Lorsque j'ai un bonjour, s'il vous plaît. Cordialement '<author>'
-    Lorsque j'ai un bonjour, s'il vous plaît. Cordialement '<author>'?
+    Lorsque j'ai un bonjour, s'il vous plaît. Cordialement '<auteur>'
+    Lorsque j'ai un bonjour, s'il vous plaît. Cordialement '<auteur>'?
         |key|expected|actual|
-    Lorsque j'ai un bonjour, s'il vous plaît. Cordialement '<author>'?
+    Lorsque j'ai un bonjour, s'il vous plaît. Cordialement '<auteur>'?
         |key|expected|actual|
         |zip|35000|<zip>|
-        |city|Rennes|<city>|
+        |ville|Rennes|<ville>|
 
-    Lorsque j'ai un au revoir, s'il vous plaît. Cordialement '<author>':
-    Lorsque j'ai un au revoir, s'il vous plaît. Cordialement '<author>':
+    Lorsque j'ai un au revoir, s'il vous plaît. Cordialement '<auteur>':
+    Lorsque j'ai un au revoir, s'il vous plaît. Cordialement '<auteur>':
         |zip|<zip>|
-        |city|<city>|
+        |ville|<ville>|
 
-    Lorsque moi un chat, s'il vous plaît, meilleures salutations '<author>'.
+    Lorsque moi un chat, s'il vous plaît, meilleures salutations '<auteur>'.
 
     Lorsque Je fait la créaton du fichier test.txt dans repertoire des téléchargements
     
@@ -45,11 +45,11 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
     Lorsque Je vide le repertoire des téléchargements
 
     Quand Je clarifie le texte dans 'demo.DemoPage-input_text_field'
-    Quand Je mets à jour le texte 'demo.DemoPage-input_text_field' avec '<author>'
-    Quand Je mets à jour le texte 'demo.DemoPage-input_text_field' et entre ENTRER avec '<author>'
+    Quand Je mets à jour le texte 'demo.DemoPage-input_text_field' avec '<auteur>'
+    Quand Je mets à jour le texte 'demo.DemoPage-input_text_field' et entre ENTRER avec '<auteur>'
     Et Je vérifie le champ obligatoire 'demo.DemoPage-input_text_field' de type 'text'
-    Et Je vérifie le texte 'demo.DemoPage-input_text_field' avec '<author>'
-    Quand Je mets à jour la liste déroulante 'demo.DemoPage-input_select_field' avec '<city>'
+    Et Je vérifie le texte 'demo.DemoPage-input_text_field' avec '<auteur>'
+    Quand Je mets à jour la liste déroulante 'demo.DemoPage-input_select_field' avec '<ville>'
     Alors Je mets à jour la date 'demo.DemoPage-input_text_field' avec une 'future' date '<date>'
 
     Et Je mets à jour la liste radio 'demo.DemoPage-rate' avec 'day'
@@ -62,7 +62,7 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
 
     Quand Je clique sur 'demo.DemoPage-submit'
 
-    Lorsque moi une erreur si '<city>' est Paris.
+    Lorsque moi une erreur si '<ville>' est Paris.
 
     Et Je vérifie le texte 'demo.DemoPage-input_current_date' avec '0'
     Quand Je clique via js sur 'demo.DemoPage-smilejs'
@@ -77,7 +77,7 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
     Et Je vérifie le message 'OK' sur l'alerte
     Et Je vérifie le texte 'demo.DemoPage-input_current_date' avec '3'
 
-    Quand Je clique sur 'demo.DemoPage-<element>'
+    Quand Je clique sur 'demo.DemoPage-<élément>'
     Et Je vérifie le message 'OK' sur l'alerte
     Et Je vérifie le texte 'demo.DemoPage-input_current_date' avec '4'
 
@@ -92,20 +92,20 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
         |key|step|expected|actual|
         |1|Je patiente 3 secondes?|1|1|
         |2|Je patiente 4 secondes?|1|2|
-        |3|Je mets à jour la liste déroulante 'demo.DemoPage-input_select_field' avec '<city>'|||
+        |3|Je mets à jour la liste déroulante 'demo.DemoPage-input_select_field' avec '<ville>'|||
         |4|Je sauvegarde la valeur de 'demo.DemoPage-input_select_field' dans la clé 'myOutLoopKey' du contexte|||
 
-    Lorsque Si '<author>' vérifie '.+', je fais jusqu'à 'demo.DemoPage-big_title' respecte 'This is a demo for NORAUI.*' avec 3 essais maxi:
+    Lorsque Si '<auteur>' vérifie '.+', je fais jusqu'à 'demo.DemoPage-big_title' respecte 'This is a demo for NORAUI.*' avec 3 essais maxi:
         |key|step|expected|actual|
         |1|I wait 1 second|||
-        |2|I wait 1 second?|(Rennes\|Paris\|New York)|<city>|
+        |2|I wait 1 second?|(Rennes\|Paris\|New York)|<ville>|
 
-    Lorsque Si '<author>' vérifie '.+', Tant que 'demo.DemoPage-big_title' respecte 'This is a demo for NORAUI.*' je fais avec 3 essais maxi:
+    Lorsque Si '<auteur>' vérifie '.+', Tant que 'demo.DemoPage-big_title' respecte 'This is a demo for NORAUI.*' je fais avec 3 essais maxi:
         |key|step|expected|actual|
         |1|I wait 1 second|||
-        |2|I wait 1 second?|(Rennes\|Paris\|New York)|<city>|        
+        |2|I wait 1 second?|(Rennes\|Paris\|New York)|<ville>|        
 
-    Et Je sauvegarde la valeur de 'demo.DemoPage-big_title' dans la colonne 'title' du fournisseur de données en sortie
+    Et Je sauvegarde la valeur de 'demo.DemoPage-big_title' dans la colonne 'titre' du fournisseur de données en sortie
 
     Et Je vérifie que 'demo.DemoPage-big_title' est présent
     Et Je vérifie que 'demo.DemoPage-noExistElement' n'est pas présent
@@ -118,7 +118,7 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
     Quand Je mets à jour le texte 'demo.DemoPage-input_text_field' et entre ENTRER avec '<zip>'
     Et Je vérifie le champ obligatoire 'demo.DemoPage-input_text_field' de type 'text'
 
-    Et Je mets à jour la liste radio 'demo.DemoPage-rate' avec '<author>' à partir de ces valeurs:
+    Et Je mets à jour la liste radio 'demo.DemoPage-rate' avec '<auteur>' à partir de ces valeurs:
         |Jenkins T1|week-end|
         |Jenkins T2|night|
         |Default|day|
@@ -126,11 +126,11 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
     Lorsque Je mets à jour la case à cocher 'demo.DemoPage-iagree' avec 'true'
     Lorsque Je mets à jour la case à cocher 'demo.DemoPage-iagree' avec 'true'?
         |key|expected|actual|
-        |wid|.+|<author>|
+        |wid|.+|<auteur>|
     Lorsque Je mets à jour la case à cocher 'demo.DemoPage-iagree' avec 'yes' à partir de ces valeurs:
         |yes|true|
         |Default|false|
-    Lorsque Je mets à jour la case à cocher 'demo.DemoPage-iagree' avec '<author>' à partir de ces valeurs:
+    Lorsque Je mets à jour la case à cocher 'demo.DemoPage-iagree' avec '<auteur>' à partir de ces valeurs:
         |Jenkins T1|true|
         |Default|false| 
 
@@ -175,8 +175,8 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
     Et Je passe au dessus de 'demo.DemoPage-navbarDropdownSubSubMenu1'
     Et Je clique sur 'demo.DemoPage-navbarDropdownSubSubMenu2'
 
-    Et Je sauvegarde la valeur de cette API REST 'GET' 'GITHUBAPI_HOME' '/search/users?q=location:rennes+language:java&page=1&per_page=10' dans 'title' du contexte
-    Et Je sauvegarde la valeur de cette API REST 'GET' 'GITHUBAPI_HOME' '/search/users?q=location:rennes+language:java&page=1&per_page=10' dans 'title' du fournisseur de données en sortie
+    Et Je sauvegarde la valeur de cette API REST 'GET' 'GITHUBAPI_HOME' '/search/users?q=location:rennes+language:java&page=1&per_page=10' dans 'titre' du contexte
+    Et Je sauvegarde la valeur de cette API REST 'GET' 'GITHUBAPI_HOME' '/search/users?q=location:rennes+language:java&page=1&per_page=10' dans 'titre' du fournisseur de données en sortie
 
     Et Je stop la capture vidéo?
         |key|expected|actual|
@@ -191,7 +191,7 @@ Fonctionnalité: bonjour (Fonction pour valider l environnement.)
 
   Exemples:
     #DATA
-    |id|author|zip|city|element|element2|date|title|
+    |id|auteur|codepostal|ville|élément|élément2|date|titre|
     |1|Jenkins T1|35000|Rennes|smile|smile|16/01/2020||
     |2|Jenkins T2|75000|Paris|smile|smile|||
     |3|Jenkins T3|56100|Lorient|smile|smile|||
