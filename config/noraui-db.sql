@@ -1,5 +1,5 @@
 CREATE TABLE hello (
-    "id" int primary key not null,
+    id int primary key not null,
     "author" text,
     "zip" text,
     "city" text,
@@ -18,7 +18,7 @@ INSERT INTO hello VALUES (7, 'Jenkins T7', '35000', 'Rennes', '', '', '', '');
 INSERT INTO hello VALUES (8, 'Jenkins T8', '', 'Rennes', 'smile', 'smile', '', '');
 
 CREATE TABLE loginLogout (
-    "id" int primary key not null,
+    id int primary key not null,
     "user" text,
     "password" text,
     "profile" text
@@ -27,7 +27,7 @@ INSERT INTO loginLogout VALUES (1, 'sgrillon', '℗:qmTAYKS9UG87rNuUQ0Ao6Q==', '
 INSERT INTO loginLogout VALUES (2, 'sgrillon2', '℗:qmTAYKS9UG87rNuUQ0Ao6Q==', 'referencer');
 
 CREATE TABLE blog (
-    "id" int primary key not null,
+    id int primary key not null,
     "blog" text,
     "title" text,
     "text" text,
@@ -43,7 +43,7 @@ INSERT INTO blog VALUES (5, 'Blog 2', 'Article 4', 'text 4', 'anonymous', '2');
 INSERT INTO blog VALUES (6, 'Blog 1', 'Article 5', 'text 5', 'Peter', '9');
 
 CREATE TABLE sampleRESTAPI (
-    "id" int primary key not null,
+    id int primary key not null,
     "location" text,
     "language" text,
     "data" text
