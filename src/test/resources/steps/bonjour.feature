@@ -27,12 +27,12 @@ Fonctionnalité: bonjour (Fonction pour valider l'environnement.)
         |key|expected|actual|
     Lorsque j'ai un bonjour, s'il vous plaît. Cordialement '<auteur>'?
         |key|expected|actual|
-        |zip|35000|<zip>|
+        |codepostal|35000|<codepostal>|
         |ville|Rennes|<ville>|
 
     Lorsque j'ai un au revoir, s'il vous plaît. Cordialement '<auteur>':
     Lorsque j'ai un au revoir, s'il vous plaît. Cordialement '<auteur>':
-        |zip|<zip>|
+        |codepostal|<codepostal>|
         |ville|<ville>|
 
     Lorsque moi un chat, s'il vous plaît, meilleures salutations '<auteur>'.
@@ -115,7 +115,7 @@ Fonctionnalité: bonjour (Fonction pour valider l'environnement.)
     Et Je vérifie que 'demo.DemoPage-display_none_title' n'est pas visible
 
     Quand Je clarifie le texte dans 'demo.DemoPage-input_text_field'
-    Quand Je mets à jour le texte 'demo.DemoPage-input_text_field' et entre ENTRER avec '<zip>'
+    Quand Je mets à jour le texte 'demo.DemoPage-input_text_field' et entre ENTRER avec '<codepostal>'
     Et Je vérifie le champ obligatoire 'demo.DemoPage-input_text_field' de type 'text'
 
     Et Je mets à jour la liste radio 'demo.DemoPage-rate' avec '<auteur>' à partir de ces valeurs:
