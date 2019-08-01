@@ -59,7 +59,11 @@ public class DataUtils {
             do {
                 LOGGER.info("readLine: {}", i);
                 example = Context.getDataInputProvider().readLine(i, false);
-                LOGGER.info("example: {}", example);
+                StringBuilder sb1 = new StringBuilder();
+                for (String s : example) {
+                    sb1.append(s).append(" ");
+                }
+                LOGGER.info("example: {}", sb1.toString());
                 if (example == null) {
                     fusionedDataTable.put(Integer.valueOf(j++), fusionedData);
                     fusionedData = new LinkedHashMap<>();
