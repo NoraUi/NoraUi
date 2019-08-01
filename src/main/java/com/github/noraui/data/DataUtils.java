@@ -47,10 +47,12 @@ public class DataUtils {
     }
 
     public static Hashtable<Integer, Map<String, ModelList>> fusionProcessor(Class<Model> model, Constructor<Model> modelConstructor) throws TechnicalException {
+        LOGGER.info("model: {}", model);
         final Hashtable<Integer, Map<String, ModelList>> fusionedDataTable = new Hashtable<>();
         Map<String, ModelList> fusionedData = new LinkedHashMap<>();
         try {
             final Class<? extends ModelList> modelListClass = model.newInstance().getModelList();
+            LOGGER.info("modelListClass: {}", modelListClass);
             String[] example;
             int i = 1;
             int j = 0;
