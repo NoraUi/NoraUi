@@ -63,7 +63,9 @@ public class DataUtils {
                     final String key = example[0];
                     final Object[] data = addStringToBeginningOfObjectArray(String.valueOf(i), Arrays.copyOfRange(example, 1, example.length));
                     LOGGER.info("data: {}", data);
-                    LOGGER.info("fusionedData: {}", fusionedData);
+                    StringBuilder sb = new StringBuilder();
+                    fusionedData.forEach((id, modelList) -> sb.append(modelList.serialize()).append(" "));
+                    LOGGER.info("fusionedData: {}", sb);
                     LOGGER.info("key: {}", key);
                     if (fusionedData.containsKey(key)) {
                         fusionedData.put(key, fusionedData.get(key).addModel(modelConstructor.newInstance(data)));
