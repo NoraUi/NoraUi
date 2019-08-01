@@ -55,7 +55,9 @@ public class DataUtils {
             int i = 1;
             int j = 0;
             do {
+                LOGGER.info("readLine: {}", i);
                 example = Context.getDataInputProvider().readLine(i, false);
+                LOGGER.info("example: {}", example);
                 if (example == null) {
                     fusionedDataTable.put(Integer.valueOf(j++), fusionedData);
                     fusionedData = new LinkedHashMap<>();
