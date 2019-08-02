@@ -60,10 +60,15 @@ public class DataUtils {
                 LOGGER.info("readLine: {}", i);
                 example = Context.getDataInputProvider().readLine(i, false);
                 StringBuilder sb1 = new StringBuilder();
-                for (String s : example) {
-                    sb1.append(s).append(" ");
+                if (example!=null) {
+                    for (String s : example) {
+                        sb1.append(s).append(" ");
+                    } 
+                    LOGGER.info("example: {}", sb1.toString());
+                } else {
+                    LOGGER.info("example is null");
                 }
-                LOGGER.info("example: {}", sb1.toString());
+                
                 if (example == null) {
                     fusionedDataTable.put(Integer.valueOf(j++), fusionedData);
                     fusionedData = new LinkedHashMap<>();
