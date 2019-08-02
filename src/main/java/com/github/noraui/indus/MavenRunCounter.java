@@ -360,6 +360,12 @@ public class MavenRunCounter {
         int skipped = 0;
         final String[] headers = Context.getDataInputProvider().readLine(0, false);
         if (headers != null) {
+            LOGGER.info("getModelConstructor model: {}",  model);
+            StringBuilder sb1 = new StringBuilder();
+            for (String s : headers) {
+                sb1.append(s).append(" ");
+            } 
+            LOGGER.info("getModelConstructor headers: {}", sb1.toString());
             final Constructor<Model> modelConstructor = DataUtils.getModelConstructor(model, headers);
             final Map<Integer, Map<String, ModelList>> fusionedData = DataUtils.fusionProcessor(model, modelConstructor);
             int dataIndex = 0;
