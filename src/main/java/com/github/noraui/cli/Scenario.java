@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -31,7 +32,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 
 public class Scenario extends AbstractNoraUiCli {
@@ -281,7 +281,7 @@ public class Scenario extends AbstractNoraUiCli {
         sb.append("(select t.user as \"user\", t.password1 as \"password1\", '' as Result from " + scenarioName + " t)").append(System.lineSeparator());
         sb.append("ORDER BY \"author\"").append(System.lineSeparator());
         try {
-            Files.asCharSink(sqlFile, Charsets.UTF_8).write(sb.toString());
+            Files.asCharSink(sqlFile, StandardCharsets.UTF_8).write(sb.toString());
         } catch (IOException e) {
             LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
@@ -296,7 +296,7 @@ public class Scenario extends AbstractNoraUiCli {
         sb.append("user1;password1;").append(System.lineSeparator());
         sb.append("user2;password2;").append(System.lineSeparator());
         try {
-            Files.asCharSink(newCsvfile, Charsets.UTF_8).write(sb.toString());
+            Files.asCharSink(newCsvfile, StandardCharsets.UTF_8).write(sb.toString());
         } catch (IOException e) {
             LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
@@ -417,7 +417,7 @@ public class Scenario extends AbstractNoraUiCli {
         try {
             File newFeature = new File(newFeaturePath);
             if (!newFeature.exists()) {
-                Files.asCharSink(newFeature, Charsets.UTF_8).write(sb.toString());
+                Files.asCharSink(newFeature, StandardCharsets.UTF_8).write(sb.toString());
                 if (verbose) {
                     LOGGER.info("File [{}] created with success.", newFeaturePath);
                 }

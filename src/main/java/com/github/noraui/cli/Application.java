@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,7 +25,6 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 
 public class Application extends AbstractNoraUiCli {
@@ -185,7 +185,7 @@ public class Application extends AbstractNoraUiCli {
             FileUtils.forceMkdir(new File(pagePath.substring(0, pagePath.lastIndexOf(File.separator))));
             File newSelector = new File(pagePath);
             if (!newSelector.exists()) {
-                Files.asCharSink(newSelector, Charsets.UTF_8).write(sb.toString());
+                Files.asCharSink(newSelector, StandardCharsets.UTF_8).write(sb.toString());
                 if (verbose) {
                     LOGGER.info("File [{}] created with success.", pagePath);
                 }
@@ -272,7 +272,7 @@ public class Application extends AbstractNoraUiCli {
             FileUtils.forceMkdir(new File(stepsPath.substring(0, stepsPath.lastIndexOf(File.separator))));
             File newSelector = new File(stepsPath);
             if (!newSelector.exists()) {
-                Files.asCharSink(newSelector, Charsets.UTF_8).write(sb.toString());
+                Files.asCharSink(newSelector, StandardCharsets.UTF_8).write(sb.toString());
                 if (verbose) {
                     LOGGER.info("File [{}] created with success.", stepsPath);
                 }
@@ -481,7 +481,7 @@ public class Application extends AbstractNoraUiCli {
                 String iniFilePath = selectorsPath + File.separator + version + File.separator + applicationName + ".ini";
                 File newSelector = new File(iniFilePath);
                 if (!newSelector.exists()) {
-                    Files.asCharSink(newSelector, Charsets.UTF_8).write(sb.toString());
+                    Files.asCharSink(newSelector, StandardCharsets.UTF_8).write(sb.toString());
                     if (verbose) {
                         LOGGER.info("File [{}] created with success.", iniFilePath);
                     }

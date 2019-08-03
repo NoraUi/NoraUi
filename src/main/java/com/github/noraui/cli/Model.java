@@ -10,6 +10,7 @@ import static com.github.noraui.exception.TechnicalException.TECHNICAL_IO_EXCEPT
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -22,7 +23,6 @@ import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 
 public class Model extends AbstractNoraUiCli {
@@ -371,7 +371,7 @@ public class Model extends AbstractNoraUiCli {
             FileUtils.forceMkdir(new File(modelPath.substring(0, modelPath.lastIndexOf(File.separator))));
             File newSelector = new File(modelPath);
             if (!newSelector.exists()) {
-                Files.asCharSink(newSelector, Charsets.UTF_8).write(sb.toString());
+                Files.asCharSink(newSelector, StandardCharsets.UTF_8).write(sb.toString());
                 if (verbose) {
                     LOGGER.info("File [{}] created with success.", modelPath);
                 }
@@ -485,7 +485,7 @@ public class Model extends AbstractNoraUiCli {
             FileUtils.forceMkdir(new File(modelsPath.substring(0, modelsPath.lastIndexOf(File.separator))));
             File newSelector = new File(modelsPath);
             if (!newSelector.exists()) {
-                Files.asCharSink(newSelector, Charsets.UTF_8).write(sb.toString());
+                Files.asCharSink(newSelector, StandardCharsets.UTF_8).write(sb.toString());
                 if (verbose) {
                     LOGGER.info("File [{}] created with success.", modelsPath);
                 }

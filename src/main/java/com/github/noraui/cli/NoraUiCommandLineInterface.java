@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +38,6 @@ import com.github.noraui.cli.model.NoraUiScenarioFile;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.service.CryptoService;
 import com.github.noraui.service.impl.CryptoServiceImpl;
-import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 
@@ -389,7 +389,7 @@ public class NoraUiCommandLineInterface {
             FileUtils.forceMkdir(new File(CLI_FILES_DIR + File.separator + CLI_APPLICATIONS_FILES_DIR));
             File applicationFile = new File(CLI_FILES_DIR + File.separator + CLI_APPLICATIONS_FILES_DIR + File.separator + noraUiApplicationFile.getName() + JSON);
             if (!applicationFile.exists()) {
-                Files.asCharSink(applicationFile, Charsets.UTF_8).write(gson.toJson(noraUiApplicationFile));
+                Files.asCharSink(applicationFile, StandardCharsets.UTF_8).write(gson.toJson(noraUiApplicationFile));
                 if (verbose) {
                     LOGGER.info("Applications File [{}.json] created with success.", noraUiApplicationFile.getName());
                 }
@@ -470,7 +470,7 @@ public class NoraUiCommandLineInterface {
             FileUtils.forceMkdir(new File(CLI_FILES_DIR + File.separator + CLI_SCENARIOS_FILES_DIR));
             File applicationFile = new File(CLI_FILES_DIR + File.separator + CLI_SCENARIOS_FILES_DIR + File.separator + noraUiScenarioFile.getName() + JSON);
             if (!applicationFile.exists()) {
-                Files.asCharSink(applicationFile, Charsets.UTF_8).write(gson.toJson(noraUiScenarioFile));
+                Files.asCharSink(applicationFile, StandardCharsets.UTF_8).write(gson.toJson(noraUiScenarioFile));
                 if (verbose) {
                     LOGGER.info("Scenario File [{}.json] created with success.", noraUiScenarioFile.getName());
                 }
