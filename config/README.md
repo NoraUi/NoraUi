@@ -4,12 +4,6 @@
 
 To start the different databases used as DataInputProvider, here is a prepared docker-compose.yml :
 ```yml
-<dependency>
-    <groupId>com.github.noraui</groupId>
-    <artifactId>noraui</artifactId>
-    <version>3.3.0-SNAPSHOT</version>
-</dependency>
-```
 version: '3.1'
 
 services:
