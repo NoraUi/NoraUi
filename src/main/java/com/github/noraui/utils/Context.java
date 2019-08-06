@@ -84,6 +84,9 @@ public class Context {
     public static final String HTTP_PROXY = "http_proxy";
     public static final String HTTPS_PROXY = "https_proxy";
     public static final String NO_PROXY = "no_proxy";
+    public static final String OKHTTP_CONNECT_TIMEOUT = "connectTimeout";
+    public static final String OKHTTP_WRITE_TIMEOUT = "writeTimeout";
+    public static final String OKHTTP_READ_TIMEOUT = "readTimeout";
     public static final String HEADLESS = "headless";
     public static final String LOCALE = "locale";
     public static final String AUTH_TYPE = "authentication";
@@ -215,6 +218,21 @@ public class Context {
      * Proxy
      */
     private Proxy proxy;
+    
+    /**
+     * 
+     */
+    private int connectTimeout;
+    
+    /**
+     * 
+     */
+    private int writeTimeout;
+    
+    /**
+     * 
+     */
+    private int readTimeout;
 
     /**
      * Current locale
@@ -367,6 +385,11 @@ public class Context {
             proxy.setAutodetect(false);
             proxy.setNoProxy(noProxy);
         }
+        
+        // OkHttp timeout
+        connectTimeout= getIntProperty(OKHTTP_CONNECT_TIMEOUT, applicationProperties);
+        writeTimeout= getIntProperty(OKHTTP_WRITE_TIMEOUT, applicationProperties);
+        readTimeout=getIntProperty(OKHTTP_READ_TIMEOUT, applicationProperties);
 
         // authentication mode configuration
         Auth.setAuthenticationType(getProperty(AUTH_TYPE, applicationProperties));
@@ -694,6 +717,18 @@ public class Context {
 
     public static Proxy getProxy() {
         return getInstance().proxy;
+    }
+
+    public static int getConnectTimeout() {
+        return getInstance().connectTimeout;
+    }
+
+    public static int getWriteTimeout() {
+        return getInstance().writeTimeout;
+    }
+
+    public static int getReadTimeout() {
+        return getInstance().readTimeout;
     }
 
     public static Locale getLocale() {

@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +45,7 @@ public class HttpServiceImpl implements HttpService {
         Response response;
         try {
             response = getClient().newCall(new Request.Builder().url(new URL(url)).header("Accept", "application/json").build()).execute();
-            if(response.code() == 200) {
+            if (response.code() == 200) {
                 String jsonResponse = response.body().string();
                 LOGGER.info("JSON response code:[{}] and body:[{}]", response.code(), jsonResponse);
                 response.close();
@@ -95,9 +96,11 @@ public class HttpServiceImpl implements HttpService {
         org.openqa.selenium.Proxy proxy = Context.getProxy();
         if (proxy != null && proxy.getHttpProxy() != null && !"".equals(proxy.getHttpProxy())) {
             String[] p = proxy.getHttpProxy().split(":");
-            client = new OkHttpClient.Builder().proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(p[0], Integer.parseInt(p[1])))).build();
+            client = new OkHttpClient.Builder().proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(p[0], Integer.parseInt(p[1])))).connectTimeout(Context.getConnectTimeout(), TimeUnit.SECONDS)
+                    .writeTimeout(Context.getWriteTimeout(), TimeUnit.SECONDS).readTimeout(Context.getReadTimeout(), TimeUnit.SECONDS).build();
         } else {
-            client = new OkHttpClient.Builder().build();
+            client = new OkHttpClient.Builder().connectTimeout(Context.getConnectTimeout(), TimeUnit.SECONDS).writeTimeout(Context.getWriteTimeout(), TimeUnit.SECONDS)
+                    .readTimeout(Context.getReadTimeout(), TimeUnit.SECONDS).build();
         }
         return client;
     }
