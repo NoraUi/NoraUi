@@ -15,7 +15,6 @@ addons:
   chrome: stable
 
 jdk:
-- oraclejdk8
 - openjdk8
 
 before_script:
