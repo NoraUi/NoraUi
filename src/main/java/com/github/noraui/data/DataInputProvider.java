@@ -24,7 +24,7 @@ public interface DataInputProvider extends DataProvider {
      * Reads a cell of opened input file.
      *
      * @param column
-     *            name of the column to read
+     *            index of the column to read
      * @param line
      *            index of the line to read
      * @return a String with the value of cell
