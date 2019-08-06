@@ -161,19 +161,24 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
             throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), e);
         }
         try (Connection connection = getConnection(); PreparedStatement statement = connection.prepareStatement(sqlRequest); ResultSet rs = statement.executeQuery();) {
-            final String[] ret = readResult ? new String[columns.size()] : new String[columns.size() - 1];
-            if (line == 0) {
-                for (int i = 0; i < ret.length; i++) {
-                    ret[i] = columns.get(i);
-                }
+            LOGGER.info("rs {}", rs);
+            if (rs == null || "".equals(rs.getString(0))) {
+                return null;
             } else {
-                while (rs.next() && rs.getRow() < line) {
+                final String[] ret = readResult ? new String[columns.size()] : new String[columns.size() - 1];
+                if (line == 0) {
+                    for (int i = 0; i < ret.length; i++) {
+                        ret[i] = columns.get(i);
+                    }
+                } else {
+                    while (rs.next() && rs.getRow() < line) {
+                    }
+                    for (int i = 1; i <= ret.length; i++) {
+                        ret[i - 1] = rs.getString(i);
+                    }
                 }
-                for (int i = 1; i <= ret.length; i++) {
-                    ret[i - 1] = rs.getString(i);
-                }
+                return ret;
             }
-            return ret;
         } catch (final SQLException e) {
             LOGGER.debug("In DBDataProvider, this catch aims for testing the end of provided data. DBDataProvider.readLine({}, {})", line, readResult, e);
             return null;
