@@ -13,6 +13,8 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.github.noraui.application.page.Page;
 import com.github.noraui.application.page.Page.PageElement;
@@ -27,6 +29,11 @@ import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 
 public class StepUT {
+    
+    /**
+     * Specific LOGGER
+     */
+    private final Logger LOGGER = LoggerFactory.getLogger(StepUT.class);
 
     public static final String DEMO_PAGE_NAME = "demo.DemoPage";
 
@@ -41,7 +48,8 @@ public class StepUT {
 
     @Before
     public void setUp() {
-         step = new StepSample();
+        LOGGER.info("-- StepUT setUp --");
+        step = new StepSample();
         ci = new ConditionedInterceptor();
         gherkinCondition = new GherkinStepCondition();
         conditions = new ArrayList<>();
@@ -377,6 +385,7 @@ public class StepUT {
         final GherkinConditionedLoopedStep gherkinConditionedLoopedStep = new GherkinConditionedLoopedStep("1", "I want to do '4' things I cant.", expected, actual);
         steps.add(gherkinConditionedLoopedStep);
         try {
+            LOGGER.info("before runAllStepsInLoop {}", step);
             step.runAllStepsInLoop(steps);
             Assert.fail("TechnicalException should have been thrown");
         } catch (final TechnicalException e) {
