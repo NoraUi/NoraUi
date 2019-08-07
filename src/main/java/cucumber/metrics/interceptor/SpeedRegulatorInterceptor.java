@@ -9,10 +9,11 @@ package cucumber.metrics.interceptor;
 import java.lang.reflect.Method;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.logging.Logger;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import cucumber.metrics.annotation.regulator.SpeedRegulator;
 import cucumber.metrics.annotation.regulator.SpeedRegulators;
@@ -20,8 +21,11 @@ import cucumber.metrics.core.impl.Meter;
 
 public class SpeedRegulatorInterceptor implements MethodInterceptor {
 
-    private static Logger logger = Logger.getLogger(TimeInterceptor.class.getName());
-
+    /**
+     * Specific LOGGER
+     */
+    private final Logger LOGGER = LoggerFactory.getLogger(SpeedRegulatorInterceptor.class);
+    
     private final ConcurrentMap<String, Meter> speedometers = new ConcurrentHashMap<>();
 
     @Override
@@ -49,11 +53,11 @@ public class SpeedRegulatorInterceptor implements MethodInterceptor {
 
         //
         if (verbose) {
-            logger.info("Cucumber Metrics SpeedRegulatorInterceptor invoke method " + invocation.getMethod() + " is called on " + invocation.getThis() + " with args " + invocation.getArguments());
+            LOGGER.info("Cucumber Metrics SpeedRegulatorInterceptor invoke method " + invocation.getMethod() + " is called on " + invocation.getThis() + " with args " + invocation.getArguments());
         }
         Object result = invocation.proceed();
         if (verbose) {
-            logger.info("method " + invocation.getMethod() + " returns " + result);
+            LOGGER.info("method " + invocation.getMethod() + " returns " + result);
         }
         return result;
     }
@@ -68,7 +72,7 @@ public class SpeedRegulatorInterceptor implements MethodInterceptor {
                 }
             }
             if (annotation.verbose()) {
-                logger.info(annotation.application() + " cost " + cost + " " + annotation.unit());
+                LOGGER.info(annotation.application() + " cost " + cost + " " + annotation.unit());
             }
             Meter meter = speedometers.containsKey(annotation.application()) ? speedometers.get(annotation.application()) : new Meter(annotation.unit().toNanos(cost));
             meter.waitIfNecessaryAndUpdateNextAvailableTime();
