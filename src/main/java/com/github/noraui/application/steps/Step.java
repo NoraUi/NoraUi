@@ -901,6 +901,8 @@ public abstract class Step implements IStep {
             final String[] expecteds = loopedStep.getExpected().split(";");
             final String[] actuals = loopedStep.getActual().split(";");
 
+            LOGGER.info("actuals length is {}", actuals.length);
+            LOGGER.info("expecteds length is {}",expecteds.length);
             // For step conditions, if the number of actuals and expecteds, it is an error
             if (actuals.length != expecteds.length) {
                 throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_EXPECTED_ACTUAL_SIZE_DIFFERENT));
@@ -917,6 +919,7 @@ public abstract class Step implements IStep {
                     List<?> params = cucumberExpressionService.match(matcher.group(1), loopedStep.getStep());
                     if (params != null) {
                         Object[] tab;
+                        LOGGER.error("elem: {}", elem.getValue());
                         if (elem.getValue().isAnnotationPresent(Conditioned.class)) {
                             tab = new Object[params.size() + 1];
                             int i = 0;
@@ -933,6 +936,7 @@ public abstract class Step implements IStep {
                             elem.getValue().invoke(NoraUiInjector.getNoraUiInjectorSource().getInstance(elem.getValue().getDeclaringClass()), tab);
                             break;
                         } catch (final Exception e) {
+                            LOGGER.error("Exception when invoke {}", e);
                             throw new TechnicalException("\"" + loopedStep.getStep() + "\"", e.getCause());
                         }
                     }

@@ -389,6 +389,7 @@ public class StepUT {
             step.runAllStepsInLoop(steps);
             Assert.fail("TechnicalException should have been thrown");
         } catch (final TechnicalException e) {
+            LOGGER.info("TechnicalException in catch {}", e.getMessage());
             Assert.assertEquals(String.format(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_STEP_UNDEFINED), "I want to do '4' things I cant."), e.getMessage().replace("\"", ""));
         }
     }
