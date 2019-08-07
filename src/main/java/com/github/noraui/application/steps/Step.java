@@ -912,9 +912,10 @@ public abstract class Step implements IStep {
             }
             boolean found = false;
 
+            LOGGER.info("nb cucumber methods: {}", Context.getCucumberMethods().size());
             // We look in all existing Cucumber methods the right one to run
             for (final Entry<String, Method> elem : Context.getCucumberMethods().entrySet()) {
-                LOGGER.error("elem: {}", elem.getValue());
+                LOGGER.info("elem: {}", elem.getValue());
                 final Matcher matcher = Pattern.compile("value=(.*)\\)").matcher(elem.getKey());
                 if (matcher.find()) {
                     LOGGER.info("cucumberExpressionService is {}", cucumberExpressionService);
