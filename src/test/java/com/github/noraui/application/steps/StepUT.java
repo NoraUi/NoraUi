@@ -399,6 +399,6 @@ public class StepUT {
 
 }
 
-class StepSample extends Step{
+class StepSample extends Step {
     
 }

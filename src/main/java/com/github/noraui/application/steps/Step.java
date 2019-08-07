@@ -914,12 +914,13 @@ public abstract class Step implements IStep {
 
             // We look in all existing Cucumber methods the right one to run
             for (final Entry<String, Method> elem : Context.getCucumberMethods().entrySet()) {
+                LOGGER.error("elem: {}", elem.getValue());
                 final Matcher matcher = Pattern.compile("value=(.*)\\)").matcher(elem.getKey());
                 if (matcher.find()) {
+                    LOGGER.info("cucumberExpressionService is {}", cucumberExpressionService);
                     List<?> params = cucumberExpressionService.match(matcher.group(1), loopedStep.getStep());
                     if (params != null) {
                         Object[] tab;
-                        LOGGER.error("elem: {}", elem.getValue());
                         if (elem.getValue().isAnnotationPresent(Conditioned.class)) {
                             tab = new Object[params.size() + 1];
                             int i = 0;
@@ -940,6 +941,8 @@ public abstract class Step implements IStep {
                             throw new TechnicalException("\"" + loopedStep.getStep() + "\"", e.getCause());
                         }
                     }
+                } else {
+                    LOGGER.warn("no matcher for [{}]", elem.getKey());
                 }
             }
             if (!found) {
