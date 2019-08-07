@@ -11,12 +11,14 @@ import java.util.List;
 import java.util.Locale;
 
 import com.github.noraui.service.CucumberExpressionService;
+import com.google.inject.Singleton;
 
 import io.cucumber.cucumberexpressions.Argument;
 import io.cucumber.cucumberexpressions.CucumberExpression;
 import io.cucumber.cucumberexpressions.Expression;
 import io.cucumber.cucumberexpressions.ParameterTypeRegistry;
 
+@Singleton
 public class CucumberExpressionServiceImpl implements CucumberExpressionService {
     
     @Override
