@@ -49,12 +49,12 @@ public class StepUT {
     @Before
     public void setUp() {
         LOGGER.info("-- StepUT setUp --");
+        NoraUiInjector.resetInjector();
+        new NoraUiInjectorSource().getInjector();
         step = new StepSample();
         ci = new ConditionedInterceptor();
         gherkinCondition = new GherkinStepCondition();
         conditions = new ArrayList<>();
-        NoraUiInjector.resetInjector();
-        new NoraUiInjectorSource().getInjector();
     }
 
     @After
