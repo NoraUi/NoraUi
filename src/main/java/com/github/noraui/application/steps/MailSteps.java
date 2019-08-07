@@ -45,6 +45,9 @@ import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 import com.google.inject.Inject;
 
+import cucumber.api.java.en.And;
+import cucumber.api.java.fr.Et;
+
 /**
  * This class contains Gherkin callable steps that aim for expecting a specific result.
  */
@@ -84,8 +87,8 @@ public class MailSteps extends Step {
     @Experimental(name = "validActivationEmail")
     @RetryOnFailure(attempts = 3, delay = 60)
     @Conditioned
-    //@Et("Je valide le mail d activation {string}(\\?)")
-    //@And("I valid activation email {string}(\\?)")
+    @Et("Je valide le mail d'activation {string}(\\?)")
+    @And("I valid activation email {string}(\\?)")
     public void validActivationEmail(String mailHost, String mailUser, String mailPassword, String senderMail, String subjectMail, String firstCssQuery, List<GherkinStepCondition> conditions)
             throws FailureException, TechnicalException {
         try {
