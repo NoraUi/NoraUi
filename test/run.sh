@@ -96,6 +96,9 @@ else
     exit 255
 fi
 
+counterFailures=$(sed -n 's:.*\[INFO\] Tests run: *, Failures: \(.*\), Errors: *, Skipped: *, Time elapsed*UT.*:\1:p' nonaui.log | head -n 1)
+echo "******** counterFailures: $counterFailures"
+
 echo ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
 echo ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
 echo ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
