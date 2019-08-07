@@ -96,9 +96,6 @@ else
     exit 255
 fi
 
-counterFailures=$(sed -n 's:.*\[INFO\] Tests run: 10, Failures: \(.*\), Errors: 0, Skipped: 0, Time elapsed: .* - in com.github.noraui.cli.NoraUiCommandLineInterfaceInteractiveModeUT.*:\1:p' nonaui.log | head -n 1)
-echo "******** counterFailures: $counterFailures"
-
 echo ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
 echo ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
 echo ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
