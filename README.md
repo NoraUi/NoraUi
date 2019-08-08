@@ -108,14 +108,14 @@ SNAPSHOT:
 
 # Technology
 
-* Gherkin
-* Cucumber
-* Selenium
-* Webdriver
-* Java 8
+* Gherkin 5+
+* Cucumber 4+
+* Selenium 3+
+* Webdriver (Chrome, IE and firefox)
+* Java 8 (Both Oracle JDK and OpenJDK are supported).
 * Maven
 * Google guice
-* JUnit / Mockito / Cucumber
+* JUnit / Mockito
 
 # Run Anywhere
 ![RunAnywhere](/screenshots/plateforme.png)
