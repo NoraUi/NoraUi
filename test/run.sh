@@ -100,10 +100,10 @@ echo "***************************************************"
 echo "** Unit tests verification                       **"
 echo "***************************************************"
 
-counterFailures=$(sed -n 's/.*\[INFO\] Tests run: \(.*\), Failures: \([1-9]\), Errors: \(.*\), Skipped: \(.*\), Time elapsed.*UT.*/\2/p' nonaui.log | head -n 1)
-echo "******** counter Failures : $counterFailures"
+counterFailures=$(sed -n 's/.*\[\(.*\)\] Tests run: \(.*\), Failures: \([1-9]\), Errors: \(.*\), Skipped: \(.*\), Time elapsed.*UT.*/\3/p' nonaui.log | head -n 1)
+echo "******** counter Failures: $counterFailures"
 
-counterErrors=$(sed -n 's/.*\[INFO\] Tests run: \(.*\), Failures: \(.*\), Errors: \([1-9]\), Skipped: \(.*\), Time elapsed.*UT.*/\2/p' nonaui.log | head -n 1)
+counterErrors=$(sed -n 's/.*\[\(.*\)\] Tests run: \(.*\), Failures: \(.*\), Errors: \([1-9]\), Skipped: \(.*\), Time elapsed.*UT.*/\3/p' nonaui.log | head -n 1)
 echo "******** counter Errors: $counterErrors"
 
 if [ "$counterFailures" == "" ] && [ "$counterErrors" == "" ]; then
