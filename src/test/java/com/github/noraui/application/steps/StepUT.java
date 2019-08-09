@@ -9,9 +9,10 @@ package com.github.noraui.application.steps;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +30,7 @@ import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 
 public class StepUT {
-    
+
     /**
      * Specific LOGGER
      */
@@ -37,7 +38,7 @@ public class StepUT {
 
     public static final String DEMO_PAGE_NAME = "demo.DemoPage";
 
-    private StepSample step;
+    private static StepSample step;
     private ConditionedInterceptor ci;
     private GherkinStepCondition gherkinCondition;
     private List<GherkinStepCondition> conditions;
@@ -46,19 +47,21 @@ public class StepUT {
     public static final String CONTAINS_STRING = "^(.*Accès L2ETH|.*Accès L2TP).*$";
     public static final String START_STRING = "^\\[\\{\"action\":\"Qualif OSM\".*";
 
+    @BeforeClass
+    public static void setUpClass() {
+        NoraUiInjector.resetInjector();
+        step = new NoraUiInjectorSource().getInjector().getInstance(StepSample.class);
+    }
+
     @Before
     public void setUp() {
-        LOGGER.info("-- StepUT setUp --");
-        step = new StepSample();
         ci = new ConditionedInterceptor();
         gherkinCondition = new GherkinStepCondition();
         conditions = new ArrayList<>();
-        NoraUiInjector.resetInjector();
-        new NoraUiInjectorSource().getInjector();
     }
 
-    @After
-    public void tearDown() {
+    @AfterClass
+    public static void tearDownClass() {
         NoraUiInjector.resetInjector();
     }
 
@@ -400,5 +403,4 @@ public class StepUT {
 }
 
 class StepSample extends Step {
-    
 }

@@ -68,7 +68,7 @@ public abstract class Step implements IStep {
 
     @Inject
     protected CryptoService cryptoService;
-    
+
     @Inject
     protected CucumberExpressionService cucumberExpressionService;
 
@@ -901,8 +901,6 @@ public abstract class Step implements IStep {
             final String[] expecteds = loopedStep.getExpected().split(";");
             final String[] actuals = loopedStep.getActual().split(";");
 
-            LOGGER.info("actuals length is {}", actuals.length);
-            LOGGER.info("expecteds length is {}",expecteds.length);
             // For step conditions, if the number of actuals and expecteds, it is an error
             if (actuals.length != expecteds.length) {
                 throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_EXPECTED_ACTUAL_SIZE_DIFFERENT));
@@ -912,13 +910,11 @@ public abstract class Step implements IStep {
             }
             boolean found = false;
 
-            LOGGER.info("nb cucumber methods: {}", Context.getCucumberMethods().size());
             // We look in all existing Cucumber methods the right one to run
             for (final Entry<String, Method> elem : Context.getCucumberMethods().entrySet()) {
-                LOGGER.info("elem: {}", elem.getValue());
+                LOGGER.debug("Method: {}", elem.getValue());
                 final Matcher matcher = Pattern.compile("value=(.*)\\)").matcher(elem.getKey());
                 if (matcher.find()) {
-                    LOGGER.info("cucumberExpressionService is {}", cucumberExpressionService);
                     List<?> params = cucumberExpressionService.match(matcher.group(1), loopedStep.getStep());
                     if (params != null) {
                         Object[] tab;
@@ -938,12 +934,12 @@ public abstract class Step implements IStep {
                             elem.getValue().invoke(NoraUiInjector.getNoraUiInjectorSource().getInstance(elem.getValue().getDeclaringClass()), tab);
                             break;
                         } catch (final Exception e) {
-                            LOGGER.error("Exception when invoke {}", e);
+                            LOGGER.error("Exception when invoking {}", e);
                             throw new TechnicalException("\"" + loopedStep.getStep() + "\"", e.getCause());
                         }
                     }
                 } else {
-                    LOGGER.warn("no matcher for [{}]", elem.getKey());
+                    LOGGER.debug("No match for [{}], check next...", elem.getKey());
                 }
             }
             if (!found) {
