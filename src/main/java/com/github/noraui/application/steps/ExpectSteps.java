@@ -66,21 +66,15 @@ public class ExpectSteps extends Step {
      * @return true or false
      */
     public static ExpectedCondition<Boolean> textToBeEqualsToExpectedValue(final By locator, final String value) {
-        return new ExpectedCondition<Boolean>() {
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public Boolean apply(@Nullable WebDriver driver) {
-                try {
-                    final WebElement element = driver.findElement(locator);
-                    if (element != null && value != null) {
-                        return !((element.getAttribute(VALUE) == null || !value.equals(element.getAttribute(VALUE).trim())) && !value.equals(element.getText().replaceAll("\n", "")));
-                    }
-                } catch (final Exception e) {
+        return (ExpectedCondition<Boolean>) (@Nullable WebDriver driver) -> {
+            try {
+                final WebElement element = driver.findElement(locator);
+                if (element != null && value != null) {
+                    return !((element.getAttribute(VALUE) == null || !value.equals(element.getAttribute(VALUE).trim())) && !value.equals(element.getText().replaceAll("\n", "")));
                 }
-                return false;
+            } catch (final Exception e) {
             }
+            return false;
         };
     }
 
@@ -92,21 +86,18 @@ public class ExpectSteps extends Step {
      * @return true or false
      */
     public static ExpectedCondition<WebElement> atLeastOneOfTheseElementsIsPresent(final By... locators) {
-        return new ExpectedCondition<WebElement>() {
-            @Override
-            public WebElement apply(@Nullable WebDriver driver) {
-                WebElement element = null;
-                if (driver != null && locators.length > 0) {
-                    for (final By b : locators) {
-                        try {
-                            element = driver.findElement(b);
-                            break;
-                        } catch (final Exception e) {
-                        }
+        return (ExpectedCondition<WebElement>) (@Nullable WebDriver driver) -> {
+            WebElement element = null;
+            if (driver != null && locators.length > 0) {
+                for (final By b : locators) {
+                    try {
+                        element = driver.findElement(b);
+                        break;
+                    } catch (final Exception e) {
                     }
                 }
-                return element;
             }
+            return element;
         };
     }
 
@@ -120,12 +111,9 @@ public class ExpectSteps extends Step {
      * @return the list of WebElements once they are located
      */
     public static ExpectedCondition<List<WebElement>> presenceOfNbElementsLocatedBy(final By locator, final int nb) {
-        return new ExpectedCondition<List<WebElement>>() {
-            @Override
-            public List<WebElement> apply(WebDriver driver) {
-                final List<WebElement> elements = driver.findElements(locator);
-                return elements.size() == nb ? elements : null;
-            }
+        return (ExpectedCondition<List<WebElement>>) (WebDriver driver) -> {
+            final List<WebElement> elements = driver.findElements(locator);
+            return elements.size() == nb ? elements : null;
         };
     }
 
@@ -141,18 +129,15 @@ public class ExpectSteps extends Step {
      * @return the list of WebElements once they are located
      */
     public static ExpectedCondition<List<WebElement>> visibilityOfNbElementsLocatedBy(final By locator, final int nb) {
-        return new ExpectedCondition<List<WebElement>>() {
-            @Override
-            public List<WebElement> apply(WebDriver driver) {
-                int nbElementIsDisplayed = 0;
-                final List<WebElement> elements = driver.findElements(locator);
-                for (final WebElement element : elements) {
-                    if (element.isDisplayed()) {
-                        nbElementIsDisplayed++;
-                    }
+        return (ExpectedCondition<List<WebElement>>) (WebDriver driver) -> {
+            int nbElementIsDisplayed = 0;
+            final List<WebElement> elements = driver.findElements(locator);
+            for (final WebElement element : elements) {
+                if (element.isDisplayed()) {
+                    nbElementIsDisplayed++;
                 }
-                return nbElementIsDisplayed == nb ? elements : null;
             }
+            return nbElementIsDisplayed == nb ? elements : null;
         };
     }
 
@@ -162,11 +147,6 @@ public class ExpectSteps extends Step {
      * @return true or false
      */
     public static ExpectedCondition<Boolean> waitForLoad() {
-        return new ExpectedCondition<Boolean>() {
-            @Override
-            public Boolean apply(WebDriver driver) {
-                return ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
-            }
-        };
+        return (ExpectedCondition<Boolean>) (WebDriver driver) -> ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
     }
 }
