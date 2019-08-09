@@ -32,7 +32,7 @@ public class NoraUiInjectorSource implements InjectorSource {
      */
     @Override
     public Injector getInjector() {
-        Injector injector = Guice.createInjector(Stage.PRODUCTION, CucumberModules.SCENARIO, new SpeedRegulatorModule(), new TimeModule(), new NoraUiModule());
+        Injector injector = Guice.createInjector(Stage.PRODUCTION, CucumberModules.createScenarioModule(), new SpeedRegulatorModule(), new TimeModule(), new NoraUiModule());
         try {
             NoraUiInjector.createInjector(injector);
         } catch (TechnicalException e) {
