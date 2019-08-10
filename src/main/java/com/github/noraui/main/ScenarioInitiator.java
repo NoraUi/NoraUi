@@ -10,7 +10,7 @@ import static com.github.noraui.utils.Constants.USER_DIR;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -88,7 +88,7 @@ public class ScenarioInitiator {
         final String[] headers = Context.getDataInputProvider().readLine(0, false);
         if (headers != null) {
             List<String[]> examples = new ArrayList<>();
-            final Hashtable<Integer, List<String[]>> examplesTable = new Hashtable<>();
+            final HashMap<Integer, List<String[]>> examplesTable = new HashMap<>();
             String[] example;
             int i = 1;
             int j = 0;
@@ -115,7 +115,7 @@ public class ScenarioInitiator {
                 List<String[]> examples = new ArrayList<>();
                 final Constructor<Model> modelConstructor = DataUtils.getModelConstructor(model, headers);
                 final Map<Integer, Map<String, ModelList>> fusionedData = DataUtils.fusionProcessor(model, modelConstructor);
-                final Hashtable<Integer, List<String[]>> examplesTable = new Hashtable<>();
+                final HashMap<Integer, List<String[]>> examplesTable = new HashMap<>();
 
                 for (final Entry<Integer, Map<String, ModelList>> e : fusionedData.entrySet()) {
                     for (final Entry<String, ModelList> e2 : e.getValue().entrySet()) {

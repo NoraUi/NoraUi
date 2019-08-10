@@ -30,32 +30,42 @@ public class CounterUT {
 
     @Test
     public void testCsvCounter() throws Exception {
-        Counter.main(new String[] { "Csv" });
+        testCounterMain("Csv");
     }
 
     @Test
     public void testRestJsonCounter() throws Exception {
-        Counter.main(new String[] { "RestJson" });
+        testCounterMain("RestJson");
     }
 
     @Test
     public void testGherkinCounter() throws Exception {
-        Counter.main(new String[] { "Gherkin" });
+        testCounterMain("Gherkin");
     }
 
     @Test
     public void testExcelCounter() throws Exception {
-        Counter.main(new String[] { "Excel" });
+        testCounterMain("Excel");
     }
 
     @Test
     public void testDbPostgreCounter() throws Exception {
-        Counter.main(new String[] { "DbPostgre" });
+        testCounterMain("DbPostgre");
     }
 
     @Test
     public void testDbMySqlCounter() throws Exception {
-        Counter.main(new String[] { "DbMySql" });
+        testCounterMain("DbMySql");
+    }
+
+    private void testCounterMain(String type) {
+        String res = "";
+        try {
+            Counter.main(new String[] { type });
+        } catch (Exception e) {
+            res = "An error occured during Counter.main(\"" + type + "\"): " + e.getMessage();
+        }
+        Assert.assertEquals(res, "", res);
     }
 
     // @Test

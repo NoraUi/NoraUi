@@ -73,22 +73,15 @@ public class WindowManager {
      * @return a string with new Window Opens (GUID)
      */
     public static ExpectedCondition<String> newWindowOpens(final Set<String> currentHandles) {
-        return new ExpectedCondition<String>() {
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public String apply(@Nullable WebDriver driver) {
-                if (driver != null && !currentHandles.equals(driver.getWindowHandles())) {
-                    for (String s : driver.getWindowHandles()) {
-                        if (!currentHandles.contains(s)) {
-                            return s;
-                        }
+        return (@Nullable WebDriver driver) -> {
+            if (driver != null && !currentHandles.equals(driver.getWindowHandles())) {
+                for (String s : driver.getWindowHandles()) {
+                    if (!currentHandles.contains(s)) {
+                        return s;
                     }
                 }
-                return null;
             }
+            return null;
         };
     }
 
@@ -100,22 +93,15 @@ public class WindowManager {
      * @return true or false
      */
     public static ExpectedCondition<Boolean> clickCanBeDoneWithoutAlertOnElement(final WebElement element) {
-        return new ExpectedCondition<Boolean>() {
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public Boolean apply(@Nullable WebDriver driver) {
-                try {
-                    element.click();
-                    return true;
-                } catch (UnhandledAlertException e) {
-                    driver.switchTo().alert().dismiss();
-                } catch (ElementNotVisibleException e) {
-                }
-                return false;
+        return (@Nullable WebDriver driver) -> {
+            try {
+                element.click();
+                return true;
+            } catch (UnhandledAlertException e) {
+                driver.switchTo().alert().dismiss();
+            } catch (ElementNotVisibleException e) {
             }
+            return false;
         };
     }
 
@@ -127,21 +113,15 @@ public class WindowManager {
      * @return true or false
      */
     public static ExpectedCondition<Boolean> clickCanBeDoneWithoutAlertOnElementLocated(final By locator) {
-        return new ExpectedCondition<Boolean>() {
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public Boolean apply(@Nullable WebDriver driver) {
-                try {
-                    driver.findElement(locator).click();
-                    return true;
-                } catch (UnhandledAlertException e) {
-                    driver.switchTo().alert().dismiss();
-                } catch (ElementNotVisibleException e) {
-                }
-                return false;
+        return (@Nullable WebDriver driver) -> {
+            try {
+                driver.findElement(locator).click();
+                return true;
+            } catch (UnhandledAlertException e) {
+                driver.switchTo().alert().dismiss();
+            } catch (ElementNotVisibleException e) {
             }
+            return false;
         };
     }
 }

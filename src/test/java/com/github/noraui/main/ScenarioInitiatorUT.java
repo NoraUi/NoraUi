@@ -20,47 +20,57 @@ public class ScenarioInitiatorUT {
 
     @Test
     public void mainExcelTest() {
-        Context.getInstance().initializeEnv("demoExcel.properties");
-        new ScenarioInitiator().start(null);
-        Context.clear();
+        testScenarioInitiatorStart("demoExcel.properties", null);
     }
 
     @Test
     public void mainExcelWithArgsTest() {
-        Context.getInstance().initializeEnv("demoExcel.properties");
-        String[] args = new String[1];
-        args[0] = "hello";
-        new ScenarioInitiator().start(args);
-        Context.clear();
+        String[] args = { "hello" };
+        testScenarioInitiatorStart("demoExcel.properties", args);
     }
 
     @Test
     public void mainExcelScenarioInitiatorRunnerTest() {
-        Context.getInstance().initializeEnv("demoExcel.properties");
-        ScenarioInitiatorRunner.main(null);
-        Context.clear();
+        testScenarioInitiatorRunner("demoExcel.properties", null);
     }
 
     @Test
     public void mainGherkinTest() {
-        Context.getInstance().initializeEnv("demoGherkin.properties");
-        new ScenarioInitiator().start(null);
-        Context.clear();
+        testScenarioInitiatorStart("demoGherkin.properties", null);
     }
 
     @Test
     public void mainGherkinWithArgsTest() {
-        Context.getInstance().initializeEnv("demoGherkin.properties");
-        String[] args = new String[1];
-        args[0] = "hello";
-        new ScenarioInitiator().start(args);
-        Context.clear();
+        String[] args = { "hello" };
+        testScenarioInitiatorStart("demoGherkin.properties", args);
     }
 
     @Test
     public void mainGherkinScenarioInitiatorRunnerTest() {
-        Context.getInstance().initializeEnv("demoGherkin.properties");
-        ScenarioInitiatorRunner.main(null);
-        Context.clear();
+        testScenarioInitiatorRunner("demoGherkin.properties", null);
+    }
+
+    private void testScenarioInitiatorStart(String prop, String[] args) {
+        String res = "";
+        try {
+            Context.getInstance().initializeEnv(prop);
+            new ScenarioInitiator().start(args);
+            Context.clear();
+        } catch (Exception e) {
+            res = "An error occured during ScenarioInitiator.main(\"" + args + "\") with \"" + prop + "\": " + e.getMessage();
+        }
+        Assert.assertEquals(res, "", res);
+    }
+
+    private void testScenarioInitiatorRunner(String prop, String[] args) {
+        String res = "";
+        try {
+            Context.getInstance().initializeEnv(prop);
+            ScenarioInitiatorRunner.main(args);
+            Context.clear();
+        } catch (Exception e) {
+            res = "An error occured during ScenarioInitiator.main(\"" + args + "\") with \"" + prop + "\": " + e.getMessage();
+        }
+        Assert.assertEquals(res, "", res);
     }
 }

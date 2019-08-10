@@ -34,7 +34,7 @@ public class RESTSteps extends Step {
     /**
      * Specific LOGGER
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(CommonSteps.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RESTSteps.class);
 
     @Inject
     private HttpService httpService;

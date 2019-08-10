@@ -139,7 +139,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
             String httpResponse = httpService.get(url);
             if (!"".equals(httpResponse)) {
                 columns = new Gson().fromJson(httpResponse, DataModel.class).getColumns();
-                if(columns != null && columns.size() > 0) {
+                if (columns != null && !columns.isEmpty()) {
                     resultColumnName = Messages.getMessage(ResultColumnNames.RESULT_COLUMN_NAME);
                     columns.add(resultColumnName);
                 } else {

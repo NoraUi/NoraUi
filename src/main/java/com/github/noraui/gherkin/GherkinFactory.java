@@ -10,13 +10,12 @@ import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -54,11 +53,11 @@ public class GherkinFactory {
      *            is a table of data without headers. Various examples can be present in a single file.
      *            In this case, the key of each entry if the Hashtable matches the position of the examples table in the Gherkin file.
      */
-    public static void injectDataInGherkinExamples(String filename, Hashtable<Integer, List<String[]>> examplesTable) {
+    public static void injectDataInGherkinExamples(String filename, Map<Integer, List<String[]>> examplesTable) {
         try {
             if (!examplesTable.isEmpty()) {
                 final Path filePath = getFeaturePath(filename);
-                final String fileContent = new String(Files.readAllBytes(filePath), Charset.forName(Constants.DEFAULT_ENDODING));
+                final String fileContent = new String(Files.readAllBytes(filePath), Constants.DEFAULT_ENDODING);
                 String lang = getFeatureLanguage(fileContent);
                 LOGGER.info(lang);
                 StringBuilder examplesString;
@@ -80,7 +79,7 @@ public class GherkinFactory {
                             "$1" + examplesString.toString() + "$2");
                 }
 
-                try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath.toString()), Charset.forName(Constants.DEFAULT_ENDODING)));) {
+                try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath.toString()), Constants.DEFAULT_ENDODING));) {
                     int i = 0;
                     bw.write(scenarioOutlines[i]);
 
@@ -106,18 +105,17 @@ public class GherkinFactory {
         final Pattern pattern = Pattern.compile(GHERKIN_LANGUAGE_REGEX, Pattern.MULTILINE);
         final Matcher matcher = pattern.matcher(featureContent);
 
-        if (matcher.find()) {
-            if (matcher.groupCount() == 1) {
-                return matcher.group(1);
-            }
+        if (matcher.find() && matcher.groupCount() == 1) {
+            return matcher.group(1);
         }
         return "";
+
     }
 
     public static String[] getExamples(String filename) {
         try {
             final Path filePath = getFeaturePath(filename);
-            final String fileContent = new String(Files.readAllBytes(filePath), Charset.forName(Constants.DEFAULT_ENDODING));
+            final String fileContent = new String(Files.readAllBytes(filePath), Constants.DEFAULT_ENDODING);
             final Pattern pattern = Pattern.compile(DATA + "([\\s\\S]*)" + DATA_END);
             final Matcher matcher = pattern.matcher(fileContent);
             String lines = "";

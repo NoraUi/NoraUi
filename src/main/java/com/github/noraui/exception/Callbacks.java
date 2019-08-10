@@ -26,7 +26,7 @@ public class Callbacks extends HashMap<String, Callback> {
     /**
      * Specific LOGGER
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(Callback.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Callbacks.class);
 
     /**
      * @deprecated (Only used for demo application for testing purposes, use {@link #CLOSE_WINDOW_AND_SWITCH_TO_GEOBEER_HOME} instead)

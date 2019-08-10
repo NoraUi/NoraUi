@@ -204,7 +204,6 @@ public class DriverFactory {
         final FirefoxOptions firefoxOptions = new FirefoxOptions();
         final FirefoxBinary firefoxBinary = new FirefoxBinary();
 
-        // final DesiredCapabilities capabilities = DesiredCapabilities.firefox();
         firefoxOptions.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
         firefoxOptions.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
 

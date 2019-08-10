@@ -218,17 +218,17 @@ public class Context {
      * Proxy
      */
     private Proxy proxy;
-    
+
     /**
      * 
      */
     private int connectTimeout;
-    
+
     /**
      * 
      */
     private int writeTimeout;
-    
+
     /**
      * 
      */
@@ -385,11 +385,11 @@ public class Context {
             proxy.setAutodetect(false);
             proxy.setNoProxy(noProxy);
         }
-        
+
         // OkHttp timeout
-        connectTimeout= getIntProperty(OKHTTP_CONNECT_TIMEOUT, applicationProperties);
-        writeTimeout= getIntProperty(OKHTTP_WRITE_TIMEOUT, applicationProperties);
-        readTimeout=getIntProperty(OKHTTP_READ_TIMEOUT, applicationProperties);
+        connectTimeout = getIntProperty(OKHTTP_CONNECT_TIMEOUT, applicationProperties);
+        writeTimeout = getIntProperty(OKHTTP_WRITE_TIMEOUT, applicationProperties);
+        readTimeout = getIntProperty(OKHTTP_READ_TIMEOUT, applicationProperties);
 
         // authentication mode configuration
         Auth.setAuthenticationType(getProperty(AUTH_TYPE, applicationProperties));
@@ -771,8 +771,8 @@ public class Context {
      * @return url in a string
      */
     public static String getUrlByPagekey(String pageKey) {
-        return getInstance().applications.values().stream().map(Application::getUrlPages).map(urlPages -> urlPages.get(pageKey)).filter(Objects::nonNull)
-                .map(urlPage -> Auth.usingAuthentication(urlPage)).findFirst().orElse(null);
+        return getInstance().applications.values().stream().map(Application::getUrlPages).map(urlPages -> urlPages.get(pageKey)).filter(Objects::nonNull).map(Auth::usingAuthentication).findFirst()
+                .orElse(null);
     }
 
     /**

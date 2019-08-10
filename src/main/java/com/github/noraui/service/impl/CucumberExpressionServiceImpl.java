@@ -20,9 +20,9 @@ import io.cucumber.cucumberexpressions.ParameterTypeRegistry;
 
 @Singleton
 public class CucumberExpressionServiceImpl implements CucumberExpressionService {
-    
+
     @Override
-    public List<?> match(String expressionString, String text) {
+    public List<Object> match(String expressionString, String text) {
         Expression expression;
         ParameterTypeRegistry parameterTypeRegistry = new ParameterTypeRegistry(Locale.ENGLISH);
         expression = new CucumberExpression(expressionString, parameterTypeRegistry);

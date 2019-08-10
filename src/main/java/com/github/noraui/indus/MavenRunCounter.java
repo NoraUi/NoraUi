@@ -72,7 +72,8 @@ public class MavenRunCounter {
         for (final String file : files) {
             final String scenarioName = file.substring(file.lastIndexOf(File.separator) + 1, file.lastIndexOf('.'));
             if (!blacklist.contains(scenarioName)) {
-                int nbStep = 0, nbScenario = 0;
+                int nbStep = 0;
+                int nbScenario = 0;
                 Counter counter = null;
                 Matcher matcher;
                 try (BufferedReader br = new BufferedReader(new FileReader(file));) {
@@ -144,8 +145,10 @@ public class MavenRunCounter {
             LOGGER.info("Scenario: {} => step: {} and cases: {} -->  runs: {}, failures: {}, errors: 0 and skips: {}", counter.getScenarioName(), counter.getNbStep(), counter.getNbCas(),
                     counter.getRun(), counter.getFailures(), counter.getSkipped());
         }
-        LOGGER.info("{}", generateExpected1(type, failures, scenarios));
-        LOGGER.info("{}", generateExpected2(type, run, failures, skipped, scenarios));
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info("{}", generateExpected1(type, failures, scenarios));
+            LOGGER.info("{}", generateExpected2(type, run, failures, skipped, scenarios));
+        }
     }
 
     public static List<String> listFilesForFolder(final List<String> versionControlSystemsBlacklist, final File folder) {
@@ -360,12 +363,12 @@ public class MavenRunCounter {
         int skipped = 0;
         final String[] headers = Context.getDataInputProvider().readLine(0, false);
         if (headers != null) {
-            LOGGER.info("getModelConstructor model: {}",  model);
+            LOGGER.info("getModelConstructor model: {}", model);
             StringBuilder sb1 = new StringBuilder();
             for (String s : headers) {
                 sb1.append(s).append(" ");
-            } 
-            LOGGER.info("getModelConstructor headers: {}", sb1.toString());
+            }
+            LOGGER.info("getModelConstructor headers: {}", sb1);
             final Constructor<Model> modelConstructor = DataUtils.getModelConstructor(model, headers);
             final Map<Integer, Map<String, ModelList>> fusionedData = DataUtils.fusionProcessor(model, modelConstructor);
             int dataIndex = 0;

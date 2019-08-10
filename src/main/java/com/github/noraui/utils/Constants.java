@@ -6,6 +6,9 @@
  */
 package com.github.noraui.utils;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
 public class Constants {
 
     public static final String DATE_FORMAT = "dd/MM/yyyy";
@@ -13,7 +16,7 @@ public class Constants {
 
     public static final String VALUE = "value";
 
-    public static final String DEFAULT_ENDODING = "UTF-8";
+    public static final Charset DEFAULT_ENDODING = StandardCharsets.UTF_8;
 
     public static final String USER_DIR = "user.dir";
     public static final String CLI_FILES_DIR = ".noraui";

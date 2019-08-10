@@ -10,7 +10,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +25,7 @@ import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 
 public class DataUtils {
-    
+
     /**
      * Specific LOGGER
      */
@@ -46,10 +46,10 @@ public class DataUtils {
         return modelConstructor;
     }
 
-    public static Hashtable<Integer, Map<String, ModelList>> fusionProcessor(Class<Model> model, Constructor<Model> modelConstructor) throws TechnicalException {
+    public static HashMap<Integer, Map<String, ModelList>> fusionProcessor(Class<Model> model, Constructor<Model> modelConstructor) throws TechnicalException {
         LOGGER.info("model: {}", model);
         LOGGER.info("modelConstructor: {}", modelConstructor);
-        final Hashtable<Integer, Map<String, ModelList>> fusionedDataTable = new Hashtable<>();
+        final HashMap<Integer, Map<String, ModelList>> fusionedDataTable = new HashMap<>();
         Map<String, ModelList> fusionedData = new LinkedHashMap<>();
         try {
             final Class<? extends ModelList> modelListClass = model.newInstance().getModelList();
@@ -61,15 +61,15 @@ public class DataUtils {
                 LOGGER.info("readLine: {}", i);
                 example = Context.getDataInputProvider().readLine(i, false);
                 StringBuilder sb1 = new StringBuilder();
-                if (example!=null) {
+                if (example != null) {
                     for (String s : example) {
                         sb1.append(s).append(" ");
-                    } 
-                    LOGGER.info("example: {}", sb1.toString());
+                    }
+                    LOGGER.info("example: {}", sb1);
                 } else {
                     LOGGER.info("example is null");
                 }
-                
+
                 if (example == null) {
                     fusionedDataTable.put(Integer.valueOf(j++), fusionedData);
                     fusionedData = new LinkedHashMap<>();

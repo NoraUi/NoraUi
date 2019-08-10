@@ -7,7 +7,6 @@
 package com.github.noraui.data.db;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -58,7 +57,6 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
                 Class.forName("oracle.jdbc.OracleDriver");
                 this.connectionUrl = "jdbc:oracle:thin:@" + hostname + ":" + port + ":" + database;
             } else if (types.POSTGRE.toString().equals(type)) {
-                Class.forName("org.postgresql.Driver");
                 this.connectionUrl = "jdbc:postgresql://" + hostname + ":" + port + "/" + database;
             } else {
                 throw new DatabaseException(String.format(Messages.getMessage(DatabaseException.TECHNICAL_ERROR_MESSAGE_UNKNOWN_DATABASE_TYPE), type));
@@ -98,7 +96,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
         String sqlRequest = "";
         try {
             final Path file = Paths.get(dataInPath + scenarioName + ".sql");
-            sqlRequest = new String(Files.readAllBytes(file), Charset.forName(Constants.DEFAULT_ENDODING));
+            sqlRequest = new String(Files.readAllBytes(file), Constants.DEFAULT_ENDODING);
             sqlSanitized4readOnly(sqlRequest);
         } catch (final IOException e) {
             throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), e);
@@ -125,7 +123,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
         String sqlRequest;
         try {
             final Path file = Paths.get(dataInPath + scenarioName + ".sql");
-            sqlRequest = new String(Files.readAllBytes(file), Charset.forName(Constants.DEFAULT_ENDODING));
+            sqlRequest = new String(Files.readAllBytes(file), Constants.DEFAULT_ENDODING);
             sqlSanitized4readOnly(sqlRequest);
         } catch (final IOException e) {
             throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), e);
@@ -155,7 +153,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
         String sqlRequest;
         try {
             final Path file = Paths.get(dataInPath + scenarioName + ".sql");
-            sqlRequest = new String(Files.readAllBytes(file), Charset.forName(Constants.DEFAULT_ENDODING));
+            sqlRequest = new String(Files.readAllBytes(file), Constants.DEFAULT_ENDODING);
             sqlSanitized4readOnly(sqlRequest);
         } catch (final IOException e) {
             throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), e);
@@ -190,7 +188,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
         String sqlRequest;
         try {
             final Path file = Paths.get(dataInPath + scenarioName + ".sql");
-            sqlRequest = new String(Files.readAllBytes(file), Charset.forName(Constants.DEFAULT_ENDODING));
+            sqlRequest = new String(Files.readAllBytes(file), Constants.DEFAULT_ENDODING);
             sqlSanitized4readOnly(sqlRequest);
         } catch (final IOException e) {
             throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), e);

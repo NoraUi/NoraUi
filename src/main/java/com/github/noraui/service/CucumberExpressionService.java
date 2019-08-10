@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface CucumberExpressionService {
 
-    List<?> match(String expressionString, String text);
-    
+    List<Object> match(String expressionString, String text);
+
 }

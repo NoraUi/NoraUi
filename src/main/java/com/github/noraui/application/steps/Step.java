@@ -378,7 +378,9 @@ public abstract class Step implements IStep {
         }
 
         final String innerText = webElement == null ? null : webElement.getText();
-        LOGGER.debug("checkText() expected [{}] and found [{}].", textOrKey.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : value, innerText);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("checkText() expected [{}] and found [{}].", textOrKey.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : value, innerText);
+        }
         if (!value.equals(innerText)) {
             new Result.Failure<>(innerText, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE), pageElement,
                     textOrKey.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : value, pageElement.getPage().getApplication()), true, pageElement.getPage().getCallBack());

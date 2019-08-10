@@ -66,7 +66,7 @@ public class ExpectSteps extends Step {
      * @return true or false
      */
     public static ExpectedCondition<Boolean> textToBeEqualsToExpectedValue(final By locator, final String value) {
-        return (ExpectedCondition<Boolean>) (@Nullable WebDriver driver) -> {
+        return (@Nullable WebDriver driver) -> {
             try {
                 final WebElement element = driver.findElement(locator);
                 if (element != null && value != null) {
@@ -86,7 +86,7 @@ public class ExpectSteps extends Step {
      * @return true or false
      */
     public static ExpectedCondition<WebElement> atLeastOneOfTheseElementsIsPresent(final By... locators) {
-        return (ExpectedCondition<WebElement>) (@Nullable WebDriver driver) -> {
+        return (@Nullable WebDriver driver) -> {
             WebElement element = null;
             if (driver != null && locators.length > 0) {
                 for (final By b : locators) {
@@ -111,7 +111,7 @@ public class ExpectSteps extends Step {
      * @return the list of WebElements once they are located
      */
     public static ExpectedCondition<List<WebElement>> presenceOfNbElementsLocatedBy(final By locator, final int nb) {
-        return (ExpectedCondition<List<WebElement>>) (WebDriver driver) -> {
+        return (WebDriver driver) -> {
             final List<WebElement> elements = driver.findElements(locator);
             return elements.size() == nb ? elements : null;
         };
@@ -129,7 +129,7 @@ public class ExpectSteps extends Step {
      * @return the list of WebElements once they are located
      */
     public static ExpectedCondition<List<WebElement>> visibilityOfNbElementsLocatedBy(final By locator, final int nb) {
-        return (ExpectedCondition<List<WebElement>>) (WebDriver driver) -> {
+        return (WebDriver driver) -> {
             int nbElementIsDisplayed = 0;
             final List<WebElement> elements = driver.findElements(locator);
             for (final WebElement element : elements) {
@@ -147,6 +147,6 @@ public class ExpectSteps extends Step {
      * @return true or false
      */
     public static ExpectedCondition<Boolean> waitForLoad() {
-        return (ExpectedCondition<Boolean>) (WebDriver driver) -> ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
+        return (WebDriver driver) -> ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
     }
 }

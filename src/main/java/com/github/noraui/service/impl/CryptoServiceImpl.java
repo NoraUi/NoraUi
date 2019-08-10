@@ -24,7 +24,6 @@ import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.service.CryptoService;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
-import com.github.noraui.utils.Utilities;
 import com.google.inject.Singleton;
 
 @Singleton
@@ -33,7 +32,7 @@ public class CryptoServiceImpl implements CryptoService {
     /**
      * Specific LOGGER
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(Utilities.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CryptoServiceImpl.class);
 
     /**
      * {@inheritDoc}
