@@ -47,40 +47,23 @@ public class DataUtils {
     }
 
     public static Map<Integer, Map<String, ModelList>> fusionProcessor(Class<Model> model, Constructor<Model> modelConstructor) throws TechnicalException {
-        LOGGER.info("model: {}", model);
-        LOGGER.info("modelConstructor: {}", modelConstructor);
         final HashMap<Integer, Map<String, ModelList>> fusionedDataTable = new HashMap<>();
         Map<String, ModelList> fusionedData = new LinkedHashMap<>();
         try {
             final Class<? extends ModelList> modelListClass = model.newInstance().getModelList();
-            LOGGER.info("modelListClass: {}", modelListClass);
             String[] example;
             int i = 1;
             int j = 0;
             do {
-                LOGGER.info("readLine: {}", i);
                 example = Context.getDataInputProvider().readLine(i, false);
-                StringBuilder sb1 = new StringBuilder();
-                if (example != null) {
-                    for (String s : example) {
-                        sb1.append(s).append(" ");
-                    }
-                    LOGGER.info("example: {}", sb1);
-                } else {
-                    LOGGER.info("example is null");
-                }
-
                 if (example == null) {
                     fusionedDataTable.put(Integer.valueOf(j++), fusionedData);
                     fusionedData = new LinkedHashMap<>();
                 } else {
                     final String key = example[0];
                     final Object[] data = addStringToBeginningOfObjectArray(String.valueOf(i), Arrays.copyOfRange(example, 1, example.length));
-                    LOGGER.info("data: {}", data);
                     StringBuilder sb = new StringBuilder();
                     fusionedData.forEach((id, modelList) -> sb.append(modelList.serialize()).append(" "));
-                    LOGGER.info("fusionedData: {}", sb);
-                    LOGGER.info("key: {}", key);
                     if (fusionedData.containsKey(key)) {
                         fusionedData.put(key, fusionedData.get(key).addModel(modelConstructor.newInstance(data)));
                     } else {

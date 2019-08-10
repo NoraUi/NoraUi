@@ -159,7 +159,6 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
             throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), e);
         }
         try (Connection connection = getConnection(); PreparedStatement statement = connection.prepareStatement(sqlRequest); ResultSet rs = statement.executeQuery();) {
-            LOGGER.info("rs {}", rs);
             if (rs == null || "".equals(rs.getString(1))) {
                 return null;
             } else {
