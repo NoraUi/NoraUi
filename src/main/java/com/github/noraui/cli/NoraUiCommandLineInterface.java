@@ -49,6 +49,7 @@ public class NoraUiCommandLineInterface {
     private static final Logger LOGGER = LoggerFactory.getLogger(NoraUiCommandLineInterface.class);
     private static final String JSON = ".json";
     private static final String CLI_TAB = "    {}) {}";
+    private static final String CONTEXT = "Context";
 
     private Application application;
     private Scenario scenario;
@@ -518,7 +519,7 @@ public class NoraUiCommandLineInterface {
             }
         }
         for (NoraUiScenarioFile noraUiScenarioFile : noraUiCliFile.getScenarioFiles()) {
-            addScenario(null, noraUiScenarioFile.getApplication(), noraUiScenarioFile.getName(), noraUiScenarioFile.getDescription(), robotContext.getSimpleName().replaceAll("Context", ""), verbose,
+            addScenario(null, noraUiScenarioFile.getApplication(), noraUiScenarioFile.getName(), noraUiScenarioFile.getDescription(), robotContext.getSimpleName().replaceAll(CONTEXT, ""), verbose,
                     null, false);
         }
 
@@ -571,13 +572,13 @@ public class NoraUiCommandLineInterface {
         if (featureCode == 1) {
             noraUiCliFile = addApplication(noraUiCliFile, applicationName, url, robotContext, verbose, input, interactiveMode);
         } else if (featureCode == 2) {
-            noraUiCliFile = addScenario(noraUiCliFile, applicationName, scenarioName, description, robotContext.getSimpleName().replaceAll("Context", ""), verbose, input, interactiveMode);
+            noraUiCliFile = addScenario(noraUiCliFile, applicationName, scenarioName, description, robotContext.getSimpleName().replaceAll(CONTEXT, ""), verbose, input, interactiveMode);
         } else if (featureCode == 3) {
             noraUiCliFile = addModel(noraUiCliFile, applicationName, modelName, fields, results, robotContext, verbose, input, interactiveMode);
         } else if (featureCode == 4) {
             noraUiCliFile = removeApplication(noraUiCliFile, applicationName, robotContext, verbose, input, interactiveMode);
         } else if (featureCode == 5) {
-            noraUiCliFile = removeScenario(noraUiCliFile, scenarioName, robotContext.getSimpleName().replaceAll("Context", ""), robotCounter, verbose, input, interactiveMode);
+            noraUiCliFile = removeScenario(noraUiCliFile, scenarioName, robotContext.getSimpleName().replaceAll(CONTEXT, ""), robotCounter, verbose, input, interactiveMode);
         } else if (featureCode == 6) {
             noraUiCliFile = removeModel(noraUiCliFile, applicationName, modelName, robotContext, verbose, input, interactiveMode);
         } else if (featureCode == 7) {
@@ -1103,12 +1104,14 @@ public class NoraUiCommandLineInterface {
                 LOGGER.info("Enter data:");
                 data = input.nextLine();
             }
-            LOGGER.info("Encrypt a data [{}] with this crypto key: [{}]", data, cryptoKey);
-            LOGGER.info("Encrypted value is {}", cryptoService.encrypt(cryptoKey, data));
+            if (LOGGER.isInfoEnabled()) {
+                LOGGER.info("Encrypt a data [{}] with this crypto key: [{}]", data, cryptoKey);
+                LOGGER.info("Encrypted value is {}", cryptoService.encrypt(cryptoKey, data));
+            }
         } else {
             if (cryptoKey == null || "".equals(cryptoKey) || data == null || "".equals(data)) {
                 LOGGER.error("When you want to encrypt data with interactiveMode is false, you need use -d and -k");
-            } else {
+            } else if (LOGGER.isInfoEnabled()) {
                 LOGGER.info("Encrypt a data [{}] with this crypto key: [{}]", data, cryptoKey);
                 LOGGER.info("Encrypted value is {}", cryptoService.encrypt(cryptoKey, data));
             }
@@ -1143,12 +1146,14 @@ public class NoraUiCommandLineInterface {
                 LOGGER.info("Enter data:");
                 description = input.nextLine();
             }
-            LOGGER.info("Decrypt a data [{}] with this crypto key: [{}]", description, cryptoKey);
-            LOGGER.info("Decrypted value is {}", cryptoService.decrypt(cryptoKey, description));
+            if (LOGGER.isInfoEnabled()) {
+                LOGGER.info("Decrypt a data [{}] with this crypto key: [{}]", description, cryptoKey);
+                LOGGER.info("Decrypted value is {}", cryptoService.decrypt(cryptoKey, description));
+            }
         } else {
             if (cryptoKey == null || "".equals(cryptoKey) || description == null || "".equals(description)) {
                 LOGGER.error("When you want to decrypt data with interactiveMode is false, you need use -d and -k");
-            } else {
+            } else if (LOGGER.isInfoEnabled()) {
                 LOGGER.info("Decrypt a data [{}] with this crypto key: [{}]", description, cryptoKey);
                 LOGGER.info("Decrypted value is {}", cryptoService.decrypt(cryptoKey, description));
             }
@@ -1163,24 +1168,24 @@ public class NoraUiCommandLineInterface {
      */
     private void status(NoraUiCliFile noraUiCliFile) {
         List<NoraUiApplicationFile> applications = noraUiCliFile.getApplicationFiles();
-        for (NoraUiApplicationFile application : applications) {
-            LOGGER.info("Application: [{}]",  application.getName());
-            LOGGER.info(" - url: [{}]",  application.getUrl());
-            for (NoraUiModel model : application.getModels()) {
-                LOGGER.info(" - model: [{}]",  model.getName());
-                for (NoraUiField field : model.getFields()) {
-                    LOGGER.info("   - field: [{}]",  field.getName());
+        for (NoraUiApplicationFile a : applications) {
+            LOGGER.info("Application: [{}]", a.getName());
+            LOGGER.info(" - url: [{}]", a.getUrl());
+            for (NoraUiModel m : a.getModels()) {
+                LOGGER.info(" - model: [{}]", m.getName());
+                for (NoraUiField field : m.getFields()) {
+                    LOGGER.info("   - field: [{}]", field.getName());
                 }
-                for (NoraUiResult result : model.getResults()) {
-                    LOGGER.info("   - result: [{}]",  result.getName());
+                for (NoraUiResult result : m.getResults()) {
+                    LOGGER.info("   - result: [{}]", result.getName());
                 }
             }
         }
         List<NoraUiScenarioFile> scenarios = noraUiCliFile.getScenarioFiles();
-        for (NoraUiScenarioFile scenario : scenarios) {
-            LOGGER.info("Scenario: [{}]", scenario.getName());
-            LOGGER.info(" - description: [{}]", scenario.getDescription());
-            LOGGER.info(" - application: [{}]", scenario.getApplication());
+        for (NoraUiScenarioFile s : scenarios) {
+            LOGGER.info("Scenario: [{}]", s.getName());
+            LOGGER.info(" - description: [{}]", s.getDescription());
+            LOGGER.info(" - application: [{}]", s.getApplication());
         }
     }
 

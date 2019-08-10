@@ -14,7 +14,6 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -171,12 +170,12 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
         }
     }
 
-    private CSVReader openInputData() throws FileNotFoundException, UnsupportedEncodingException {
+    private CSVReader openInputData() throws FileNotFoundException {
         return new CSVReaderBuilder(new InputStreamReader(new FileInputStream(dataInPath + scenarioName + "." + CSV_TYPE), DEFAULT_ENDODING))
                 .withCSVParser(new CSVParserBuilder().withSeparator(CSV_CHAR_SEPARATOR).build()).build();
     }
 
-    private CSVReader openOutputData() throws FileNotFoundException, UnsupportedEncodingException {
+    private CSVReader openOutputData() throws FileNotFoundException {
         return new CSVReaderBuilder(new InputStreamReader(new FileInputStream(dataOutPath + scenarioName + "." + CSV_TYPE), DEFAULT_ENDODING))
                 .withCSVParser(new CSVParserBuilder().withSeparator(CSV_CHAR_SEPARATOR).build()).build();
     }

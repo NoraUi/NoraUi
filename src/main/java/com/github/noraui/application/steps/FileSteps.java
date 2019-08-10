@@ -42,7 +42,7 @@ public class FileSteps extends Step {
     /**
      * Specific LOGGER
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(CommonSteps.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileSteps.class);
 
     /**
      * Empties the default downloaded files folder.

@@ -46,7 +46,7 @@ public class DataUtils {
         return modelConstructor;
     }
 
-    public static HashMap<Integer, Map<String, ModelList>> fusionProcessor(Class<Model> model, Constructor<Model> modelConstructor) throws TechnicalException {
+    public static Map<Integer, Map<String, ModelList>> fusionProcessor(Class<Model> model, Constructor<Model> modelConstructor) throws TechnicalException {
         LOGGER.info("model: {}", model);
         LOGGER.info("modelConstructor: {}", modelConstructor);
         final HashMap<Integer, Map<String, ModelList>> fusionedDataTable = new HashMap<>();
