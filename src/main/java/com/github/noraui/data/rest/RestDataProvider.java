@@ -125,6 +125,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
                     return response;
                 }
             }
+            LOGGER.warn("No line could be returned at {}", line);
             return null;
         } catch (TechnicalException | NumberFormatException | HttpServiceException e) {
             LOGGER.error("readLine error at line [{}]", line, e);
@@ -143,9 +144,11 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
                     resultColumnName = Messages.getMessage(ResultColumnNames.RESULT_COLUMN_NAME);
                     columns.add(resultColumnName);
                 } else {
+                    LOGGER.warn("No column could be returned at {}", url);
                     throw new EmptyDataFileContentException(Messages.getMessage(EmptyDataFileContentException.EMPTY_DATA_FILE_CONTENT_ERROR_MESSAGE));
                 }
             } else {
+                LOGGER.warn("No column could be returned at {}", url);
                 throw new EmptyDataFileContentException(Messages.getMessage(EmptyDataFileContentException.EMPTY_DATA_FILE_CONTENT_ERROR_MESSAGE));
             }
         } catch (TechnicalException | NumberFormatException | HttpServiceException e) {
