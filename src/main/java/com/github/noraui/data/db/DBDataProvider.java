@@ -160,7 +160,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
         }
         try (Connection connection = getConnection(); PreparedStatement statement = connection.prepareStatement(sqlRequest); ResultSet rs = statement.executeQuery();) {
             LOGGER.info("rs {}", rs);
-            if (rs == null || "".equals(rs.getString(0))) {
+            if (rs == null || "".equals(rs.getString(1))) {
                 return null;
             } else {
                 final String[] ret = readResult ? new String[columns.size()] : new String[columns.size() - 1];
