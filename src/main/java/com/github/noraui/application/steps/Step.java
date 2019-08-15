@@ -960,7 +960,6 @@ public abstract class Step implements IStep {
 
     private Consumer<GherkinConditionedLoopedStep> buildConditionsList(List<GherkinStepCondition> stepConditions) {
         return c -> {
-            System.err.print("buildConditionsList");
             String[] expecteds = c.getExpected().split(";");
             String[] actuals = c.getActual().split(";");
             stepConditions.clear();
@@ -972,13 +971,14 @@ public abstract class Step implements IStep {
 
     private Function<GherkinConditionedLoopedStep, SimpleEntry<Method, List<?>>> findMethodToInvoke() {
         return f -> {
-            System.err.print("findMethodToInvoke");
             for (Entry<String, Method> entry : Context.getCucumberMethods().entrySet()) {
                 log.debug("Method: {}", entry.getValue());
                 Matcher matcher = Pattern.compile("value=(.*)\\)").matcher(entry.getKey());
                 if (matcher.find()) {
                     List<?> params = cucumberExpressionService.match(matcher.group(1), f.getStep());
-                    return new AbstractMap.SimpleEntry<Method, List<?>>(entry.getValue(), params);
+                    if (params != null) {
+                        return new AbstractMap.SimpleEntry<Method, List<?>>(entry.getValue(), params);
+                    }
                 }
                 log.debug("No match for [{}], check next...", entry.getValue());
             }
@@ -988,7 +988,6 @@ public abstract class Step implements IStep {
 
     private Consumer<SimpleEntry<Method, List<?>>> invokeMethodWithConditions(List<GherkinStepCondition> stepConditions) {
         return c -> {
-            System.err.print("invokeMethodWithConditions");
             Object[] tab;
             if (c.getKey().isAnnotationPresent(Conditioned.class)) {
                 tab = new Object[c.getValue().size() + 1];
