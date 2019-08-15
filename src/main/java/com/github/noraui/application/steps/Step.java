@@ -15,12 +15,18 @@ import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.AbstractMap;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,8 +38,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.application.page.IPage;
 import com.github.noraui.application.page.Page;
@@ -53,14 +57,17 @@ import com.github.noraui.utils.Constants;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 import com.github.noraui.utils.Utilities;
+import com.google.common.base.Function;
 import com.google.inject.Inject;
 
+import lombok.extern.slf4j.Slf4j;
+
+/**
+ * Specific LOGGER
+ */
+@Slf4j
 public abstract class Step implements IStep {
 
-    /**
-     * Specific LOGGER
-     */
-    protected static final Logger LOGGER = LoggerFactory.getLogger(Step.class);
     protected static final String SECURE_MASK = "[secure]";
 
     @Inject
@@ -218,7 +225,7 @@ public abstract class Step implements IStep {
                         pageElement.getPage().getCallBack());
             }
         } else {
-            LOGGER.debug("Empty data provided. No need to update text. If you want clear data, you need use: \"I clear text in ...\"");
+            log.debug("Empty data provided. No need to update text. If you want clear data, you need use: \"I clear text in ...\"");
         }
     }
 
@@ -318,7 +325,7 @@ public abstract class Step implements IStep {
         try {
             Context.waitUntil(ExpectSteps.textToBeEqualsToExpectedValue(Utilities.getLocator(pageElement), value));
         } catch (final Exception e) {
-            LOGGER.error("error in expectText. element is [{}]", element == null ? null : element.getText());
+            log.error("error in expectText. element is [{}]", element == null ? null : element.getText());
             new Result.Failure<>(element == null ? null : element.getText(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE), pageElement,
                     textOrKey.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : value, pageElement.getPage().getApplication()), true, pageElement.getPage().getCallBack());
         }
@@ -378,8 +385,8 @@ public abstract class Step implements IStep {
         }
 
         final String innerText = webElement == null ? null : webElement.getText();
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("checkText() expected [{}] and found [{}].", textOrKey.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : value, innerText);
+        if (log.isDebugEnabled()) {
+            log.debug("checkText() expected [{}] and found [{}].", textOrKey.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : value, innerText);
         }
         if (!value.equals(innerText)) {
             new Result.Failure<>(innerText, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE), pageElement,
@@ -506,19 +513,19 @@ public abstract class Step implements IStep {
      *             if the scenario encounters a functional error
      */
     protected void updateDateValidated(PageElement pageElement, String dateType, String date) throws TechnicalException, FailureException {
-        LOGGER.debug("updateDateValidated with elementName={}, dateType={} and date={}", pageElement, dateType, date);
+        log.debug("updateDateValidated with elementName={}, dateType={} and date={}", pageElement, dateType, date);
         final DateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT);
         final Date today = Calendar.getInstance().getTime();
         try {
             final Date valideDate = formatter.parse(date);
             if ("any".equals(dateType)) {
-                LOGGER.debug("update Date with any date: {}", date);
+                log.debug("update Date with any date: {}", date);
                 updateText(pageElement, date);
             } else if (formatter.format(today).equals(date) && ("future".equals(dateType) || "today".equals(dateType))) {
-                LOGGER.debug("update Date with today");
+                log.debug("update Date with today");
                 updateText(pageElement, date);
             } else if (valideDate.after(Calendar.getInstance().getTime()) && ("future".equals(dateType) || "future_strict".equals(dateType))) {
-                LOGGER.debug("update Date with a date after today: {}", date);
+                log.debug("update Date with a date after today: {}", date);
                 updateText(pageElement, date);
             } else {
                 new Result.Failure<>(date, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNEXPECTED_DATE), Messages.getMessage(Messages.DATE_GREATER_THAN_TODAY)), true,
@@ -546,7 +553,7 @@ public abstract class Step implements IStep {
      *             if the scenario encounters a functional error
      */
     protected void saveElementValue(String field, Page page) throws TechnicalException, FailureException {
-        LOGGER.debug("saveValueInStep: {} in {}.", field, page.getApplication());
+        log.debug("saveValueInStep: {} in {}.", field, page.getApplication());
         saveElementValue(field, page.getPageKey() + field, page);
     }
 
@@ -568,7 +575,7 @@ public abstract class Step implements IStep {
      *             if the scenario encounters a functional error
      */
     protected void saveElementValue(String field, String targetKey, Page page) throws TechnicalException, FailureException {
-        LOGGER.debug("saveValueInStep: {} to {} in {}.", field, targetKey, page.getApplication());
+        log.debug("saveValueInStep: {} to {} in {}.", field, targetKey, page.getApplication());
         String txt = "";
         try {
             final WebElement elem = Utilities.findElement(page, field);
@@ -808,7 +815,7 @@ public abstract class Step implements IStep {
                 new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UPLOADING_FILE), path), true, pageElement.getPage().getCallBack());
             }
         } else {
-            LOGGER.debug("Empty data provided. No need to update file upload path. If you want clear data, you need use: \"I clear text in ...\"");
+            log.debug("Empty data provided. No need to update file upload path. If you want clear data, you need use: \"I clear text in ...\"");
         }
     }
 
@@ -825,11 +832,11 @@ public abstract class Step implements IStep {
      *            is a list of authorized activities
      */
     protected void displayMessageAtTheBeginningOfMethod(String methodName, String act, String concernedActivity, List<String> concernedActivities) {
-        LOGGER.debug("{} {}: {} with {} concernedActivity(ies)", act, methodName, concernedActivity, concernedActivities.size());
+        log.debug("{} {}: {} with {} concernedActivity(ies)", act, methodName, concernedActivity, concernedActivities.size());
         int i = 0;
         for (final String activity : concernedActivities) {
             i++;
-            LOGGER.debug("  activity N°{}={}", i, activity);
+            log.debug("  activity N°{}={}", i, activity);
         }
     }
 
@@ -844,11 +851,11 @@ public abstract class Step implements IStep {
      *            is a list of authorized activities
      */
     protected void displayMessageAtTheBeginningOfMethod(String methodName, String act, List<String> concernedActivities) {
-        LOGGER.debug("{}: {} with {} concernedActivity(ies)", act, methodName, concernedActivities.size());
+        log.debug("{}: {} with {} concernedActivity(ies)", act, methodName, concernedActivities.size());
         int i = 0;
         for (final String activity : concernedActivities) {
             i++;
-            LOGGER.debug("  activity N°{}={}", i, activity);
+            log.debug("  activity N°{}={}", i, activity);
         }
     }
 
@@ -861,11 +868,11 @@ public abstract class Step implements IStep {
      *            is a list of concerned elements (example: authorized activities)
      */
     protected void displayConcernedElementsAtTheBeginningOfMethod(String methodName, List<String> concernedElements) {
-        LOGGER.debug("{}: with {} concernedElements", methodName, concernedElements.size());
+        log.debug("{}: with {} concernedElements", methodName, concernedElements.size());
         int i = 0;
         for (final String element : concernedElements) {
             i++;
-            LOGGER.debug("  element N°{}={}", i, element);
+            log.debug("  element N°{}={}", i, element);
         }
     }
 
@@ -898,56 +905,19 @@ public abstract class Step implements IStep {
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      */
     protected void runAllStepsInLoop(List<GherkinConditionedLoopedStep> loopedSteps) throws TechnicalException {
-        for (final GherkinConditionedLoopedStep loopedStep : loopedSteps) {
-            final List<GherkinStepCondition> stepConditions = new ArrayList<>();
-            final String[] expecteds = loopedStep.getExpected().split(";");
-            final String[] actuals = loopedStep.getActual().split(";");
-
-            // For step conditions, if the number of actuals and expecteds, it is an error
-            if (actuals.length != expecteds.length) {
-                throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_EXPECTED_ACTUAL_SIZE_DIFFERENT));
-            }
-            for (int i = 0; i < expecteds.length; i++) {
-                stepConditions.add(new GherkinStepCondition(loopedStep.getKey(), expecteds[i], actuals[i]));
-            }
-            boolean found = false;
-
-            // We look in all existing Cucumber methods the right one to run
-            for (final Entry<String, Method> elem : Context.getCucumberMethods().entrySet()) {
-                LOGGER.debug("Method: {}", elem.getValue());
-                final Matcher matcher = Pattern.compile("value=(.*)\\)").matcher(elem.getKey());
-                if (matcher.find()) {
-                    List<?> params = cucumberExpressionService.match(matcher.group(1), loopedStep.getStep());
-                    if (params != null) {
-                        Object[] tab;
-                        if (elem.getValue().isAnnotationPresent(Conditioned.class)) {
-                            tab = new Object[params.size() + 1];
-                            int i = 0;
-                            for (Object o : params) {
-                                tab[i++] = o;
-                            }
-                            tab[params.size()] = stepConditions;
-                        } else {
-                            tab = params.toArray();
-                        }
-
-                        try {
-                            found = true;
-                            elem.getValue().invoke(NoraUiInjector.getNoraUiInjectorSource().getInstance(elem.getValue().getDeclaringClass()), tab);
-                            break;
-                        } catch (final Exception e) {
-                            LOGGER.error("Exception when invoking {}", e);
-                            throw new TechnicalException("\"" + loopedStep.getStep() + "\"", e.getCause());
-                        }
-                    }
-                } else {
-                    LOGGER.debug("No match for [{}], check next...", elem.getKey());
-                }
-            }
-            if (!found) {
-                throw new TechnicalException(String.format(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_STEP_UNDEFINED), loopedStep.getStep()));
-            }
-        }
+        List<GherkinStepCondition> stepConditions = new ArrayList<>();
+        AtomicReference<String> currentStep = new AtomicReference<String>();
+        //@formatter:off
+        loopedSteps.stream()
+            .peek(step -> { currentStep.set(step.getStep());}) // save current step in case of errors
+            .filter(checkConditionExpectedsAndActuals()) // check conditions expected & actual sizes
+            .peek(buildConditionsList(stepConditions)) // build list of conditions
+            .map(findMethodToInvoke()) // find the matching method among all Cucumber methods
+            .filter(Objects::nonNull) // get rid of null ones
+            .peek(invokeMethodWithConditions(stepConditions)) // invoke methods of the loop
+            .findAny() // do this with any matching item or throw an exception
+            .orElseThrow(() -> new TechnicalException(String.format(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_STEP_UNDEFINED), currentStep)));
+        //@formatter:on
     }
 
     /**
@@ -978,9 +948,70 @@ public abstract class Step implements IStep {
         return value;
     }
 
+    private Predicate<GherkinConditionedLoopedStep> checkConditionExpectedsAndActuals() {
+        return p -> {
+            boolean equalSizes = p.getActual().split(";").length == p.getExpected().split(";").length;
+            if (!equalSizes) {
+                log.error(Messages.getMessage(TechnicalException.TECHNICAL_EXPECTED_ACTUAL_SIZE_DIFFERENT));
+            }
+            return equalSizes;
+        };
+    }
+
+    private Consumer<GherkinConditionedLoopedStep> buildConditionsList(List<GherkinStepCondition> stepConditions) {
+        return c -> {
+            System.err.print("buildConditionsList");
+            String[] expecteds = c.getExpected().split(";");
+            String[] actuals = c.getActual().split(";");
+            stepConditions.clear();
+            for (int i = 0; i < expecteds.length; i++) {
+                stepConditions.add(new GherkinStepCondition(c.getKey(), expecteds[i], actuals[i]));
+            }
+        };
+    }
+
+    private Function<GherkinConditionedLoopedStep, SimpleEntry<Method, List<?>>> findMethodToInvoke() {
+        return f -> {
+            System.err.print("findMethodToInvoke");
+            for (Entry<String, Method> entry : Context.getCucumberMethods().entrySet()) {
+                log.debug("Method: {}", entry.getValue());
+                Matcher matcher = Pattern.compile("value=(.*)\\)").matcher(entry.getKey());
+                if (matcher.find()) {
+                    List<?> params = cucumberExpressionService.match(matcher.group(1), f.getStep());
+                    return new AbstractMap.SimpleEntry<Method, List<?>>(entry.getValue(), params);
+                }
+                log.debug("No match for [{}], check next...", entry.getValue());
+            }
+            return null;
+        };
+    }
+
+    private Consumer<SimpleEntry<Method, List<?>>> invokeMethodWithConditions(List<GherkinStepCondition> stepConditions) {
+        return c -> {
+            System.err.print("invokeMethodWithConditions");
+            Object[] tab;
+            if (c.getKey().isAnnotationPresent(Conditioned.class)) {
+                tab = new Object[c.getValue().size() + 1];
+                int i = 0;
+                for (Object o : c.getValue()) {
+                    tab[i++] = o;
+                }
+                tab[c.getValue().size()] = stepConditions;
+            } else {
+                tab = c.getValue().toArray();
+            }
+
+            try {
+                c.getKey().invoke(NoraUiInjector.getNoraUiInjectorSource().getInstance(c.getKey().getDeclaringClass()), tab);
+            } catch (final Exception e) {
+                log.error("Exception when invoking {}", e);
+            }
+        };
+    }
+
     private void displayMessageAtTheBeginningOfMethod(String message, String element, String application) throws TechnicalException {
         try {
-            LOGGER.debug(message, element, application);
+            log.debug(message, element, application);
         } catch (final Exception te) {
             throw new TechnicalException("Technical problem in the code Messages.formatMessage(String templateMessage, String... args) in NoraUi.", te);
         }
