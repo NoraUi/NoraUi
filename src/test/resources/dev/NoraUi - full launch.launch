@@ -9,6 +9,7 @@
 <listEntry value="maven.test.failure.ignore=true"/>
 <listEntry value="cucumber.options=--tags '@hello or @bonjour or @blog'"/>
 <listEntry value="crypto.key=my-secret"/>
+<listEntry value="pullrequest=true"/>
 </listAttribute>
 <stringAttribute key="M2_RUNTIME" value="EMBEDDED"/>
 <booleanAttribute key="M2_SKIP_TESTS" value="false"/>
