@@ -960,13 +960,14 @@ public abstract class Step implements IStep {
     }
 
     private Function<GherkinConditionedLoopedStep, GherkinConditionedLoopedStep> buildConditionsList(List<GherkinStepCondition> stepConditions) {
-        return c -> {
-            String[] expecteds = c.getExpected().split(";");
-            String[] actuals = c.getActual().split(";");
+        return f -> {
+            String[] expecteds = f.getExpected().split(";");
+            String[] actuals = f.getActual().split(";");
             stepConditions.clear();
             for (int i = 0; i < expecteds.length; i++) {
-                stepConditions.add(new GherkinStepCondition(c.getKey(), expecteds[i], actuals[i]));
+                stepConditions.add(new GherkinStepCondition(f.getKey(), expecteds[i], actuals[i]));
             }
+            return f;
         };
     }
 
@@ -988,24 +989,25 @@ public abstract class Step implements IStep {
     }
 
     private Function<SimpleEntry<Method, List<?>>, SimpleEntry<Method, List<?>>> invokeMethodWithConditions(List<GherkinStepCondition> stepConditions) {
-        return c -> {
+        return f -> {
             Object[] tab;
-            if (c.getKey().isAnnotationPresent(Conditioned.class)) {
-                tab = new Object[c.getValue().size() + 1];
+            if (f.getKey().isAnnotationPresent(Conditioned.class)) {
+                tab = new Object[f.getValue().size() + 1];
                 int i = 0;
-                for (Object o : c.getValue()) {
+                for (Object o : f.getValue()) {
                     tab[i++] = o;
                 }
-                tab[c.getValue().size()] = stepConditions;
+                tab[f.getValue().size()] = stepConditions;
             } else {
-                tab = c.getValue().toArray();
+                tab = f.getValue().toArray();
             }
 
             try {
-                c.getKey().invoke(NoraUiInjector.getNoraUiInjectorSource().getInstance(c.getKey().getDeclaringClass()), tab);
+                f.getKey().invoke(NoraUiInjector.getNoraUiInjectorSource().getInstance(f.getKey().getDeclaringClass()), tab);
             } catch (final Exception e) {
                 log.error("Exception when invoking {}", e);
             }
+            return f;
         };
     }
 
