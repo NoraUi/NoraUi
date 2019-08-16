@@ -25,7 +25,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -906,17 +905,19 @@ public abstract class Step implements IStep {
      */
     protected void runAllStepsInLoop(List<GherkinConditionedLoopedStep> loopedSteps) throws TechnicalException {
         List<GherkinStepCondition> stepConditions = new ArrayList<>();
-        AtomicReference<String> currentStep = new AtomicReference<String>();
+        AtomicReference<String> currentStep = new AtomicReference<>();
         //@formatter:off
-        loopedSteps.stream()
-            .peek(step -> { currentStep.set(step.getStep());}) // save current step in case of errors
+        if(!loopedSteps.stream()
+            .map(step -> {currentStep.set(step.getStep()); return step;}) // save current step in case of errors
             .filter(checkConditionExpectedsAndActuals()) // check conditions expected & actual sizes
-            .peek(buildConditionsList(stepConditions)) // build list of conditions
+            .map(buildConditionsList(stepConditions)) // build list of conditions
             .map(findMethodToInvoke()) // find the matching method among all Cucumber methods
             .filter(Objects::nonNull) // get rid of null ones
-            .peek(invokeMethodWithConditions(stepConditions)) // invoke methods of the loop
-            .findAny() // do this with any matching item or throw an exception
-            .orElseThrow(() -> new TechnicalException(String.format(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_STEP_UNDEFINED), currentStep)));
+            .map(invokeMethodWithConditions(stepConditions)) // invoke methods of the loop
+            .findAny().isPresent()// do this with any matching existing item or throw an exception
+        ) {
+            throw new TechnicalException(String.format(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_STEP_UNDEFINED), currentStep));
+        }
         //@formatter:on
     }
 
@@ -958,7 +959,7 @@ public abstract class Step implements IStep {
         };
     }
 
-    private Consumer<GherkinConditionedLoopedStep> buildConditionsList(List<GherkinStepCondition> stepConditions) {
+    private Function<GherkinConditionedLoopedStep, GherkinConditionedLoopedStep> buildConditionsList(List<GherkinStepCondition> stepConditions) {
         return c -> {
             String[] expecteds = c.getExpected().split(";");
             String[] actuals = c.getActual().split(";");
@@ -977,7 +978,7 @@ public abstract class Step implements IStep {
                 if (matcher.find()) {
                     List<?> params = cucumberExpressionService.match(matcher.group(1), f.getStep());
                     if (params != null) {
-                        return new AbstractMap.SimpleEntry<Method, List<?>>(entry.getValue(), params);
+                        return new AbstractMap.SimpleEntry<>(entry.getValue(), params);
                     }
                 }
                 log.debug("No match for [{}], check next...", entry.getValue());
@@ -986,7 +987,7 @@ public abstract class Step implements IStep {
         };
     }
 
-    private Consumer<SimpleEntry<Method, List<?>>> invokeMethodWithConditions(List<GherkinStepCondition> stepConditions) {
+    private Function<SimpleEntry<Method, List<?>>, SimpleEntry<Method, List<?>>> invokeMethodWithConditions(List<GherkinStepCondition> stepConditions) {
         return c -> {
             Object[] tab;
             if (c.getKey().isAnnotationPresent(Conditioned.class)) {
