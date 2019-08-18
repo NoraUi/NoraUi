@@ -49,7 +49,7 @@
         <ciToolResourcesPath>src/test/resources</ciToolResourcesPath>
         <crypto.key>@TOSPECIFY</crypto.key>
         <scenario.name>@TOSPECIFY</scenario.name>
-        <cucumber.version>4.5.0</cucumber.version>
+        <cucumber.version>4.7.1</cucumber.version>
         <selenium.version>3.12.0</selenium.version>
         <junit.version>4.12</junit.version>
         <ini4j.version>0.5.4</ini4j.version>
