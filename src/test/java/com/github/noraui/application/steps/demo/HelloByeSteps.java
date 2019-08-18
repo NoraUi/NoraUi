@@ -108,7 +108,7 @@ public class HelloByeSteps extends Step {
 
     @Lorsque("Mes champs sont prêts à être utilisés")
     @Given("My fields are ready to use")
-    public void checkFields(String city) throws FailureException {
+    public void checkFields() throws FailureException {
         By inputSelectLocator = Utilities.getLocator(demoPage.inputSelect);
         By inputTextLocator = Utilities.getLocator(demoPage.inputText);
         Context.waitUntil(ExpectSteps.atLeastOneOfTheseElementsIsPresent(inputSelectLocator, inputTextLocator));
