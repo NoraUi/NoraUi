@@ -42,7 +42,8 @@ Feature: hello (Function to validate the environment.)
     And I click on 'demo.DemoPage-send'
     Then I check text 'demo.DemoPage-input_text_field' with 'test.txt'
     And I clean download directory
-
+		
+    Given My fields are ready to use
     When I clear text in 'demo.DemoPage-input_text_field'
     When I update text 'demo.DemoPage-input_text_field' with '<author>'
     When I update text 'demo.DemoPage-input_text_field' and type ENTER with '<author>'
