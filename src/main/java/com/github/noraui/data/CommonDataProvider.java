@@ -6,11 +6,13 @@
  */
 package com.github.noraui.data;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
@@ -75,37 +77,31 @@ public abstract class CommonDataProvider implements DataProvider {
     @SuppressWarnings("unchecked")
     @Override
     public Class<Model> getModel(String modelPackagesCsv) throws TechnicalException {
+
         if (modelPackagesCsv != null && !"".equals(modelPackagesCsv)) {
-            final String[] packages = modelPackagesCsv.split(";");
+            AtomicReference<Class<?>> model = new AtomicReference<>();
+            Stream<String> packages = Pattern.compile(";").splitAsStream(modelPackagesCsv);
             try {
-                if (packages.length > 0) {
-                    Set<Class<?>> returnedClasses;
-                    LOGGER.debug("packages length is {}", packages.length);
-                    for (final String p : packages) {
-                        returnedClasses = getClasses(p);
+                //@formatter:off
+                if(packages.flatMap(p -> {
+                        Set<Class<?>> returnedClasses = getClasses(p);
                         LOGGER.debug("package [{}] return {} classes", p, returnedClasses.size());
-                        for (final Class<?> c : returnedClasses) {
-                            if (Model.class.isAssignableFrom(c)) {
-                                boolean mappingOK = false;
-                                for (final Field f : c.getDeclaredFields()) {
-                                    if (f.isAnnotationPresent(Column.class)) {
-                                        mappingOK = columns.contains(f.getAnnotation(Column.class).name());
-                                    }
-                                }
-                                if (mappingOK) {
-                                    return (Class<Model>) c;
-                                }
-                            }
-                        }
-                    }
+                        return returnedClasses.stream();
+                    })
+                    .filter(c -> Model.class.isAssignableFrom(c))
+                    .map(c -> { model.set(c); return c; })
+                    .flatMap(c -> Stream.of(c.getDeclaredFields()))
+                    .filter(f -> f.isAnnotationPresent(Column.class))
+                    .allMatch(f -> columns.contains(f.getAnnotation(Column.class).name()))
+                ) {
+                    return (Class<Model>) model.get();
                 }
-                return null;
+                //@formatter:on
             } catch (final Exception e) {
                 throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION), e);
             }
-        } else {
-            return null;
         }
+        return null;
     }
 
     /**
