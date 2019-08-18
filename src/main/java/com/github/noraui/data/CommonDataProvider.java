@@ -6,11 +6,13 @@
  */
 package com.github.noraui.data;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -77,31 +79,41 @@ public abstract class CommonDataProvider implements DataProvider {
     @SuppressWarnings("unchecked")
     @Override
     public Class<Model> getModel(String modelPackagesCsv) throws TechnicalException {
-
         if (modelPackagesCsv != null && !"".equals(modelPackagesCsv)) {
             AtomicReference<Class<?>> model = new AtomicReference<>();
             Stream<String> packages = Pattern.compile(";").splitAsStream(modelPackagesCsv);
             try {
                 //@formatter:off
-                if(packages.flatMap(p -> {
+                return (Class<Model>) packages.flatMap(p -> {
                         Set<Class<?>> returnedClasses = getClasses(p);
                         LOGGER.debug("package [{}] return {} classes", p, returnedClasses.size());
                         return returnedClasses.stream();
                     })
                     .filter(c -> Model.class.isAssignableFrom(c))
-                    .map(c -> { model.set(c); return c; })
-                    .flatMap(c -> Stream.of(c.getDeclaredFields()))
-                    .filter(f -> f.isAnnotationPresent(Column.class))
-                    .allMatch(f -> columns.contains(f.getAnnotation(Column.class).name()))
-                ) {
-                    return (Class<Model>) model.get();
-                }
+                    .filter(getModelFromFields())
+                    .findFirst().orElse(null);
                 //@formatter:on
             } catch (final Exception e) {
                 throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION), e);
             }
         }
         return null;
+    }
+
+    private Predicate<Class<?>> getModelFromFields() {
+        return p -> {
+            boolean mappingOK = false;
+            for (Field f : p.getDeclaredFields()) {
+                if (f.isAnnotationPresent(Column.class)) {
+                    if (columns.contains(f.getAnnotation(Column.class).name())) {
+                        mappingOK = true;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+            return mappingOK;
+        };
     }
 
     /**
