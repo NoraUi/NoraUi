@@ -115,7 +115,7 @@ SNAPSHOT:
 * Java 8 (Both Oracle JDK and OpenJDK are supported).
 * Maven
 * Google guice
-* JUnit / Mockito
+* JUnit 5 / Mockito
 
 # Run Anywhere
 ![RunAnywhere](/screenshots/plateforme.png)
