@@ -22,12 +22,13 @@ See [change log](https://noraui.github.io/changelog.txt) for details
 
 # How to migrate from [3.x.x] to [4.x.x]
 
-* You can use all new features from cucumber v4.x.x. (Use Cucumber Expressions)
+* You need use all new features from cucumber v4.x.x. (Use Cucumber Expressions)
 * You need use Cucumber Expressions instead of regular expressions
 * You need use java 8 instead of java 7.
+* You can use JUnit 5 instead of JUnit 4.3.
 * Rename all `jenkinsresourcespath` by `ciToolResourcesPath` in your CI/CD
 
-# How to migrate from [2.x.x] to [3.x.x] (mandatory)
+# How to migrate from [2.x.x] to [3.x.x] (mandatory because forbidden license)
 
 * -Dcucumber.options="--tags '@tag1 or @tag2 or @tag3 or @tag4'"
 * NoraUi use Oracle Jdbc Driver
