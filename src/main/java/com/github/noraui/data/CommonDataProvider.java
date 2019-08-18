@@ -11,27 +11,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.annotation.Column;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.model.Model;
 import com.github.noraui.utils.Messages;
 
-public abstract class CommonDataProvider implements DataProvider {
+import lombok.extern.slf4j.Slf4j;
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(CommonDataProvider.class);
+@Slf4j
+public abstract class CommonDataProvider implements DataProvider {
 
     protected String dataInPath;
     protected String dataOutPath;
@@ -80,16 +75,15 @@ public abstract class CommonDataProvider implements DataProvider {
     @Override
     public Class<Model> getModel(String modelPackagesCsv) throws TechnicalException {
         if (modelPackagesCsv != null && !"".equals(modelPackagesCsv)) {
-            AtomicReference<Class<?>> model = new AtomicReference<>();
             Stream<String> packages = Pattern.compile(";").splitAsStream(modelPackagesCsv);
             try {
                 //@formatter:off
                 return (Class<Model>) packages.flatMap(p -> {
                         Set<Class<?>> returnedClasses = getClasses(p);
-                        LOGGER.debug("package [{}] return {} classes", p, returnedClasses.size());
+                        log.debug("package [{}] return {} classes", p, returnedClasses.size());
                         return returnedClasses.stream();
                     })
-                    .filter(c -> Model.class.isAssignableFrom(c))
+                    .filter(Model.class::isAssignableFrom)
                     .filter(getModelFromFields())
                     .findFirst().orElse(null);
                 //@formatter:on
@@ -149,7 +143,7 @@ public abstract class CommonDataProvider implements DataProvider {
      *            The value
      */
     public void writeFailedResult(int line, String value) {
-        LOGGER.debug("Write Failed result => line:{} value:{}", line, value);
+        log.debug("Write Failed result => line:{} value:{}", line, value);
         writeValue(resultColumnName, line, value);
     }
 
@@ -160,7 +154,7 @@ public abstract class CommonDataProvider implements DataProvider {
      *            The line number
      */
     public void writeSuccessResult(int line) {
-        LOGGER.debug("Write Success result => line:{}", line);
+        log.debug("Write Success result => line:{}", line);
         writeValue(resultColumnName, line, Messages.getMessage(Messages.SUCCESS_MESSAGE));
     }
 
@@ -173,7 +167,7 @@ public abstract class CommonDataProvider implements DataProvider {
      *            The value
      */
     public void writeWarningResult(int line, String value) {
-        LOGGER.debug("Write Warning result => line:{} value:{}", line, value);
+        log.debug("Write Warning result => line:{} value:{}", line, value);
         writeValue(resultColumnName, line, value);
     }
 
@@ -188,7 +182,7 @@ public abstract class CommonDataProvider implements DataProvider {
      *            The data value
      */
     public void writeDataResult(String column, int line, String value) {
-        LOGGER.debug("Write Data result => column:{} line:{} value:{}", column, line, value);
+        log.debug("Write Data result => column:{} line:{} value:{}", column, line, value);
         writeValue(column, line, value);
     }
 

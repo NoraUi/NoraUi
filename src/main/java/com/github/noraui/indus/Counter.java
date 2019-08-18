@@ -40,13 +40,8 @@ public class Counter {
 
             Context.getInstance().initializeEnv("demo" + args[0] + ".properties");
 
-            // TODO: remove if never used
-            if (args[0].contains("Db")) {
-            }
-            if (args[0].contains("RestJson") ) {
-              scenarioBlacklist.add("sampleRESTAPI");
-            }
-            if (args[0].contains("Gherkin") ) {
+            if (args[0].contains("RestJson")) {
+                scenarioBlacklist.add("sampleRESTAPI");
             }
             scenarioBlacklist.add("loginLogout");
 
