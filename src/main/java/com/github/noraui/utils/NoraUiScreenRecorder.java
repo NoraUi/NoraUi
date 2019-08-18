@@ -42,12 +42,69 @@ public class NoraUiScreenRecorder extends ScreenRecorder {
     }
 
     public static class NoraUiScreenRecorderConfiguration {
-        public GraphicsConfiguration cfg;
-        public Rectangle area;
-        public Format fileFormat;
-        public Format screenFormat;
-        public Format mouseFormat;
-        public Format audioFormat;
-        public File movieFolder;
+        GraphicsConfiguration cfg;
+        Rectangle area;
+        Format fileFormat;
+        Format screenFormat;
+        Format mouseFormat;
+        Format audioFormat;
+        File movieFolder;
+
+        public GraphicsConfiguration getCfg() {
+            return cfg;
+        }
+
+        public void setCfg(GraphicsConfiguration cfg) {
+            this.cfg = cfg;
+        }
+
+        public Rectangle getArea() {
+            return area;
+        }
+
+        public void setArea(Rectangle area) {
+            this.area = area;
+        }
+
+        public Format getFileFormat() {
+            return fileFormat;
+        }
+
+        public void setFileFormat(Format fileFormat) {
+            this.fileFormat = fileFormat;
+        }
+
+        public Format getScreenFormat() {
+            return screenFormat;
+        }
+
+        public void setScreenFormat(Format screenFormat) {
+            this.screenFormat = screenFormat;
+        }
+
+        public Format getMouseFormat() {
+            return mouseFormat;
+        }
+
+        public void setMouseFormat(Format mouseFormat) {
+            this.mouseFormat = mouseFormat;
+        }
+
+        public Format getAudioFormat() {
+            return audioFormat;
+        }
+
+        public void setAudioFormat(Format audioFormat) {
+            this.audioFormat = audioFormat;
+        }
+
+        public File getMovieFolder() {
+            return movieFolder;
+        }
+
+        public void setMovieFolder(File movieFolder) {
+            this.movieFolder = movieFolder;
+        }
+
     }
 }

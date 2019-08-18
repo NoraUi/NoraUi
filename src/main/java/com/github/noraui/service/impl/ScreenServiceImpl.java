@@ -114,14 +114,14 @@ public class ScreenServiceImpl implements ScreenService {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         NoraUiScreenRecorderConfiguration config = new NoraUiScreenRecorder.NoraUiScreenRecorderConfiguration();
 
-        config.cfg = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
-        config.area = new Rectangle(0, 0, screenSize.width, screenSize.height);
-        config.fileFormat = new Format(MediaTypeKey, MediaType.FILE, MimeTypeKey, MIME_AVI);
-        config.screenFormat = new Format(MediaTypeKey, MediaType.VIDEO, EncodingKey, ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE, CompressorNameKey, ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE, DepthKey, 24,
-                FrameRateKey, Rational.valueOf(15), QualityKey, 1.0f, KeyFrameIntervalKey, 15 * 60);
-        config.mouseFormat = new Format(MediaTypeKey, MediaType.VIDEO, EncodingKey, "black", FrameRateKey, Rational.valueOf(30));
-        config.audioFormat = null;
-        config.movieFolder = new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER);
+        config.setCfg(GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration());
+        config.setArea(new Rectangle(0, 0, screenSize.width, screenSize.height));
+        config.setFileFormat(new Format(MediaTypeKey, MediaType.FILE, MimeTypeKey, MIME_AVI));
+        config.setScreenFormat(new Format(MediaTypeKey, MediaType.VIDEO, EncodingKey, ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE, CompressorNameKey, ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE, DepthKey, 24,
+                FrameRateKey, Rational.valueOf(15), QualityKey, 1.0f, KeyFrameIntervalKey, 15 * 60));
+        config.setMouseFormat(new Format(MediaTypeKey, MediaType.VIDEO, EncodingKey, "black", FrameRateKey, Rational.valueOf(30)));
+        config.setAudioFormat(null);
+        config.setMovieFolder(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
 
         this.screenRecorder = new NoraUiScreenRecorder(config, screenName);
         this.screenRecorder.start();
