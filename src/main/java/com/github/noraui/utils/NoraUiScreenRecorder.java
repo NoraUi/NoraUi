@@ -17,21 +17,16 @@ import java.util.Date;
 import org.monte.media.Format;
 import org.monte.media.Registry;
 import org.monte.screenrecorder.ScreenRecorder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class NoraUiScreenRecorder extends ScreenRecorder {
-
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(NoraUiScreenRecorder.class);
 
     private String name;
 
-    public NoraUiScreenRecorder(GraphicsConfiguration cfg, Rectangle captureArea, Format fileFormat, Format screenFormat, Format mouseFormat, Format audioFormat, File movieFolder, String name)
-            throws IOException, AWTException {
-        super(cfg, captureArea, fileFormat, screenFormat, mouseFormat, audioFormat, movieFolder);
+    public NoraUiScreenRecorder(NoraUiScreenRecorderConfiguration config, String name) throws IOException, AWTException {
+        super(config.cfg, config.area, config.fileFormat, config.screenFormat, config.mouseFormat, config.audioFormat, config.movieFolder);
         this.name = name;
     }
 
@@ -40,9 +35,19 @@ public class NoraUiScreenRecorder extends ScreenRecorder {
         if (!movieFolder.exists()) {
             movieFolder.mkdirs();
         } else if (!movieFolder.isDirectory()) {
-            LOGGER.error("\"{}\" is not a directory.", movieFolder);
+            log.error("\"{}\" is not a directory.", movieFolder);
             throw new IOException("\"" + movieFolder + "\" is not a directory.");
         }
         return new File(movieFolder, name + "-" + new SimpleDateFormat("yyyy-MM-dd HH.mm.ss").format(new Date()) + "." + Registry.getInstance().getExtension(fileFormat));
+    }
+
+    public static class NoraUiScreenRecorderConfiguration {
+        public GraphicsConfiguration cfg;
+        public Rectangle area;
+        public Format fileFormat;
+        public Format screenFormat;
+        public Format mouseFormat;
+        public Format audioFormat;
+        public File movieFolder;
     }
 }
