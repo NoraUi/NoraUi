@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 import cucumber.metrics.core.Metered;
-import cucumber.metrics.core.patch4java7.LongAdder;
+import java.util.concurrent.atomic.LongAdder;
 
 public class Meter implements Metered {
 
