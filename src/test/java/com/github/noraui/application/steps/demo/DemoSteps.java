@@ -15,8 +15,8 @@ import com.github.noraui.exception.FailureException;
 import com.github.noraui.exception.TechnicalException;
 import com.google.inject.Inject;
 
-import io.cucumber.java.en.Then;
-import io.cucumber.java.fr.Alors;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.fr.Alors;
 
 public class DemoSteps extends Step {
 

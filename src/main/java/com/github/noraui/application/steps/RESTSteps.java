@@ -23,8 +23,8 @@ import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 import com.google.inject.Inject;
 
-import io.cucumber.java.en.And;
-import io.cucumber.java.fr.Et;
+import cucumber.api.java.en.And;
+import cucumber.api.java.fr.Et;
 
 /**
  * This class contains API REST callable steps.

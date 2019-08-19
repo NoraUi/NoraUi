@@ -26,8 +26,8 @@ import com.github.noraui.utils.Messages;
 import com.github.noraui.utils.Utilities;
 import com.google.inject.Inject;
 
-import io.cucumber.java.en.And;
-import io.cucumber.java.fr.Et;
+import cucumber.api.java.en.And;
+import cucumber.api.java.fr.Et;
 
 /**
  * This class contains Gherkin callable steps that goal of working with the screen (scrennshot, ...).

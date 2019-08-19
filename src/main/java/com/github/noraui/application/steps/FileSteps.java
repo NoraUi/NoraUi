@@ -29,10 +29,10 @@ import com.github.noraui.gherkin.GherkinStepCondition;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.fr.Alors;
-import io.cucumber.java.fr.Lorsque;
+import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.fr.Alors;
+import cucumber.api.java.fr.Lorsque;
 
 /**
  * This class contains Gherkin callable steps that handle file uploading and downloading.

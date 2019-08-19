@@ -65,8 +65,8 @@ import com.github.noraui.main.ScenarioInitiator;
 import com.github.noraui.model.Model;
 import com.github.noraui.model.ModelList;
 
-import io.cucumber.junit.CucumberOptions;
-import io.cucumber.core.api.Scenario;
+import cucumber.api.CucumberOptions;
+import cucumber.api.Scenario;
 import cucumber.runtime.java.StepDefAnnotation;
 
 /**
