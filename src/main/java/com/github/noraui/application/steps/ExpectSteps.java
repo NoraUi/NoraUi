@@ -23,8 +23,8 @@ import com.github.noraui.exception.FailureException;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.GherkinStepCondition;
 
-import cucumber.api.java.en.And;
-import cucumber.api.java.fr.Et;
+import io.cucumber.java.en.And;
+import io.cucumber.java.fr.Et;
 
 /**
  * This class contains Gherkin callable steps that aim for expecting a specific result.

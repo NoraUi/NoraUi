@@ -11,7 +11,7 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 
-import cucumber.api.Scenario;
+import io.cucumber.core.api.Scenario;
 
 public interface ScreenService {
 
@@ -19,7 +19,7 @@ public interface ScreenService {
      * Indicates a driver that can capture a screenshot and store it in different ways.
      *
      * @param scenario
-     *            is instance of {link cucumber.api.Scenario}
+     *            is instance of {link io.cucumber.core.api.Scenario}
      */
     void takeScreenshot(Scenario scenario);
 

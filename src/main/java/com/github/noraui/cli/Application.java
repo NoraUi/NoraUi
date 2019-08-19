@@ -246,7 +246,7 @@ public class Application extends AbstractNoraUiCli {
         sb.append("import " + robotContext.getCanonicalName().replaceAll("utils", "application.pages." + applicationName).replaceAll(robotContext.getSimpleName(),
                 applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "Page;")).append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
-        sb.append("import cucumber.api.java.en.Then;").append(System.lineSeparator());
+        sb.append("import io.cucumber.java.en.Then;").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
         sb.append("public class " + applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "Steps extends Step {").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());

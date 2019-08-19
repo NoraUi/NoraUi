@@ -6,7 +6,7 @@
  */
 package cucumber.runtime.java;
 
-import cucumber.api.Transpose;
+import io.cucumber.java.Transpose;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
