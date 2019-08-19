@@ -51,7 +51,7 @@ import com.github.noraui.utils.Context;
 import com.github.noraui.utils.NoraUiScreenRecorder;
 import com.google.inject.Singleton;
 
-import cucumber.api.Scenario;
+import io.cucumber.core.api.Scenario;
 
 @Singleton
 public class ScreenServiceImpl implements ScreenService {
