@@ -27,6 +27,7 @@ public class DemoPage extends Page {
     protected static final Logger LOGGER = LoggerFactory.getLogger(DemoPage.class);
 
     public final PageElement bigTitle = new PageElement("-big_title", "This is a demo for NORAUI (Non-Regression Automation for User Interfaces).");
+    public final PageElement inputText = new PageElement("-input_text_field", "Input Text field");
     public final PageElement inputSelect = new PageElement("-input_select_field", "Input Select field");
     public final PageElement rateRadio = new PageElement("-rate", "Input radio rate");
     public final PageElement agreeCheckbox = new PageElement("-agree", "Input checkbox agree");

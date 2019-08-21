@@ -58,6 +58,11 @@ public class CounterUT {
         testCounterMain("DbMySql");
     }
 
+    @Test
+    public void testCounterWithUnknownType() throws Exception {
+        testCounterMain("UnknownType");
+    }
+
     private void testCounterMain(String type) {
         String res = "";
         try {

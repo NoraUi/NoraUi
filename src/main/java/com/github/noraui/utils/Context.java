@@ -26,6 +26,7 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.ini4j.Ini;
 import org.ini4j.InvalidFileFormatException;
 import org.joda.time.DateTime;
@@ -881,7 +882,7 @@ public class Context {
                     dataOutputProvider = new CsvDataProvider();
                 }
             } else if (DataProvider.type.DB.toString().equals(dataOut)) {
-                // TODO DBDataProvider not implemented for outputDataProvider
+                throw new NotImplementedException("Context.plugDataProvider() with 'DB' as output provider is not yet implemented");
             } else if (DataProvider.type.REST.toString().equals(dataOut)) {
                 if (dataInputProvider instanceof RestDataProvider) {
                     dataOutputProvider = (RestDataProvider) dataInputProvider;

@@ -22,12 +22,24 @@ See [change log](https://noraui.github.io/changelog.txt) for details
 
 # How to migrate from [3.x.x] to [4.x.x]
 
-* You can use all new features from cucumber v4.x.x. (Use Cucumber Expressions)
+* You need use all new features from cucumber v4.x.x. (Use Cucumber Expressions)
 * You need use Cucumber Expressions instead of regular expressions
 * You need use java 8 instead of java 7.
+* You can use JUnit 5 instead of JUnit 4.3.
 * Rename all `jenkinsresourcespath` by `ciToolResourcesPath` in your CI/CD
+* Rename all import `cucumber.api.java.en.*` by `io.cucumber.java.en.*`
+* Rename all import `cucumber.api.java.fr.*` by `io.cucumber.java.fr.*`
+* Rename all import `cucumber.api.Scenario` by `io.cucumber.core.api.Scenario`
+* Rename all import `cucumber.api.java.After` by `io.cucumber.java.After`
+* Rename all import `cucumber.api.java.Before` by `io.cucumber.java.Before`
+* Rename all import `cucumber.api.TypeRegistry` by `io.cucumber.core.api.TypeRegistry`
+* Rename all import `cucumber.api.TypeRegistryConfigurer` by `io.cucumber.core.api.TypeRegistryConfigurer`
+* Rename all import `cucumber.api.CucumberOptions` by `io.cucumber.junit.CucumberOptions`
+* Rename all import `cucumber.api.Cucumber` by `io.cucumber.junit.Cucumber`
+* Rename all import `cucumber.api.java.ObjectFactory` by `io.cucumber.core.backend.ObjectFactory`
+* Rename all import `cucumber.api.Transpose` by `io.cucumber.java.Transpose`
 
-# How to migrate from [2.x.x] to [3.x.x] (mandatory)
+# How to migrate from [2.x.x] to [3.x.x] (mandatory because forbidden license)
 
 * -Dcucumber.options="--tags '@tag1 or @tag2 or @tag3 or @tag4'"
 * NoraUi use Oracle Jdbc Driver
@@ -95,7 +107,7 @@ SNAPSHOT:
 <dependency>
     <groupId>com.github.noraui</groupId>
     <artifactId>noraui</artifactId>
-    <version>3.3.0-SNAPSHOT</version>
+    <version>4.0.0-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -115,7 +127,7 @@ SNAPSHOT:
 * Java 8 (Both Oracle JDK and OpenJDK are supported).
 * Maven
 * Google guice
-* JUnit / Mockito
+* JUnit 5 / Mockito
 
 # Run Anywhere
 ![RunAnywhere](/screenshots/plateforme.png)

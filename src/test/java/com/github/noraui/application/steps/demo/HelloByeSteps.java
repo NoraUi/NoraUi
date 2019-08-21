@@ -15,19 +15,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import org.openqa.selenium.By;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.noraui.application.model.demo.Article;
 import com.github.noraui.application.model.demo.Articles;
 import com.github.noraui.application.page.demo.DemoPage;
+import com.github.noraui.application.steps.ExpectSteps;
 import com.github.noraui.application.steps.Step;
 import com.github.noraui.cucumber.annotation.Conditioned;
 import com.github.noraui.cucumber.annotation.RetryOnFailure;
 import com.github.noraui.exception.FailureException;
 import com.github.noraui.exception.Result;
 import com.github.noraui.gherkin.GherkinStepCondition;
+import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
+import com.github.noraui.utils.Utilities;
 import com.google.inject.Inject;
 
 import io.cucumber.java.en.Given;
@@ -100,6 +104,18 @@ public class HelloByeSteps extends Step {
         if ("Paris".equals(city)) {
             new Result.Failure<>(city, "The city is Paris!!", true, this.demoPage.getCallBack());
         }
+    }
+
+    @Lorsque("Mes champs sont prêts à être utilisés")
+    @Given("My fields are ready to use")
+    public void checkFields() throws FailureException {
+        By inputSelectLocator = Utilities.getLocator(demoPage.inputSelect);
+        By inputTextLocator = Utilities.getLocator(demoPage.inputText);
+        Context.waitUntil(ExpectSteps.atLeastOneOfTheseElementsIsPresent(inputSelectLocator, inputTextLocator));
+        Context.waitUntil(ExpectSteps.presenceOfNbElementsLocatedBy(inputSelectLocator, 1));
+        Context.waitUntil(ExpectSteps.presenceOfNbElementsLocatedBy(inputTextLocator, 1));
+        Context.waitUntil(ExpectSteps.visibilityOfNbElementsLocatedBy(inputSelectLocator, 1));
+        Context.waitUntil(ExpectSteps.visibilityOfNbElementsLocatedBy(inputTextLocator, 1));
     }
 
     @RetryOnFailure(attempts = 3)

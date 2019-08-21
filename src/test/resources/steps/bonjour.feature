@@ -43,7 +43,8 @@ Fonctionnalité: bonjour (Fonction pour valider l'environnement.)
     Et Je clique sur 'demo.DemoPage-send'
     Alors Je vérifie le texte 'demo.DemoPage-input_text_field' avec 'test.txt'
     Lorsque Je vide le repertoire des téléchargements
-
+	
+    Lorsque Mes champs sont prêts à être utilisés
     Quand Je clarifie le texte dans 'demo.DemoPage-input_text_field'
     Quand Je mets à jour le texte 'demo.DemoPage-input_text_field' avec '<auteur>'
     Quand Je mets à jour le texte 'demo.DemoPage-input_text_field' et entre ENTRER avec '<auteur>'
