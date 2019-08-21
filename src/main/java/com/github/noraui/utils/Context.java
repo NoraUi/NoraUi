@@ -65,8 +65,8 @@ import com.github.noraui.main.ScenarioInitiator;
 import com.github.noraui.model.Model;
 import com.github.noraui.model.ModelList;
 
-import cucumber.api.CucumberOptions;
-import cucumber.api.Scenario;
+import io.cucumber.junit.CucumberOptions;
+import io.cucumber.core.api.Scenario;
 import cucumber.runtime.java.StepDefAnnotation;
 
 /**
@@ -908,7 +908,7 @@ public class Context {
      * Gets all Cucumber methods.
      *
      * @param clazz
-     *            Class which is the main point of the application (Decorated with the annotation {@link cucumber.api.CucumberOptions})
+     *            Class which is the main point of the application (Decorated with the annotation {@link io.cucumber.junit.CucumberOptions})
      * @return a Map of all Cucumber glue code methods of the application. First part of the entry is the Gherkin matching regular expression.
      *         Second part is the corresponding invokable method.
      */

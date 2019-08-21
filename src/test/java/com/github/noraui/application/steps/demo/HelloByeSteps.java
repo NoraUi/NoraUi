@@ -34,11 +34,11 @@ import com.github.noraui.utils.Messages;
 import com.github.noraui.utils.Utilities;
 import com.google.inject.Inject;
 
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.fr.Alors;
-import cucumber.api.java.fr.Etantdonné;
-import cucumber.api.java.fr.Lorsque;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.fr.Alors;
+import io.cucumber.java.fr.Etantdonné;
+import io.cucumber.java.fr.Lorsque;
 import cucumber.metrics.annotation.regulator.SpeedRegulator;
 import cucumber.metrics.annotation.regulator.SpeedRegulators;
 import cucumber.metrics.annotation.time.Time;
