@@ -7,6 +7,7 @@
 package com.github.noraui.gherkin;
 
 public class GherkinConditionedLoopedStep extends GherkinStepCondition {
+
     private String step;
 
     public GherkinConditionedLoopedStep(String key, String step, String expected, String actual) {
