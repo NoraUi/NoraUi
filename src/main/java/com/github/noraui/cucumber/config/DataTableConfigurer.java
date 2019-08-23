@@ -28,7 +28,7 @@ public class DataTableConfigurer implements TypeRegistryConfigurer {
     /**
      * Specific LOGGER
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(StepInterceptor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DataTableConfigurer.class);
 
     @Override
     public Locale locale() {
