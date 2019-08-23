@@ -102,7 +102,7 @@ public class CucumberHooks {
     private static String getFirstNonEnvironmentTag(Collection<String> collection) {
         for (String tag : collection) {
             if (!tag.startsWith("@~")) {
-                return tag.replaceAll("@", "");
+                return tag.replace("@", "");
             }
         }
         return null;
