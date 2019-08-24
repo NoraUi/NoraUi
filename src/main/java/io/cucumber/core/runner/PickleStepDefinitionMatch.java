@@ -4,7 +4,7 @@
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
-package cucumber.runner;
+package io.cucumber.core.runner;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,55 +13,54 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cucumber.api.Scenario;
-import cucumber.metrics.module.TimeModule;
-import cucumber.runtime.CucumberException;
-import cucumber.runtime.StepDefinition;
-import cucumber.runtime.StepDefinitionMatch;
-import cucumber.runtime.java.ParameterInfo;
-import gherkin.pickles.PickleStep;
+import io.cucumber.core.api.Scenario;
+import io.cucumber.core.backend.ParameterInfo;
+import io.cucumber.core.backend.StepDefinition;
+import io.cucumber.core.exception.CucumberException;
+import io.cucumber.core.feature.CucumberStep;
+import io.cucumber.core.stepexpression.Argument;
 import io.cucumber.cucumberexpressions.CucumberExpressionException;
 import io.cucumber.datatable.CucumberDataTableException;
 import io.cucumber.datatable.UndefinedDataTableTypeException;
-import io.cucumber.stepexpression.Argument;
 
 public class PickleStepDefinitionMatch extends Match implements StepDefinitionMatch {
     
     /**
      * Specific LOGGER
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(TimeModule.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(PickleStepDefinitionMatch.class.getName());
     
     private final StepDefinition stepDefinition;
-    private final transient String featurePath;
+    private final transient String uri;
     // The official JSON gherkin format doesn't have a step attribute, so we're marking this as transient
     // to prevent it from ending up in the JSON.
-    private final transient PickleStep step;
+    private final transient CucumberStep step;
 
-    public PickleStepDefinitionMatch(List<Argument> arguments, StepDefinition stepDefinition, String featurePath, PickleStep step) {
+    public PickleStepDefinitionMatch(List<Argument> arguments, StepDefinition stepDefinition, String uri, CucumberStep step) {
         super(arguments, stepDefinition.getLocation(false));
         this.stepDefinition = stepDefinition;
-        this.featurePath = featurePath;
+        this.uri = uri;
         this.step = step;
     }
 
     @Override
     public void runStep(Scenario scenario) throws Throwable {
-        LOGGER.debug("runStep {}", step.getText());
+        LOGGER.info("runStep {}", step.getText());
         
         List<Argument> arguments = getArguments();
         int argumentCount = arguments.size();
         
-        Integer parameterCount = stepDefinition.getParameterCount();
-        LOGGER.debug("parameterCount:{} argumentCount:{}", step.getText(), parameterCount, argumentCount);
+        List<ParameterInfo> parameterInfos = stepDefinition.parameterInfos();
+        LOGGER.debug("parameterInfos:{} argumentCount:{}", step.getText(), parameterInfos, argumentCount);
         for (Argument ar : arguments) {
             LOGGER.debug("Argument: {}", ar);
         }
         
-        if (parameterCount != null && (argumentCount > parameterCount || argumentCount + 1 < parameterCount)) {
-            LOGGER.error("arityMismatch: {}", parameterCount);
-            throw arityMismatch(parameterCount);
+        if (parameterInfos != null && (argumentCount > parameterInfos.size() || argumentCount + 1 < parameterInfos.size())) {
+            LOGGER.error("arityMismatch: {}", parameterInfos.size());
+            throw arityMismatch(parameterInfos.size());
         }
+        
         List<Object> result = new ArrayList<>();
         try {
             for (Argument argument : arguments) {
@@ -69,16 +68,16 @@ public class PickleStepDefinitionMatch extends Match implements StepDefinitionMa
                 result.add(argument.getValue());
             }
             // add List<GherkinStepCondition> or parameters Map<String, String>
-            if (parameterCount != null && argumentCount + 1 == parameterCount) {
-                List<?> parameters = stepDefinition.getParameters();
+            if (parameterInfos != null && argumentCount + 1 == parameterInfos.size()) {
+                //List<?> parameters = stepDefinition.getParameters();
                 Object obj;
-                if (((ParameterInfo)parameters.get(parameterCount-1)).getType().toString().startsWith("java.util.List<")) {
+                if (parameterInfos.get(parameterInfos.size()-1).getType().toString().startsWith("java.util.List<")) {
                     obj = new ArrayList<>();
-                } else if (((ParameterInfo)parameters.get(parameterCount-1)).getType().toString().startsWith("java.util.Map<")) {
+                } else if (parameterInfos.get(parameterInfos.size()-1).getType().toString().startsWith("java.util.Map<")) {
                     obj = new HashMap<>();
                 } else {
-                    LOGGER.error("arityMismatch in add List<GherkinStepCondition> or parameters Map<String, String>: {}", parameterCount);
-                    throw arityMismatch(parameterCount);
+                    LOGGER.error("arityMismatch in add List<GherkinStepCondition> or parameters Map<String, String>: {}", parameterInfos.size());
+                    throw arityMismatch(parameterInfos.size());
                 }
                 LOGGER.debug("add argument {} to result in add List<GherkinStepCondition> or parameters Map<String, String>", obj);
                 result.add(obj);
@@ -185,7 +184,7 @@ public class PickleStepDefinitionMatch extends Match implements StepDefinitionMa
     }
 
     StackTraceElement getStepLocation() {
-        return new StackTraceElement("✽", step.getText(), featurePath, getStepLine(step));
+        return new StackTraceElement("✽", step.getText(), uri, step.getStepLine());
     }
 
     public Match getMatch() {
@@ -201,8 +200,5 @@ public class PickleStepDefinitionMatch extends Match implements StepDefinitionMa
         return stepDefinition.getLocation(false);
     }
 
-    private static int getStepLine(PickleStep step) {
-        return step.getLocations().get(step.getLocations().size() - 1).getLine();
-    }
 }
 

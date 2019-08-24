@@ -67,7 +67,7 @@ import com.github.noraui.model.ModelList;
 
 import io.cucumber.junit.CucumberOptions;
 import io.cucumber.core.api.Scenario;
-import cucumber.runtime.java.StepDefAnnotation;
+import io.cucumber.java.StepDefinitionAnnotation;
 
 /**
  * Cucumber context.
@@ -922,7 +922,7 @@ public class Context {
             final Method[] methods = c.getDeclaredMethods();
             for (final Method method : methods) {
                 for (final Annotation stepAnnotation : method.getAnnotations()) {
-                    if (stepAnnotation.annotationType().isAnnotationPresent(StepDefAnnotation.class)) {
+                    if (stepAnnotation.annotationType().isAnnotationPresent(StepDefinitionAnnotation.class)) {
                         result.put(stepAnnotation.toString(), method);
                     }
                 }

@@ -10,14 +10,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.apiguardian.api.API;
+
 import com.github.noraui.service.CucumberExpressionService;
 import com.google.inject.Singleton;
 
 import io.cucumber.cucumberexpressions.Argument;
-import io.cucumber.cucumberexpressions.CucumberExpression;
 import io.cucumber.cucumberexpressions.Expression;
+import io.cucumber.cucumberexpressions.ExpressionFactory;
 import io.cucumber.cucumberexpressions.ParameterTypeRegistry;
 
+@API(status = API.Status.STABLE)
 @Singleton
 public class CucumberExpressionServiceImpl implements CucumberExpressionService {
 
@@ -25,7 +28,7 @@ public class CucumberExpressionServiceImpl implements CucumberExpressionService 
     public List<Object> match(String expressionString, String text) {
         Expression expression;
         ParameterTypeRegistry parameterTypeRegistry = new ParameterTypeRegistry(Locale.ENGLISH);
-        expression = new CucumberExpression(expressionString, parameterTypeRegistry);
+        expression = new ExpressionFactory(parameterTypeRegistry).createExpression(expressionString);
         List<Argument<?>> args = expression.match(text);
         if (args == null) {
             return null;

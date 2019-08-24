@@ -20,7 +20,7 @@ import com.github.noraui.cucumber.annotation.RetryOnFailure;
 import com.github.noraui.exception.FailureException;
 import com.github.noraui.utils.Context;
 
-import cucumber.runtime.java.StepDefAnnotation;
+import io.cucumber.java.StepDefinitionAnnotation;
 import javassist.Modifier;
 
 public class StepInterceptor implements MethodInterceptor {
@@ -47,7 +47,7 @@ public class StepInterceptor implements MethodInterceptor {
                     break;
                 }
             }
-            if (stepAnnotation.annotationType().isAnnotationPresent(StepDefAnnotation.class)) {
+            if (stepAnnotation.annotationType().isAnnotationPresent(StepDefinitionAnnotation.class)) {
                 Matcher matcher = Pattern.compile("value=(.*)\\)").matcher(stepAnnotation.toString());
                 if (matcher.find()) {
                     LOGGER.info("---> " + stepAnnotation.annotationType().getSimpleName() + " "

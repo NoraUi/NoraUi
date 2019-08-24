@@ -18,8 +18,6 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 
-import cucumber.runtime.Env;
-
 public abstract class AbstractMetricsModule implements Module {
 
     /**
@@ -28,7 +26,7 @@ public abstract class AbstractMetricsModule implements Module {
     private final Logger LOGGER = LoggerFactory.getLogger(AbstractMetricsModule.class);
 
     void setAnnotation2Interceptors(Binder binder, String annotationEnable, final Class<? extends Annotation> annotationType, MethodInterceptor... interceptors) {
-        String ae = Env.INSTANCE.get(annotationEnable);
+        String ae = System.getenv(annotationEnable);
         if ("false".equals(ae)) {
             LOGGER.info(annotationEnable + " set to false.");
         } else if ("true".equals(ae)) {
