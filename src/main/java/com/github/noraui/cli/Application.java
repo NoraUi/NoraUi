@@ -61,7 +61,7 @@ public class Application extends AbstractNoraUiCli {
         applications.clear();
         applications.addAll(hs);
         for (int i = 0; i < applications.size(); i++) {
-            applications.set(i, applications.get(i).replaceAll(".ini", ""));
+            applications.set(i, applications.get(i).replace(".ini", ""));
         }
         applications.remove(".gitignore");
         return applications;
@@ -82,11 +82,11 @@ public class Application extends AbstractNoraUiCli {
      */
     public void add(String applicationName, String url, Class<?> robotContext, boolean verbose) {
         LOGGER.info("Add a new application named [{}] with this url: [{}]", applicationName, url);
-        addApplicationPages(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), robotContext, verbose);
-        addApplicationSteps(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), robotContext, verbose);
+        addApplicationPages(applicationName, robotContext.getSimpleName().replace("Context", ""), robotContext, verbose);
+        addApplicationSteps(applicationName, robotContext.getSimpleName().replace("Context", ""), robotContext, verbose);
         addApplicationContext(applicationName, robotContext, verbose);
         addApplicationSelector(applicationName, verbose);
-        addApplicationInPropertiesFile(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), verbose);
+        addApplicationInPropertiesFile(applicationName, robotContext.getSimpleName().replace("Context", ""), verbose);
         addApplicationInEnvPropertiesFile(applicationName, url, "ci", verbose);
         addApplicationInEnvPropertiesFile(applicationName, url, "dev", verbose);
         addApplicationInEnvPropertiesFile(applicationName, url, "prod", verbose);
@@ -109,7 +109,7 @@ public class Application extends AbstractNoraUiCli {
         removeApplicationModel(applicationName, robotContext, verbose);
         removeApplicationContext(robotContext, applicationName, verbose);
         removeApplicationSelector(applicationName, verbose);
-        removeApplicationInPropertiesFile(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), verbose);
+        removeApplicationInPropertiesFile(applicationName, robotContext.getSimpleName().replace("Context", ""), verbose);
         removeApplicationInEnvPropertiesFile(applicationName, "ci", verbose);
         removeApplicationInEnvPropertiesFile(applicationName, "dev", verbose);
         removeApplicationInEnvPropertiesFile(applicationName, "prod", verbose);
@@ -126,12 +126,12 @@ public class Application extends AbstractNoraUiCli {
      *            boolean to activate verbose mode (show more traces).
      */
     private void addApplicationPages(String applicationName, String noraRobotName, Class<?> robotContext, boolean verbose) {
-        String pagePath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("utils", "application/pages/" + applicationName)
-                .replaceAll("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "Page")
+        String pagePath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replace("\\.", "/").replace("utils", "application/pages/" + applicationName)
+                .replace("/", Matcher.quoteReplacement(File.separator)).replace(robotContext.getSimpleName(), applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "Page")
                 + ".java";
         StringBuilder sb = new StringBuilder();
         sb.append(getJavaClassHeaders(noraRobotName)).append(System.lineSeparator());
-        sb.append(robotContext.getPackage().toString().replaceAll("utils", "application.pages." + applicationName) + ";").append(System.lineSeparator());
+        sb.append(robotContext.getPackage().toString().replace("utils", "application.pages." + applicationName) + ";").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
         sb.append("import static " + robotContext.getCanonicalName() + "." + applicationName.toUpperCase() + SUFFIX_KEY).append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
@@ -208,8 +208,8 @@ public class Application extends AbstractNoraUiCli {
      *            boolean to activate verbose mode (show more traces).
      */
     private void removeApplicationPages(String applicationName, Class<?> robotContext, boolean verbose) {
-        String applicationPagePath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/")
-                .replaceAll("utils", "application/pages/" + applicationName).replaceAll("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), "");
+        String applicationPagePath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replace("\\.", "/")
+                .replace("utils", "application/pages/" + applicationName).replace("/", Matcher.quoteReplacement(File.separator)).replace(robotContext.getSimpleName(), "");
         try {
             FileUtils.forceDelete(new File(applicationPagePath));
             if (verbose) {
@@ -231,19 +231,19 @@ public class Application extends AbstractNoraUiCli {
      *            boolean to activate verbose mode (show more traces).
      */
     private void addApplicationSteps(String applicationName, String noraRobotName, Class<?> robotContext, boolean verbose) {
-        String stepsPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("utils", "application/steps/" + applicationName)
-                .replaceAll("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "Steps")
+        String stepsPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replace("\\.", "/").replace("utils", "application/steps/" + applicationName)
+                .replace("/", Matcher.quoteReplacement(File.separator)).replace(robotContext.getSimpleName(), applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "Steps")
                 + ".java";
         StringBuilder sb = new StringBuilder();
         sb.append(getJavaClassHeaders(noraRobotName)).append(System.lineSeparator());
-        sb.append(robotContext.getPackage().toString().replaceAll("utils", "application.steps." + applicationName) + ";").append(System.lineSeparator());
+        sb.append(robotContext.getPackage().toString().replace("utils", "application.steps." + applicationName) + ";").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
         sb.append("import com.github.noraui.application.steps.Step;").append(System.lineSeparator());
         sb.append("import com.github.noraui.exception.FailureException;").append(System.lineSeparator());
         sb.append("import com.github.noraui.exception.Result;").append(System.lineSeparator());
         sb.append("import com.github.noraui.utils.Messages;").append(System.lineSeparator());
         sb.append("import com.google.inject.Inject;").append(System.lineSeparator());
-        sb.append("import " + robotContext.getCanonicalName().replaceAll("utils", "application.pages." + applicationName).replaceAll(robotContext.getSimpleName(),
+        sb.append("import " + robotContext.getCanonicalName().replace("utils", "application.pages." + applicationName).replace(robotContext.getSimpleName(),
                 applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "Page;")).append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
         sb.append("import io.cucumber.java.en.Then;").append(System.lineSeparator());
@@ -295,8 +295,8 @@ public class Application extends AbstractNoraUiCli {
      *            boolean to activate verbose mode (show more traces).
      */
     private void removeApplicationSteps(String applicationName, Class<?> robotContext, boolean verbose) {
-        String applicationStepsPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/")
-                .replaceAll("utils", "application/steps/" + applicationName).replaceAll("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), "");
+        String applicationStepsPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replace("\\.", "/")
+                .replace("utils", "application/steps/" + applicationName).replace("/", Matcher.quoteReplacement(File.separator)).replace(robotContext.getSimpleName(), "");
         try {
             FileUtils.forceDelete(new File(applicationStepsPath));
             if (verbose) {
@@ -316,8 +316,8 @@ public class Application extends AbstractNoraUiCli {
      *            boolean to activate verbose mode (show more traces).
      */
     private void removeApplicationModel(String applicationName, Class<?> robotContext, boolean verbose) {
-        String applicationModelPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/")
-                .replaceAll("utils", "application/model/" + applicationName).replaceAll("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), "");
+        String applicationModelPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replace("\\.", "/")
+                .replace("utils", "application/model/" + applicationName).replace("/", Matcher.quoteReplacement(File.separator)).replace(robotContext.getSimpleName(), "");
         try {
             FileUtils.forceDelete(new File(applicationModelPath));
             if (verbose) {
@@ -361,7 +361,7 @@ public class Application extends AbstractNoraUiCli {
      *            boolean to activate verbose mode (show more traces).
      */
     private void manageApplicationContext(boolean addMode, Class<?> robotContext, String applicationName, boolean verbose) {
-        String contextPath = this.mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll("/", Matcher.quoteReplacement(File.separator))
+        String contextPath = this.mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replace("\\.", "/").replace("/", Matcher.quoteReplacement(File.separator))
                 + ".java";
         if (verbose) {
             LOGGER.info("Add application named [{}] in context.", applicationName);
