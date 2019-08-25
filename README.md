@@ -38,6 +38,7 @@ See [change log](https://noraui.github.io/changelog.txt) for details
 * Rename all import `cucumber.api.Cucumber` by `io.cucumber.junit.Cucumber`
 * Rename all import `cucumber.api.java.ObjectFactory` by `io.cucumber.core.backend.ObjectFactory`
 * Rename all import `cucumber.api.Transpose` by `io.cucumber.java.Transpose`
+* All dataTable (Cucumber Expressions) return null if empty value.
 
 # How to migrate from [2.x.x] to [3.x.x] (mandatory because forbidden license)
 
