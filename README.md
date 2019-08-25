@@ -162,7 +162,7 @@ Before create issue check [![Ask at StackOverflow](https://img.shields.io/badge/
 
 The [issue tracker](https://github.com/NoraUi/NoraUi/issues) is the preferred channel for bug reports, features requests and submitting pull requests.
 
-For pull requests, read [CONTRIBUTING](/CONTRIBUTING) before.
+For pull requests, read [CONTRIBUTING](/.github/CONTRIBUTING.md) before.
 
 * Step 1: Create a fork.
 * Step 2: Create a branch on this new fork.

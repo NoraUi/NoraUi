@@ -10,5 +10,5 @@
 
 # Please keep the list sorted.
 
-Nicolas HALLOUIN <@gmail.com>
+Nicolas HALLOUIN <n.hallouin@gmail.com>
 Stéphane GRILLON <sgrillon@hotmail.fr>
