@@ -250,7 +250,7 @@ public class CommonSteps extends Step {
     public void checkMandatoryFields(Map<String, String> mandatoryFields) throws TechnicalException, FailureException {
         final List<String> errors = new ArrayList<>();
         for (final Entry<String, String> element : mandatoryFields.entrySet()) {
-            if ("".equals(element.getValue())) {
+            if ("".equals(element.getValue()) || element.getValue() == null) {
                 errors.add(element.getKey());
             }
         }
