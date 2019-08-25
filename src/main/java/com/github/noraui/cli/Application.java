@@ -82,11 +82,11 @@ public class Application extends AbstractNoraUiCli {
      */
     public void add(String applicationName, String url, Class<?> robotContext, boolean verbose) {
         LOGGER.info("Add a new application named [{}] with this url: [{}]", applicationName, url);
-        addApplicationPages(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), robotContext, verbose);
-        addApplicationSteps(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), robotContext, verbose);
+        addApplicationPages(applicationName, robotContext.getSimpleName().replace("Context", ""), robotContext, verbose);
+        addApplicationSteps(applicationName, robotContext.getSimpleName().replace("Context", ""), robotContext, verbose);
         addApplicationContext(applicationName, robotContext, verbose);
         addApplicationSelector(applicationName, verbose);
-        addApplicationInPropertiesFile(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), verbose);
+        addApplicationInPropertiesFile(applicationName, robotContext.getSimpleName().replace("Context", ""), verbose);
         addApplicationInEnvPropertiesFile(applicationName, url, "ci", verbose);
         addApplicationInEnvPropertiesFile(applicationName, url, "dev", verbose);
         addApplicationInEnvPropertiesFile(applicationName, url, "prod", verbose);
@@ -109,7 +109,7 @@ public class Application extends AbstractNoraUiCli {
         removeApplicationModel(applicationName, robotContext, verbose);
         removeApplicationContext(robotContext, applicationName, verbose);
         removeApplicationSelector(applicationName, verbose);
-        removeApplicationInPropertiesFile(applicationName, robotContext.getSimpleName().replaceAll("Context", ""), verbose);
+        removeApplicationInPropertiesFile(applicationName, robotContext.getSimpleName().replace("Context", ""), verbose);
         removeApplicationInEnvPropertiesFile(applicationName, "ci", verbose);
         removeApplicationInEnvPropertiesFile(applicationName, "dev", verbose);
         removeApplicationInEnvPropertiesFile(applicationName, "prod", verbose);
