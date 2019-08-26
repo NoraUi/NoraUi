@@ -188,7 +188,7 @@ public class Model extends AbstractNoraUiCli {
         String modelPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replace("utils", "application/model/" + applicationName)
                 .replace("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1)) + ".java";
         StringBuilder sb = new StringBuilder();
-        sb.append(getJavaClassHeaders(robotContext.getSimpleName().replaceAll("Context", ""))).append(System.lineSeparator());
+        sb.append(getJavaClassHeaders(robotContext.getSimpleName().replace("Context", ""))).append(System.lineSeparator());
         sb.append(robotContext.getPackage().toString().replace("utils", "application.model." + applicationName) + ";").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
         sb.append("import org.apache.commons.lang3.builder.EqualsBuilder;").append(System.lineSeparator());
@@ -399,7 +399,7 @@ public class Model extends AbstractNoraUiCli {
         String modelsPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replace("utils", "application/model/" + applicationName)
                 .replace("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1)) + "s.java";
         StringBuilder sb = new StringBuilder();
-        sb.append(getJavaClassHeaders(robotContext.getSimpleName().replaceAll("Context", ""))).append(System.lineSeparator());
+        sb.append(getJavaClassHeaders(robotContext.getSimpleName().replace("Context", ""))).append(System.lineSeparator());
         sb.append(robotContext.getPackage().toString().replace("utils", "application.model." + applicationName) + ";").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
         sb.append("import java.lang.reflect.Type;").append(System.lineSeparator());
