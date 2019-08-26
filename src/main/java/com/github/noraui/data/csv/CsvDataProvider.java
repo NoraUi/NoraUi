@@ -112,9 +112,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
                 return null;
             } else {
                 final String[] ret = readResult ? new String[columns.size()] : new String[columns.size() - 1];
-                for (int i = 0; i < ret.length; i++) {
-                    ret[i] = row[i];
-                }
+                System.arraycopy(row, 0, ret, 0, ret.length);
                 return ret;
             }
         } catch (final IOException e) {
