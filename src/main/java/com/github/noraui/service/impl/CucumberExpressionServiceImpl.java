@@ -21,6 +21,9 @@ import io.cucumber.cucumberexpressions.ParameterTypeRegistry;
 @Singleton
 public class CucumberExpressionServiceImpl implements CucumberExpressionService {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Object> match(String expressionString, String text) {
         Expression expression;
