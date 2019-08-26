@@ -459,7 +459,7 @@ public class Scenario extends AbstractNoraUiCli {
      */
     private void removeScenarioCounter(String scenarioName, Class<?> robotCounter, boolean verbose) {
         String counterFilePath = this.mainPath + File.separator + "java" + File.separator
-                + robotCounter.getCanonicalName().replaceAll("\\.", "/").replaceAll("/", Matcher.quoteReplacement(File.separator)) + ".java";
+                + robotCounter.getCanonicalName().replaceAll("\\.", "/").replace("/", Matcher.quoteReplacement(File.separator)) + ".java";
         if (verbose) {
             LOGGER.info("Remove scenario named [{}] in black list of counter [{}].", scenarioName, counterFilePath);
         }
