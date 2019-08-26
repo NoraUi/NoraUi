@@ -519,7 +519,7 @@ public class NoraUiCommandLineInterface {
             }
         }
         for (NoraUiScenarioFile noraUiScenarioFile : noraUiCliFile.getScenarioFiles()) {
-            addScenario(null, noraUiScenarioFile.getApplication(), noraUiScenarioFile.getName(), noraUiScenarioFile.getDescription(), robotContext.getSimpleName().replaceAll(CONTEXT, ""), verbose,
+            addScenario(null, noraUiScenarioFile.getApplication(), noraUiScenarioFile.getName(), noraUiScenarioFile.getDescription(), robotContext.getSimpleName().replace(CONTEXT, ""), verbose,
                     null, false);
         }
 
@@ -572,13 +572,13 @@ public class NoraUiCommandLineInterface {
         if (featureCode == 1) {
             noraUiCliFile = addApplication(noraUiCliFile, applicationName, url, robotContext, verbose, input, interactiveMode);
         } else if (featureCode == 2) {
-            noraUiCliFile = addScenario(noraUiCliFile, applicationName, scenarioName, description, robotContext.getSimpleName().replaceAll(CONTEXT, ""), verbose, input, interactiveMode);
+            noraUiCliFile = addScenario(noraUiCliFile, applicationName, scenarioName, description, robotContext.getSimpleName().replace(CONTEXT, ""), verbose, input, interactiveMode);
         } else if (featureCode == 3) {
             noraUiCliFile = addModel(noraUiCliFile, applicationName, modelName, fields, results, robotContext, verbose, input, interactiveMode);
         } else if (featureCode == 4) {
             noraUiCliFile = removeApplication(noraUiCliFile, applicationName, robotContext, verbose, input, interactiveMode);
         } else if (featureCode == 5) {
-            noraUiCliFile = removeScenario(noraUiCliFile, scenarioName, robotContext.getSimpleName().replaceAll(CONTEXT, ""), robotCounter, verbose, input, interactiveMode);
+            noraUiCliFile = removeScenario(noraUiCliFile, scenarioName, robotContext.getSimpleName().replace(CONTEXT, ""), robotCounter, verbose, input, interactiveMode);
         } else if (featureCode == 6) {
             noraUiCliFile = removeModel(noraUiCliFile, applicationName, modelName, robotContext, verbose, input, interactiveMode);
         } else if (featureCode == 7) {
