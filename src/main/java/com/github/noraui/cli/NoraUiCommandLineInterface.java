@@ -570,17 +570,17 @@ public class NoraUiCommandLineInterface {
     private NoraUiCliFile runFeature(NoraUiCliFile noraUiCliFile, int featureCode, String applicationName, String scenarioName, String modelName, String url, String description, String fields,
             String results, String cryptoKey, Class<?> robotContext, Class<?> robotCounter, boolean verbose, Scanner input, boolean interactiveMode) throws TechnicalException {
         if (featureCode == 1) {
-            noraUiCliFile = addApplication(noraUiCliFile, applicationName, url, robotContext, verbose, input, interactiveMode);
+            addApplication(noraUiCliFile, applicationName, url, robotContext, verbose, input, interactiveMode);
         } else if (featureCode == 2) {
-            noraUiCliFile = addScenario(noraUiCliFile, applicationName, scenarioName, description, robotContext.getSimpleName().replace(CONTEXT, ""), verbose, input, interactiveMode);
+            addScenario(noraUiCliFile, applicationName, scenarioName, description, robotContext.getSimpleName().replace(CONTEXT, ""), verbose, input, interactiveMode);
         } else if (featureCode == 3) {
-            noraUiCliFile = addModel(noraUiCliFile, applicationName, modelName, fields, results, robotContext, verbose, input, interactiveMode);
+            addModel(noraUiCliFile, applicationName, modelName, fields, results, robotContext, verbose, input, interactiveMode);
         } else if (featureCode == 4) {
-            noraUiCliFile = removeApplication(noraUiCliFile, applicationName, robotContext, verbose, input, interactiveMode);
+            removeApplication(noraUiCliFile, applicationName, robotContext, verbose, input, interactiveMode);
         } else if (featureCode == 5) {
-            noraUiCliFile = removeScenario(noraUiCliFile, scenarioName, robotContext.getSimpleName().replace(CONTEXT, ""), robotCounter, verbose, input, interactiveMode);
+            removeScenario(noraUiCliFile, scenarioName, robotContext.getSimpleName().replace(CONTEXT, ""), robotCounter, verbose, input, interactiveMode);
         } else if (featureCode == 6) {
-            noraUiCliFile = removeModel(noraUiCliFile, applicationName, modelName, robotContext, verbose, input, interactiveMode);
+            removeModel(noraUiCliFile, applicationName, modelName, robotContext, verbose, input, interactiveMode);
         } else if (featureCode == 7) {
             encrypt(cryptoKey, description, input, interactiveMode);
         } else if (featureCode == 8) {
@@ -609,9 +609,8 @@ public class NoraUiCommandLineInterface {
      *            previously listed parameters.
      *            When interactiveMode is false, the NoraUi CLI goal will use the values passed in from the command
      *            line.
-     * @return NoraUiCliFile Object contain all data from CLI Files.
      */
-    private NoraUiCliFile addApplication(NoraUiCliFile noraUiCliFile, String applicationName, String url, Class<?> robotContext, boolean verbose, Scanner input, boolean interactiveMode) {
+    private void addApplication(NoraUiCliFile noraUiCliFile, String applicationName, String url, Class<?> robotContext, boolean verbose, Scanner input, boolean interactiveMode) {
         if (interactiveMode) {
             if (applicationName == null || "".equals(applicationName)) {
                 LOGGER.info("Enter application name:");
@@ -629,7 +628,7 @@ public class NoraUiCommandLineInterface {
                 application.add(applicationName, url, robotContext, verbose);
             }
         }
-        return addApplication4CliFiles(noraUiCliFile, applicationName, url);
+        addApplication4CliFiles(noraUiCliFile, applicationName, url);
     }
 
     /**
@@ -639,18 +638,15 @@ public class NoraUiCommandLineInterface {
      *            name of application added.
      * @param url
      *            is first(home or login page) url of application.
-     * @return NoraUiCliFile Object contain all data from CLI Files.
      */
-    private NoraUiCliFile addApplication4CliFiles(NoraUiCliFile noraUiCliFile, String applicationName, String url) {
+    private void addApplication4CliFiles(NoraUiCliFile noraUiCliFile, String applicationName, String url) {
         NoraUiApplicationFile noraUiApplicationFile = new NoraUiApplicationFile();
         noraUiApplicationFile.setName(applicationName);
         noraUiApplicationFile.setUrl(url);
         if (noraUiCliFile != null) {
             List<NoraUiApplicationFile> r = noraUiCliFile.addApplication(noraUiApplicationFile);
             noraUiCliFile.setApplicationFiles(r);
-            return noraUiCliFile;
         }
-        return null;
     }
 
     /**
@@ -673,9 +669,8 @@ public class NoraUiCommandLineInterface {
      *            previously listed parameters.
      *            When interactiveMode is false, the NoraUi CLI goal will use the values passed in from the command
      *            line.
-     * @return NoraUiCliFile Object contain all data from CLI Files.
      */
-    private NoraUiCliFile addScenario(NoraUiCliFile noraUiCliFile, String applicationName, String scenarioName, String description, String robotName, boolean verbose, Scanner input,
+    private void addScenario(NoraUiCliFile noraUiCliFile, String applicationName, String scenarioName, String description, String robotName, boolean verbose, Scanner input,
             boolean interactiveMode) {
         if (interactiveMode) {
             if (applicationName == null || "".equals(applicationName)) {
@@ -706,7 +701,7 @@ public class NoraUiCommandLineInterface {
                 }
             }
         }
-        return addScenario4CliFiles(noraUiCliFile, applicationName, scenarioName, description);
+        addScenario4CliFiles(noraUiCliFile, applicationName, scenarioName, description);
     }
 
     /**
@@ -718,9 +713,8 @@ public class NoraUiCommandLineInterface {
      *            name of scenario added.
      * @param description
      *            is description of scenario.
-     * @return NoraUiCliFile Object contain all data from CLI Files.
      */
-    private NoraUiCliFile addScenario4CliFiles(NoraUiCliFile noraUiCliFile, String applicationName, String scenarioName, String description) {
+    private void addScenario4CliFiles(NoraUiCliFile noraUiCliFile, String applicationName, String scenarioName, String description) {
         if (noraUiCliFile != null) {
             NoraUiScenarioFile noraUiScenarioFile = new NoraUiScenarioFile();
             noraUiScenarioFile.setName(scenarioName);
@@ -728,9 +722,7 @@ public class NoraUiCommandLineInterface {
             noraUiScenarioFile.setApplication(applicationName);
             List<NoraUiScenarioFile> r = noraUiCliFile.addScenario(noraUiScenarioFile);
             noraUiCliFile.setScenarioFiles(r);
-            return noraUiCliFile;
         }
-        return null;
     }
 
     /**
@@ -793,9 +785,8 @@ public class NoraUiCommandLineInterface {
      *            previously listed parameters.
      *            When interactiveMode is false, the NoraUi CLI goal will use the values passed in from the command
      *            line.
-     * @return NoraUiCliFile Object contain all data from CLI Files.
      */
-    private NoraUiCliFile addModel(NoraUiCliFile noraUiCliFile, String applicationName, String modelName, String fields, String results, Class<?> robotContext, boolean verbose, Scanner input,
+    private void addModel(NoraUiCliFile noraUiCliFile, String applicationName, String modelName, String fields, String results, Class<?> robotContext, boolean verbose, Scanner input,
             boolean interactiveMode) {
         if (interactiveMode) {
             if (applicationName == null || "".equals(applicationName)) {
@@ -833,7 +824,7 @@ public class NoraUiCommandLineInterface {
                 }
             }
         }
-        return addModel4CliFiles(noraUiCliFile, applicationName, modelName, fields, results);
+        addModel4CliFiles(noraUiCliFile, applicationName, modelName, fields, results);
     }
 
     /**
@@ -847,9 +838,8 @@ public class NoraUiCommandLineInterface {
      *            is fields of model (String separated by a space).
      * @param results
      *            is results of model (String separated by a space).
-     * @return NoraUiCliFile Object contain all data from CLI Files.
      */
-    private NoraUiCliFile addModel4CliFiles(NoraUiCliFile noraUiCliFile, String applicationName, String modelName, String fields, String results) {
+    private void addModel4CliFiles(NoraUiCliFile noraUiCliFile, String applicationName, String modelName, String fields, String results) {
         if (noraUiCliFile != null) {
             NoraUiModel noraUiModel = new NoraUiModel();
             noraUiModel.setName(modelName);
@@ -857,9 +847,7 @@ public class NoraUiCommandLineInterface {
             noraUiModel.setResults(results);
             List<NoraUiApplicationFile> r = noraUiCliFile.addModel(applicationName, noraUiModel);
             noraUiCliFile.setApplicationFiles(r);
-            return noraUiCliFile;
         }
-        return null;
     }
 
     /**
@@ -900,9 +888,8 @@ public class NoraUiCommandLineInterface {
      *            previously listed parameters.
      *            When interactiveMode is false, the NoraUi CLI goal will use the values passed in from the command
      *            line.
-     * @return NoraUiCliFile Object contain all data from CLI Files.
      */
-    private NoraUiCliFile removeApplication(NoraUiCliFile noraUiCliFile, String applicationName, Class<?> robotContext, boolean verbose, Scanner input, boolean interactiveMode) {
+    private void removeApplication(NoraUiCliFile noraUiCliFile, String applicationName, Class<?> robotContext, boolean verbose, Scanner input, boolean interactiveMode) {
         if (interactiveMode) {
             if (applicationName == null || "".equals(applicationName)) {
                 List<String> appList = application.get();
@@ -922,7 +909,7 @@ public class NoraUiCommandLineInterface {
                 application.remove(applicationName, robotContext, verbose);
             }
         }
-        return removeApplication4CliFiles(noraUiCliFile, applicationName);
+        removeApplication4CliFiles(noraUiCliFile, applicationName);
     }
 
     /**
@@ -930,14 +917,12 @@ public class NoraUiCommandLineInterface {
      *            Object contain all data from CLI Files.
      * @param applicationName
      *            name of application removed.
-     * @return NoraUiCliFile Object contain all data from CLI Files.
      */
-    private NoraUiCliFile removeApplication4CliFiles(NoraUiCliFile noraUiCliFile, String applicationName) {
+    private void removeApplication4CliFiles(NoraUiCliFile noraUiCliFile, String applicationName) {
         if (applicationName != null && !"".equals(applicationName)) {
             List<NoraUiApplicationFile> r = noraUiCliFile.removeApplication(applicationName);
             noraUiCliFile.setApplicationFiles(r);
         }
-        return noraUiCliFile;
     }
 
     /**
@@ -960,7 +945,7 @@ public class NoraUiCommandLineInterface {
      *            line.
      * @return NoraUiCliFile Object contain all data from CLI Files.
      */
-    private NoraUiCliFile removeScenario(NoraUiCliFile noraUiCliFile, String scenarioName, String robotName, Class<?> robotCounter, boolean verbose, Scanner input, boolean interactiveMode) {
+    private void removeScenario(NoraUiCliFile noraUiCliFile, String scenarioName, String robotName, Class<?> robotCounter, boolean verbose, Scanner input, boolean interactiveMode) {
         if (interactiveMode) {
             boolean scenarioFinded = false;
             if (scenarioName == null || "".equals(scenarioName)) {
@@ -982,7 +967,7 @@ public class NoraUiCommandLineInterface {
                 scenario.remove(scenarioName, robotName, robotCounter, verbose);
             }
         }
-        return removeScenario4CliFiles(noraUiCliFile, scenarioName);
+        removeScenario4CliFiles(noraUiCliFile, scenarioName);
     }
 
     /**
@@ -992,12 +977,12 @@ public class NoraUiCommandLineInterface {
      *            name of scenario removed.
      * @return NoraUiCliFile Object contain all data from CLI Files.
      */
-    private NoraUiCliFile removeScenario4CliFiles(NoraUiCliFile noraUiCliFile, String scenarioName) {
+    private void removeScenario4CliFiles(NoraUiCliFile noraUiCliFile, String scenarioName) {
         if (scenarioName != null && !"".equals(scenarioName)) {
             List<NoraUiScenarioFile> r = noraUiCliFile.removeScenario(scenarioName);
             noraUiCliFile.setScenarioFiles(r);
         }
-        return noraUiCliFile;
+        // return noraUiCliFile;
     }
 
     /**
@@ -1018,9 +1003,8 @@ public class NoraUiCommandLineInterface {
      *            previously listed parameters.
      *            When interactiveMode is false, the NoraUi CLI goal will use the values passed in from the command
      *            line.
-     * @return NoraUiCliFile Object contain all data from CLI Files.
      */
-    private NoraUiCliFile removeModel(NoraUiCliFile noraUiCliFile, String applicationName, String modelName, Class<?> robotContext, boolean verbose, Scanner input, boolean interactiveMode) {
+    private void removeModel(NoraUiCliFile noraUiCliFile, String applicationName, String modelName, Class<?> robotContext, boolean verbose, Scanner input, boolean interactiveMode) {
         if (interactiveMode) {
             boolean applicationFinded = false;
             boolean modelFinded = false;
@@ -1057,7 +1041,7 @@ public class NoraUiCommandLineInterface {
                 model.remove(applicationName, modelName, robotContext, verbose);
             }
         }
-        return removeModelInCliFileFeature(noraUiCliFile, applicationName, modelName);
+        removeModelInCliFileFeature(noraUiCliFile, applicationName, modelName);
     }
 
     /**
@@ -1067,14 +1051,12 @@ public class NoraUiCommandLineInterface {
      *            name of application.
      * @param modelName
      *            name of model removed.
-     * @return NoraUiCliFile Object contain all data from CLI Files.
      */
-    private NoraUiCliFile removeModelInCliFileFeature(NoraUiCliFile noraUiCliFile, String applicationName, String modelName) {
+    private void removeModelInCliFileFeature(NoraUiCliFile noraUiCliFile, String applicationName, String modelName) {
         if (applicationName != null && !"".equals(applicationName)) {
             List<NoraUiApplicationFile> r = noraUiCliFile.removeModel(applicationName, modelName);
             noraUiCliFile.setApplicationFiles(r);
         }
-        return noraUiCliFile;
     }
 
     /**
