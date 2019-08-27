@@ -9,6 +9,7 @@ Non-Regression Automation for User Interfaces
 
 # News 
 See [change log](https://noraui.github.io/changelog.txt) for details
+* 2019-09-xx: NoraUi [4.1.0] is in progress.
 * 2019-09-xx: NoraUi [4.0.0] is in progress.
 * 2018-05-24: NoraUi [3.2.0] is released.
 * 2018-03-19: NoraUi [3.1.3] is released.
@@ -19,6 +20,10 @@ See [change log](https://noraui.github.io/changelog.txt) for details
 * 2017-12-07: NoraUi [3.0.1] is released.
 * 2017-11-12: NoraUi [3.0.0] is released.
 * 2017-09-21: NoraUi [2.6.3] **is prohibited.**
+
+# How to migrate from [4.0.x] to [4.1.x]
+
+* You need use all new features from cucumber v5.x.x.
 
 # How to migrate from [3.x.x] to [4.x.x]
 
