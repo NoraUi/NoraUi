@@ -40,6 +40,7 @@ import com.github.noraui.service.CryptoService;
 import com.github.noraui.service.impl.CryptoServiceImpl;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class NoraUiCommandLineInterface {
 
@@ -335,7 +336,7 @@ public class NoraUiCommandLineInterface {
      *            boolean to activate verbose mode (show more traces).
      */
     protected void writeNoraUiCliFiles(NoraUiCliFile noraUiCliFile, boolean verbose) {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         writeApplicationsNoraUiCliFiles(noraUiCliFile, verbose, gson);
         writeScenariosNoraUiCliFiles(noraUiCliFile, verbose, gson);
     }
