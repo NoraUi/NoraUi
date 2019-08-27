@@ -32,8 +32,8 @@ public class Model extends AbstractNoraUiCli {
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(Model.class);
     
-    public static final String UTILS = "utils";
-    public static final String APPLICATION_MODEL = "application/model/";
+    private static final String UTILS = "utils";
+    private static final String APPLICATION_MODEL = "application/model/";
     private static final String CONTEXT = "Context";
 
     private String mainPath;
