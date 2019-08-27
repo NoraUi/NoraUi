@@ -190,7 +190,7 @@ public class Model extends AbstractNoraUiCli {
      */
     private void addModel(String applicationName, String modelName, String[] fieldList, String[] resultList, Class<?> robotContext, boolean verbose) {
         String modelPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replace(UTILS, APPLICATION_MODEL + applicationName)
-                .replace("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1)) + ".java";
+                .replace("/", Matcher.quoteReplacement(File.separator)).replace(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1)) + ".java";
         StringBuilder sb = new StringBuilder();
         sb.append(getJavaClassHeaders(robotContext.getSimpleName().replace(CONTEXT, ""))).append(System.lineSeparator());
         sb.append(robotContext.getPackage().toString().replace(UTILS, "application.model." + applicationName) + ";").append(System.lineSeparator());
@@ -401,7 +401,7 @@ public class Model extends AbstractNoraUiCli {
      */
     private void addModels(String applicationName, String modelName, Class<?> robotContext, boolean verbose) {
         String modelsPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replace(UTILS, APPLICATION_MODEL + applicationName)
-                .replace("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1)) + "s.java";
+                .replace("/", Matcher.quoteReplacement(File.separator)).replace(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1)) + "s.java";
         StringBuilder sb = new StringBuilder();
         sb.append(getJavaClassHeaders(robotContext.getSimpleName().replace(CONTEXT, ""))).append(System.lineSeparator());
         sb.append(robotContext.getPackage().toString().replace(UTILS, "application.model." + applicationName) + ";").append(System.lineSeparator());
