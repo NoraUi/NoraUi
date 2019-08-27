@@ -51,7 +51,7 @@ public class UserNameServiceImpl implements UserNameService {
      */
     @Override
     public String getNormalizeName(String name) {
-        return Normalizer.normalize(name, Normalizer.Form.NFD).replaceAll("'", " ").replaceAll("-", " ").replaceAll("[\\p{InCombiningDiacriticalMarks}]", "").trim();
+        return Normalizer.normalize(name, Normalizer.Form.NFD).replace("'", " ").replace("-", " ").replaceAll("[\\p{InCombiningDiacriticalMarks}]", "").trim();
     }
 
 }
