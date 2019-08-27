@@ -29,18 +29,11 @@ public class Callbacks extends HashMap<String, Callback> {
     private static final Logger LOGGER = LoggerFactory.getLogger(Callbacks.class);
 
     /**
-     * @deprecated (Only used for demo application for testing purposes, use {@link #CLOSE_WINDOW_AND_SWITCH_TO_GEOBEER_HOME} instead)
+     * @deprecated (Only used for demo application for testing purposes, use {@link #CLOSE_WINDOW_AND_SWITCH_TO_BAKERY_HOME} instead)
      */
     @Deprecated
     public static final String CLOSE_WINDOW_AND_SWITCH_TO_DEMO_HOME = "CLOSE_WINDOW_AND_SWITCH_TO_DEMO_HOME";
 
-    /**
-     * @deprecated (Only used for demo application for testing purposes, use {@link #CLOSE_WINDOW_AND_SWITCH_TO_GEOBEER_HOME} instead)
-     */
-    @Deprecated
-    public static final String CLOSE_WINDOW_AND_SWITCH_TO_LOGOGAME_HOME = "CLOSE_WINDOW_AND_SWITCH_TO_LOGOGAME_HOME";
-
-    public static final String CLOSE_WINDOW_AND_SWITCH_TO_GEOBEER_HOME = "CLOSE_WINDOW_AND_SWITCH_TO_GEOBEER_HOME";
     public static final String CLOSE_WINDOW_AND_SWITCH_TO_BAKERY_HOME = "CLOSE_WINDOW_AND_SWITCH_TO_BAKERY_HOME";
     public static final String CLOSE_WINDOW_AND_SWITCH_TO_GITHUBAPI_HOME = "CLOSE_WINDOW_AND_SWITCH_TO_GITHUBAPI_HOME";
     public static final String RESTART_WEB_DRIVER = "RESTART_WEB_DRIVER";
