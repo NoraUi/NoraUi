@@ -32,8 +32,9 @@ public class Model extends AbstractNoraUiCli {
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(Model.class);
     
+    public static final String UTILS = "utils";
+    public static final String APPLICATION_MODEL = "application/model/";
     private static final String CONTEXT = "Context";
-    private static final String UTILS = "utils";
 
     private String mainPath;
 
@@ -54,8 +55,8 @@ public class Model extends AbstractNoraUiCli {
      */
     public List<String> getModels(String applicationName, Class<?> robotContext) {
         List<String> models = new ArrayList<>();
-        String modelPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replace(UTILS, "application/model/" + applicationName)
-                .replace("/", Matcher.quoteReplacement(File.separator)).replace(robotContext.getSimpleName(), "");
+        String modelPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replace(UTILS, APPLICATION_MODEL + applicationName)
+                .replace("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), "");
         String[] list = new File(modelPath).list();
         if (list != null) {
             models.addAll(Arrays.asList(list));
@@ -78,7 +79,7 @@ public class Model extends AbstractNoraUiCli {
      */
     public List<String> getApplications(Class<?> robotContext) {
         List<String> applications = new ArrayList<>();
-        String modelPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replace(UTILS, "application/model/")
+        String modelPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll(UTILS, APPLICATION_MODEL)
                 .replace("/", Matcher.quoteReplacement(File.separator)).replace(robotContext.getSimpleName(), "");
         String[] apps = new File(modelPath.substring(0, modelPath.length() - 1)).list();
         if (apps != null) {
@@ -140,9 +141,9 @@ public class Model extends AbstractNoraUiCli {
      */
     public void remove(String applicationName, String modelName, Class<?> robotContext, boolean verbose) {
         LOGGER.info("Remove model named [{}] in application named [{}]", modelName, applicationName);
-        String modelPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replace(UTILS, "application/model/" + applicationName)
+        String modelPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll(UTILS, APPLICATION_MODEL + applicationName)
                 .replace("/", Matcher.quoteReplacement(File.separator)).replace(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1)) + ".java";
-        String modelsPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replace(UTILS, "application/model/" + applicationName)
+        String modelsPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replaceAll(UTILS, APPLICATION_MODEL + applicationName)
                 .replace("/", Matcher.quoteReplacement(File.separator)).replace(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1)) + "s.java";
         try {
             FileUtils.forceDelete(new File(modelPath));
@@ -188,7 +189,7 @@ public class Model extends AbstractNoraUiCli {
      *            boolean to activate verbose mode (show more traces).
      */
     private void addModel(String applicationName, String modelName, String[] fieldList, String[] resultList, Class<?> robotContext, boolean verbose) {
-        String modelPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replace(UTILS, "application/model/" + applicationName)
+        String modelPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replace(UTILS, APPLICATION_MODEL + applicationName)
                 .replace("/", Matcher.quoteReplacement(File.separator)).replace(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1)) + ".java";
         StringBuilder sb = new StringBuilder();
         sb.append(getJavaClassHeaders(robotContext.getSimpleName().replace(CONTEXT, ""))).append(System.lineSeparator());
@@ -399,7 +400,7 @@ public class Model extends AbstractNoraUiCli {
      *            boolean to activate verbose mode (show more traces).
      */
     private void addModels(String applicationName, String modelName, Class<?> robotContext, boolean verbose) {
-        String modelsPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replace(UTILS, "application/model/" + applicationName)
+        String modelsPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replace(UTILS, APPLICATION_MODEL + applicationName)
                 .replace("/", Matcher.quoteReplacement(File.separator)).replace(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1)) + "s.java";
         StringBuilder sb = new StringBuilder();
         sb.append(getJavaClassHeaders(robotContext.getSimpleName().replace(CONTEXT, ""))).append(System.lineSeparator());
