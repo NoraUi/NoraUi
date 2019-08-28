@@ -58,7 +58,7 @@ public class UnitTest4CLIContext extends Context {
      * @return context instance
      */
     public static Context getInstance() {
-        if (instance == null || !(instance instanceof UnitTest4CLIContext)) {
+        if (!(instance instanceof UnitTest4CLIContext)) {
             instance = new UnitTest4CLIContext();
         }
         return instance;
