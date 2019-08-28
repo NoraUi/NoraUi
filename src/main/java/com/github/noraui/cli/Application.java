@@ -383,10 +383,10 @@ public class Application extends AbstractNoraUiCli {
                         || ("        exceptionCallbacks.put(GO_TO_" + applicationName.toUpperCase() + "_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, "
                                 + applicationName.toUpperCase() + "_HOME);").equals(line)
                         || ("        exceptionCallbacks.put(CLOSE_WINDOW_AND_SWITCH_TO_" + applicationName.toUpperCase()
-                                + "_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, \"closeWindowAndSwitchTo\", " + applicationName.toUpperCase() + "_KEY, " + applicationName.toUpperCase()
+                                + "_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, CLOSE_WINDOW_AND_SWITCH_TO, " + applicationName.toUpperCase() + "_KEY, " + applicationName.toUpperCase()
                                 + "_HOME);").equals(line)
                         || ("        exceptionCallbacks.put(CLOSE_ALL_WINDOWS_AND_SWITCH_TO_" + applicationName.toUpperCase()
-                                + "_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, \"closeAllWindowsAndSwitchTo\", " + applicationName.toUpperCase() + "_KEY);").equals(line)
+                                + "_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, CLOSE_ALL_WINDOWS_AND_SWITCH_TO, " + applicationName.toUpperCase() + "_KEY);").equals(line)
                         || ("        applications.put(" + applicationName.toUpperCase() + "_KEY, new Application(" + applicationName.toUpperCase() + "_HOME, " + applicationName + "Home));")
                                 .equals(line))) {
 
@@ -429,11 +429,11 @@ public class Application extends AbstractNoraUiCli {
                                     + applicationName.toUpperCase() + "_HOME);");
                             sb.append(System.lineSeparator());
                             sb.append("        exceptionCallbacks.put(CLOSE_WINDOW_AND_SWITCH_TO_" + applicationName.toUpperCase()
-                                    + "_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, \"closeWindowAndSwitchTo\", " + applicationName.toUpperCase() + "_KEY, " + applicationName.toUpperCase()
+                                    + "_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, CLOSE_WINDOW_AND_SWITCH_TO, " + applicationName.toUpperCase() + "_KEY, " + applicationName.toUpperCase()
                                     + "_HOME);");
                             sb.append(System.lineSeparator());
                             sb.append("        exceptionCallbacks.put(CLOSE_ALL_WINDOWS_AND_SWITCH_TO_" + applicationName.toUpperCase()
-                                    + "_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, \"closeAllWindowsAndSwitchTo\", " + applicationName.toUpperCase() + "_KEY);");
+                                    + "_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, CLOSE_ALL_WINDOWS_AND_SWITCH_TO, " + applicationName.toUpperCase() + "_KEY);");
                             sb.append(System.lineSeparator());
                         }
                         if ("        // applications mapping".equals(line)) {

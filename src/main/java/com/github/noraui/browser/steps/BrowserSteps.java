@@ -12,6 +12,8 @@ import java.util.Set;
 
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.github.noraui.browser.Auth;
 import com.github.noraui.browser.WindowManager;
@@ -36,6 +38,14 @@ import cucumber.metrics.annotation.time.TimeName;
 import cucumber.metrics.annotation.time.Times;
 
 public class BrowserSteps {
+    
+    /**
+     * Specific LOGGER.
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(Context.class);
+    
+    public static final String CLOSE_WINDOW_AND_SWITCH_TO = "closeWindowAndSwitchTo";
+    public static final String CLOSE_ALL_WINDOWS_AND_SWITCH_TO = "closeAllWindowsAndSwitchTo";
 
     /**
      * Open new window with conditions.
@@ -58,6 +68,7 @@ public class BrowserSteps {
             String newWindowHandle = Context.waitUntil(WindowManager.newWindowOpens(initialWindows));
             Context.getDriver().switchTo().window(newWindowHandle);
         } catch (Exception e) {
+            LOGGER.error("Error when open a new window: {}", e);
             new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_OPEN_A_NEW_WINDOW), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
     }
@@ -198,6 +209,7 @@ public class BrowserSteps {
             }
             switchWindow(key);
         } catch (Exception e) {
+            LOGGER.error("Error when closeWindowAndSwitchTo with key: [{}]", key, e);
             new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_CLOSE_APP), mainWindow), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
     }
@@ -238,6 +250,7 @@ public class BrowserSteps {
                 goToUrl(Context.getApplication(key).getHomeKey(), true);
             }
         } catch (Exception e) {
+            LOGGER.error("Error when closeAllWindowsAndSwitchTo with key: [{}]", key, e);
             new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_CLOSE_APP), openedWindows), true,
                     Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
@@ -257,6 +270,7 @@ public class BrowserSteps {
         } catch (Exception e) {
             int indexOfUnderscore = pageKey.indexOf('_');
             String appName = indexOfUnderscore != -1 ? pageKey.substring(0, indexOfUnderscore) : pageKey;
+            LOGGER.error("Error when goToUrl with pageKey: [{}]", pageKey, e);
             new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_OPEN_PAGE), appName), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
     }
@@ -305,6 +319,7 @@ public class BrowserSteps {
             Context.getDriver().manage().window().setSize(new Dimension(1920, 1080));
             Context.setMainWindow(windowKey);
         } else {
+            LOGGER.error("Error when switch Window: handleToSwitch is null");
             new Result.Failure<>(windowKey, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_SWITCH_WINDOW), windowKey), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
     }
