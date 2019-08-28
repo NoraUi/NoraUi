@@ -518,19 +518,110 @@ public class Model extends AbstractNoraUiCli {
         sb.append("import org.junit.Assert;").append(System.lineSeparator());
         sb.append("import org.junit.Test;").append(System.lineSeparator());
         sb.append(System.lineSeparator());
-        sb.append(robotContext.getPackage().toString().replace(UTILS, APPLICATION_MODEL_DOT + applicationName).replace("package ", "import ") + "."+ modelName.toUpperCase().charAt(0) + modelName.substring(1) +";").append(System.lineSeparator());
-        sb.append(robotContext.getPackage().toString().replace(UTILS, APPLICATION_MODEL_DOT + applicationName).replace("package ", "import ") + "."+ modelName.toUpperCase().charAt(0) + modelName.substring(1) +"s;").append(System.lineSeparator());
+        sb.append(robotContext.getPackage().toString().replace(UTILS, APPLICATION_MODEL_DOT + applicationName).replace("package ", "import ") + "." + modelName.toUpperCase().charAt(0)
+                + modelName.substring(1) + ";").append(System.lineSeparator());
+        sb.append(robotContext.getPackage().toString().replace(UTILS, APPLICATION_MODEL_DOT + applicationName).replace("package ", "import ") + "." + modelName.toUpperCase().charAt(0)
+                + modelName.substring(1) + "s;").append(System.lineSeparator());
         sb.append("import com.github.noraui.model.ModelList;").append(System.lineSeparator());
         sb.append(System.lineSeparator());
         sb.append("public class " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "UT {").append(System.lineSeparator());
+        sb.append(System.lineSeparator());
         sb.append("    @Test").append(System.lineSeparator());
-        sb.append("    public void checkLogoSerializeTest() {").append(System.lineSeparator());
+        sb.append("    public void check" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "SerializeTest() {").append(System.lineSeparator());
         sb.append("        // prepare mock").append(System.lineSeparator());
-        sb.append("        " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + " " + modelName + " = new " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();").append(System.lineSeparator());
-        sb.append("        " + modelName + ".setField1(\"amazon\");").append(System.lineSeparator());
+        sb.append("        " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + " " + modelName + " = new " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
+                .append(System.lineSeparator());
+        int i = 4000;
+        for (String field : fieldList) {
+            i++;
+            sb.append("        " + modelName + ".set" + field.toUpperCase().charAt(0) + field.substring(1) + "(\"" + i + "\");").append(System.lineSeparator());
+        }
         sb.append(System.lineSeparator());
         sb.append("        // run test").append(System.lineSeparator());
-        sb.append("        Assert.assertEquals(\"{\\\"brand\\\":\\\"amazon\\\"}\", " + modelName + ".serialize());").append(System.lineSeparator());
+        sb.append("        Assert.assertEquals(\"{");
+        i = 4000;
+        for (String field : fieldList) {
+            i++;
+            sb.append("\\\"" + field + "\\\":\\\"" + i + "\\\",");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        sb.append("}\", " + modelName + ".serialize());").append(System.lineSeparator());
+        sb.append("    }").append(System.lineSeparator());
+        sb.append(System.lineSeparator());
+        sb.append("    @Test").append(System.lineSeparator());
+        sb.append("    public void check" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "SerializeAllTest() {").append(System.lineSeparator());
+        sb.append("       // prepare mock").append(System.lineSeparator());
+        sb.append("        " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + " " + modelName + " = new " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
+                .append(System.lineSeparator());
+        sb.append("        " + modelName + ".setNid(123);").append(System.lineSeparator());
+        i = 4000;
+        for (String field : fieldList) {
+            i++;
+            sb.append("        " + modelName + ".set" + field.toUpperCase().charAt(0) + field.substring(1) + "(\"" + i + "\");").append(System.lineSeparator());
+        }
+        for (String result : resultList) {
+            i++;
+            sb.append("        " + modelName + ".set" + result.toUpperCase().charAt(0) + result.substring(1) + "(\"" + i + "\");").append(System.lineSeparator());
+        }
+        sb.append(System.lineSeparator());
+        sb.append("        // run test").append(System.lineSeparator());
+        sb.append("        Assert.assertEquals(\"{");
+        i = 4000;
+        for (String field : fieldList) {
+            i++;
+            sb.append("\\\"" + field + "\\\":\\\"" + i + "\\\",");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        sb.append("}\", " + modelName + ".serialize());").append(System.lineSeparator());
+        sb.append("    }").append(System.lineSeparator());
+        sb.append(System.lineSeparator());
+        sb.append("    @Test").append(System.lineSeparator());
+        sb.append("    public void check" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "DeserializeTest() {").append(System.lineSeparator());
+        sb.append("        // run test").append(System.lineSeparator());
+        sb.append("        " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + " " + modelName + " = new " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
+                .append(System.lineSeparator());
+        sb.append("        " + modelName + ".deserialize(\"{");
+        i = 4000;
+        for (String field : fieldList) {
+            i++;
+            sb.append("\\\"" + field + "\\\":\\\"" + i + "\\\",");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        sb.append("}\");").append(System.lineSeparator());
+        i = 4000;
+        for (String field : fieldList) {
+            i++;
+            sb.append("        Assert.assertEquals(\"" + i + "\", " + modelName + ".get" + field.toUpperCase().charAt(0) + field.substring(1) + "());").append(System.lineSeparator());
+        }
+
+        sb.append("    }").append(System.lineSeparator());
+        sb.append(System.lineSeparator());
+        sb.append("    @Test").append(System.lineSeparator());
+        sb.append("    public void checkLogoDeserializeAllTest() {").append(System.lineSeparator());
+        sb.append("        // run test").append(System.lineSeparator());
+        sb.append("        " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + " " + modelName + " = new " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
+                .append(System.lineSeparator());
+        sb.append("        " + modelName + ".deserialize(\"{nid:123,");
+        i = 4000;
+        for (String field : fieldList) {
+            i++;
+            sb.append("\\\"" + field + "\\\":\\\"" + i + "\\\",");
+        }
+        for (String result : resultList) {
+            i++;
+            sb.append("\\\"" + result + "\\\":\\\"" + i + "\\\",");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        sb.append("}\");").append(System.lineSeparator());
+        sb.append("        Assert.assertEquals(new Integer(-1), " + modelName + ".getNid());").append(System.lineSeparator());
+        i = 4000;
+        for (String field : fieldList) {
+            i++;
+            sb.append("        Assert.assertEquals(\"" + i + "\", " + modelName + ".get" + field.toUpperCase().charAt(0) + field.substring(1) + "());").append(System.lineSeparator());
+        }
+        for (String result : resultList) {
+            sb.append("        Assert.assertEquals(\"\", " + modelName + ".get" + result.toUpperCase().charAt(0) + result.substring(1) + "());").append(System.lineSeparator());
+        }
         sb.append("    }").append(System.lineSeparator());
         sb.append(System.lineSeparator());
         sb.append("}").append(System.lineSeparator());
