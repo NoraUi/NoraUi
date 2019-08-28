@@ -90,10 +90,10 @@
         <sonar.sources>${project.basedir}/src/main/java/</sonar.sources>
         <sonar.junit.reportPaths>${project.build.directory}/surefire-reports/junit</sonar.junit.reportPaths>
         <sonar.surefire.reportPaths>${project.build.directory}/surefire-reports</sonar.surefire.reportPaths>
-        <sonar.jacoco.reportPaths>${project.testresult.directory}/coverage/jacoco/jacoco.exec</sonar.jacoco.reportPaths>
+        <sonar.jacoco.directory>${project.testresult.directory}/coverage/jacoco</sonar.jacoco.directory>
+        <sonar.jacoco.reportPaths>${sonar.jacoco.directory}/jacoco.exec</sonar.jacoco.reportPaths>
         <sonar.tests>${project.basedir}/src/test/</sonar.tests>
         <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
-        <!-->sonar.branch.name>sonar</sonar.branch.name-->
         <sonar.exclusions>**/cucumber/**/*,**/*Exception.*,**/annotation/**/*,**/noraui/model/**/*,**/noraui/data/rest/Row.java,**/noraui/utils/Constants.java,**/noraui/application/steps/MailSteps.java,*.css</sonar.exclusions>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <javadoc.opts>-Xdoclint:none</javadoc.opts>
@@ -737,7 +737,7 @@
                                     <goal>prepare-agent</goal>
                                 </goals>
                                 <configuration>
-                                    <destFile>${project.testresult.directory}/coverage/jacoco/jacoco.exec</destFile>
+                                    <destFile>${sonar.jacoco.reportPaths}</destFile>
                                     <propertyName>surefireArgLine</propertyName>
                                 </configuration>
                             </execution>
@@ -748,8 +748,8 @@
                                     <goal>report</goal>
                                 </goals>
                                 <configuration>
-                                    <dataFile>${project.testresult.directory}/coverage/jacoco/jacoco.exec</dataFile>
-                                    <outputDirectory>${project.testresult.directory}/coverage/jacoco</outputDirectory>
+                                    <dataFile>${sonar.jacoco.reportPaths}</dataFile>
+                                    <outputDirectory>${sonar.jacoco.directory}</outputDirectory>
                                 </configuration>
                             </execution>
                         </executions>
