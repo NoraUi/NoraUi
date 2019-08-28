@@ -1,3 +1,12 @@
+---
+name: Feature request
+about: Suggest an idea for this project
+title: ''
+labels: ''
+assignees: ''
+
+---
+
 <!-- 
 
 Hi,
@@ -29,9 +38,20 @@ If a section doesn't seem to fit, just delete it.
 
 -->    
     
-## Summary
+## Is your feature request related to a problem? Please describe.
+A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
 
-<!--- Provide a general summary description of the issue -->
+## Steps to Reproduce your case
+
+<!--- Provide a link to a live example, or an unambiguous set of steps to -->
+<!--- reproduce this case. Include code to reproduce, if relevant -->
+1.
+2.
+3.
+4.
+
+## Describe the solution you'd like
+A clear and concise description of what you want to happen.
 
 ## Expected Behavior
 
@@ -48,19 +68,13 @@ If a section doesn't seem to fit, just delete it.
 ```
 
 ```
+## Describe alternatives you've considered
+A clear and concise description of any alternative solutions or features you've considered.
+
 ## Possible Solution
 
 <!--- Not obligatory, but suggest a fix/reason for the bug, -->
 <!--- or ideas how to implement the addition or change -->
-
-## Steps to Reproduce (for bugs)
-
-<!--- Provide a link to a live example, or an unambiguous set of steps to -->
-<!--- reproduce this bug. Include code to reproduce, if relevant -->
-1.
-2.
-3.
-4.
 
 ## Context & Motivation
 
@@ -78,3 +92,6 @@ If a section doesn't seem to fit, just delete it.
 * Data output provider: Excel
 * Browser and version: Chrome 75
 * Link to your project: http://
+
+**Additional context**
+Add any other context or screenshots about the feature request here.
