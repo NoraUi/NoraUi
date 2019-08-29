@@ -63,11 +63,14 @@ public class Model extends AbstractNoraUiCli {
         if (list != null) {
             models.addAll(Arrays.asList(list));
             for (int i = 0; i < models.size(); i++) {
-                models.set(i, models.get(i).replaceAll(".java", "").toLowerCase());
+                models.set(i, models.get(i).replace(".java", "").toLowerCase());
             }
             for (int i = 0; i < models.size(); i++) {
                 if (models.contains(models.get(i) + "s")) {
                     models.remove(models.get(i) + "s");
+                }
+                if (models.contains(models.get(i) + "ut")) {
+                    models.remove(models.get(i) + "ut");
                 }
             }
         }
@@ -148,34 +151,13 @@ public class Model extends AbstractNoraUiCli {
                 .replace("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1)) + ".java";
         String modelsPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replace(UTILS, APPLICATION_MODEL_SLASH + applicationName)
                 .replace("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1)) + "s.java";
-        try {
-            FileUtils.forceDelete(new File(modelPath));
-            if (verbose) {
-                LOGGER.info("{} removed with success.", modelPath);
-            }
-        } catch (IOException e) {
-            LOGGER.debug("{} not revove because do not exist.", modelPath);
-        }
-        try {
-            FileUtils.forceDelete(new File(modelsPath));
-            if (verbose) {
-                LOGGER.info("{} removed with success.", modelsPath);
-            }
-        } catch (IOException e) {
-            LOGGER.debug("{} not revove because do not exist.", modelsPath);
-        }
-        String applicationDirectoryPath = modelPath.substring(0, modelPath.lastIndexOf(File.separator));
-        try {
-            Collection<File> l = FileUtils.listFiles(new File(applicationDirectoryPath), TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
-            if (l.isEmpty()) {
-                if (verbose) {
-                    LOGGER.info("Empty directory, so remove application directory.");
-                }
-                FileUtils.deleteDirectory(new File(applicationDirectoryPath));
-            }
-        } catch (IOException e) {
-            LOGGER.debug("{} not revove because do not exist.", applicationDirectoryPath);
-        }
+        String modelTUPath = testPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replace(UTILS, APPLICATION_MODEL_SLASH + applicationName)
+                .replace("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1)) + "UT.java";
+        removeModelFile(verbose, modelPath);
+        removeModelFile(verbose, modelsPath);
+        removeApplicationDirectoryIfEmpty(verbose, modelPath.substring(0, modelPath.lastIndexOf(File.separator)));
+        removeModelFile(verbose, modelTUPath);
+        removeApplicationDirectoryIfEmpty(verbose, modelTUPath.substring(0, modelPath.lastIndexOf(File.separator)));
 
     }
 
@@ -640,6 +622,43 @@ public class Model extends AbstractNoraUiCli {
             }
         } catch (Exception e) {
             LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+        }
+    }
+
+    /**
+     * @param verbose
+     *            boolean to activate verbose mode (show more traces).
+     * @param modelPath
+     *            name of model removed.
+     */
+    private void removeModelFile(boolean verbose, String modelPath) {
+        try {
+            FileUtils.forceDelete(new File(modelPath));
+            if (verbose) {
+                LOGGER.info("{} removed with success.", modelPath);
+            }
+        } catch (IOException e) {
+            LOGGER.debug("{} not revove because do not exist.", modelPath);
+        }
+    }
+
+    /**
+     * @param verbose
+     *            boolean to activate verbose mode (show more traces).
+     * @param applicationDirectoryPath
+     *            path of application directory (src or test).
+     */
+    private void removeApplicationDirectoryIfEmpty(boolean verbose, String applicationDirectoryPath) {
+        try {
+            Collection<File> l = FileUtils.listFiles(new File(applicationDirectoryPath), TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
+            if (l.isEmpty()) {
+                if (verbose) {
+                    LOGGER.info("Empty directory, so remove application directory.");
+                }
+                FileUtils.deleteDirectory(new File(applicationDirectoryPath));
+            }
+        } catch (IOException e) {
+            LOGGER.debug("{} not revove because do not exist.", applicationDirectoryPath);
         }
     }
 
