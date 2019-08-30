@@ -42,7 +42,7 @@ public class BrowserSteps {
     /**
      * Specific LOGGER.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(Context.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BrowserSteps.class);
     
     public static final String CLOSE_WINDOW_AND_SWITCH_TO = "closeWindowAndSwitchTo";
     public static final String CLOSE_ALL_WINDOWS_AND_SWITCH_TO = "closeAllWindowsAndSwitchTo";
