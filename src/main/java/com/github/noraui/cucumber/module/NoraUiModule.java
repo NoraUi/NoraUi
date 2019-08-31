@@ -42,11 +42,11 @@ public class NoraUiModule implements Module {
      */
     @Override
     public void configure(Binder binder) {
-        LOGGER.debug("NORAUI NoraUiModule configure");
+        LOGGER.info("NORAUI interceptors binding");
         binder.bindInterceptor(any(), annotatedWith(Conditioned.class), new ConditionedInterceptor());
         binder.bindInterceptor(Matchers.subclassesOf(com.github.noraui.application.steps.Step.class).or(Matchers.subclassesOf(BrowserSteps.class)), any(), new StepInterceptor());
 
-        LOGGER.debug("NORAUI service binding");
+        LOGGER.info("NORAUI service binding");
         binder.bind(CryptoService.class).to(CryptoServiceImpl.class).asEagerSingleton();
         binder.bind(CucumberExpressionService.class).to(CucumberExpressionServiceImpl.class).asEagerSingleton();
         binder.bind(HttpService.class).to(HttpServiceImpl.class).asEagerSingleton();

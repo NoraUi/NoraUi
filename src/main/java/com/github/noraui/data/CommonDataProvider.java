@@ -17,16 +17,18 @@ import java.util.stream.Stream;
 
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
+import org.slf4j.Logger;
 
 import com.github.noraui.annotation.Column;
 import com.github.noraui.exception.TechnicalException;
+import com.github.noraui.log.annotation.InjectLogger;
 import com.github.noraui.model.Model;
 import com.github.noraui.utils.Messages;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 public abstract class CommonDataProvider implements DataProvider {
+
+    @InjectLogger
+    Logger LOGGER;
 
     protected String dataInPath;
     protected String dataOutPath;
@@ -80,7 +82,8 @@ public abstract class CommonDataProvider implements DataProvider {
                 //@formatter:off
                 return (Class<Model>) packages.flatMap(p -> {
                         Set<Class<?>> returnedClasses = getClasses(p);
-                        log.debug("package [{}] return {} classes", p, returnedClasses.size());
+                        System.err.println("#########################################");
+                        LOGGER.debug("package [{}] return {} classes", p, returnedClasses.size());
                         return returnedClasses.stream();
                     })
                     .filter(Model.class::isAssignableFrom)
@@ -143,7 +146,7 @@ public abstract class CommonDataProvider implements DataProvider {
      *            The value
      */
     public void writeFailedResult(int line, String value) {
-        log.debug("Write Failed result => line:{} value:{}", line, value);
+        LOGGER.debug("Write Failed result => line:{} value:{}", line, value);
         writeValue(resultColumnName, line, value);
     }
 
@@ -154,7 +157,7 @@ public abstract class CommonDataProvider implements DataProvider {
      *            The line number
      */
     public void writeSuccessResult(int line) {
-        log.debug("Write Success result => line:{}", line);
+        LOGGER.debug("Write Success result => line:{}", line);
         writeValue(resultColumnName, line, Messages.getMessage(Messages.SUCCESS_MESSAGE));
     }
 
@@ -167,7 +170,7 @@ public abstract class CommonDataProvider implements DataProvider {
      *            The value
      */
     public void writeWarningResult(int line, String value) {
-        log.debug("Write Warning result => line:{} value:{}", line, value);
+        LOGGER.debug("Write Warning result => line:{} value:{}", line, value);
         writeValue(resultColumnName, line, value);
     }
 
@@ -182,7 +185,7 @@ public abstract class CommonDataProvider implements DataProvider {
      *            The data value
      */
     public void writeDataResult(String column, int line, String value) {
-        log.debug("Write Data result => column:{} line:{} value:{}", column, line, value);
+        LOGGER.debug("Write Data result => column:{} line:{} value:{}", column, line, value);
         writeValue(column, line, value);
     }
 
