@@ -33,9 +33,9 @@ import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.exception.TechnicalException;
+import com.github.noraui.log.annotation.InjectLogger;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 import com.github.noraui.utils.Utilities;
@@ -44,10 +44,8 @@ import com.github.noraui.utils.Utilities.SystemArchitecture;
 
 public class DriverFactory {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(DriverFactory.class);
+    @InjectLogger
+    private static Logger LOGGER;
 
     /** Default web drivers implicit wait **/
     public static final long IMPLICIT_WAIT = 500;

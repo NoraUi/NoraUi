@@ -31,14 +31,13 @@ public class Counter {
 
     public static void main(String[] args) throws TechnicalException {
         if (args.length == 1) {
+            Context.getInstance().initializeEnv("demo" + args[0] + ".properties");
             final List<String> manager = new ArrayList<>();
             final List<String> scenarioBlacklist = new ArrayList<>();
             final List<String> versionControlSystemsBlacklist = new ArrayList<>();
 
             versionControlSystemsBlacklist.add(".svn");
             versionControlSystemsBlacklist.add(".gitignore");
-
-            Context.getInstance().initializeEnv("demo" + args[0] + ".properties");
 
             if (args[0].contains("RestJson")) {
                 scenarioBlacklist.add("sampleRESTAPI");

@@ -61,13 +61,14 @@ import com.github.noraui.exception.Callbacks;
 import com.github.noraui.exception.Callbacks.Callback;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.ScenarioRegistry;
+import com.github.noraui.log.NoraUiLoggingInjector;
 import com.github.noraui.main.ScenarioInitiator;
 import com.github.noraui.model.Model;
 import com.github.noraui.model.ModelList;
 
-import io.cucumber.junit.CucumberOptions;
-import io.cucumber.core.api.Scenario;
 import cucumber.runtime.java.StepDefAnnotation;
+import io.cucumber.core.api.Scenario;
+import io.cucumber.junit.CucumberOptions;
 
 /**
  * Cucumber context.
@@ -322,6 +323,7 @@ public class Context {
      *            is name of properties file.
      */
     public synchronized void initializeEnv(String propertiesFileName) {
+        NoraUiLoggingInjector.createInjector();
         LOGGER.info("Context > initializeEnv()");
 
         iniFiles = new HashMap<>();
