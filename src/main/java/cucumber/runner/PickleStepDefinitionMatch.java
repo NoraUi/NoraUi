@@ -13,8 +13,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 import cucumber.api.Scenario;
-import cucumber.metrics.module.TimeModule;
 import cucumber.runtime.CucumberException;
 import cucumber.runtime.StepDefinition;
 import cucumber.runtime.StepDefinitionMatch;
@@ -30,7 +30,7 @@ public class PickleStepDefinitionMatch extends Match implements StepDefinitionMa
     /**
      * Specific LOGGER
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(TimeModule.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(PickleStepDefinitionMatch.class.getName());
     
     private final StepDefinition stepDefinition;
     private final transient String featurePath;

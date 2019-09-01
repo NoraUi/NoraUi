@@ -26,6 +26,9 @@ import com.github.noraui.application.steps.ExpectSteps;
 import com.github.noraui.application.steps.Step;
 import com.github.noraui.cucumber.annotation.Conditioned;
 import com.github.noraui.cucumber.annotation.RetryOnFailure;
+import com.github.noraui.cucumber.metrics.annotation.regulator.SpeedRegulator;
+import com.github.noraui.cucumber.metrics.annotation.regulator.SpeedRegulators;
+import com.github.noraui.cucumber.metrics.annotation.time.Time;
 import com.github.noraui.exception.FailureException;
 import com.github.noraui.exception.Result;
 import com.github.noraui.gherkin.GherkinStepCondition;
@@ -39,9 +42,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Etantdonné;
 import io.cucumber.java.fr.Lorsque;
-import cucumber.metrics.annotation.regulator.SpeedRegulator;
-import cucumber.metrics.annotation.regulator.SpeedRegulators;
-import cucumber.metrics.annotation.time.Time;
 
 public class HelloByeSteps extends Step {
 

@@ -18,6 +18,9 @@ import org.slf4j.LoggerFactory;
 import com.github.noraui.browser.Auth;
 import com.github.noraui.browser.WindowManager;
 import com.github.noraui.cucumber.annotation.Conditioned;
+import com.github.noraui.cucumber.metrics.annotation.time.Time;
+import com.github.noraui.cucumber.metrics.annotation.time.TimeName;
+import com.github.noraui.cucumber.metrics.annotation.time.Times;
 import com.github.noraui.exception.Callbacks;
 import com.github.noraui.exception.FailureException;
 import com.github.noraui.exception.Result;
@@ -33,9 +36,6 @@ import io.cucumber.java.en.When;
 import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Lorsque;
 import io.cucumber.java.fr.Quand;
-import cucumber.metrics.annotation.time.Time;
-import cucumber.metrics.annotation.time.TimeName;
-import cucumber.metrics.annotation.time.Times;
 
 public class BrowserSteps {
     
