@@ -983,7 +983,6 @@ public class NoraUiCommandLineInterface {
             List<NoraUiScenarioFile> r = noraUiCliFile.removeScenario(scenarioName);
             noraUiCliFile.setScenarioFiles(r);
         }
-        // return noraUiCliFile;
     }
 
     /**
