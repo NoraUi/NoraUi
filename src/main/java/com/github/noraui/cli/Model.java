@@ -38,7 +38,7 @@ public class Model extends AbstractNoraUiCli {
     private static final String CONTEXT = "Context";
 
     private String mainPath;
-    private String testPath = "src" + File.separator + "test";;
+    private String testPath = "src" + File.separator + "test";
 
     public Model() {
         this.mainPath = "src" + File.separator + "main";
@@ -292,11 +292,11 @@ public class Model extends AbstractNoraUiCli {
         sb.append("        if (obj instanceof " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + ") {").append(System.lineSeparator());
         sb.append("            final " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + " other = (" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + ") obj;")
                 .append(System.lineSeparator());
-        sb.append("            return new EqualsBuilder()").append(System.lineSeparator());
+        sb.append("            return new EqualsBuilder()");
         for (String field : fieldList) {
-            sb.append("                    .append(" + field + ", other." + field + ")").append(System.lineSeparator());
+            sb.append(".append(" + field + ", other." + field + ")");
         }
-        sb.append("                    .isEquals();").append(System.lineSeparator());
+        sb.append(".isEquals();").append(System.lineSeparator());
         sb.append("        } else {").append(System.lineSeparator());
         sb.append("            return false;").append(System.lineSeparator());
         sb.append("        }").append(System.lineSeparator());
@@ -308,11 +308,11 @@ public class Model extends AbstractNoraUiCli {
         sb.append("    @Override").append(System.lineSeparator());
         sb.append("    public int compareTo(" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + " other) {").append(System.lineSeparator());
 
-        sb.append("        return ComparisonChain.start()").append(System.lineSeparator());
+        sb.append("        return ComparisonChain.start()");
         for (String field : fieldList) {
-            sb.append("                .compare(" + field + ", other." + field + ")").append(System.lineSeparator());
+            sb.append(".compare(" + field + ", other." + field + ")");
         }
-        sb.append("        .result();").append(System.lineSeparator());
+        sb.append(".result();").append(System.lineSeparator());
         sb.append("    }").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
         sb.append("    @Override").append(System.lineSeparator());
@@ -426,36 +426,36 @@ public class Model extends AbstractNoraUiCli {
         sb.append("     */").append(System.lineSeparator());
         sb.append("    @Override").append(System.lineSeparator());
         sb.append("    public void deserialize(String jsonString) {").append(System.lineSeparator());
-        sb.append("            Type listType = new TypeToken<ArrayList<" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + ">>() {").append(System.lineSeparator());
-        sb.append("            }.getType();").append(System.lineSeparator());
+        sb.append("        Type listType = new TypeToken<ArrayList<" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + ">>() {").append(System.lineSeparator());
+        sb.append("        }.getType();").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
-        sb.append("            final GsonBuilder builder = new GsonBuilder();").append(System.lineSeparator());
-        sb.append("            builder.excludeFieldsWithoutExposeAnnotation();").append(System.lineSeparator());
-        sb.append("             final Gson gson = builder.create();").append(System.lineSeparator());
+        sb.append("        final GsonBuilder builder = new GsonBuilder();").append(System.lineSeparator());
+        sb.append("        builder.excludeFieldsWithoutExposeAnnotation();").append(System.lineSeparator());
+        sb.append("        final Gson gson = builder.create();").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
-        sb.append("            List<" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "> list = gson.fromJson(jsonString, listType);").append(System.lineSeparator());
-        sb.append("            this.addAll(list);").append(System.lineSeparator());
+        sb.append("        List<" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "> list = gson.fromJson(jsonString, listType);").append(System.lineSeparator());
+        sb.append("        this.addAll(list);").append(System.lineSeparator());
+        sb.append("    }").append(System.lineSeparator());
+        sb.append("").append(System.lineSeparator());
+        sb.append("    /**").append(System.lineSeparator());
+        sb.append("     * {@inheritDoc}").append(System.lineSeparator());
+        sb.append("     */").append(System.lineSeparator());
+        sb.append("    @Override").append(System.lineSeparator());
+        sb.append("    public ModelList addModel(Model m) {").append(System.lineSeparator());
+        sb.append("        super.add((" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + ") m);").append(System.lineSeparator());
+        sb.append("        return this;").append(System.lineSeparator());
+        sb.append("    }").append(System.lineSeparator());
+        sb.append("").append(System.lineSeparator());
+        sb.append("    /**").append(System.lineSeparator());
+        sb.append("     * {@inheritDoc}").append(System.lineSeparator());
+        sb.append("     */").append(System.lineSeparator());
+        sb.append("    @Override").append(System.lineSeparator());
+        sb.append("    public void subtract(ModelList list) {").append(System.lineSeparator());
+        sb.append("        Iterator<?> iterator = ((" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s) list).iterator();").append(System.lineSeparator());
+        sb.append("        while (iterator.hasNext()) {").append(System.lineSeparator());
+        sb.append("            this.remove(iterator.next());").append(System.lineSeparator());
         sb.append("        }").append(System.lineSeparator());
-        sb.append("").append(System.lineSeparator());
-        sb.append("        /**").append(System.lineSeparator());
-        sb.append("         * {@inheritDoc}").append(System.lineSeparator());
-        sb.append("         */").append(System.lineSeparator());
-        sb.append("        @Override").append(System.lineSeparator());
-        sb.append("        public ModelList addModel(Model m) {").append(System.lineSeparator());
-        sb.append("            super.add((" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + ") m);").append(System.lineSeparator());
-        sb.append("            return this;").append(System.lineSeparator());
-        sb.append("       }").append(System.lineSeparator());
-        sb.append("").append(System.lineSeparator());
-        sb.append("        /**").append(System.lineSeparator());
-        sb.append("        * {@inheritDoc}").append(System.lineSeparator());
-        sb.append("        */").append(System.lineSeparator());
-        sb.append("       @Override").append(System.lineSeparator());
-        sb.append("       public void subtract(ModelList list) {").append(System.lineSeparator());
-        sb.append("           Iterator<?> iterator = ((" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s) list).iterator();").append(System.lineSeparator());
-        sb.append("          while (iterator.hasNext()) {").append(System.lineSeparator());
-        sb.append("              this.remove(iterator.next());").append(System.lineSeparator());
-        sb.append("          }").append(System.lineSeparator());
-        sb.append("     }").append(System.lineSeparator());
+        sb.append("    }").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
         sb.append("    /**").append(System.lineSeparator());
         sb.append("     * {@inheritDoc}").append(System.lineSeparator());
@@ -468,7 +468,7 @@ public class Model extends AbstractNoraUiCli {
         sb.append("        }").append(System.lineSeparator());
         sb.append("        return result;").append(System.lineSeparator());
         sb.append("    }").append(System.lineSeparator());
-        sb.append("").append(System.lineSeparator());
+        sb.append(System.lineSeparator());
         sb.append("}").append(System.lineSeparator());
         try {
             FileUtils.forceMkdir(new File(modelsPath.substring(0, modelsPath.lastIndexOf(File.separator))));
@@ -579,7 +579,7 @@ public class Model extends AbstractNoraUiCli {
         sb.append("    }").append(System.lineSeparator());
         sb.append(System.lineSeparator());
         sb.append("    @Test").append(System.lineSeparator());
-        sb.append("    public void checkLogoDeserializeAllTest() {").append(System.lineSeparator());
+        sb.append("    public void check" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "DeserializeAllTest() {").append(System.lineSeparator());
         sb.append("        // run test").append(System.lineSeparator());
         sb.append("        " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + " " + modelName + " = new " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
                 .append(System.lineSeparator());
@@ -604,6 +604,136 @@ public class Model extends AbstractNoraUiCli {
         for (String result : resultList) {
             sb.append("        Assert.assertEquals(\"\", " + modelName + ".get" + result.toUpperCase().charAt(0) + result.substring(1) + "());").append(System.lineSeparator());
         }
+        sb.append("    }").append(System.lineSeparator());
+        sb.append(System.lineSeparator());
+
+        sb.append("    @Test").append(System.lineSeparator());
+        sb.append("    public void check" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "SerializeListTest() {").append(System.lineSeparator());
+        sb.append("        // prepare mock").append(System.lineSeparator());
+        sb.append("        " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + " " + modelName + "1 = new " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
+                .append(System.lineSeparator());
+        i = 4000;
+        for (String field : fieldList) {
+            i++;
+            sb.append("        " + modelName + "1.set" + field.toUpperCase().charAt(0) + field.substring(1) + "(\"" + i + "\");").append(System.lineSeparator());
+        }
+        sb.append(System.lineSeparator());
+        sb.append("        " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + " " + modelName + "2 = new " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
+                .append(System.lineSeparator());
+        for (String field : fieldList) {
+            i++;
+            sb.append("        " + modelName + "2.set" + field.toUpperCase().charAt(0) + field.substring(1) + "(\"" + i + "\");").append(System.lineSeparator());
+        }
+        sb.append(System.lineSeparator());
+        sb.append("        " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s " + modelName + "s = new " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s();")
+                .append(System.lineSeparator());
+        sb.append("        " + modelName + "s.add(" + modelName + "1);").append(System.lineSeparator());
+        sb.append("        " + modelName + "s.add(" + modelName + "2);").append(System.lineSeparator());
+        sb.append(System.lineSeparator());
+        sb.append("        // run test").append(System.lineSeparator());
+        sb.append("        Assert.assertEquals(\"[{");
+        i = 4000;
+        for (String field : fieldList) {
+            i++;
+            sb.append("\\\"" + field + "\\\":\\\"" + i + "\\\",");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        sb.append("},{");
+        for (String field : fieldList) {
+            i++;
+            sb.append("\\\"" + field + "\\\":\\\"" + i + "\\\",");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        sb.append("}]\", " + modelName + "s.serialize());").append(System.lineSeparator());
+        sb.append("    }").append(System.lineSeparator());
+        sb.append(System.lineSeparator());
+        sb.append("@Test").append(System.lineSeparator());
+        sb.append("    public void check" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "DeserializeListTest() {").append(System.lineSeparator());
+        sb.append("        // run test").append(System.lineSeparator());
+        sb.append("        " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s " + modelName + "s = new " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s();")
+                .append(System.lineSeparator());
+        sb.append("        " + modelName + "s.deserialize(\"[{");
+        i = 4000;
+        for (String field : fieldList) {
+            i++;
+            sb.append("\\\"" + field + "\\\":\\\"" + i + "\\\",");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        sb.append("},{");
+        for (String field : fieldList) {
+            i++;
+            sb.append("\\\"" + field + "\\\":\\\"" + i + "\\\",");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        sb.append("}]\");").append(System.lineSeparator());
+
+        i = 4000;
+        for (String field : fieldList) {
+            i++;
+            sb.append("        Assert.assertEquals(\"" + i + "\", " + modelName + "s.get(0).get" + field.toUpperCase().charAt(0) + field.substring(1) + "());").append(System.lineSeparator());
+        }
+        for (String field : fieldList) {
+            i++;
+            sb.append("        Assert.assertEquals(\"" + i + "\", " + modelName + "s.get(1).get" + field.toUpperCase().charAt(0) + field.substring(1) + "());").append(System.lineSeparator());
+        }
+        sb.append("    }").append(System.lineSeparator());
+        sb.append(System.lineSeparator());
+        sb.append("    @Test").append(System.lineSeparator());
+        sb.append("    public void checkDelete" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "sAndAdd" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "sTest() {")
+                .append(System.lineSeparator());
+        sb.append("        // prepare mock").append(System.lineSeparator());
+        sb.append("        " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + " a = new " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
+                .append(System.lineSeparator());
+        sb.append("        a.set" + fieldList[0].toUpperCase().charAt(0) + fieldList[0].substring(1) + "(\"aaaa\");").append(System.lineSeparator());
+        sb.append("        " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + " b = new " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
+                .append(System.lineSeparator());
+        sb.append("        b.set" + fieldList[0].toUpperCase().charAt(0) + fieldList[0].substring(1) + "(\"cccc\");").append(System.lineSeparator());
+        sb.append("        " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + " c = new " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
+                .append(System.lineSeparator());
+        sb.append("        c.set" + fieldList[0].toUpperCase().charAt(0) + fieldList[0].substring(1) + "(\"bbbb\");").append(System.lineSeparator());
+        sb.append("        " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + " d = new " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
+                .append(System.lineSeparator());
+        sb.append("        d.set" + fieldList[0].toUpperCase().charAt(0) + fieldList[0].substring(1) + "(\"eeee\");").append(System.lineSeparator());
+        sb.append(System.lineSeparator());
+        sb.append("        " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s " + modelName + "sInGame = new " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s();")
+                .append(System.lineSeparator());
+        sb.append("        " + modelName + "sInGame.add(a);").append(System.lineSeparator());
+        sb.append("        " + modelName + "sInGame.add(b);").append(System.lineSeparator());
+        sb.append("        " + modelName + "sInGame.add(c);").append(System.lineSeparator());
+        sb.append(System.lineSeparator());
+        sb.append("        " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s " + modelName + "s = new " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s();")
+                .append(System.lineSeparator());
+        sb.append("        " + modelName + "s.add(b);").append(System.lineSeparator());
+        sb.append("        " + modelName + "s.add(c);").append(System.lineSeparator());
+        sb.append("        " + modelName + "s.add(d);").append(System.lineSeparator());
+        sb.append(System.lineSeparator());
+        sb.append("        // run test").append(System.lineSeparator());
+        sb.append("        " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s mInGame = (" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s) " + modelName
+                + "sInGame.clone();").append(System.lineSeparator());
+        sb.append("        mInGame.subtract(" + modelName + "s);").append(System.lineSeparator());
+        sb.append("        Assert.assertEquals(1, mInGame.size());").append(System.lineSeparator());
+        sb.append("        Assert.assertEquals(\"aaaa\", mInGame.get(0).get" + fieldList[0].toUpperCase().charAt(0) + fieldList[0].substring(1) + "());").append(System.lineSeparator());
+        sb.append(System.lineSeparator());
+        sb.append("        " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s l = (" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s) " + modelName + "s.clone();")
+                .append(System.lineSeparator());
+        sb.append("        l.subtract(" + modelName + "sInGame);").append(System.lineSeparator());
+        sb.append("        Assert.assertEquals(1, l.size());").append(System.lineSeparator());
+        sb.append("        Assert.assertEquals(\"eeee\", l.get(0).get" + fieldList[0].toUpperCase().charAt(0) + fieldList[0].substring(1) + "());").append(System.lineSeparator());
+        sb.append(System.lineSeparator());
+        sb.append("        Assert.assertEquals(\"aaaa\", " + modelName + "sInGame.get(0).get" + fieldList[0].toUpperCase().charAt(0) + fieldList[0].substring(1) + "());")
+                .append(System.lineSeparator());
+        sb.append("        Assert.assertEquals(\"cccc\", " + modelName + "sInGame.get(1).get" + fieldList[0].toUpperCase().charAt(0) + fieldList[0].substring(1) + "());")
+                .append(System.lineSeparator());
+        sb.append("        Assert.assertEquals(\"bbbb\", " + modelName + "sInGame.get(2).get" + fieldList[0].toUpperCase().charAt(0) + fieldList[0].substring(1) + "());")
+                .append(System.lineSeparator());
+        sb.append("        Collections.sort(" + modelName + "sInGame);").append(System.lineSeparator());
+        sb.append("        Assert.assertEquals(\"aaaa\", " + modelName + "sInGame.get(0).get" + fieldList[0].toUpperCase().charAt(0) + fieldList[0].substring(1) + "());")
+                .append(System.lineSeparator());
+        sb.append("        Assert.assertEquals(\"bbbb\", " + modelName + "sInGame.get(1).get" + fieldList[0].toUpperCase().charAt(0) + fieldList[0].substring(1) + "());")
+                .append(System.lineSeparator());
+        sb.append("        Assert.assertEquals(\"cccc\", " + modelName + "sInGame.get(2).get" + fieldList[0].toUpperCase().charAt(0) + fieldList[0].substring(1) + "());")
+                .append(System.lineSeparator());
+        sb.append(System.lineSeparator());
         sb.append("    }").append(System.lineSeparator());
         sb.append(System.lineSeparator());
         sb.append("}").append(System.lineSeparator());
