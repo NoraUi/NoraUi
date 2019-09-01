@@ -4,7 +4,7 @@
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
-package cucumber.metrics.annotation.time;
+package com.github.noraui.cucumber.metrics.annotation.time;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
-public @interface TimeName {
+public @interface TimeValue {
 
     /**
      * @return The name of the timer.

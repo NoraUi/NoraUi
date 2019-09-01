@@ -4,7 +4,7 @@
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
-package cucumber.metrics.annotation.regulator;
+package com.github.noraui.cucumber.metrics.annotation.regulator;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

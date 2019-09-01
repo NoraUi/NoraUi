@@ -4,13 +4,13 @@
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
-package cucumber.metrics.core.impl;
+package com.github.noraui.cucumber.metrics.core.impl;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
-
-import cucumber.metrics.core.Metered;
 import java.util.concurrent.atomic.LongAdder;
+
+import com.github.noraui.cucumber.metrics.core.Metered;
 
 public class Meter implements Metered {
 

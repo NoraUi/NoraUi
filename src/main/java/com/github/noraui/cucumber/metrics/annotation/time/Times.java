@@ -4,7 +4,7 @@
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
-package cucumber.metrics.annotation.time;
+package com.github.noraui.cucumber.metrics.annotation.time;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

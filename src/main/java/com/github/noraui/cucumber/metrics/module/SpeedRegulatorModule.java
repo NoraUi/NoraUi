@@ -4,16 +4,15 @@
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
-package cucumber.metrics.module;
+package com.github.noraui.cucumber.metrics.module;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.github.noraui.cucumber.metrics.annotation.regulator.SpeedRegulator;
+import com.github.noraui.cucumber.metrics.annotation.regulator.SpeedRegulators;
+import com.github.noraui.cucumber.metrics.interceptor.SpeedRegulatorInterceptor;
 import com.google.inject.Binder;
-
-import cucumber.metrics.annotation.regulator.SpeedRegulator;
-import cucumber.metrics.annotation.regulator.SpeedRegulators;
-import cucumber.metrics.interceptor.SpeedRegulatorInterceptor;
 
 public class SpeedRegulatorModule extends AbstractMetricsModule {
 

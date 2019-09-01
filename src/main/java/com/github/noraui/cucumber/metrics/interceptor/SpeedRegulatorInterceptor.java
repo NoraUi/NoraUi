@@ -4,7 +4,7 @@
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
-package cucumber.metrics.interceptor;
+package com.github.noraui.cucumber.metrics.interceptor;
 
 import java.lang.reflect.Method;
 import java.util.concurrent.ConcurrentHashMap;
@@ -15,9 +15,9 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cucumber.metrics.annotation.regulator.SpeedRegulator;
-import cucumber.metrics.annotation.regulator.SpeedRegulators;
-import cucumber.metrics.core.impl.Meter;
+import com.github.noraui.cucumber.metrics.annotation.regulator.SpeedRegulator;
+import com.github.noraui.cucumber.metrics.annotation.regulator.SpeedRegulators;
+import com.github.noraui.cucumber.metrics.core.impl.Meter;
 
 public class SpeedRegulatorInterceptor implements MethodInterceptor {
 

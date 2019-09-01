@@ -4,7 +4,7 @@
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
-package cucumber.metrics.jmx;
+package com.github.noraui.cucumber.metrics.jmx;
 
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;

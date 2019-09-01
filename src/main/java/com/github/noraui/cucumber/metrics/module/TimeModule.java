@@ -4,17 +4,16 @@
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
-package cucumber.metrics.module;
+package com.github.noraui.cucumber.metrics.module;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.github.noraui.cucumber.metrics.annotation.time.Time;
+import com.github.noraui.cucumber.metrics.annotation.time.Times;
+import com.github.noraui.cucumber.metrics.interceptor.TimeInterceptor;
 import com.google.inject.Binder;
 import com.google.inject.Inject;
-
-import cucumber.metrics.annotation.time.Time;
-import cucumber.metrics.annotation.time.Times;
-import cucumber.metrics.interceptor.TimeInterceptor;
 
 public class TimeModule extends AbstractMetricsModule {
 

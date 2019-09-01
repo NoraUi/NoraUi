@@ -4,7 +4,7 @@
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
-package cucumber.metrics.core;
+package com.github.noraui.cucumber.metrics.core;
 
 /**
  * An object which maintains mean and exponentially-weighted rate.

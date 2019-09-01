@@ -4,7 +4,7 @@
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
-package cucumber.metrics.annotation.time;
+package com.github.noraui.cucumber.metrics.annotation.regulator;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -12,12 +12,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.PARAMETER)
-public @interface TimeValue {
+@Target(ElementType.METHOD)
+public @interface SpeedRegulators {
 
     /**
-     * @return The name of the timer.
+     * @return Array used for multiple SpeedRegulator declarations.
      */
-    String value();
+    SpeedRegulator[] value();
 
 }

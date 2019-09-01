@@ -4,7 +4,7 @@
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
-package cucumber.metrics.interceptor;
+package com.github.noraui.cucumber.metrics.interceptor;
 
 import java.lang.annotation.Annotation;
 import java.lang.management.ManagementFactory;
@@ -29,14 +29,13 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.github.noraui.cucumber.metrics.annotation.time.Time;
+import com.github.noraui.cucumber.metrics.annotation.time.TimeName;
+import com.github.noraui.cucumber.metrics.annotation.time.TimeValue;
+import com.github.noraui.cucumber.metrics.annotation.time.Times;
+import com.github.noraui.cucumber.metrics.core.impl.Meter;
+import com.github.noraui.cucumber.metrics.jmx.TimedJmxDynamicMBean;
 import com.google.inject.Singleton;
-
-import cucumber.metrics.annotation.time.Time;
-import cucumber.metrics.annotation.time.TimeName;
-import cucumber.metrics.annotation.time.TimeValue;
-import cucumber.metrics.annotation.time.Times;
-import cucumber.metrics.core.impl.Meter;
-import cucumber.metrics.jmx.TimedJmxDynamicMBean;
 
 @Singleton
 public class TimeInterceptor implements MethodInterceptor {

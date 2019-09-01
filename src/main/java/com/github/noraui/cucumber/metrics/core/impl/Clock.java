@@ -4,7 +4,7 @@
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
-package cucumber.metrics.core.impl;
+package com.github.noraui.cucumber.metrics.core.impl;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadMXBean;
