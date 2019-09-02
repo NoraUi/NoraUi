@@ -1,6 +1,9 @@
 # NoraUi
 Non-Regression Automation for User Interfaces
 
+# Demonstration
+[![Demonstration](https://noraui.github.io/howToUse/1play.gif)](https://www.youtube.com/watch?v=X0fSEfmApGE&t=3s)
+
 # Technical documentation
 
 [Public website for NoraUi (Non-Regression Automation for User Interfaces)](https://noraui.github.io/).
