@@ -32,18 +32,22 @@ public class Model extends AbstractNoraUiCli {
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(Model.class);
 
+    private static final String PUBLIC = "public";
+    private static final String PUBLIC_CLASS = PUBLIC + " class";
+    private static final String PUBLIC_VOID = PUBLIC + " " + "void";
+    private static final String PUBLIC_VOID_CHECK = PUBLIC_VOID + " check";
     private static final String UTILS = "utils";
     private static final String APPLICATION_MODEL_SLASH = "application/model/";
     private static final String APPLICATION_MODEL_DOT = "application.model.";
     private static final String CONTEXT = "Context";
     private static final String TAB = "    ";
     private static final String TAB2 = TAB + TAB;
-    private static final String PUBLIC_CLASS = "public class";
+    
     private static final String NEW_GSON_BUILDER = "final GsonBuilder builder = new GsonBuilder();";
     private static final String NEW_GSON = "final Gson gson = builder.create();";
     private static final String NEW_GSON_BUILDER_EXCLUDE_FIELDS_WITHOUT_EXPOSE_ANNOTATION ="builder.excludeFieldsWithoutExposeAnnotation();";
     private static final String NEW_GSON_BUILDER_DISABLE_HTML_ESCAPING ="builder.disableHtmlEscaping();";
-    private static final String JUNIT_TEST = TAB + "@Test";
+    private static final String JUNIT_TEST = "@Test";
     private static final String PREPARE_MOCK = TAB2 + "// prepare mock";
     private static final String RUN_TEST = TAB2 + "// run test";
     private static final String ASSERT_EQUALS = TAB2 + "Assert.assertEquals";
@@ -52,7 +56,8 @@ public class Model extends AbstractNoraUiCli {
     private static final String OVERRIDE = "@Override";
     private static final String THIS = "this.";
     private static final String RETURN = "return ";
-    private static final String CHECK = "public void check";
+    
+    
     
     private String mainPath;
     private String testPath = "src" + File.separator + "test";
@@ -211,22 +216,22 @@ public class Model extends AbstractNoraUiCli {
         sb.append(PUBLIC_CLASS + " " +  modelName.toUpperCase().charAt(0) + modelName.substring(1) + " implements Model, Comparable<" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "> {")
                 .append(System.lineSeparator());
         sb.append(System.lineSeparator());
-        sb.append(TAB + "@Expose(serialize = false, deserialize = false)").append(System.lineSeparator());
-        sb.append(TAB + "private Integer nid;").append(System.lineSeparator());
+        sb.append(TAB).append("@Expose(serialize = false, deserialize = false)").append(System.lineSeparator());
+        sb.append(TAB).append("private Integer nid;").append(System.lineSeparator());
         sb.append(System.lineSeparator());
         for (String field : fieldList) {
-            sb.append(TAB + "@Expose").append(System.lineSeparator());
-            sb.append(TAB + "@Column(name = \"" + field + "\")").append(System.lineSeparator());
-            sb.append(TAB + "private String " + field + ";").append(System.lineSeparator());
+            sb.append(TAB).append("@Expose").append(System.lineSeparator());
+            sb.append(TAB).append("@Column(name = \"" + field + "\")").append(System.lineSeparator());
+            sb.append(TAB).append("private String " + field + ";").append(System.lineSeparator());
             sb.append(System.lineSeparator());
         }
         for (String result : resultList) {
-            sb.append(TAB + "@Column(name = \"" + result + "\")").append(System.lineSeparator());
-            sb.append(TAB + "private String " + result + ";").append(System.lineSeparator());
+            sb.append(TAB).append("@Column(name = \"" + result + "\")").append(System.lineSeparator());
+            sb.append(TAB).append("private String " + result + ";").append(System.lineSeparator());
             sb.append(System.lineSeparator());
         }
-        sb.append(TAB + "// constructor by default for serialize/deserialize").append(System.lineSeparator());
-        sb.append(TAB + "public " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "() {").append(System.lineSeparator());
+        sb.append(TAB).append("// constructor by default for serialize/deserialize").append(System.lineSeparator());
+        sb.append(TAB + PUBLIC + " " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "() {").append(System.lineSeparator());
         sb.append(TAB2 + "this.nid = -1;").append(System.lineSeparator());
         for (String field : fieldList) {
             sb.append(TAB2 + THIS + field + " = \"\";").append(System.lineSeparator());
@@ -236,7 +241,7 @@ public class Model extends AbstractNoraUiCli {
         }
         sb.append(TAB2 + "}").append(System.lineSeparator());
         sb.append(System.lineSeparator());
-        sb.append(TAB + "public " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "(String nid");
+        sb.append(TAB + PUBLIC + " " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "(String nid");
         for (String field : fieldList) {
             sb.append(", String " + field);
         }
@@ -255,7 +260,7 @@ public class Model extends AbstractNoraUiCli {
         sb.append(System.lineSeparator());
         inheritDoc(sb);
         sb.append(TAB + OVERRIDE).append(System.lineSeparator());
-        sb.append(TAB + "public String serialize() {").append(System.lineSeparator());
+        sb.append(TAB + PUBLIC + " String serialize() {").append(System.lineSeparator());
         sb.append(TAB2 + NEW_GSON_BUILDER).append(System.lineSeparator());
         sb.append(TAB2 + NEW_GSON_BUILDER_EXCLUDE_FIELDS_WITHOUT_EXPOSE_ANNOTATION).append(System.lineSeparator());
         sb.append(TAB2 + NEW_GSON_BUILDER_DISABLE_HTML_ESCAPING).append(System.lineSeparator());
@@ -265,7 +270,7 @@ public class Model extends AbstractNoraUiCli {
         sb.append(System.lineSeparator());
         inheritDoc(sb);
         sb.append(TAB + OVERRIDE).append(System.lineSeparator());
-        sb.append(TAB + "public void deserialize(String jsonString) {").append(System.lineSeparator());
+        sb.append(TAB + PUBLIC_VOID + " deserialize(String jsonString) {").append(System.lineSeparator());
         sb.append(TAB2 + NEW_GSON_BUILDER).append(System.lineSeparator());
         sb.append(TAB2 + NEW_GSON_BUILDER_EXCLUDE_FIELDS_WITHOUT_EXPOSE_ANNOTATION).append(System.lineSeparator());
         sb.append(TAB2 + NEW_GSON).append(System.lineSeparator());
@@ -279,13 +284,13 @@ public class Model extends AbstractNoraUiCli {
         sb.append(System.lineSeparator());
         inheritDoc(sb);
         sb.append(TAB + OVERRIDE).append(System.lineSeparator());
-        sb.append(TAB + "public Class<" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s> getModelList() {").append(System.lineSeparator());
+        sb.append(TAB + PUBLIC + " Class<" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s> getModelList() {").append(System.lineSeparator());
         sb.append(TAB2 + RETURN + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s.class;").append(System.lineSeparator());
         sb.append(TAB2 + "}").append(System.lineSeparator());
         sb.append(System.lineSeparator());
         inheritDoc(sb);
         sb.append(TAB + OVERRIDE).append(System.lineSeparator());
-        sb.append(TAB + "public int hashCode() {").append(System.lineSeparator());
+        sb.append(TAB + PUBLIC + " int hashCode() {").append(System.lineSeparator());
         sb.append(TAB2 + RETURN + "new HashCodeBuilder()");
         for (String field : fieldList) {
             sb.append(".append(" + field + ")");
@@ -295,9 +300,9 @@ public class Model extends AbstractNoraUiCli {
         sb.append(System.lineSeparator());
         inheritDoc(sb);
         sb.append(TAB + OVERRIDE).append(System.lineSeparator());
-        sb.append(TAB + "public boolean equals(Object obj) {").append(System.lineSeparator());
+        sb.append(TAB + PUBLIC + " boolean equals(Object obj) {").append(System.lineSeparator());
         sb.append(TAB2 + "if (obj instanceof " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + ") {").append(System.lineSeparator());
-        sb.append(TAB2 + TAB + "final " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + " other = (" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + ") obj;")
+        sb.append(TAB2 + TAB).append("final " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + " other = (" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + ") obj;")
                 .append(System.lineSeparator());
         sb.append(TAB2 + TAB + RETURN + "new EqualsBuilder()");
         for (String field : fieldList) {
@@ -311,7 +316,7 @@ public class Model extends AbstractNoraUiCli {
         sb.append(System.lineSeparator());
         inheritDoc(sb);
         sb.append(TAB + OVERRIDE).append(System.lineSeparator());
-        sb.append(TAB + "public int compareTo(" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + " other) {").append(System.lineSeparator());
+        sb.append(TAB + PUBLIC + " int compareTo(" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + " other) {").append(System.lineSeparator());
 
         sb.append(TAB2 + RETURN + "ComparisonChain.start()");
         for (String field : fieldList) {
@@ -321,7 +326,7 @@ public class Model extends AbstractNoraUiCli {
         sb.append(TAB2 + "}").append(System.lineSeparator());
         sb.append(System.lineSeparator());
         sb.append(TAB + OVERRIDE).append(System.lineSeparator());
-        sb.append(TAB + "public String toString() {").append(System.lineSeparator());
+        sb.append(TAB + PUBLIC + " String toString() {").append(System.lineSeparator());
         sb.append(TAB2 + RETURN + "\"{nid:\" + nid + \"");
         for (String field : fieldList) {
             sb.append(", " + field + ":\\\"\" + " + field + " + \"\\\"");
@@ -332,30 +337,30 @@ public class Model extends AbstractNoraUiCli {
         sb.append("}\";").append(System.lineSeparator());
         sb.append(TAB2 + "}").append(System.lineSeparator());
         sb.append(System.lineSeparator());
-        sb.append(TAB + "public Integer getNid() {").append(System.lineSeparator());
+        sb.append(TAB + PUBLIC + " Integer getNid() {").append(System.lineSeparator());
         sb.append(TAB2 + RETURN + "nid;").append(System.lineSeparator());
         sb.append(TAB2 + "}").append(System.lineSeparator());
         sb.append(System.lineSeparator());
-        sb.append(TAB + "public void setNid(Integer nid) {").append(System.lineSeparator());
+        sb.append(TAB + PUBLIC_VOID + " setNid(Integer nid) {").append(System.lineSeparator());
         sb.append(TAB2 + "this.nid = nid;").append(System.lineSeparator());
         sb.append(TAB2 + "}").append(System.lineSeparator());
         sb.append(System.lineSeparator());
         for (String field : fieldList) {
-            sb.append(TAB + "public String get" + field.toUpperCase().charAt(0) + field.substring(1) + "() {").append(System.lineSeparator());
+            sb.append(TAB + PUBLIC + " String get" + field.toUpperCase().charAt(0) + field.substring(1) + "() {").append(System.lineSeparator());
             sb.append(TAB2 + RETURN + field + ";").append(System.lineSeparator());
             sb.append(TAB2 + "}").append(System.lineSeparator());
             sb.append(System.lineSeparator());
-            sb.append(TAB + "public void set" + field.toUpperCase().charAt(0) + field.substring(1) + "(String " + field + ") {").append(System.lineSeparator());
+            sb.append(TAB + PUBLIC_VOID + " set" + field.toUpperCase().charAt(0) + field.substring(1) + "(String " + field + ") {").append(System.lineSeparator());
             sb.append(TAB2 + THIS + field + " = " + field + ";").append(System.lineSeparator());
             sb.append(TAB2 + "}").append(System.lineSeparator());
             sb.append(System.lineSeparator());
         }
         for (String result : resultList) {
-            sb.append(TAB + "public String get" + result.toUpperCase().charAt(0) + result.substring(1) + "() {").append(System.lineSeparator());
+            sb.append(TAB + PUBLIC + " String get" + result.toUpperCase().charAt(0) + result.substring(1) + "() {").append(System.lineSeparator());
             sb.append(TAB2 + RETURN + result + ";").append(System.lineSeparator());
             sb.append(TAB2 + "}").append(System.lineSeparator());
             sb.append(System.lineSeparator());
-            sb.append(TAB + "public void set" + result.toUpperCase().charAt(0) + result.substring(1) + "(String " + result + ") {").append(System.lineSeparator());
+            sb.append(TAB + PUBLIC_VOID + " set" + result.toUpperCase().charAt(0) + result.substring(1) + "(String " + result + ") {").append(System.lineSeparator());
             sb.append(TAB2 + THIS + result + " = " + result + ";").append(System.lineSeparator());
             sb.append(TAB2 + "}").append(System.lineSeparator());
             sb.append(System.lineSeparator());
@@ -412,23 +417,23 @@ public class Model extends AbstractNoraUiCli {
         sb.append(PUBLIC_CLASS + " " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s extends CommonModels<" + modelName.toUpperCase().charAt(0) + modelName.substring(1)
                 + "> implements ModelList {").append(System.lineSeparator());
         sb.append(System.lineSeparator());
-        sb.append(TAB + "/**").append(System.lineSeparator());
-        sb.append(TAB + " *").append(System.lineSeparator());
-        sb.append(TAB + " */").append(System.lineSeparator());
-        sb.append(TAB + "private static final long serialVersionUID = 9002528163560746878L;").append(System.lineSeparator());
+        sb.append(TAB).append("/**").append(System.lineSeparator());
+        sb.append(TAB).append(" *").append(System.lineSeparator());
+        sb.append(TAB).append(" */").append(System.lineSeparator());
+        sb.append(TAB).append("private static final long serialVersionUID = 9002528163560746878L;").append(System.lineSeparator());
         sb.append(System.lineSeparator());
-        sb.append(TAB + "public " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s() {").append(System.lineSeparator());
+        sb.append(TAB + PUBLIC + " " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s() {").append(System.lineSeparator());
         sb.append(TAB2 + "super();").append(System.lineSeparator());
         sb.append(TAB2 + "}").append(System.lineSeparator());
         sb.append(System.lineSeparator());
-        sb.append(TAB + "public " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s(CommonModels<" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "> inputList) {")
+        sb.append(TAB + PUBLIC + " " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s(CommonModels<" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "> inputList) {")
                 .append(System.lineSeparator());
         sb.append(TAB2 + "super(inputList);").append(System.lineSeparator());
         sb.append(TAB2 + "}").append(System.lineSeparator());
         sb.append(System.lineSeparator());
         inheritDoc(sb);
         sb.append(TAB + OVERRIDE).append(System.lineSeparator());
-        sb.append(TAB + "public void deserialize(String jsonString) {").append(System.lineSeparator());
+        sb.append(TAB + PUBLIC_VOID + " deserialize(String jsonString) {").append(System.lineSeparator());
         sb.append(TAB2 + "Type listType = new TypeToken<ArrayList<" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + ">>() {").append(System.lineSeparator());
         sb.append(TAB2 + "}.getType();").append(System.lineSeparator());
         sb.append(System.lineSeparator());
@@ -442,26 +447,26 @@ public class Model extends AbstractNoraUiCli {
         sb.append(System.lineSeparator());
         inheritDoc(sb);
         sb.append(TAB + OVERRIDE).append(System.lineSeparator());
-        sb.append(TAB + "public ModelList addModel(Model m) {").append(System.lineSeparator());
+        sb.append(TAB + PUBLIC + " ModelList addModel(Model m) {").append(System.lineSeparator());
         sb.append(TAB2 + "super.add((" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + ") m);").append(System.lineSeparator());
         sb.append(TAB2 + RETURN + "this;").append(System.lineSeparator());
         sb.append(TAB2 + "}").append(System.lineSeparator());
         sb.append(System.lineSeparator());
         inheritDoc(sb);
         sb.append(TAB + OVERRIDE).append(System.lineSeparator());
-        sb.append(TAB + "public void subtract(ModelList list) {").append(System.lineSeparator());
+        sb.append(TAB + PUBLIC_VOID + " subtract(ModelList list) {").append(System.lineSeparator());
         sb.append(TAB2 + "Iterator<?> iterator = ((" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s) list).iterator();").append(System.lineSeparator());
         sb.append(TAB2 + "while (iterator.hasNext()) {").append(System.lineSeparator());
-        sb.append(TAB2 + TAB + "this.remove(iterator.next());").append(System.lineSeparator());
+        sb.append(TAB2 + TAB).append("this.remove(iterator.next());").append(System.lineSeparator());
         sb.append(TAB2 + "}").append(System.lineSeparator());
         sb.append(TAB2 + "}").append(System.lineSeparator());
         sb.append(System.lineSeparator());
         inheritDoc(sb);
         sb.append(TAB + OVERRIDE).append(System.lineSeparator());
-        sb.append(TAB + "public List<Integer> getIds() {").append(System.lineSeparator());
+        sb.append(TAB + PUBLIC + " List<Integer> getIds() {").append(System.lineSeparator());
         sb.append(TAB2 + "List<Integer> result = new ArrayList<>();").append(System.lineSeparator());
         sb.append(TAB2 + "for (" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + " " + modelName + " : this) {").append(System.lineSeparator());
-        sb.append(TAB2 + TAB + "result.add(" + modelName + ".getNid());").append(System.lineSeparator());
+        sb.append(TAB2 + TAB).append("result.add(" + modelName + ".getNid());").append(System.lineSeparator());
         sb.append(TAB2 + "}").append(System.lineSeparator());
         sb.append(TAB2 + RETURN + "result;").append(System.lineSeparator());
         sb.append(TAB2 + "}").append(System.lineSeparator());
@@ -485,12 +490,6 @@ public class Model extends AbstractNoraUiCli {
         }
     }
 
-    private void inheritDoc(StringBuilder sb) {
-        sb.append(TAB + "/**").append(System.lineSeparator());
-        sb.append(TAB + " * {@inheritDoc}").append(System.lineSeparator());
-        sb.append(TAB + " */").append(System.lineSeparator());
-    }
-
     private void addModelUT(String applicationName, String modelName, String[] fieldList, String[] resultList, Class<?> robotContext, boolean verbose) {
         String modelPath = testPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replace(UTILS, APPLICATION_MODEL_SLASH + applicationName)
                 .replace("/", Matcher.quoteReplacement(File.separator)).replace(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1)) + "UT.java";
@@ -511,8 +510,8 @@ public class Model extends AbstractNoraUiCli {
         sb.append(System.lineSeparator());
         sb.append(PUBLIC_CLASS + " " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "UT {").append(System.lineSeparator());
         sb.append(System.lineSeparator());
-        sb.append(JUNIT_TEST).append(System.lineSeparator());
-        sb.append(TAB + CHECK + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "SerializeTest() {").append(System.lineSeparator());
+        sb.append(TAB).append(JUNIT_TEST).append(System.lineSeparator());
+        sb.append(TAB).append(PUBLIC_VOID_CHECK + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "SerializeTest() {").append(System.lineSeparator());
         sb.append(PREPARE_MOCK).append(System.lineSeparator());
         sb.append(TAB2 + modelName.toUpperCase().charAt(0) + modelName.substring(1) + " " + modelName + " = new " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
                 .append(System.lineSeparator());
@@ -534,8 +533,8 @@ public class Model extends AbstractNoraUiCli {
         sb.append(TAB2 + "}").append(System.lineSeparator());
         sb.append(System.lineSeparator());
         sb.append(JUNIT_TEST).append(System.lineSeparator());
-        sb.append(TAB + CHECK + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "SerializeAllTest() {").append(System.lineSeparator());
-        sb.append(TAB + "   // prepare mock").append(System.lineSeparator());
+        sb.append(TAB).append(PUBLIC_VOID_CHECK + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "SerializeAllTest() {").append(System.lineSeparator());
+        sb.append(TAB).append("   // prepare mock").append(System.lineSeparator());
         sb.append(TAB2 + modelName.toUpperCase().charAt(0) + modelName.substring(1) + " " + modelName + " = new " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
                 .append(System.lineSeparator());
         sb.append(TAB2 + modelName + ".setNid(123);").append(System.lineSeparator());
@@ -561,7 +560,7 @@ public class Model extends AbstractNoraUiCli {
         sb.append(TAB2 + "}").append(System.lineSeparator());
         sb.append(System.lineSeparator());
         sb.append(JUNIT_TEST).append(System.lineSeparator());
-        sb.append(TAB + CHECK + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "DeserializeTest() {").append(System.lineSeparator());
+        sb.append(TAB).append(PUBLIC_VOID_CHECK + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "DeserializeTest() {").append(System.lineSeparator());
         sb.append(RUN_TEST).append(System.lineSeparator());
         sb.append(TAB2 + modelName.toUpperCase().charAt(0) + modelName.substring(1) + " " + modelName + " = new " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
                 .append(System.lineSeparator());
@@ -582,7 +581,7 @@ public class Model extends AbstractNoraUiCli {
         sb.append(TAB2 + "}").append(System.lineSeparator());
         sb.append(System.lineSeparator());
         sb.append(JUNIT_TEST).append(System.lineSeparator());
-        sb.append(TAB + CHECK + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "DeserializeAllTest() {").append(System.lineSeparator());
+        sb.append(TAB).append(PUBLIC_VOID_CHECK + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "DeserializeAllTest() {").append(System.lineSeparator());
         sb.append(RUN_TEST).append(System.lineSeparator());
         sb.append(TAB2 + modelName.toUpperCase().charAt(0) + modelName.substring(1) + " " + modelName + " = new " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
                 .append(System.lineSeparator());
@@ -611,7 +610,7 @@ public class Model extends AbstractNoraUiCli {
         sb.append(System.lineSeparator());
 
         sb.append(JUNIT_TEST).append(System.lineSeparator());
-        sb.append(TAB + CHECK + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "SerializeListTest() {").append(System.lineSeparator());
+        sb.append(TAB).append(PUBLIC_VOID_CHECK + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "SerializeListTest() {").append(System.lineSeparator());
         sb.append(PREPARE_MOCK).append(System.lineSeparator());
         sb.append(TAB2 + modelName.toUpperCase().charAt(0) + modelName.substring(1) + " " + modelName + "1 = new " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
                 .append(System.lineSeparator());
@@ -651,7 +650,7 @@ public class Model extends AbstractNoraUiCli {
         sb.append(TAB2 + "}").append(System.lineSeparator());
         sb.append(System.lineSeparator());
         sb.append("@Test").append(System.lineSeparator());
-        sb.append(TAB + CHECK + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "DeserializeListTest() {").append(System.lineSeparator());
+        sb.append(TAB).append(PUBLIC_VOID_CHECK + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "DeserializeListTest() {").append(System.lineSeparator());
         sb.append(RUN_TEST).append(System.lineSeparator());
         sb.append(TAB2 + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s " + modelName + "s = new " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s();")
                 .append(System.lineSeparator());
@@ -682,7 +681,7 @@ public class Model extends AbstractNoraUiCli {
         sb.append(TAB2 + "}").append(System.lineSeparator());
         sb.append(System.lineSeparator());
         sb.append(JUNIT_TEST).append(System.lineSeparator());
-        sb.append(TAB + CHECK + "Delete" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "sAndAdd" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "sTest() {")
+        sb.append(TAB).append(PUBLIC_VOID_CHECK + "Delete" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "sAndAdd" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "sTest() {")
                 .append(System.lineSeparator());
         sb.append(PREPARE_MOCK).append(System.lineSeparator());
         sb.append(TAB2 + modelName.toUpperCase().charAt(0) + modelName.substring(1) + " a = new " + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
@@ -793,6 +792,12 @@ public class Model extends AbstractNoraUiCli {
         } catch (IOException e) {
             LOGGER.debug("{} not revove because do not exist.", applicationDirectoryPath);
         }
+    }
+    
+    private void inheritDoc(StringBuilder sb) {
+        sb.append(TAB).append("/**").append(System.lineSeparator());
+        sb.append(TAB).append(" * {@inheritDoc}").append(System.lineSeparator());
+        sb.append(TAB).append(" */").append(System.lineSeparator());
     }
 
 }
