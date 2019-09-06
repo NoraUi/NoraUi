@@ -21,14 +21,14 @@ import org.slf4j.Logger;
 
 import com.github.noraui.annotation.Column;
 import com.github.noraui.exception.TechnicalException;
-import com.github.noraui.log.annotation.InjectLogger;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.model.Model;
 import com.github.noraui.utils.Messages;
 
+@Loggable
 public abstract class CommonDataProvider implements DataProvider {
 
-    @InjectLogger
-    Logger LOGGER;
+    static Logger LOGGER;
 
     protected String dataInPath;
     protected String dataOutPath;

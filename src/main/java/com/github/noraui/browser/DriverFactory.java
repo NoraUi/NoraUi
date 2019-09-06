@@ -35,17 +35,17 @@ import org.openqa.selenium.remote.CapabilityType;
 import org.slf4j.Logger;
 
 import com.github.noraui.exception.TechnicalException;
-import com.github.noraui.log.annotation.InjectLogger;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 import com.github.noraui.utils.Utilities;
 import com.github.noraui.utils.Utilities.OperatingSystem;
 import com.github.noraui.utils.Utilities.SystemArchitecture;
 
+@Loggable
 public class DriverFactory {
 
-    @InjectLogger
-    private static Logger LOGGER;
+    static Logger LOGGER;
 
     /** Default web drivers implicit wait **/
     public static final long IMPLICIT_WAIT = 500;

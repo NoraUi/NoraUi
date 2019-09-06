@@ -9,7 +9,6 @@ package com.github.noraui.application.steps;
 import java.util.List;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.cucumber.annotation.Conditioned;
 import com.github.noraui.exception.Callbacks;
@@ -18,6 +17,7 @@ import com.github.noraui.exception.HttpServiceException;
 import com.github.noraui.exception.Result;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.GherkinStepCondition;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.service.HttpService;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
@@ -29,12 +29,10 @@ import io.cucumber.java.fr.Et;
 /**
  * This class contains API REST callable steps.
  */
+@Loggable
 public class RESTSteps extends Step {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(RESTSteps.class);
+    static Logger LOGGER;
 
     @Inject
     private HttpService httpService;

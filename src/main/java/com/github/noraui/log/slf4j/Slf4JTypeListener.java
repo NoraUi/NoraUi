@@ -1,10 +1,11 @@
 package com.github.noraui.log.slf4j;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.github.noraui.log.annotation.InjectLogger;
 import com.google.inject.TypeLiteral;
 import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
@@ -17,12 +18,16 @@ import com.google.inject.spi.TypeListener;
  */
 public class Slf4JTypeListener implements TypeListener {
     public <T> void hear(TypeLiteral<T> typeLiteral, TypeEncounter<T> typeEncounter) {
-        System.err.println("hear...");
         Class<?> clazz = typeLiteral.getRawType();
         while (clazz != null) {
-            for (Field field : clazz.getDeclaredFields()) {
-                if (field.getType() == Logger.class && field.isAnnotationPresent(InjectLogger.class)) {
-                    typeEncounter.register(new Slf4JMembersInjector<T>(field));
+            for (Field field : typeLiteral.getRawType().getDeclaredFields()) {
+                if (field.getType() == Logger.class && Modifier.isStatic(field.getModifiers())) {
+                    try {
+                        field.setAccessible(true);
+                        Logger logger = LoggerFactory.getLogger(field.getDeclaringClass());
+                        field.set(null, logger);
+                    } catch (IllegalAccessException iae) {
+                    }
                 }
             }
             clazz = clazz.getSuperclass();

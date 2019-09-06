@@ -37,7 +37,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.application.Application;
 import com.github.noraui.application.steps.Step;
@@ -62,6 +61,7 @@ import com.github.noraui.exception.Callbacks.Callback;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.ScenarioRegistry;
 import com.github.noraui.log.NoraUiLoggingInjector;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.main.ScenarioInitiator;
 import com.github.noraui.model.Model;
 import com.github.noraui.model.ModelList;
@@ -73,12 +73,10 @@ import io.cucumber.junit.CucumberOptions;
 /**
  * Cucumber context.
  */
+@Loggable
 public class Context {
 
-    /**
-     * Specific LOGGER.
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(Context.class);
+    static Logger LOGGER;
 
     public static final String STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME = BrowserSteps.class.getCanonicalName();
     public static final String GO_TO_URL_METHOD_NAME = "goToUrl";
@@ -304,6 +302,7 @@ public class Context {
         exceptionCallbacks = new Callbacks();
         applications = new HashMap<>();
         cucumberMethods = new HashMap<>();
+        NoraUiLoggingInjector.createInjector();
     }
 
     /**
@@ -323,7 +322,6 @@ public class Context {
      *            is name of properties file.
      */
     public synchronized void initializeEnv(String propertiesFileName) {
-        NoraUiLoggingInjector.createInjector();
         LOGGER.info("Context > initializeEnv()");
 
         iniFiles = new HashMap<>();
@@ -416,9 +414,10 @@ public class Context {
         exceptionCallbacks.put(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_BAKERY_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, BAKERY_HOME);
 
         // init applications
+        final String indexPage = "/index.html";
         initApplicationDom(clazz.getClassLoader(), selectorsVersion, DEMO_KEY);
-        applications.put(DEMO_KEY, new Application(DEMO_HOME, getProperty(DEMO_KEY, applicationProperties)));
-        applications.put(BAKERY_KEY, new Application(BAKERY_HOME, getProperty(BAKERY_KEY, applicationProperties)));
+        applications.put(DEMO_KEY, new Application(DEMO_HOME, getProperty(DEMO_KEY, applicationProperties) + indexPage));
+
         applications.put(GITHUBAPI_KEY, new Application(GITHUBAPI_HOME, getProperty(GITHUBAPI_KEY, applicationProperties)));
 
         // read and init all cucumber methods
