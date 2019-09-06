@@ -18,25 +18,23 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.data.DataUtils;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.GherkinFactory;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.model.Model;
 import com.github.noraui.model.ModelList;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 
+@Loggable
 public class ScenarioInitiator {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(ScenarioInitiator.class);
+    static Logger LOGGER;
 
     public static final String SCENARIO_INITIATOR_ERROR_EMPTY_FILE = "SCENARIO_INITIATOR_ERROR_EMPTY_FILE";
-    
+
     private static final String SCENARIO_INITIATOR_ERROR_UNABLE_TO_GET_TAGS = "SCENARIO_INITIATOR_ERROR_UNABLE_TO_GET_TAGS";
     private static final String SCENARIO_INITIATOR_USAGE = "SCENARIO_INITIATOR_USAGE";
     private static final String SCENARIO_INITIATOR_INJECT_WITHOUT_MODEL = "SCENARIO_INITIATOR_INJECT_WITHOUT_MODEL";

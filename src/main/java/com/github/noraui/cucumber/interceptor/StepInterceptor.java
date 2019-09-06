@@ -14,21 +14,19 @@ import java.util.regex.Pattern;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.cucumber.annotation.RetryOnFailure;
 import com.github.noraui.exception.FailureException;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Context;
 
 import cucumber.runtime.java.StepDefAnnotation;
 import javassist.Modifier;
 
+@Loggable
 public class StepInterceptor implements MethodInterceptor {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(StepInterceptor.class);
+    static Logger LOGGER;
 
     /**
      * {@inheritDoc}

@@ -44,7 +44,7 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 
-import com.github.noraui.log.annotation.InjectLogger;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.service.ScreenService;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.NoraUiScreenRecorder;
@@ -54,10 +54,10 @@ import com.google.inject.Singleton;
 import io.cucumber.core.api.Scenario;
 
 @Singleton
+@Loggable
 public class ScreenServiceImpl implements ScreenService {
 
-    @InjectLogger
-    private static Logger LOGGER;
+    static Logger LOGGER;
 
     private ScreenRecorder screenRecorder;
 

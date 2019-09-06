@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.application.page.Page;
 import com.github.noraui.cucumber.annotation.Conditioned;
@@ -26,6 +25,7 @@ import com.github.noraui.exception.FailureException;
 import com.github.noraui.exception.Result;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.GherkinStepCondition;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 
@@ -37,12 +37,10 @@ import io.cucumber.java.fr.Lorsque;
 /**
  * This class contains Gherkin callable steps that handle file uploading and downloading.
  */
+@Loggable
 public class FileSteps extends Step {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(FileSteps.class);
+    static Logger LOGGER;
 
     /**
      * Empties the default downloaded files folder.

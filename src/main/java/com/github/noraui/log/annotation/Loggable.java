@@ -8,9 +8,9 @@ import java.lang.annotation.Target;
 
 /**
  * @author Nicolas HALLOUIN & Stéohane GRILLON
- *         This annotation can be used on a class field to inject a Slf4J logger typed by the class of the declared field.
+ *         This annotation can be used on a class to inject a static Slf4J logger typed by the class of the declared logger.
  */
-@Target({ ElementType.FIELD })
+@Target({ ElementType.TYPE })
 @Retention(RUNTIME)
-public @interface InjectLogger {
+public @interface Loggable {
 }

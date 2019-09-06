@@ -13,7 +13,6 @@ import java.util.Set;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.browser.Auth;
 import com.github.noraui.browser.WindowManager;
@@ -26,9 +25,13 @@ import com.github.noraui.exception.FailureException;
 import com.github.noraui.exception.Result;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.GherkinStepCondition;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 
+import cucumber.metrics.annotation.time.Time;
+import cucumber.metrics.annotation.time.TimeName;
+import cucumber.metrics.annotation.time.Times;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -37,13 +40,11 @@ import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Lorsque;
 import io.cucumber.java.fr.Quand;
 
+@Loggable
 public class BrowserSteps {
-    
-    /**
-     * Specific LOGGER.
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(BrowserSteps.class);
-    
+
+    static Logger LOGGER;
+
     public static final String CLOSE_WINDOW_AND_SWITCH_TO = "closeWindowAndSwitchTo";
     public static final String CLOSE_ALL_WINDOWS_AND_SWITCH_TO = "closeAllWindowsAndSwitchTo";
 

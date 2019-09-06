@@ -13,8 +13,11 @@ import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.utils.Messages;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Stage;
 
 public class NoraUiLoggingInjector {
+
+    public static final String TECHNICAL_ERROR_MESSAGE_NORAUI_LOGGING_INJECTOR_ALREADY_EXISTS = "TECHNICAL_ERROR_MESSAGE_NORAUI_LOGGING_INJECTOR_ALREADY_EXISTS";
 
     /**
      * Specific LOGGER
@@ -36,9 +39,9 @@ public class NoraUiLoggingInjector {
     public static void createInjector() {
         System.err.println("createInjector()");
         if (noraUiLoggingInjector == null) {
-            noraUiLoggingInjector = Guice.createInjector(new NoraUiLoggingModule());
+            noraUiLoggingInjector = Guice.createInjector(Stage.PRODUCTION, new NoraUiLoggingModule());
         } else {
-            LOGGER.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_NORAUI_INJECTOR_SOURCE_ALREADY_EXISTS));
+            LOGGER.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + Messages.getMessage(TECHNICAL_ERROR_MESSAGE_NORAUI_LOGGING_INJECTOR_ALREADY_EXISTS));
         }
     }
 

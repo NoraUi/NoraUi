@@ -50,7 +50,7 @@ import com.github.noraui.exception.Result;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.GherkinConditionedLoopedStep;
 import com.github.noraui.gherkin.GherkinStepCondition;
-import com.github.noraui.log.annotation.InjectLogger;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.service.CryptoService;
 import com.github.noraui.service.CucumberExpressionService;
 import com.github.noraui.service.UserNameService;
@@ -61,10 +61,10 @@ import com.github.noraui.utils.Utilities;
 import com.google.common.base.Function;
 import com.google.inject.Inject;
 
+@Loggable
 public abstract class Step implements IStep {
 
-    @InjectLogger
-    private static Logger LOGGER;
+    static Logger LOGGER;
 
     protected static final String SECURE_MASK = "[secure]";
 

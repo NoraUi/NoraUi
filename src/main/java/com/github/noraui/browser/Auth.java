@@ -11,18 +11,16 @@ import java.net.URISyntaxException;
 
 import org.openqa.selenium.Cookie;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.exception.TechnicalException;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 
+@Loggable
 public class Auth {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(Auth.class);
+    static Logger LOGGER;
 
     private static final String WRONG_URI_SYNTAX = "WRONG_URI_SYNTAX";
 
