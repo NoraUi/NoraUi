@@ -19,12 +19,12 @@ import org.monte.media.Registry;
 import org.monte.screenrecorder.ScreenRecorder;
 import org.slf4j.Logger;
 
-import com.github.noraui.log.annotation.InjectLogger;
+import com.github.noraui.log.annotation.Loggable;
 
+@Loggable
 public class NoraUiScreenRecorder extends ScreenRecorder {
 
-    @InjectLogger
-    private static Logger LOGGER;
+    static Logger LOGGER;
 
     private String name;
 
