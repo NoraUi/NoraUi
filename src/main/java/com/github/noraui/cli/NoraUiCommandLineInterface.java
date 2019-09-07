@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 
 import com.github.noraui.cli.model.NoraUiApplicationFile;
 import com.github.noraui.cli.model.NoraUiCliFile;
+import com.github.noraui.cli.model.NoraUiCliParameters;
 import com.github.noraui.cli.model.NoraUiField;
 import com.github.noraui.cli.model.NoraUiModel;
 import com.github.noraui.cli.model.NoraUiResult;
@@ -165,8 +166,8 @@ public class NoraUiCommandLineInterface {
                         input.nextLine();
                     }
                     if (featureCode > 0) {
-                        noraUiCliFile = runFeature(noraUiCliFile, featureCode, applicationName, scenarioName, modelName, url, description, fields, results, cryptoKey, context, counter, verbose, input,
-                                interactiveMode);
+                        noraUiCliFile = runFeature(noraUiCliFile, new NoraUiCliParameters(featureCode, applicationName, scenarioName, modelName, url, description, fields, results, cryptoKey, context,
+                                counter, verbose, input, interactiveMode));
                         writeNoraUiCliFiles(noraUiCliFile, verbose);
                         displayFooter();
                     } else {
@@ -511,17 +512,18 @@ public class NoraUiCommandLineInterface {
      * @param verbose
      *            boolean to activate verbose mode (show more traces).
      */
-    private void updateRobotFromNoraUiCliFiles(NoraUiCliFile noraUiCliFile, Class<?> robotContext, boolean verbose) {
+    private void updateRobotFromNoraUiCliFiles(NoraUiCliFile noraUiCliFile, Class<?> context, boolean verbose) {
         LOGGER.info("updateRobotFromNoraUiCliFiles");
         for (NoraUiApplicationFile noraUiApplicationFile : noraUiCliFile.getApplicationFiles()) {
-            addApplication(null, noraUiApplicationFile.getName(), noraUiApplicationFile.getUrl(), robotContext, verbose, null, false);
+            addApplication(null, new NoraUiCliParameters(-1, noraUiApplicationFile.getName(), null, null, noraUiApplicationFile.getUrl(), null, null, null, null, context, null, verbose, null, false));
             for (NoraUiModel noraUiModel : noraUiApplicationFile.getModels()) {
-                addModel(null, noraUiApplicationFile.getName(), noraUiModel.getName(), noraUiModel.getFieldsString(), noraUiModel.getResultsString(), robotContext, verbose, null, false);
+                addModel(null, new NoraUiCliParameters(-1, noraUiApplicationFile.getName(), null, noraUiModel.getName(), null, null, noraUiModel.getFieldsString(), noraUiModel.getResultsString(),
+                        null, context, null, verbose, null, false));
             }
         }
         for (NoraUiScenarioFile noraUiScenarioFile : noraUiCliFile.getScenarioFiles()) {
-            addScenario(null, noraUiScenarioFile.getApplication(), noraUiScenarioFile.getName(), noraUiScenarioFile.getDescription(), robotContext.getSimpleName().replace(CONTEXT, ""), verbose,
-                    null, false);
+            addScenario(null, new NoraUiCliParameters(-1, noraUiScenarioFile.getApplication(), noraUiScenarioFile.getName(), null, null, noraUiScenarioFile.getDescription(), null, null, null, context,
+                    null, verbose, null, false));
         }
 
     }
@@ -568,25 +570,25 @@ public class NoraUiCommandLineInterface {
      *             InvalidKeyException | IllegalBlockSizeException | BadPaddingException | IOException,
      *             ...) in NoraUi.
      */
-    private NoraUiCliFile runFeature(NoraUiCliFile noraUiCliFile, int featureCode, String applicationName, String scenarioName, String modelName, String url, String description, String fields,
-            String results, String cryptoKey, Class<?> robotContext, Class<?> robotCounter, boolean verbose, Scanner input, boolean interactiveMode) throws TechnicalException {
-        if (featureCode == 1) {
-            addApplication(noraUiCliFile, applicationName, url, robotContext, verbose, input, interactiveMode);
-        } else if (featureCode == 2) {
-            addScenario(noraUiCliFile, applicationName, scenarioName, description, robotContext.getSimpleName().replace(CONTEXT, ""), verbose, input, interactiveMode);
-        } else if (featureCode == 3) {
-            addModel(noraUiCliFile, applicationName, modelName, fields, results, robotContext, verbose, input, interactiveMode);
-        } else if (featureCode == 4) {
-            removeApplication(noraUiCliFile, applicationName, robotContext, verbose, input, interactiveMode);
-        } else if (featureCode == 5) {
-            removeScenario(noraUiCliFile, scenarioName, robotContext.getSimpleName().replace(CONTEXT, ""), robotCounter, verbose, input, interactiveMode);
-        } else if (featureCode == 6) {
-            removeModel(noraUiCliFile, applicationName, modelName, robotContext, verbose, input, interactiveMode);
-        } else if (featureCode == 7) {
-            encrypt(cryptoKey, description, input, interactiveMode);
-        } else if (featureCode == 8) {
-            decrypt(cryptoKey, description, input, interactiveMode);
-        } else if (featureCode == 9) {
+    private NoraUiCliFile runFeature(NoraUiCliFile noraUiCliFile, NoraUiCliParameters noraUiCliParameters) throws TechnicalException {
+        if (noraUiCliParameters.getFeatureCode() == 1) {
+            addApplication(noraUiCliFile, noraUiCliParameters);
+        } else if (noraUiCliParameters.getFeatureCode() == 2) {
+            //
+            addScenario(noraUiCliFile, noraUiCliParameters);
+        } else if (noraUiCliParameters.getFeatureCode() == 3) {
+            addModel(noraUiCliFile, noraUiCliParameters);
+        } else if (noraUiCliParameters.getFeatureCode() == 4) {
+            removeApplication(noraUiCliFile, noraUiCliParameters);
+        } else if (noraUiCliParameters.getFeatureCode() == 5) {
+            removeScenario(noraUiCliFile, noraUiCliParameters);
+        } else if (noraUiCliParameters.getFeatureCode() == 6) {
+            removeModel(noraUiCliFile, noraUiCliParameters);
+        } else if (noraUiCliParameters.getFeatureCode() == 7) {
+            encrypt(noraUiCliParameters.getCryptoKey(), noraUiCliParameters.getDescription(), noraUiCliParameters.getInput(), noraUiCliParameters.getInteractiveMode());
+        } else if (noraUiCliParameters.getFeatureCode() == 8) {
+            decrypt(noraUiCliParameters.getCryptoKey(), noraUiCliParameters.getDescription(), noraUiCliParameters.getInput(), noraUiCliParameters.getInteractiveMode());
+        } else if (noraUiCliParameters.getFeatureCode() == 9) {
             status(noraUiCliFile);
         }
         return noraUiCliFile;
@@ -611,25 +613,26 @@ public class NoraUiCommandLineInterface {
      *            When interactiveMode is false, the NoraUi CLI goal will use the values passed in from the command
      *            line.
      */
-    private void addApplication(NoraUiCliFile noraUiCliFile, String applicationName, String url, Class<?> robotContext, boolean verbose, Scanner input, boolean interactiveMode) {
-        if (interactiveMode) {
-            if (applicationName == null || "".equals(applicationName)) {
+    private void addApplication(NoraUiCliFile noraUiCliFile, NoraUiCliParameters noraUiCliParameters) {
+        if (noraUiCliParameters.getInteractiveMode()) {
+            if (noraUiCliParameters.getApplicationName() == null || "".equals(noraUiCliParameters.getApplicationName())) {
                 LOGGER.info("Enter application name:");
-                applicationName = input.nextLine();
+                noraUiCliParameters.setApplicationName(noraUiCliParameters.getInput().nextLine());
             }
-            if (url == null || "".equals(url)) {
+            if (noraUiCliParameters.getUrl() == null || "".equals(noraUiCliParameters.getUrl())) {
                 LOGGER.info("Enter url:");
-                url = input.nextLine();
+                noraUiCliParameters.setUrl(noraUiCliParameters.getInput().nextLine());
             }
-            application.add(applicationName, url, robotContext, verbose);
+            application.add(noraUiCliParameters.getApplicationName(), noraUiCliParameters.getUrl(), noraUiCliParameters.getRobotContext(), noraUiCliParameters.getVerbose());
         } else {
-            if (applicationName == null || "".equals(applicationName) || url == null || "".equals(url)) {
+            if (noraUiCliParameters.getApplicationName() == null || "".equals(noraUiCliParameters.getApplicationName()) || noraUiCliParameters.getUrl() == null
+                    || "".equals(noraUiCliParameters.getUrl())) {
                 LOGGER.error("When you want to add an application with interactiveMode is false, you need use -a and -u");
             } else {
-                application.add(applicationName, url, robotContext, verbose);
+                application.add(noraUiCliParameters.getApplicationName(), noraUiCliParameters.getUrl(), noraUiCliParameters.getRobotContext(), noraUiCliParameters.getVerbose());
             }
         }
-        addApplication4CliFiles(noraUiCliFile, applicationName, url);
+        addApplication4CliFiles(noraUiCliFile, noraUiCliParameters.getApplicationName(), noraUiCliParameters.getUrl());
     }
 
     /**
@@ -671,38 +674,40 @@ public class NoraUiCommandLineInterface {
      *            When interactiveMode is false, the NoraUi CLI goal will use the values passed in from the command
      *            line.
      */
-    private void addScenario(NoraUiCliFile noraUiCliFile, String applicationName, String scenarioName, String description, String robotName, boolean verbose, Scanner input,
-            boolean interactiveMode) {
-        if (interactiveMode) {
-            if (applicationName == null || "".equals(applicationName)) {
+    private void addScenario(NoraUiCliFile noraUiCliFile, NoraUiCliParameters noraUiCliParameters) {
+        if (noraUiCliParameters.getInteractiveMode()) {
+            if (noraUiCliParameters.getApplicationName() == null || "".equals(noraUiCliParameters.getApplicationName())) {
                 List<String> appList = application.get();
                 if (!appList.isEmpty()) {
-                    applicationName = askApplicationNumber(input, appList);
+                    noraUiCliParameters.setApplicationName(askApplicationNumber(noraUiCliParameters.getInput(), appList));
                 } else {
                     LOGGER.info(CLI_YOU_MUST_CREATE_AN_APPLICATION_FIRST);
                 }
             }
-            if (applicationName != null && !"".equals(applicationName)) {
-                if (scenarioName == null || "".equals(scenarioName)) {
+            if (noraUiCliParameters.getApplicationName() != null && !"".equals(noraUiCliParameters.getApplicationName())) {
+                if (noraUiCliParameters.getScenarioName() == null || "".equals(noraUiCliParameters.getScenarioName())) {
                     LOGGER.info("Enter scenario name:");
-                    scenarioName = input.nextLine();
+                    noraUiCliParameters.setScenarioName(noraUiCliParameters.getInput().nextLine());
                 }
-                if (description == null || "".equals(description)) {
+                if (noraUiCliParameters.getDescription() == null || "".equals(noraUiCliParameters.getDescription())) {
                     LOGGER.info("Enter description:");
-                    description = input.nextLine();
+                    noraUiCliParameters.setDescription(noraUiCliParameters.getInput().nextLine());
                 }
-                scenario.add(scenarioName, description, applicationName, robotName, verbose);
+                scenario.add(noraUiCliParameters.getScenarioName(), noraUiCliParameters.getDescription(), noraUiCliParameters.getApplicationName(),
+                        noraUiCliParameters.getRobotContext().getSimpleName().replace(CONTEXT, ""), noraUiCliParameters.getVerbose());
             }
         } else {
-            if (scenarioName == null || "".equals(scenarioName) || description == null || "".equals(description) || applicationName == null || "".equals(applicationName)) {
+            if (noraUiCliParameters.getScenarioName() == null || "".equals(noraUiCliParameters.getScenarioName()) || noraUiCliParameters.getDescription() == null
+                    || "".equals(noraUiCliParameters.getDescription()) || noraUiCliParameters.getApplicationName() == null || "".equals(noraUiCliParameters.getApplicationName())) {
                 LOGGER.error("When you want to add a scenario with interactiveMode is false, you need use -a, -s and -d");
             } else {
-                if (isApplicationFound(applicationName)) {
-                    scenario.add(scenarioName, description, applicationName, robotName, verbose);
+                if (isApplicationFound(noraUiCliParameters.getApplicationName())) {
+                    scenario.add(noraUiCliParameters.getScenarioName(), noraUiCliParameters.getDescription(), noraUiCliParameters.getApplicationName(),
+                            noraUiCliParameters.getRobotContext().getSimpleName().replace(CONTEXT, ""), noraUiCliParameters.getVerbose());
                 }
             }
         }
-        addScenario4CliFiles(noraUiCliFile, applicationName, scenarioName, description);
+        addScenario4CliFiles(noraUiCliFile, noraUiCliParameters.getApplicationName(), noraUiCliParameters.getScenarioName(), noraUiCliParameters.getDescription());
     }
 
     /**
@@ -787,45 +792,47 @@ public class NoraUiCommandLineInterface {
      *            When interactiveMode is false, the NoraUi CLI goal will use the values passed in from the command
      *            line.
      */
-    private void addModel(NoraUiCliFile noraUiCliFile, String applicationName, String modelName, String fields, String results, Class<?> robotContext, boolean verbose, Scanner input,
-            boolean interactiveMode) {
-        if (interactiveMode) {
-            if (applicationName == null || "".equals(applicationName)) {
+    private void addModel(NoraUiCliFile noraUiCliFile, NoraUiCliParameters noraUiCliParameters) {
+        if (noraUiCliParameters.getInteractiveMode()) {
+            if (noraUiCliParameters.getApplicationName() == null || "".equals(noraUiCliParameters.getApplicationName())) {
                 List<String> appList = application.get();
                 if (!appList.isEmpty()) {
-                    applicationName = askApplicationNumber(input, appList);
+                    noraUiCliParameters.setApplicationName(askApplicationNumber(noraUiCliParameters.getInput(), appList));
                 } else {
                     LOGGER.info(CLI_YOU_MUST_CREATE_AN_APPLICATION_FIRST);
                 }
             }
-            if (applicationName != null && !"".equals(applicationName)) {
-                if (modelName == null || "".equals(modelName)) {
+            if (noraUiCliParameters.getApplicationName() != null && !"".equals(noraUiCliParameters.getApplicationName())) {
+                if (noraUiCliParameters.getModelName() == null || "".equals(noraUiCliParameters.getModelName())) {
                     LOGGER.info("Enter model name:");
-                    modelName = input.nextLine();
+                    noraUiCliParameters.setModelName(noraUiCliParameters.getInput().nextLine());
                 }
-                if (fields == null || "".equals(fields)) {
+                if (noraUiCliParameters.getFields() == null || "".equals(noraUiCliParameters.getFields())) {
                     LOGGER.info("Enter field list:");
-                    fields = input.nextLine();
+                    noraUiCliParameters.setFields(noraUiCliParameters.getInput().nextLine());
                 }
-                if (results == null || "".equals(results)) {
+                if (noraUiCliParameters.getResults() == null || "".equals(noraUiCliParameters.getResults())) {
                     LOGGER.info("Enter result list (optional):");
-                    results = input.nextLine();
-                    if ("".equals(results)) {
-                        results = null;
+                    noraUiCliParameters.setResults(noraUiCliParameters.getInput().nextLine());
+                    if ("".equals(noraUiCliParameters.getResults())) {
+                        noraUiCliParameters.setResults(null);
                     }
                 }
-                model.add(applicationName, modelName, fields, results, robotContext, verbose);
+                model.add(noraUiCliParameters.getApplicationName(), noraUiCliParameters.getModelName(), noraUiCliParameters.getFields(), noraUiCliParameters.getResults(),
+                        noraUiCliParameters.getRobotContext(), noraUiCliParameters.getVerbose());
             }
         } else {
-            if (applicationName == null || "".equals(applicationName) || modelName == null || "".equals(modelName) || fields == null || "".equals(fields)) {
+            if (noraUiCliParameters.getApplicationName() == null || "".equals(noraUiCliParameters.getApplicationName()) || noraUiCliParameters.getModelName() == null
+                    || "".equals(noraUiCliParameters.getModelName()) || noraUiCliParameters.getFields() == null || "".equals(noraUiCliParameters.getFields())) {
                 LOGGER.error("When you want to add a model with interactiveMode is false, you need use -a, -m, -fi and -re (optional)");
             } else {
-                if (isApplicationFound(applicationName)) {
-                    model.add(applicationName, modelName, fields, results, robotContext, verbose);
+                if (isApplicationFound(noraUiCliParameters.getApplicationName())) {
+                    model.add(noraUiCliParameters.getApplicationName(), noraUiCliParameters.getModelName(), noraUiCliParameters.getFields(), noraUiCliParameters.getResults(),
+                            noraUiCliParameters.getRobotContext(), noraUiCliParameters.getVerbose());
                 }
             }
         }
-        addModel4CliFiles(noraUiCliFile, applicationName, modelName, fields, results);
+        addModel4CliFiles(noraUiCliFile, noraUiCliParameters.getApplicationName(), noraUiCliParameters.getModelName(), noraUiCliParameters.getFields(), noraUiCliParameters.getResults());
     }
 
     /**
@@ -890,27 +897,27 @@ public class NoraUiCommandLineInterface {
      *            When interactiveMode is false, the NoraUi CLI goal will use the values passed in from the command
      *            line.
      */
-    private void removeApplication(NoraUiCliFile noraUiCliFile, String applicationName, Class<?> robotContext, boolean verbose, Scanner input, boolean interactiveMode) {
-        if (interactiveMode) {
-            if (applicationName == null || "".equals(applicationName)) {
+    private void removeApplication(NoraUiCliFile noraUiCliFile, NoraUiCliParameters noraUiCliParameters) {
+        if (noraUiCliParameters.getInteractiveMode()) {
+            if (noraUiCliParameters.getApplicationName() == null || "".equals(noraUiCliParameters.getApplicationName())) {
                 List<String> appList = application.get();
                 if (!appList.isEmpty()) {
-                    applicationName = askApplicationNumber(input, appList);
+                    noraUiCliParameters.setApplicationName(askApplicationNumber(noraUiCliParameters.getInput(), appList));
                 } else {
                     LOGGER.info("Your robot does not contain applications.");
                 }
             }
-            if (applicationName != null && !"".equals(applicationName)) {
-                application.remove(applicationName, robotContext, verbose);
+            if (noraUiCliParameters.getApplicationName() != null && !"".equals(noraUiCliParameters.getApplicationName())) {
+                application.remove(noraUiCliParameters.getApplicationName(), noraUiCliParameters.getRobotContext(), noraUiCliParameters.getVerbose());
             }
         } else {
-            if (applicationName == null || "".equals(applicationName)) {
+            if (noraUiCliParameters.getApplicationName() == null || "".equals(noraUiCliParameters.getApplicationName())) {
                 LOGGER.error("When you want to remove an application with interactiveMode is false, you need use -a");
             } else {
-                application.remove(applicationName, robotContext, verbose);
+                application.remove(noraUiCliParameters.getApplicationName(), noraUiCliParameters.getRobotContext(), noraUiCliParameters.getVerbose());
             }
         }
-        removeApplication4CliFiles(noraUiCliFile, applicationName);
+        removeApplication4CliFiles(noraUiCliFile, noraUiCliParameters.getApplicationName());
     }
 
     /**
@@ -946,29 +953,29 @@ public class NoraUiCommandLineInterface {
      *            line.
      * @return NoraUiCliFile Object contain all data from CLI Files.
      */
-    private void removeScenario(NoraUiCliFile noraUiCliFile, String scenarioName, String robotName, Class<?> robotCounter, boolean verbose, Scanner input, boolean interactiveMode) {
-        if (interactiveMode) {
+    private void removeScenario(NoraUiCliFile noraUiCliFile, NoraUiCliParameters noraUiCliParameters) {
+        if (noraUiCliParameters.getInteractiveMode()) {
             boolean scenarioFinded = false;
-            if (scenarioName == null || "".equals(scenarioName)) {
+            if (noraUiCliParameters.getScenarioName() == null || "".equals(noraUiCliParameters.getScenarioName())) {
                 List<String> scenarioList = scenario.get();
                 if (!scenarioList.isEmpty()) {
-                    scenarioName = askScenarioNumber(input, scenarioList);
+                    noraUiCliParameters.setScenarioName(askScenarioNumber(noraUiCliParameters.getInput(), scenarioList));
                     scenarioFinded = true;
                 } else {
                     LOGGER.info("Your robot does not contain scenarios.");
                 }
             }
             if (scenarioFinded) {
-                scenario.remove(scenarioName, robotName, robotCounter, verbose);
+                scenario.remove(noraUiCliParameters.getScenarioName(), noraUiCliParameters.getRobotContext().getSimpleName().replace(CONTEXT, ""), noraUiCliParameters.getRobotCounter(), noraUiCliParameters.getVerbose());
             }
         } else {
-            if (scenarioName == null || "".equals(scenarioName)) {
+            if (noraUiCliParameters.getScenarioName() == null || "".equals(noraUiCliParameters.getScenarioName())) {
                 LOGGER.error("When you want to remove a scenario with interactiveMode is false, you need use -s");
             } else {
-                scenario.remove(scenarioName, robotName, robotCounter, verbose);
+                scenario.remove(noraUiCliParameters.getScenarioName(), noraUiCliParameters.getRobotContext().getSimpleName().replace(CONTEXT, ""), noraUiCliParameters.getRobotCounter(), noraUiCliParameters.getVerbose());
             }
         }
-        removeScenario4CliFiles(noraUiCliFile, scenarioName);
+        removeScenario4CliFiles(noraUiCliFile, noraUiCliParameters.getScenarioName());
     }
 
     /**
@@ -1004,44 +1011,46 @@ public class NoraUiCommandLineInterface {
      *            When interactiveMode is false, the NoraUi CLI goal will use the values passed in from the command
      *            line.
      */
-    private void removeModel(NoraUiCliFile noraUiCliFile, String applicationName, String modelName, Class<?> robotContext, boolean verbose, Scanner input, boolean interactiveMode) {
-        if (interactiveMode) {
+    private void removeModel(NoraUiCliFile noraUiCliFile, NoraUiCliParameters noraUiCliParameters) {
+        if (noraUiCliParameters.getInteractiveMode()) {
             boolean applicationFinded = false;
             boolean modelFinded = false;
-            if (applicationName == null || "".equals(applicationName) || modelName == null || "".equals(modelName)) {
-                List<String> appList = model.getApplications(robotContext);
+            if (noraUiCliParameters.getApplicationName() == null || "".equals(noraUiCliParameters.getApplicationName()) || noraUiCliParameters.getModelName() == null
+                    || "".equals(noraUiCliParameters.getModelName())) {
+                List<String> appList = model.getApplications(noraUiCliParameters.getRobotContext());
                 if (!appList.isEmpty()) {
-                    applicationName = askApplicationNumber(input, appList);
+                    noraUiCliParameters.setApplicationName(askApplicationNumber(noraUiCliParameters.getInput(), appList));
                     applicationFinded = true;
                 } else {
                     LOGGER.info("Your robot does not contain applications.");
                 }
 
-                List<String> modelList = model.getModels(applicationName, robotContext);
+                List<String> modelList = model.getModels(noraUiCliParameters.getApplicationName(), noraUiCliParameters.getRobotContext());
                 if (!modelList.isEmpty()) {
                     LOGGER.info("Enter index model number:");
                     for (int i = 0; i < modelList.size(); i++) {
                         LOGGER.info(CLI_TAB, i + 1, modelList.get(i));
                     }
-                    int modelCode = input.nextInt();
-                    input.nextLine();
-                    modelName = modelList.get(modelCode - 1);
+                    int modelCode = noraUiCliParameters.getInput().nextInt();
+                    noraUiCliParameters.getInput().nextLine();
+                    noraUiCliParameters.setModelName(modelList.get(modelCode - 1));
                     modelFinded = true;
                 } else {
                     LOGGER.info("Your robot does not contain models.");
                 }
             }
             if (applicationFinded && modelFinded) {
-                model.remove(applicationName, modelName, robotContext, verbose);
+                model.remove(noraUiCliParameters.getApplicationName(), noraUiCliParameters.getModelName(), noraUiCliParameters.getRobotContext(), noraUiCliParameters.getVerbose());
             }
         } else {
-            if (applicationName == null || "".equals(applicationName) || modelName == null || "".equals(modelName)) {
+            if (noraUiCliParameters.getApplicationName() == null || "".equals(noraUiCliParameters.getApplicationName()) || noraUiCliParameters.getModelName() == null
+                    || "".equals(noraUiCliParameters.getModelName())) {
                 LOGGER.error("When you want to remove a model with interactiveMode is false, you need use -a and -m");
             } else {
-                model.remove(applicationName, modelName, robotContext, verbose);
+                model.remove(noraUiCliParameters.getApplicationName(), noraUiCliParameters.getModelName(), noraUiCliParameters.getRobotContext(), noraUiCliParameters.getVerbose());
             }
         }
-        removeModelInCliFileFeature(noraUiCliFile, applicationName, modelName);
+        removeModelInCliFileFeature(noraUiCliFile, noraUiCliParameters.getApplicationName(), noraUiCliParameters.getModelName());
     }
 
     /**
