@@ -1,14 +1,13 @@
 package com.github.noraui.log;
 
-import static com.google.inject.matcher.Matchers.any;
-
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.noraui.log.annotation.Loggable;
-import com.github.noraui.log.slf4j.Slf4JTypeListener;
 import com.google.common.reflect.ClassPath;
 import com.google.inject.Binder;
 import com.google.inject.Module;
@@ -24,6 +23,7 @@ public class NoraUiLoggingModule implements Module {
 
     /**
      * {@inheritDoc}
+     * This configure method does not use Guice binding by far as it only injects static loggers in classes annotated with @see com.github.noraui.log.annotation.Loggable
      */
     @Override
     public void configure(Binder binder) {
@@ -33,15 +33,30 @@ public class NoraUiLoggingModule implements Module {
         try {
             ClassPath.from(getClass().getClassLoader()).getTopLevelClassesRecursive(TOP_LEVEL_PACKAGE).stream()
             .map(ci -> ci.load())
+            .filter(c -> !Modifier.isInterface(c.getModifiers()))
             .filter(c -> c.isAnnotationPresent(Loggable.class))
-            .forEach(binder::bind);
+            .forEach(this::injectSlf4JLogger);
         } catch (IOException e) {
             LOGGER.error("NoraUiLoggingModule.configure(Binder: " + binder + ")", e);
 
         }
         // @formatter:on
+    }
 
-        binder.bindListener(any(), new Slf4JTypeListener());
+    private void injectSlf4JLogger(Class<?> clazz) {
+        while (clazz != null) {
+            for (Field field : clazz.getDeclaredFields()) {
+                if (field.getType() == Logger.class && Modifier.isStatic(field.getModifiers())) {
+                    try {
+                        field.setAccessible(true);
+                        Logger logger = LoggerFactory.getLogger(field.getDeclaringClass());
+                        field.set(null, logger);
+                    } catch (IllegalAccessException iae) {
+                    }
+                }
+            }
+            clazz = clazz.getSuperclass();
+        }
     }
 
 }
