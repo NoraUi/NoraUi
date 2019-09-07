@@ -531,39 +531,8 @@ public class NoraUiCommandLineInterface {
     /**
      * @param noraUiCliFile
      *            Object contain all data from CLI Files.
-     * @param featureCode
-     *            is -f arg ("1" is "add new application", "2" is "add new scenario", "3" is "add new model", "4" is
-     *            "remove application", "5" is "remove scenario", "6" is "remove model", "7" is
-     *            "encrypt data", "8" is "decrypt data", "9" is "status" and "0" is "exit NoraUi CLI").
-     * @param applicationName
-     *            name of application.
-     * @param scenarioName
-     *            name of scenario.
-     * @param modelName
-     *            name of model.
-     * @param url
-     *            is first(home or login page) url of application.
-     * @param description
-     *            is description of scenario.
-     * @param fields
-     *            is fields of model (String separated by a space).
-     * @param results
-     *            is results of model (String separated by a space).
-     * @param cryptoKey
-     *            is AES key (secret key).
-     * @param robotContext
-     *            Context class from robot.
-     * @param robotCounter
-     *            Counter class from robot.
-     * @param verbose
-     *            boolean to activate verbose mode (show more traces).
-     * @param input
-     *            NoraUI CLI use Java Scanner class.
-     * @param interactiveMode
-     *            When the NoraUi CLI goal is executed in interactive mode, it will prompt the user for all the
-     *            previously listed parameters.
-     *            When interactiveMode is false, the NoraUi CLI goal will use the values passed in from the command
-     *            line.
+     * @param noraUiCliParameters
+     *            contains all NoraUi parameters
      * @return NoraUiCliFile Object contain all data from CLI Files.
      * @throws TechnicalException
      *             is throws if you have a technical error (NoSuchAlgorithmException | NoSuchPaddingException |
@@ -574,7 +543,6 @@ public class NoraUiCommandLineInterface {
         if (noraUiCliParameters.getFeatureCode() == 1) {
             addApplication(noraUiCliFile, noraUiCliParameters);
         } else if (noraUiCliParameters.getFeatureCode() == 2) {
-            //
             addScenario(noraUiCliFile, noraUiCliParameters);
         } else if (noraUiCliParameters.getFeatureCode() == 3) {
             addModel(noraUiCliFile, noraUiCliParameters);
@@ -597,16 +565,8 @@ public class NoraUiCommandLineInterface {
     /**
      * @param noraUiCliFile
      *            Object contain all data from CLI Files.
-     * @param applicationName
-     *            name of application added.
-     * @param url
-     *            is first(home or login page) url of application.
-     * @param robotContext
-     *            Context class from robot.
-     * @param verbose
-     *            boolean to activate verbose mode (show more traces).
-     * @param input
-     *            NoraUI CLI use Java Scanner class.
+     * @param noraUiCliParameters
+     *            contains all NoraUi parameters
      * @param interactiveMode
      *            When the NoraUi CLI goal is executed in interactive mode, it will prompt the user for all the
      *            previously listed parameters.
@@ -772,20 +732,8 @@ public class NoraUiCommandLineInterface {
     /**
      * @param noraUiCliFile
      *            Object contain all data from CLI Files.
-     * @param applicationName
-     *            name of application.
-     * @param modelName
-     *            name of model added.
-     * @param fields
-     *            is fields of model (String separated by a space).
-     * @param results
-     *            is results of model (String separated by a space).
-     * @param robotContext
-     *            Context class from robot.
-     * @param verbose
-     *            boolean to activate verbose mode (show more traces).
-     * @param input
-     *            NoraUI CLI use Java Scanner class.
+     * @param noraUiCliParameters
+     *            contains all NoraUi parameters
      * @param interactiveMode
      *            When the NoraUi CLI goal is executed in interactive mode, it will prompt the user for all the
      *            previously listed parameters.
@@ -883,14 +831,8 @@ public class NoraUiCommandLineInterface {
     /**
      * @param noraUiCliFile
      *            Object contain all data from CLI Files.
-     * @param applicationName
-     *            name of application removed.
-     * @param robotContext
-     *            Context class from robot.
-     * @param verbose
-     *            boolean to activate verbose mode (show more traces).
-     * @param input
-     *            NoraUI CLI use Java Scanner class.
+     * @param noraUiCliParameters
+     *            contains all NoraUi parameters
      * @param interactiveMode
      *            When the NoraUi CLI goal is executed in interactive mode, it will prompt the user for all the
      *            previously listed parameters.
@@ -936,21 +878,8 @@ public class NoraUiCommandLineInterface {
     /**
      * @param noraUiCliFile
      *            Object contain all data from CLI Files.
-     * @param scenarioName
-     *            name of scenario.
-     * @param robotName
-     *            is name of target Robot.
-     * @param robotCounter
-     *            Counter class from robot.
-     * @param verbose
-     *            boolean to activate verbose mode (show more traces).
-     * @param input
-     *            NoraUI CLI use Java Scanner class.
-     * @param interactiveMode
-     *            When the NoraUi CLI goal is executed in interactive mode, it will prompt the user for all the
-     *            previously listed parameters.
-     *            When interactiveMode is false, the NoraUi CLI goal will use the values passed in from the command
-     *            line.
+     * @param noraUiCliParameters
+     *            contains all NoraUi parameters
      * @return NoraUiCliFile Object contain all data from CLI Files.
      */
     private void removeScenario(NoraUiCliFile noraUiCliFile, NoraUiCliParameters noraUiCliParameters) {
@@ -966,13 +895,15 @@ public class NoraUiCommandLineInterface {
                 }
             }
             if (scenarioFinded) {
-                scenario.remove(noraUiCliParameters.getScenarioName(), noraUiCliParameters.getRobotContext().getSimpleName().replace(CONTEXT, ""), noraUiCliParameters.getRobotCounter(), noraUiCliParameters.getVerbose());
+                scenario.remove(noraUiCliParameters.getScenarioName(), noraUiCliParameters.getRobotContext().getSimpleName().replace(CONTEXT, ""), noraUiCliParameters.getRobotCounter(),
+                        noraUiCliParameters.getVerbose());
             }
         } else {
             if (noraUiCliParameters.getScenarioName() == null || "".equals(noraUiCliParameters.getScenarioName())) {
                 LOGGER.error("When you want to remove a scenario with interactiveMode is false, you need use -s");
             } else {
-                scenario.remove(noraUiCliParameters.getScenarioName(), noraUiCliParameters.getRobotContext().getSimpleName().replace(CONTEXT, ""), noraUiCliParameters.getRobotCounter(), noraUiCliParameters.getVerbose());
+                scenario.remove(noraUiCliParameters.getScenarioName(), noraUiCliParameters.getRobotContext().getSimpleName().replace(CONTEXT, ""), noraUiCliParameters.getRobotCounter(),
+                        noraUiCliParameters.getVerbose());
             }
         }
         removeScenario4CliFiles(noraUiCliFile, noraUiCliParameters.getScenarioName());
@@ -995,16 +926,8 @@ public class NoraUiCommandLineInterface {
     /**
      * @param noraUiCliFile
      *            Object contain all data from CLI Files.
-     * @param applicationName
-     *            name of application.
-     * @param modelName
-     *            name of model removed.
-     * @param robotContext
-     *            Context class from robot.
-     * @param verbose
-     *            boolean to activate verbose mode (show more traces).
-     * @param input
-     *            NoraUI CLI use Java Scanner class.
+     * @param noraUiCliParameters
+     *            contains all NoraUi parameters
      * @param interactiveMode
      *            When the NoraUi CLI goal is executed in interactive mode, it will prompt the user for all the
      *            previously listed parameters.

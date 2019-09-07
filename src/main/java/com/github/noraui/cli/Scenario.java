@@ -252,22 +252,30 @@ public class Scenario extends AbstractNoraUiCli {
                 for (Object field : data) {
                     Cell cell = row.createCell(colNum++);
                     if (i == 0) {
-                        if ("Result".equals(field)) {
-                            cell.setCellStyle(noraUiResultColumnStyle);
-                        } else {
-                            cell.setCellStyle(noraUiColumnStyle);
-                        }
+                        setHeaderStyleInXlsxFile(noraUiColumnStyle, noraUiResultColumnStyle, field, cell);
                     }
-                    if (field instanceof String) {
-                        cell.setCellValue((String) field);
-                    } else if (field instanceof Integer) {
-                        cell.setCellValue((Integer) field);
-                    }
+                    setRowValueInXlsxFile(field, cell);
                 }
             }
             workbook.write(outputStream);
         } catch (IOException e) {
             LOGGER.error("IOException {}", e.getMessage(), e);
+        }
+    }
+
+    private void setRowValueInXlsxFile(Object field, Cell cell) {
+        if (field instanceof String) {
+            cell.setCellValue((String) field);
+        } else if (field instanceof Integer) {
+            cell.setCellValue((Integer) field);
+        }
+    }
+
+    private void setHeaderStyleInXlsxFile(XSSFCellStyle noraUiColumnStyle, XSSFCellStyle noraUiResultColumnStyle, Object field, Cell cell) {
+        if ("Result".equals(field)) {
+            cell.setCellStyle(noraUiResultColumnStyle);
+        } else {
+            cell.setCellStyle(noraUiColumnStyle);
         }
     }
 

@@ -19,6 +19,41 @@ public class NoraUiCliParameters {
     private Scanner input;
     private boolean interactiveMode;
 
+    /**
+     * @param featureCode
+     *            is -f arg ("1" is "add new application", "2" is "add new scenario", "3" is "add new model", "4" is
+     *            "remove application", "5" is "remove scenario", "6" is "remove model", "7" is
+     *            "encrypt data", "8" is "decrypt data", "9" is "status" and "0" is "exit NoraUi CLI").
+     * @param applicationName
+     *            name of application.
+     * @param scenarioName
+     *            name of scenario.
+     * @param modelName
+     *            name of model.
+     * @param url
+     *            is first(home or login page) url of application.
+     * @param description
+     *            is description of scenario.
+     * @param fields
+     *            is fields of model (String separated by a space).
+     * @param results
+     *            is results of model (String separated by a space).
+     * @param cryptoKey
+     *            is AES key (secret key).
+     * @param robotContext
+     *            Context class from robot.
+     * @param robotCounter
+     *            Counter class from robot.
+     * @param verbose
+     *            boolean to activate verbose mode (show more traces).
+     * @param input
+     *            NoraUI CLI use Java Scanner class.
+     * @param interactiveMode
+     *            When the NoraUi CLI goal is executed in interactive mode, it will prompt the user for all the
+     *            previously listed parameters.
+     *            When interactiveMode is false, the NoraUi CLI goal will use the values passed in from the command
+     *            line.
+     */
     public NoraUiCliParameters(int featureCode, String applicationName, String scenarioName, String modelName, String url, String description, String fields, String results, String cryptoKey,
             Class<?> robotContext, Class<?> robotCounter, boolean verbose, Scanner input, boolean interactiveMode) {
         this.featureCode = featureCode;
