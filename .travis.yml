@@ -8,17 +8,15 @@ services:
 - mysql
 
 addons:
+  apt:
+    packages:
+      - dpkg
   postgresql: "9.4"
   sonarcloud:
     organization: "noraui"
   firefox: latest
-  apt:
-    sources:
-      - google-chrome
-    packages:
-      - dpkg
-      - google-chrome-stable
-
+  chrome: stable
+  
 jdk:
 - oraclejdk8
 - openjdk8
