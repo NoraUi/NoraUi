@@ -1,6 +1,6 @@
 language: java
 sudo: required
-dist: trusty
+dist: xenial
 install: true
 
 services:
@@ -8,9 +8,6 @@ services:
 - mysql
 
 addons:
-  apt:
-    packages:
-      - dpkg
   postgresql: "9.4"
   sonarcloud:
     organization: "noraui"
