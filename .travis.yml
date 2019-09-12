@@ -16,7 +16,7 @@ addons:
     organization: "noraui"
   firefox: latest
   chrome: stable
-
+  
 jdk:
 - oraclejdk8
 - openjdk8
