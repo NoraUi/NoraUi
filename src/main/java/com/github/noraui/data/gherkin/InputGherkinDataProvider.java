@@ -125,7 +125,9 @@ public class InputGherkinDataProvider extends CommonDataProvider implements Data
 		columns = new ArrayList<>();
 		if (examples.length > 1) {
 			final String[] cols = examples[0].split("\\|", -1);
-			System.arraycopy(cols, 1, columns, 0, cols.length -1);
+			for (int i = 1; i < cols.length - 1; i++) {
+                columns.add(cols[i]);
+            }
 		} else {
 			throw new EmptyDataFileContentException(
 					Messages.getMessage(EmptyDataFileContentException.EMPTY_DATA_FILE_CONTENT_ERROR_MESSAGE));
