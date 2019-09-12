@@ -90,7 +90,8 @@ A clear and concise description of any alternative solutions or features you've 
 * Operating System and version: Unix and Windows
 * Data input provider: Excel
 * Data output provider: Excel
-* Browser and version: Chrome 75
+* Browser and version: Chrome 77
+* WebDriver and version: ChromeDriver 77
 * Link to your project: http://
 
 **Additional context**
