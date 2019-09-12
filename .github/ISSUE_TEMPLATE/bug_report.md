@@ -86,5 +86,6 @@ If a section doesn't seem to fit, just delete it.
 * Operating System and version: Unix and Windows
 * Data input provider: Excel
 * Data output provider: Excel
-* Browser and version: Chrome 75
+* Browser and version: Chrome 77
+* WebDriver and version: ChromeDriver 77
 * Link to your project: http://
