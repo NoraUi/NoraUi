@@ -12,7 +12,12 @@ addons:
   sonarcloud:
     organization: "noraui"
   firefox: latest
-  chrome: stable
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - dpkg
+      - google-chrome-stable
 
 jdk:
 - oraclejdk8
