@@ -8,6 +8,7 @@ package com.github.noraui.data.gherkin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -126,7 +127,7 @@ public class InputGherkinDataProvider extends CommonDataProvider implements Data
 		if (examples.length > 1) {
 			final String[] cols = examples[0].split("\\|", -1);
 			for (int i = 1; i < cols.length - 1; i++) {
-                columns.add(cols[i]);
+                columns.addAll(Arrays.asList(cols).subList(1, cols.length - 1));
             }
 		} else {
 			throw new EmptyDataFileContentException(
