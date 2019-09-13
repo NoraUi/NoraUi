@@ -11,7 +11,7 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 
-import io.cucumber.core.api.Scenario;
+import io.cucumber.java.Scenario;
 
 public interface ScreenService {
 

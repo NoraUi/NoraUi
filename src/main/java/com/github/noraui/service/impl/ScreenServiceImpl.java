@@ -49,7 +49,7 @@ import com.github.noraui.utils.NoraUiScreenRecorder;
 import com.github.noraui.utils.NoraUiScreenRecorder.NoraUiScreenRecorderConfiguration;
 import com.google.inject.Singleton;
 
-import io.cucumber.core.api.Scenario;
+import io.cucumber.java.Scenario;
 import lombok.extern.slf4j.Slf4j;
 
 @Singleton

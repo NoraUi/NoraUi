@@ -13,7 +13,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.cucumber.core.api.Scenario;
 import io.cucumber.core.backend.ParameterInfo;
 import io.cucumber.core.backend.StepDefinition;
 import io.cucumber.core.exception.CucumberException;
