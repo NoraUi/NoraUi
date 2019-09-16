@@ -80,7 +80,8 @@ public class AuthUT {
             Context.getDriver().manage().timeouts().pageLoadTimeout(1, TimeUnit.SECONDS);
             bs.goToUrl("PROTECTED");
             final boolean notOKResponse = Context.getDriver().getPageSource().contains("<head></head><body><pre style=\"word-wrap: break-word; white-space: pre-wrap;\"></pre></body>")
-                    || Context.getDriver().getPageSource().contains("<html><head></head><body></body></html>");
+                    || Context.getDriver().getPageSource().contains("<html><head></head><body></body></html>")
+                    || Context.getDriver().getPageSource().contains("<div class=\"error-code\" jscontent=\"errorCode\" jstcache=\"18\">HTTP ERROR 401</div>");
             Assert.assertTrue("The requested page content must not respond 'OK'.", notOKResponse);
 
         } catch (final Exception e) {
