@@ -39,8 +39,6 @@ import com.github.noraui.utils.Messages;
 import com.github.noraui.utils.Utilities;
 import com.mifmif.common.regex.Generex;
 
-import cucumber.metrics.annotation.time.Time;
-import cucumber.metrics.annotation.time.TimeName;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
