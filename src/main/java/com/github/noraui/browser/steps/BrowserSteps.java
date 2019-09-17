@@ -29,6 +29,9 @@ import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 
+import cucumber.metrics.annotation.time.Time;
+import cucumber.metrics.annotation.time.TimeName;
+import cucumber.metrics.annotation.time.Times;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
