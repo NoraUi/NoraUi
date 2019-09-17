@@ -82,7 +82,6 @@ public abstract class CommonDataProvider implements DataProvider {
                 //@formatter:off
                 return (Class<Model>) packages.flatMap(p -> {
                         Set<Class<?>> returnedClasses = getClasses(p);
-                        System.err.println("#########################################");
                         LOGGER.debug("package [{}] return {} classes", p, returnedClasses.size());
                         return returnedClasses.stream();
                     })
