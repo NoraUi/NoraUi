@@ -37,7 +37,6 @@ public class NoraUiLoggingInjector {
     }
 
     public static void createInjector() {
-        System.err.println("createInjector()");
         if (noraUiLoggingInjector == null) {
             noraUiLoggingInjector = Guice.createInjector(Stage.PRODUCTION, new NoraUiLoggingModule());
         } else {
