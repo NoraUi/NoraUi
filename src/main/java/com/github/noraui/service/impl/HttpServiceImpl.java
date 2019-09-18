@@ -89,9 +89,17 @@ public class HttpServiceImpl implements HttpService {
     }
 
     /**
-     * @return
+     * {@inheritDoc}
      */
-    private OkHttpClient getClient() {
+    @Override
+    public String post(String baseUrl, String uri, String json) throws HttpServiceException, TechnicalException {
+        return post(baseUrl + uri, json);
+    }
+
+    /**
+     * @return OkHttp Client with all configuration (proxy, timeout, ...)
+     */
+    protected OkHttpClient getClient() {
         OkHttpClient client;
         org.openqa.selenium.Proxy proxy = Context.getProxy();
         if (proxy != null && proxy.getHttpProxy() != null && !"".equals(proxy.getHttpProxy())) {
