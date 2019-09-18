@@ -59,7 +59,8 @@ public class Messages {
     public static final String FAIL_MESSAGE_ELEMENT_STILL_VISIBLE = "FAIL_MESSAGE_ELEMENT_STILL_VISIBLE";
     public static final String FAIL_MESSAGE_UNABLE_TO_OPEN_A_NEW_WINDOW = "FAIL_MESSAGE_UNABLE_TO_OPEN_A_NEW_WINDOW";
     public static final String FAIL_MESSAGE_UNABLE_TO_CALL_API_REST = "FAIL_MESSAGE_UNABLE_TO_CALL_API_REST";
-
+    public static final String FAIL_MESSAGE_UNABLE_TO_CALL_METICS_API_REST = "FAIL_MESSAGE_UNABLE_TO_CALL_METICS_API_REST";
+    
     /**
      * Functional fail messages with parameters.
      */
@@ -97,6 +98,7 @@ public class Messages {
     public static final String FAIL_MESSAGE_FILE_NOT_MATCHES = "FAIL_MESSAGE_FILE_NOT_MATCHES";
     public static final String FAIL_MESSAGE_UPLOADING_FILE = "FAIL_MESSAGE_UPLOADING_FILE";
     public static final String FAIL_MESSAGE_MAIL_ACTIVATION = "FAIL_MESSAGE_MAIL_ACTIVATION";
+
 
     /**
      * Format given message with provided arguments

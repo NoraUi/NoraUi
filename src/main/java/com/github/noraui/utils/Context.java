@@ -10,6 +10,7 @@ import static com.github.noraui.utils.Constants.DATA_IN;
 import static com.github.noraui.utils.Constants.DATA_OUT;
 import static com.github.noraui.utils.Constants.SCENARIO_FILE;
 
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
@@ -27,6 +28,8 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.lang3.NotImplementedException;
+import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.ini4j.Ini;
 import org.ini4j.InvalidFileFormatException;
 import org.joda.time.DateTime;
@@ -64,10 +67,11 @@ import com.github.noraui.gherkin.ScenarioRegistry;
 import com.github.noraui.main.ScenarioInitiator;
 import com.github.noraui.model.Model;
 import com.github.noraui.model.ModelList;
-
-import io.cucumber.junit.CucumberOptions;
-import io.cucumber.core.api.Scenario;
+import com.github.noraui.statistics.Statistics;
+import com.github.noraui.statistics.StatisticsService;
 import cucumber.runtime.java.StepDefAnnotation;
+import io.cucumber.core.api.Scenario;
+import io.cucumber.junit.CucumberOptions;
 
 /**
  * Cucumber context.
@@ -97,6 +101,8 @@ public class Context {
     public static final String BROWSER_KEY = "browser";
     public static final String MODEL_PACKAGES = "model.packages";
     public static final String SELECTORS_VERSION = "selectors.version";
+
+    protected StatisticsService statistics = new StatisticsService();
 
     /**
      * DEMO
@@ -784,6 +790,21 @@ public class Context {
      */
     public static String getApplicationByPagekey(String pageKey) {
         return getInstance().applications.entrySet().stream().filter(a -> a.getValue().getUrlPages().get(pageKey) != null).map(Entry::getKey).findFirst().orElse(null);
+    }
+
+    protected Statistics statisticsProcessor() {
+        Statistics metrics = new Statistics();
+        MavenXpp3Reader reader = new MavenXpp3Reader();
+        org.apache.maven.model.Model model;
+        try {
+            model = reader.read(new FileReader("pom.xml"));
+            metrics.setGroupId(model.getGroupId());
+            metrics.setArtifactId(model.getArtifactId());
+            metrics.setVersion(model.getVersion());
+            metrics.setNorauiVersion(model.getProperties().getProperty("noraui.version"));
+        } catch (IOException | XmlPullParserException e) {
+        }
+        return metrics;
     }
 
     /**
