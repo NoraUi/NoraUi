@@ -10,6 +10,8 @@ import static com.github.noraui.utils.Constants.DATA_IN;
 import static com.github.noraui.utils.Constants.DATA_OUT;
 import static com.github.noraui.utils.Constants.SCENARIO_FILE;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,6 +28,7 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
@@ -69,6 +72,8 @@ import com.github.noraui.model.Model;
 import com.github.noraui.model.ModelList;
 import com.github.noraui.statistics.Statistics;
 import com.github.noraui.statistics.StatisticsService;
+import com.google.common.reflect.ClassPath;
+
 import cucumber.runtime.java.StepDefAnnotation;
 import io.cucumber.core.api.Scenario;
 import io.cucumber.junit.CucumberOptions;
@@ -792,19 +797,46 @@ public class Context {
         return getInstance().applications.entrySet().stream().filter(a -> a.getValue().getUrlPages().get(pageKey) != null).map(Entry::getKey).findFirst().orElse(null);
     }
 
-    protected Statistics statisticsProcessor() {
+    protected Statistics statisticsProcessor(ClassLoader loader, String packageName) {
         Statistics metrics = new Statistics();
         MavenXpp3Reader reader = new MavenXpp3Reader();
         org.apache.maven.model.Model model;
         try {
             model = reader.read(new FileReader("pom.xml"));
+            metrics.setNorauiVersion(model.getProperties().getProperty("noraui.version"));
+            metrics.setName(model.getName());
             metrics.setGroupId(model.getGroupId());
             metrics.setArtifactId(model.getArtifactId());
             metrics.setVersion(model.getVersion());
-            metrics.setNorauiVersion(model.getProperties().getProperty("noraui.version"));
         } catch (IOException | XmlPullParserException e) {
         }
+        metrics.setApplications(applications.entrySet().stream().filter(e -> e.getValue().getHomeUrl() != null)
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getHomeUrl(), (a, b) -> b)));
+        try {
+            Map<String, String> code = ClassPath.from(loader).getTopLevelClassesRecursive(packageName).stream()
+            .collect(Collectors.toMap(c -> c.getName(), c -> read(c.getName()), (a, b) -> b));
+            metrics.setCucumberMethods(code);
+        } catch (IOException e1) {
+        }
         return metrics;
+       
+    }
+    
+    public String read(String m) {
+        System.out.println(m);
+        String filePath = "src" + File.separator + "main" + File.separator + "java" + File.separator + m.replaceAll("\\.", "/") + ".java";
+        System.out.println(filePath);
+        StringBuilder sb = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+             String line = br.readLine();
+             while (line != null) {
+             line = br.readLine();
+             sb.append(line);
+             }
+        } catch (IOException e) {
+            System.err.println(e);
+        }
+        return sb.toString();
     }
 
     /**

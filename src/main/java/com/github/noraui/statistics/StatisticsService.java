@@ -6,7 +6,6 @@
  */
 package com.github.noraui.statistics;
 
-
 import static com.github.noraui.statistics.StatisticsConfig.STATISTICS_API_GATEWAY;
 import static com.github.noraui.statistics.StatisticsConfig.STATISTICS_URI;
 import static com.github.noraui.statistics.StatisticsConfig.STATISTICS_VERSION;
@@ -25,24 +24,24 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 
 public class StatisticsService extends HttpServiceImpl {
-    
-    
+
     /**
      * Specific LOGGER
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(StatisticsService.class);
-    
-    
+
     /**
-     * @param metrics
-     *            metrics object contains all information for user statistics.
+     * If you use this method, you have agreed to share your usage statistics and configuration of your robot with the NoraUi team anonymously.
+     * This was asked when generating the robot via the artifact Maven. This allows us to improve the user experience in future versions.
+     * This information is not used for commercial purposes.
+     * 
+     * @param statistics
+     *            statistics object contains all informations for user statistics.
      */
-    public void share(Statistics metrics) {
+    public void share(Statistics statistics) {
         try {
-            getClient()
-                    .newCall(new Request.Builder().url(STATISTICS_API_GATEWAY + "/" + STATISTICS_VERSION + "/" + STATISTICS_URI)
-                            .post(RequestBody.create(MediaType.parse("application/json"), new Gson().toJson(metrics))).build())
-                    .execute().close();
+            getClient().newCall(new Request.Builder().url(STATISTICS_API_GATEWAY + "/" + STATISTICS_VERSION + "/" + STATISTICS_URI)
+                    .post(RequestBody.create(MediaType.parse("application/json"), new Gson().toJson(statistics))).build()).execute().close();
         } catch (IOException e) {
             LOGGER.error(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_CALL_METICS_API_REST));
         }
