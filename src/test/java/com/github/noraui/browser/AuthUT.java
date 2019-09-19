@@ -49,9 +49,9 @@ public class AuthUT {
         testServer.start();
         Context.getInstance().initializeEnv("demoExcel.properties");
         Context.getInstance().initializeRobot(Runner.class);
-        Context.getApplication(Context.DEMO_KEY).addUrlPage("PROTECTED", "http://localhost:8000/protected");
-        Context.getApplication(Context.DEMO_KEY).addUrlPage("UNPROTECTED", "http://localhost:8000/unprotected");
-        Context.getApplication(Context.DEMO_KEY).addUrlPage("COOKIEPROTECTED", "http://localhost:8000/cookieprotected");
+        Context.getApplication(Context.DEMO_KEY).addUrlPage("PROTECTED", "http://127.0.0.1:8000/protected");
+        Context.getApplication(Context.DEMO_KEY).addUrlPage("UNPROTECTED", "http://127.0.0.1:8000/unprotected");
+        Context.getApplication(Context.DEMO_KEY).addUrlPage("COOKIEPROTECTED", "http://127.0.0.1:8000/cookieprotected");
         bs = new BrowserSteps();
     }
 
@@ -80,9 +80,9 @@ public class AuthUT {
             Context.getDriver().manage().timeouts().pageLoadTimeout(1, TimeUnit.SECONDS);
             bs.goToUrl("PROTECTED");
             final boolean notOKResponse = Context.getDriver().getPageSource().contains("<head></head><body><pre style=\"word-wrap: break-word; white-space: pre-wrap;\"></pre></body>")
-                    || Context.getDriver().getPageSource().contains("<html><head></head><body></body></html>");
+                    || Context.getDriver().getPageSource().contains("<html><head></head><body></body></html>")
+                    || Context.getDriver().getPageSource().contains("<div class=\"error-code\" jscontent=\"errorCode\" jstcache=\"18\">HTTP ERROR 401</div>");
             Assert.assertTrue("The requested page content must not respond 'OK'.", notOKResponse);
-
         } catch (final Exception e) {
             Assert.assertTrue("Exception thrown after authentication failure should be an instance of 'exception.FailureException' !", e instanceof FailureException);
         }
@@ -109,7 +109,7 @@ public class AuthUT {
         try {
             Auth.clear();
             System.setProperty(Auth.SESSION_COOKIE, "auth=ok,path=/");
-            final Cookie c = Auth.getAuthenticationCookie("http://localhost");
+            final Cookie c = Auth.getAuthenticationCookie("http://127.0.0.1");
             bs.goToUrl("UNPROTECTED");
             Auth.loadAuthenticationCookie(c);
             bs.goToUrl("COOKIEPROTECTED");
