@@ -823,9 +823,7 @@ public class Context {
     }
     
     public String read(String m) {
-        System.out.println(m);
         String filePath = "src" + File.separator + "main" + File.separator + "java" + File.separator + m.replaceAll("\\.", "/") + ".java";
-        System.out.println(filePath);
         StringBuilder sb = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
              String line = br.readLine();
@@ -834,7 +832,6 @@ public class Context {
              sb.append(line);
              }
         } catch (IOException e) {
-            System.err.println(e);
         }
         return sb.toString();
     }
