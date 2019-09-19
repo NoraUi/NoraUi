@@ -83,7 +83,6 @@ public class AuthUT {
                     || Context.getDriver().getPageSource().contains("<html><head></head><body></body></html>")
                     || Context.getDriver().getPageSource().contains("<div class=\"error-code\" jscontent=\"errorCode\" jstcache=\"18\">HTTP ERROR 401</div>");
             Assert.assertTrue("The requested page content must not respond 'OK'.", notOKResponse);
-
         } catch (final Exception e) {
             Assert.assertTrue("Exception thrown after authentication failure should be an instance of 'exception.FailureException' !", e instanceof FailureException);
         }
