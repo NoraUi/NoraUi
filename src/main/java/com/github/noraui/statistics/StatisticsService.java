@@ -19,9 +19,12 @@ import com.github.noraui.service.impl.HttpServiceImpl;
 import com.github.noraui.utils.Messages;
 import com.google.gson.Gson;
 
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class StatisticsService extends HttpServiceImpl {
 
@@ -30,6 +33,18 @@ public class StatisticsService extends HttpServiceImpl {
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(StatisticsService.class);
 
+    private Callback responseCallback = new Callback() {
+        @Override
+        public void onFailure(Call call, IOException e) {
+            LOGGER.error(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_CALL_METICS_API_REST));
+        }
+
+        @Override
+        public void onResponse(Call call, Response response) throws IOException {
+            LOGGER.debug(Messages.getMessage(Messages.THANK_YOU_FOR_YOUR_CONTRIBUTION));
+        }
+    };
+
     /**
      * If you use this method, you have agreed to share your usage statistics and configuration of your robot with the NoraUi team anonymously.
      * This was asked when generating the robot via the artifact Maven. This allows us to improve the user experience in future versions.
@@ -37,14 +52,12 @@ public class StatisticsService extends HttpServiceImpl {
      * 
      * @param statistics
      *            statistics object contains all informations for user statistics.
+     * @param uuid
+     *            is a universally unique identifier.
      */
-    public void share(Statistics statistics) {
-        try {
-            getClient().newCall(new Request.Builder().url(STATISTICS_API_GATEWAY + "/" + STATISTICS_VERSION + "/" + STATISTICS_URI)
-                    .post(RequestBody.create(MediaType.parse("application/json"), new Gson().toJson(statistics))).build()).execute().close();
-        } catch (IOException e) {
-            LOGGER.error(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_CALL_METICS_API_REST));
-        }
+    public void share(Statistics statistics, String uuid) {
+        getClient().newCall(new Request.Builder().url(STATISTICS_API_GATEWAY + "/" + STATISTICS_VERSION + "/" + STATISTICS_URI + "/" + uuid)
+                .post(RequestBody.create(MediaType.parse("application/json"), new Gson().toJson(statistics))).build()).enqueue(responseCallback);
     }
 
 }

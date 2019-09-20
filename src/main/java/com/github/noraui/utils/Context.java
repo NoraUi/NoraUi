@@ -797,40 +797,52 @@ public class Context {
         return getInstance().applications.entrySet().stream().filter(a -> a.getValue().getUrlPages().get(pageKey) != null).map(Entry::getKey).findFirst().orElse(null);
     }
 
+    /**
+     * statisticsProcessor retrieves specific information from the robot to return it to users statistic feature.
+     * 
+     * @param loader
+     *            is class loader.
+     * @param packageName
+     *            read for users statistic feature.
+     * @return it to users statistic feature.
+     */
     protected Statistics statisticsProcessor(ClassLoader loader, String packageName) {
-        Statistics metrics = new Statistics();
+        Statistics statistics = new Statistics();
         MavenXpp3Reader reader = new MavenXpp3Reader();
         org.apache.maven.model.Model model;
         try {
             model = reader.read(new FileReader("pom.xml"));
-            metrics.setNorauiVersion(model.getProperties().getProperty("noraui.version"));
-            metrics.setName(model.getName());
-            metrics.setGroupId(model.getGroupId());
-            metrics.setArtifactId(model.getArtifactId());
-            metrics.setVersion(model.getVersion());
+            statistics.setNorauiVersion(model.getProperties().getProperty("noraui.version"));
+            statistics.setName(model.getName());
+            statistics.setGroupId(model.getGroupId());
+            statistics.setArtifactId(model.getArtifactId());
+            statistics.setVersion(model.getVersion());
         } catch (IOException | XmlPullParserException e) {
         }
-        metrics.setApplications(applications.entrySet().stream().filter(e -> e.getValue().getHomeUrl() != null)
-                .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getHomeUrl(), (a, b) -> b)));
+        statistics.setApplications(
+                applications.entrySet().stream().filter(e -> e.getValue().getHomeUrl() != null).collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getHomeUrl(), (a, b) -> b)));
         try {
-            Map<String, String> code = ClassPath.from(loader).getTopLevelClassesRecursive(packageName).stream()
-            .collect(Collectors.toMap(c -> c.getName(), c -> read(c.getName()), (a, b) -> b));
-            metrics.setCucumberMethods(code);
+            Map<String, String> code = ClassPath.from(loader).getTopLevelClassesRecursive(packageName).stream().collect(Collectors.toMap(c -> c.getName(), c -> read(c.getName()), (a, b) -> b));
+            statistics.setCucumberMethods(code);
         } catch (IOException e1) {
         }
-        return metrics;
-       
+        return statistics;
     }
-    
-    public String read(String m) {
-        String filePath = "src" + File.separator + "main" + File.separator + "java" + File.separator + m.replaceAll("\\.", "/") + ".java";
+
+    /**
+     * @param className
+     *            read for users statistic feature.
+     * @return
+     */
+    private String read(String className) {
+        String filePath = "src" + File.separator + "main" + File.separator + "java" + File.separator + className.replaceAll("\\.", "/") + ".java";
         StringBuilder sb = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-             String line = br.readLine();
-             while (line != null) {
-             line = br.readLine();
-             sb.append(line);
-             }
+            String line = br.readLine();
+            while (line != null) {
+                line = br.readLine();
+                sb.append(line);
+            }
         } catch (IOException e) {
         }
         return sb.toString();

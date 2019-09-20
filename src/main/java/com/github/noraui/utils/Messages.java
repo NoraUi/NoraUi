@@ -50,6 +50,11 @@ public class Messages {
     /**
      * Functional fail messages.
      */
+    public static final String THANK_YOU_FOR_YOUR_CONTRIBUTION = "THANK_YOU_FOR_YOUR_CONTRIBUTION";
+    
+    /**
+     * Functional fail messages.
+     */
     public static final String FAIL_MESSAGE_UNKNOWN_CREDENTIALS = "FAIL_MESSAGE_UNKNOWN_CREDENTIALS";
     public static final String FAIL_MESSAGE_HOME_PAGE_NOT_FOUND = "FAIL_MESSAGE_HOME_PAGE_NOT_FOUND";
     public static final String FAIL_MESSAGE_LOGOUT = "FAIL_MESSAGE_LOGOUT";
@@ -68,7 +73,6 @@ public class Messages {
     public static final String FAIL_MESSAGE_UNABLE_TO_OPEN_PAGE = "FAIL_MESSAGE_UNABLE_TO_OPEN_PAGE";
     public static final String FAIL_MESSAGE_ERROR_ON_INPUT = "FAIL_MESSAGE_ERROR_ON_INPUT";
     public static final String FAIL_MESSAGE_ERROR_CLEAR_ON_INPUT = "FAIL_MESSAGE_ERROR_CLEAR_ON_INPUT";
-
     public static final String FAIL_MESSAGE_UNEXPECTED_DATE = "FAIL_MESSAGE_UNEXPECTED_DATE";
     public static final String DATE_GREATER_THAN_TODAY = "DATE_GREATER_THAN_TODAY";
     public static final String FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK = "FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK";
