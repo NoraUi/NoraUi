@@ -807,26 +807,26 @@ public class Context {
      * @return it to users statistic feature.
      */
     protected Statistics statisticsProcessor(ClassLoader loader, String packageName) {
-        Statistics statistics = new Statistics();
+        Statistics stat = new Statistics();
         MavenXpp3Reader reader = new MavenXpp3Reader();
         org.apache.maven.model.Model model;
         try {
             model = reader.read(new FileReader("pom.xml"));
-            statistics.setNorauiVersion(model.getProperties().getProperty("noraui.version"));
-            statistics.setName(model.getName());
-            statistics.setGroupId(model.getGroupId());
-            statistics.setArtifactId(model.getArtifactId());
-            statistics.setVersion(model.getVersion());
+            stat.setNorauiVersion(model.getProperties().getProperty("noraui.version"));
+            stat.setName(model.getName());
+            stat.setGroupId(model.getGroupId());
+            stat.setArtifactId(model.getArtifactId());
+            stat.setVersion(model.getVersion());
         } catch (IOException | XmlPullParserException e) {
         }
-        statistics.setApplications(
+        stat.setApplications(
                 applications.entrySet().stream().filter(e -> e.getValue().getHomeUrl() != null).collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getHomeUrl(), (a, b) -> b)));
         try {
             Map<String, String> code = ClassPath.from(loader).getTopLevelClassesRecursive(packageName).stream().collect(Collectors.toMap(c -> c.getName(), c -> read(c.getName()), (a, b) -> b));
-            statistics.setCucumberMethods(code);
+            stat.setCucumberMethods(code);
         } catch (IOException e1) {
         }
-        return statistics;
+        return stat;
     }
 
     /**
