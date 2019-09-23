@@ -44,7 +44,7 @@ public class NoraUiLoggingInjector {
             logInjectors.put(packageName, Guice.createInjector(Stage.PRODUCTION, new NoraUiLoggingModule(packageName)));
 
         } else {
-            LOGGER.error(
+            LOGGER.warn(
                     Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + String.format(Messages.getMessage(TECHNICAL_ERROR_MESSAGE_NORAUI_LOGGING_INJECTOR_ALREADY_EXISTS), packageName));
         }
     }
