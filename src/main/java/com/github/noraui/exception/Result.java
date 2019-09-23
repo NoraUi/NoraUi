@@ -18,7 +18,10 @@ import com.github.noraui.service.impl.ScreenServiceImpl;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 
+@Loggable
 public abstract class Result {
+
+    static Logger LOGGER;
 
     public static final int CONTINUE_SCENARIO = 0;
     public static final int BREAK_SCENARIO = 1;
@@ -33,11 +36,7 @@ public abstract class Result {
     private Result() {
     }
 
-    @Loggable
     public static class Success<O> extends Result {
-
-        static Logger LOGGER;
-
         private final O object;
 
         /**
@@ -68,11 +67,7 @@ public abstract class Result {
         }
     }
 
-    @Loggable
     public static class Warning<O> extends Result {
-
-        static Logger LOGGER;
-
         private ScreenService screenService = new ScreenServiceImpl();
 
         private final O object;
@@ -120,11 +115,7 @@ public abstract class Result {
         }
     }
 
-    @Loggable
     public static class Failure<O> extends Result {
-
-        static Logger LOGGER;
-
         private ScreenService screenService = new ScreenServiceImpl();
 
         private final O error;
