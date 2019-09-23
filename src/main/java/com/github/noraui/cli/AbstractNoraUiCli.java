@@ -13,14 +13,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import com.github.noraui.log.annotation.Loggable;
+
+@Loggable
 public abstract class AbstractNoraUiCli {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractNoraUiCli.class);
+    static Logger LOGGER;
     protected static final String RESOURCES = "resources";
 
     protected String getJavaClassHeaders(String noraRobotName) {
@@ -38,9 +37,9 @@ public abstract class AbstractNoraUiCli {
 
     /**
      * @param propertiesfilePath
-     *            path of properties file.	 
+     *            path of properties file.
      * @param sb
-     *            is stringBuilder contain all data.	 
+     *            is stringBuilder contain all data.
      */
     protected void updateFile(String propertiesfilePath, StringBuilder sb) {
         try (FileWriter fw = new FileWriter(propertiesfilePath)) {

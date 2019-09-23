@@ -18,21 +18,19 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.exception.TechnicalException;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.service.CryptoService;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 import com.google.inject.Singleton;
 
+@Loggable
 @Singleton
 public class CryptoServiceImpl implements CryptoService {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(CryptoServiceImpl.class);
+    static Logger LOGGER;
 
     /**
      * {@inheritDoc}

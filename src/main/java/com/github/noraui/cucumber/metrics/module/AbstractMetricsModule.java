@@ -13,19 +13,17 @@ import java.lang.annotation.Annotation;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import com.github.noraui.log.annotation.Loggable;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 
 import cucumber.runtime.Env;
 
+@Loggable
 public abstract class AbstractMetricsModule implements Module {
 
-    /**
-     * Specific LOGGER
-     */
-    private final Logger LOGGER = LoggerFactory.getLogger(AbstractMetricsModule.class);
+    static Logger LOGGER;
 
     void setAnnotation2Interceptors(Binder binder, String annotationEnable, final Class<? extends Annotation> annotationType, MethodInterceptor... interceptors) {
         String ae = Env.INSTANCE.get(annotationEnable);

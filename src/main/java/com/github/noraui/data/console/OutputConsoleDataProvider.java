@@ -7,11 +7,11 @@
 package com.github.noraui.data.console;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.data.CommonDataProvider;
 import com.github.noraui.data.DataOutputProvider;
 import com.github.noraui.exception.TechnicalException;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Messages;
 
 /**
@@ -19,12 +19,10 @@ import com.github.noraui.utils.Messages;
  *
  * @author nhallouin
  */
+@Loggable
 public class OutputConsoleDataProvider extends CommonDataProvider implements DataOutputProvider {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(OutputConsoleDataProvider.class);
+    static Logger LOGGER;
 
     private static final String OUTPUT_CONSOLE_DATA_PROVIDER_USED = "OUTPUT_CONSOLE_DATA_PROVIDER_USED";
     private static final String OUTPUT_CONSOLE_DATA_PROVIDER_FAILED_AT_LINE = "OUTPUT_CONSOLE_DATA_PROVIDER_FAILED_AT_LINE";

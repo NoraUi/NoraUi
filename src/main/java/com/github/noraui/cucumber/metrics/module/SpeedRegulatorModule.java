@@ -12,14 +12,13 @@ import org.slf4j.LoggerFactory;
 import com.github.noraui.cucumber.metrics.annotation.regulator.SpeedRegulator;
 import com.github.noraui.cucumber.metrics.annotation.regulator.SpeedRegulators;
 import com.github.noraui.cucumber.metrics.interceptor.SpeedRegulatorInterceptor;
+import com.github.noraui.log.annotation.Loggable;
 import com.google.inject.Binder;
 
+@Loggable
 public class SpeedRegulatorModule extends AbstractMetricsModule {
 
-    /**
-     * Specific LOGGER
-     */
-    private final Logger LOGGER = LoggerFactory.getLogger(SpeedRegulatorModule.class);
+    static Logger LOGGER = LoggerFactory.getLogger(SpeedRegulatorModule.class);
 
     public static final String SPEED_REGULATOR_ANNOTATION_ENABLE = "SpeedRegulator.annotation.enable";
     public static final String SPEED_REGULATORS_ANNOTATION_ENABLE = "SpeedRegulators.annotation.enable";

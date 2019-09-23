@@ -19,7 +19,11 @@ public class NoraUiLoggingModule implements Module {
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(NoraUiLoggingModule.class);
 
-    private static final String TOP_LEVEL_PACKAGE = "com.github.noraui";
+    private String packageName;
+
+    public NoraUiLoggingModule(String packageName) {
+        this.packageName = packageName;
+    }
 
     /**
      * {@inheritDoc}
@@ -28,10 +32,9 @@ public class NoraUiLoggingModule implements Module {
     @Override
     public void configure(Binder binder) {
         LOGGER.debug("NORAUI logging listeners binding");
-
         // @formatter:off
         try {
-            ClassPath.from(getClass().getClassLoader()).getTopLevelClassesRecursive(TOP_LEVEL_PACKAGE).stream()
+            ClassPath.from(getClass().getClassLoader()).getTopLevelClassesRecursive(packageName).stream()
             .map(ci -> ci.load())
             .filter(c -> !Modifier.isInterface(c.getModifiers()))
             .filter(c -> c.isAnnotationPresent(Loggable.class))
