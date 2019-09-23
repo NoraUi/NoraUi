@@ -7,18 +7,17 @@
 package com.github.noraui.cucumber.metrics.module;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.github.noraui.cucumber.metrics.annotation.time.Time;
 import com.github.noraui.cucumber.metrics.annotation.time.Times;
 import com.github.noraui.cucumber.metrics.interceptor.TimeInterceptor;
-import com.github.noraui.log.annotation.Loggable;
 import com.google.inject.Binder;
 import com.google.inject.Inject;
 
-@Loggable
 public class TimeModule extends AbstractMetricsModule {
 
-    static Logger LOGGER;
+    private static final Logger LOGGER = LoggerFactory.getLogger(TimeModule.class);
 
     public static final String TIME_ANNOTATION_ENABLE = "Time.annotation.enable";
     public static final String TIMES_ANNOTATION_ENABLE = "Times.annotation.enable";
