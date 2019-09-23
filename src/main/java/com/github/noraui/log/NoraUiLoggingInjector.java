@@ -42,7 +42,7 @@ public class NoraUiLoggingInjector {
     public static void addInjector(String packageName) {
         if (!logInjectors.containsKey(packageName)) {
             logInjectors.put(packageName, Guice.createInjector(Stage.PRODUCTION, new NoraUiLoggingModule(packageName)));
-
+            LOGGER.info("Created injector: " + packageName);
         } else {
             LOGGER.warn(
                     Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + String.format(Messages.getMessage(TECHNICAL_ERROR_MESSAGE_NORAUI_LOGGING_INJECTOR_ALREADY_EXISTS), packageName));
