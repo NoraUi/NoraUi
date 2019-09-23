@@ -11,22 +11,20 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.exception.Callbacks.Callback;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Context;
 
+@Loggable
 public class Callbacks extends HashMap<String, Callback> {
+
+    static Logger LOGGER;
 
     /**
      *
      */
     private static final long serialVersionUID = -8116045885450166607L;
-
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(Callbacks.class);
 
     /**
      * @deprecated (Only used for demo application for testing purposes, use {@link #CLOSE_WINDOW_AND_SWITCH_TO_BAKERY_HOME} instead)

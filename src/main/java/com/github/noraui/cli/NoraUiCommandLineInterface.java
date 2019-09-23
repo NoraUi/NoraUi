@@ -27,7 +27,6 @@ import java.util.Scanner;
 
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.cli.model.NoraUiApplicationFile;
 import com.github.noraui.cli.model.NoraUiCliFile;
@@ -37,18 +36,19 @@ import com.github.noraui.cli.model.NoraUiModel;
 import com.github.noraui.cli.model.NoraUiResult;
 import com.github.noraui.cli.model.NoraUiScenarioFile;
 import com.github.noraui.exception.TechnicalException;
+import com.github.noraui.log.NoraUiLoggingInjector;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.service.CryptoService;
 import com.github.noraui.service.impl.CryptoServiceImpl;
+import com.github.noraui.utils.Constants;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+@Loggable
 public class NoraUiCommandLineInterface {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(NoraUiCommandLineInterface.class);
+    static Logger LOGGER;
     private static final String JSON = ".json";
     private static final String CLI_TAB = "    {}) {}";
     private static final String CONTEXT = "Context";
@@ -59,6 +59,7 @@ public class NoraUiCommandLineInterface {
     private CryptoService cryptoService;
 
     public NoraUiCommandLineInterface() {
+        NoraUiLoggingInjector.addInjector(Constants.TOP_LEVEL_PACKAGE);
         application = new Application();
         scenario = new Scenario();
         model = new Model();

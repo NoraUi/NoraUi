@@ -6,6 +6,9 @@
  */
 package com.github.noraui.log;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,25 +30,27 @@ public class NoraUiLoggingInjector {
     /**
      * Instance of Guice logging injector.
      */
-    private static volatile Injector noraUiLoggingInjector = null;
+    private static volatile Map<String, Injector> logInjectors = new HashMap<>();
 
     private NoraUiLoggingInjector() {
     }
 
-    public static Injector getInjector() {
-        return noraUiLoggingInjector;
+    public static Map<String, Injector> getInjector() {
+        return logInjectors;
     }
 
-    public static void createInjector() {
-        if (noraUiLoggingInjector == null) {
-            noraUiLoggingInjector = Guice.createInjector(Stage.PRODUCTION, new NoraUiLoggingModule());
+    public static void addInjector(String packageName) {
+        if (!logInjectors.containsKey(packageName)) {
+            logInjectors.put(packageName, Guice.createInjector(Stage.PRODUCTION, new NoraUiLoggingModule(packageName)));
+
         } else {
-            LOGGER.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + Messages.getMessage(TECHNICAL_ERROR_MESSAGE_NORAUI_LOGGING_INJECTOR_ALREADY_EXISTS));
+            LOGGER.error(
+                    Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + String.format(Messages.getMessage(TECHNICAL_ERROR_MESSAGE_NORAUI_LOGGING_INJECTOR_ALREADY_EXISTS), packageName));
         }
     }
 
     public static void resetInjector() {
-        noraUiLoggingInjector = null;
+        logInjectors.clear();
     }
 
 }

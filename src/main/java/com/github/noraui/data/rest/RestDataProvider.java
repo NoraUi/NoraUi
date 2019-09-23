@@ -9,7 +9,6 @@ package com.github.noraui.data.rest;
 import java.util.List;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.data.CommonDataProvider;
 import com.github.noraui.data.DataInputProvider;
@@ -18,17 +17,16 @@ import com.github.noraui.exception.HttpServiceException;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.exception.data.EmptyDataFileContentException;
 import com.github.noraui.exception.data.WebServicesException;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.service.HttpService;
 import com.github.noraui.service.impl.HttpServiceImpl;
 import com.github.noraui.utils.Messages;
 import com.google.gson.Gson;
 
+@Loggable
 public class RestDataProvider extends CommonDataProvider implements DataInputProvider, DataOutputProvider {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(RestDataProvider.class);
+    static Logger LOGGER;
 
     private static final String REST_DATA_PROVIDER_USED = "REST_DATA_PROVIDER_USED";
     private static final String REST_DATA_PROVIDER_WRITING_IN_REST_WS_ERROR_MESSAGE = "REST_DATA_PROVIDER_WRITING_IN_REST_WS_ERROR_MESSAGE";

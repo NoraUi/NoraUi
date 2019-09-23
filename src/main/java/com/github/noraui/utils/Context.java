@@ -294,6 +294,7 @@ public class Context {
      * Private constructor
      */
     protected Context() {
+        NoraUiLoggingInjector.addInjector(Constants.TOP_LEVEL_PACKAGE);
         driverFactory = new DriverFactory();
         windowManager = new WindowManager();
         scenarioRegistry = new ScenarioRegistry();
@@ -302,7 +303,6 @@ public class Context {
         exceptionCallbacks = new Callbacks();
         applications = new HashMap<>();
         cucumberMethods = new HashMap<>();
-        NoraUiLoggingInjector.createInjector();
     }
 
     /**

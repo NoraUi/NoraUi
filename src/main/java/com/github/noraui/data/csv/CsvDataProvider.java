@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.data.CommonDataProvider;
 import com.github.noraui.data.DataInputProvider;
@@ -26,18 +25,17 @@ import com.github.noraui.data.DataOutputProvider;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.exception.data.EmptyDataFileContentException;
 import com.github.noraui.exception.data.WrongDataFileFormatException;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Messages;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.CSVWriter;
 
+@Loggable
 public class CsvDataProvider extends CommonDataProvider implements DataInputProvider, DataOutputProvider {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(CsvDataProvider.class);
+    static Logger LOGGER;
 
     public static final String CSV_TYPE = "csv";
     public static final char CSV_CHAR_SEPARATOR = ';';

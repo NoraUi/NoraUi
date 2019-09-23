@@ -10,13 +10,13 @@ import static com.google.inject.matcher.Matchers.annotatedWith;
 import static com.google.inject.matcher.Matchers.any;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.application.steps.Step;
 import com.github.noraui.browser.steps.BrowserSteps;
 import com.github.noraui.cucumber.annotation.Conditioned;
 import com.github.noraui.cucumber.interceptor.ConditionedInterceptor;
 import com.github.noraui.cucumber.interceptor.StepInterceptor;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.service.CryptoService;
 import com.github.noraui.service.CucumberExpressionService;
 import com.github.noraui.service.HttpService;
@@ -31,9 +31,10 @@ import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.matcher.Matchers;
 
+@Loggable
 public class NoraUiModule implements Module {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(NoraUiModule.class);
+    static Logger LOGGER;
 
     /**
      * {@inheritDoc}

@@ -13,16 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.exception.TechnicalException;
+import com.github.noraui.log.annotation.Loggable;
 
+@Loggable
 public class ShellCommand {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(ShellCommand.class);
+    static Logger LOGGER;
 
     private static final String SHELL_RUNNING_COMMAND = "SHELL_RUNNING_COMMAND";
     private final String command;

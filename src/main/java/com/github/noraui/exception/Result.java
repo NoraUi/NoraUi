@@ -10,9 +10,9 @@ import java.util.Optional;
 
 import org.junit.Assert;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.exception.Callbacks.Callback;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.service.ScreenService;
 import com.github.noraui.service.impl.ScreenServiceImpl;
 import com.github.noraui.utils.Context;
@@ -33,12 +33,10 @@ public abstract class Result {
     private Result() {
     }
 
+    @Loggable
     public static class Success<O> extends Result {
 
-        /**
-         * Specific LOGGER
-         */
-        private static final Logger LOGGER = LoggerFactory.getLogger(Success.class);
+        static Logger LOGGER;
 
         private final O object;
 
@@ -70,12 +68,10 @@ public abstract class Result {
         }
     }
 
+    @Loggable
     public static class Warning<O> extends Result {
 
-        /**
-         * Specific LOGGER
-         */
-        private static final Logger LOGGER = LoggerFactory.getLogger(Warning.class);
+        static Logger LOGGER;
 
         private ScreenService screenService = new ScreenServiceImpl();
 
@@ -124,12 +120,10 @@ public abstract class Result {
         }
     }
 
+    @Loggable
     public static class Failure<O> extends Result {
 
-        /**
-         * Specific LOGGER
-         */
-        private static final Logger LOGGER = LoggerFactory.getLogger(Failure.class);
+        static Logger LOGGER;
 
         private ScreenService screenService = new ScreenServiceImpl();
 
