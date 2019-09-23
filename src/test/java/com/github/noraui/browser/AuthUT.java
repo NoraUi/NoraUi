@@ -49,9 +49,9 @@ public class AuthUT {
         testServer.start();
         Context.getInstance().initializeEnv("demoExcel.properties");
         Context.getInstance().initializeRobot(Runner.class);
-        Context.getApplication(Context.DEMO_KEY).addUrlPage("PROTECTED", "http://localhost:8000/protected");
-        Context.getApplication(Context.DEMO_KEY).addUrlPage("UNPROTECTED", "http://localhost:8000/unprotected");
-        Context.getApplication(Context.DEMO_KEY).addUrlPage("COOKIEPROTECTED", "http://localhost:8000/cookieprotected");
+        Context.getApplication(Context.DEMO_KEY).addUrlPage("PROTECTED", "http://127.0.0.1:8000/protected");
+        Context.getApplication(Context.DEMO_KEY).addUrlPage("UNPROTECTED", "http://127.0.0.1:8000/unprotected");
+        Context.getApplication(Context.DEMO_KEY).addUrlPage("COOKIEPROTECTED", "http://127.0.0.1:8000/cookieprotected");
         bs = new BrowserSteps();
     }
 
@@ -110,7 +110,7 @@ public class AuthUT {
         try {
             Auth.clear();
             System.setProperty(Auth.SESSION_COOKIE, "auth=ok,path=/");
-            final Cookie c = Auth.getAuthenticationCookie("http://localhost");
+            final Cookie c = Auth.getAuthenticationCookie("http://127.0.0.1");
             bs.goToUrl("UNPROTECTED");
             Auth.loadAuthenticationCookie(c);
             bs.goToUrl("COOKIEPROTECTED");
