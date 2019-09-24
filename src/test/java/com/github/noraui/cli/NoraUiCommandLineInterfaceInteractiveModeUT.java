@@ -15,8 +15,7 @@ import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.contrib.java.lang.system.StandardErrorStreamLog;
-import org.junit.contrib.java.lang.system.StandardOutputStreamLog;
+import org.junit.contrib.java.lang.system.SystemErrRule;
 import org.junit.contrib.java.lang.system.SystemOutRule;
 import org.junit.contrib.java.lang.system.TextFromStandardInputStream;
 import org.junit.runners.MethodSorters;
@@ -29,14 +28,13 @@ import com.github.noraui.utils.UnitTest4CLIContext;
 public class NoraUiCommandLineInterfaceInteractiveModeUT {
 
     @Rule
-    public final StandardErrorStreamLog stdErrLog = new StandardErrorStreamLog();
+    public final SystemErrRule stdErrLog = new SystemErrRule();
+    
     @Rule
-    public final StandardOutputStreamLog stdOutLog = new StandardOutputStreamLog();
+    public final SystemOutRule stdOutLog = new SystemOutRule().enableLog();
+    
     @Rule
     public final TextFromStandardInputStream systemInMock = emptyStandardInputStream();
-
-    @Rule
-    public final SystemOutRule systemOutRule = new SystemOutRule().enableLog();
 
     private NoraUiCommandLineInterface cli;
 
@@ -51,9 +49,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
 
     @Test
     public void testCliStep000_DisplayHelp() throws TechnicalException {
-        StringBuilder humanResponse = new StringBuilder();
-        humanResponse.append("0").append(System.lineSeparator());
-        systemInMock.provideText(humanResponse.toString());
+        systemInMock.provideLines("0");
 
         String[] args = { "-h" };
         cli.runCli(UnitTest4CLIContext.class, UnitTest4CLICounter.class, args);
@@ -103,10 +99,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
 
     @Test
     public void testCliStep001_DisplayStatus() throws TechnicalException {
-        StringBuilder humanResponse = new StringBuilder();
-        humanResponse.append("9").append(System.lineSeparator());
-        humanResponse.append("0").append(System.lineSeparator());
-        systemInMock.provideText(humanResponse.toString());
+        systemInMock.provideLines("9", "0");
 
         cli.runCli(UnitTest4CLIContext.class, UnitTest4CLICounter.class);
 
@@ -144,12 +137,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
 
     @Test
     public void testCliStep002_AddApplication() throws TechnicalException {
-        StringBuilder humanResponse = new StringBuilder();
-        humanResponse.append("1").append(System.lineSeparator());
-        humanResponse.append("google").append(System.lineSeparator());
-        humanResponse.append("http://www.google.fr").append(System.lineSeparator());
-        humanResponse.append("0").append(System.lineSeparator());
-        systemInMock.provideText(humanResponse.toString());
+        systemInMock.provideLines("1", "google", "http://www.google.fr", "0");
 
         cli.runCli(UnitTest4CLIContext.class, UnitTest4CLICounter.class);
 
@@ -190,13 +178,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
 
     @Test
     public void testCliStep003_AddScenario() throws TechnicalException {
-        StringBuilder humanResponse = new StringBuilder();
-        humanResponse.append("2").append(System.lineSeparator());
-        humanResponse.append("1").append(System.lineSeparator());
-        humanResponse.append("loginSample").append(System.lineSeparator());
-        humanResponse.append("description for login to google sample").append(System.lineSeparator());
-        humanResponse.append("0").append(System.lineSeparator());
-        systemInMock.provideText(humanResponse.toString());
+        systemInMock.provideLines("2", "1", "loginSample", "description for login to google sample", "0");
 
         cli.runCli(UnitTest4CLIContext.class, UnitTest4CLICounter.class);
 
@@ -241,14 +223,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
 
     @Test
     public void testCliStep004_AddModel() throws TechnicalException {
-        StringBuilder humanResponse = new StringBuilder();
-        humanResponse.append("3").append(System.lineSeparator());
-        humanResponse.append("1").append(System.lineSeparator());
-        humanResponse.append("foo").append(System.lineSeparator());
-        humanResponse.append("field1 field2").append(System.lineSeparator());
-        humanResponse.append("result1").append(System.lineSeparator());
-        humanResponse.append("0").append(System.lineSeparator());
-        systemInMock.provideText(humanResponse.toString());
+        systemInMock.provideLines("3", "1", "foo", "field1 field2", "result1", "0");
 
         cli.runCli(UnitTest4CLIContext.class, UnitTest4CLICounter.class);
 
@@ -295,10 +270,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
 
     @Test
     public void testCliStep005_DisplayStatus() throws TechnicalException {
-        StringBuilder humanResponse = new StringBuilder();
-        humanResponse.append("9").append(System.lineSeparator());
-        humanResponse.append("0").append(System.lineSeparator());
-        systemInMock.provideText(humanResponse.toString());
+        systemInMock.provideLines("9", "0");
 
         cli.runCli(UnitTest4CLIContext.class, UnitTest4CLICounter.class);
 
@@ -345,14 +317,8 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
 
     @Test
     public void testCliStep006_RemoveModel() throws TechnicalException {
-        StringBuilder humanResponse = new StringBuilder();
-        humanResponse.append("6").append(System.lineSeparator());
-        // 2 is google
-        humanResponse.append("2").append(System.lineSeparator());
-        // 1 is foo
-        humanResponse.append("1").append(System.lineSeparator());
-        humanResponse.append("0").append(System.lineSeparator());
-        systemInMock.provideText(humanResponse.toString());
+        // 2 is google and 1 is foo
+        systemInMock.provideLines("6", "2", "1", "0");
 
         cli.runCli(UnitTest4CLIContext.class, UnitTest4CLICounter.class);
 
@@ -396,11 +362,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
 
     @Test
     public void testCliStep007_RemoveScenario() throws TechnicalException {
-        StringBuilder humanResponse = new StringBuilder();
-        humanResponse.append("5").append(System.lineSeparator());
-        humanResponse.append("1").append(System.lineSeparator());
-        humanResponse.append("0").append(System.lineSeparator());
-        systemInMock.provideText(humanResponse.toString());
+        systemInMock.provideLines("5", "1", "0");
 
         cli.runCli(UnitTest4CLIContext.class, UnitTest4CLICounter.class);
 
@@ -448,11 +410,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
 
     @Test
     public void testCliStep008_RemoveApplication() throws TechnicalException {
-        StringBuilder humanResponse = new StringBuilder();
-        humanResponse.append("4").append(System.lineSeparator());
-        humanResponse.append("1").append(System.lineSeparator());
-        humanResponse.append("0").append(System.lineSeparator());
-        systemInMock.provideText(humanResponse.toString());
+        systemInMock.provideLines("4", "1", "0");
 
         cli.runCli(UnitTest4CLIContext.class, UnitTest4CLICounter.class);
 
@@ -493,10 +451,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
 
     @Test
     public void testCliStep009_DisplayStatus() throws TechnicalException {
-        StringBuilder humanResponse = new StringBuilder();
-        humanResponse.append("9").append(System.lineSeparator());
-        humanResponse.append("0").append(System.lineSeparator());
-        systemInMock.provideText(humanResponse.toString());
+        systemInMock.provideLines("9", "0");
 
         cli.runCli(UnitTest4CLIContext.class, UnitTest4CLICounter.class);
 

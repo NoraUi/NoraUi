@@ -18,7 +18,7 @@ import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.contrib.java.lang.system.StandardOutputStreamLog;
+import org.junit.contrib.java.lang.system.SystemOutRule;
 import org.junit.runners.MethodSorters;
 
 import com.github.noraui.cli.model.NoraUiApplicationFile;
@@ -35,7 +35,8 @@ import com.github.noraui.utils.UnitTest4CLIContext;
 public class NoraUiCommandLineInterfaceUT {
 
     @Rule
-    public final StandardOutputStreamLog stdOutLog = new StandardOutputStreamLog();
+    public final SystemOutRule stdOutLog = new SystemOutRule().enableLog();
+    
     private NoraUiCommandLineInterface cli;
 
     @Before
