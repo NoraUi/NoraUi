@@ -1029,7 +1029,6 @@ public abstract class Step implements IStep {
             new Result.Failure<>(text.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : text,
                     Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_VALUE_NOT_AVAILABLE_IN_THE_LIST), element, element.getPage().getApplication()), false, element.getPage().getCallBack());
         }
-
     }
 
 }
