@@ -183,6 +183,7 @@ public class NoraUiCommandLineInterface {
             updateRobotFromNoraUiCliFiles(noraUiCliFile, context, verbose);
         }
         displayEndFooter();
+        NoraUiLoggingInjector.resetInjector();
     }
 
     /**
