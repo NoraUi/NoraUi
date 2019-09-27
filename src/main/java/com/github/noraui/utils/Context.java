@@ -835,6 +835,7 @@ public class Context {
                 sb.append(line);
             }
         } catch (IOException e) {
+            LOGGER.trace("java file [{}].java not found.", className);
         }
         return sb.toString();
     }
