@@ -30,7 +30,7 @@ public class CucumberExpressionServiceImpl implements CucumberExpressionService 
         ParameterTypeRegistry parameterTypeRegistry = new ParameterTypeRegistry(Locale.ENGLISH);
         expression = new CucumberExpression(expressionString, parameterTypeRegistry);
         List<Argument<?>> args = expression.match(text);
-        return args == null ? null : args.stream().map(arg -> arg.getValue()).collect(Collectors.toList());
+        return args == null ? null : args.stream().map(Argument::getValue).collect(Collectors.toList());
     }
 
 }
