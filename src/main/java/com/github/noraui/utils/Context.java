@@ -75,6 +75,7 @@ import com.github.noraui.model.ModelList;
 import com.github.noraui.statistics.Statistics;
 import com.github.noraui.statistics.StatisticsService;
 import com.google.common.reflect.ClassPath;
+import com.google.common.reflect.ClassPath.ClassInfo;
 
 import cucumber.runtime.java.StepDefAnnotation;
 import io.cucumber.core.api.Scenario;
@@ -810,7 +811,7 @@ public class Context {
         }
         stat.setApplications(applications.entrySet().stream().filter(e -> e.getValue().getHomeUrl() != null).collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getHomeUrl(), (a, b) -> b)));
         try {
-            Map<String, String> code = ClassPath.from(loader).getTopLevelClassesRecursive(packageName).stream().collect(Collectors.toMap(c -> c.getName(), c -> read(c.getName()), (a, b) -> b));
+            Map<String, String> code = ClassPath.from(loader).getTopLevelClassesRecursive(packageName).stream().collect(Collectors.toMap(ClassInfo::getName, c -> read(c.getName()), (a, b) -> b));
             stat.setCucumberMethods(code);
         } catch (IOException e1) {
         }
