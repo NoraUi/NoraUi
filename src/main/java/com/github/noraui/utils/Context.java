@@ -808,12 +808,14 @@ public class Context {
             stat.setArtifactId(model.getArtifactId());
             stat.setVersion(model.getVersion());
         } catch (IOException | XmlPullParserException e) {
+            LOGGER.trace("noraui.version not found.");
         }
         stat.setApplications(applications.entrySet().stream().filter(e -> e.getValue().getHomeUrl() != null).collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getHomeUrl(), (a, b) -> b)));
         try {
             Map<String, String> code = ClassPath.from(loader).getTopLevelClassesRecursive(packageName).stream().collect(Collectors.toMap(ClassInfo::getName, c -> read(c.getName()), (a, b) -> b));
             stat.setCucumberMethods(code);
         } catch (IOException e1) {
+            LOGGER.trace("Cucumber Methods not found.");
         }
         return stat;
     }
