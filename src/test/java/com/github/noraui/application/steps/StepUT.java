@@ -317,7 +317,7 @@ public class StepUT {
             final DemoPage demoPage = (DemoPage) Page.getInstance(BAKERY_DEMO_PAGE_NAME);
             final PageElement pageElement = demoPage.getPageElementByKey("-input_select_field");
             final String a = Messages.format("Message %s in %s.", pageElement, demoPage.getApplication());
-            Assert.assertEquals("", "Message Input Select field in demo.", a);
+            Assert.assertEquals("", "Message Input Select field in bakery.", a);
         } catch (final TechnicalException e) {
             Assert.assertFalse("Error", true);
         }
@@ -329,7 +329,7 @@ public class StepUT {
             final DemoPage demoPage = (DemoPage) Page.getInstance(BAKERY_DEMO_PAGE_NAME);
             final PageElement pageElement = demoPage.getPageElementByKey("-submit");
             final String a = Messages.format("Message %s in %s.", pageElement, demoPage.getApplication());
-            Assert.assertEquals("", "Message Submit button in demo.", a);
+            Assert.assertEquals("", "Message Submit button in bakery.", a);
         } catch (final TechnicalException e) {
             Assert.assertFalse("Error", true);
         }
