@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,10 +39,10 @@ public class ShellCommand {
         final List<String> cmdList = new ArrayList<>();
         cmdList.add(command);
         LOGGER.info(Messages.getMessage(SHELL_RUNNING_COMMAND), command);
-        for (final String param : parameters) {
+        Stream.of(parameters).forEach(param -> {
             LOGGER.info(param);
             cmdList.add(param);
-        }
+        });
         try {
             final Process p = rt.exec(cmdList.toArray(new String[cmdList.size()]));
             final BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));

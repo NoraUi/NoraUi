@@ -6,9 +6,9 @@
  */
 package com.github.noraui.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import com.github.noraui.service.CucumberExpressionService;
 import com.google.inject.Singleton;
@@ -30,16 +30,7 @@ public class CucumberExpressionServiceImpl implements CucumberExpressionService 
         ParameterTypeRegistry parameterTypeRegistry = new ParameterTypeRegistry(Locale.ENGLISH);
         expression = new CucumberExpression(expressionString, parameterTypeRegistry);
         List<Argument<?>> args = expression.match(text);
-        if (args == null) {
-            return null;
-        } else {
-            List<Object> list = new ArrayList<>();
-            for (Argument<?> arg : args) {
-                Object value = arg.getValue();
-                list.add(value);
-            }
-            return list;
-        }
+        return args == null ? null : args.stream().map(arg -> arg.getValue()).collect(Collectors.toList());
     }
 
 }

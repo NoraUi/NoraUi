@@ -7,7 +7,7 @@
 package com.github.noraui.browser.steps;
 
 import java.util.List;
-import java.util.Map.Entry;
+import java.util.Map;
 import java.util.Set;
 
 import org.openqa.selenium.Dimension;
@@ -38,12 +38,12 @@ import io.cucumber.java.fr.Lorsque;
 import io.cucumber.java.fr.Quand;
 
 public class BrowserSteps {
-    
+
     /**
      * Specific LOGGER.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(BrowserSteps.class);
-    
+
     public static final String CLOSE_WINDOW_AND_SWITCH_TO = "closeWindowAndSwitchTo";
     public static final String CLOSE_ALL_WINDOWS_AND_SWITCH_TO = "closeAllWindowsAndSwitchTo";
 
@@ -145,7 +145,7 @@ public class BrowserSteps {
      * Closes window and switches to target window with conditions.
      *
      * @param key
-     *            is the key of application (Ex: SALTO).
+     *            is the key of application (Ex: BAKERY).
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
@@ -204,6 +204,7 @@ public class BrowserSteps {
     private void closeWindowAndSwitchTo(String key) throws TechnicalException, FailureException {
         String mainWindow = Context.getMainWindow();
         try {
+            Context.getWindows().forEach((k, v) -> LOGGER.debug("Windows: [{}] [{}]", k, v));
             if (Context.getWindows().size() > 1) {
                 closeWindow();
             }
@@ -215,12 +216,7 @@ public class BrowserSteps {
     }
 
     private void closeWindow() {
-        for (Entry<String, String> w : Context.getWindows().entrySet()) {
-            if (w.getValue().equals(Context.getDriver().getWindowHandle())) {
-                Context.removeWindow(w.getKey());
-                break;
-            }
-        }
+        Context.getWindows().entrySet().stream().filter(e -> e.getValue().equals(Context.getDriver().getWindowHandle())).map(Map.Entry::getKey).findFirst().ifPresent(Context::removeWindow);
         Context.getDriver().close();
     }
 
