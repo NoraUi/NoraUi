@@ -53,10 +53,10 @@ public class ShellCommand {
             }
             return p.waitFor();
         } catch (IOException e) {
-            LOGGER.error("IOException error ShellCommand.run():", e);
+            LOGGER.error("IOException error ShellCommand.run():");
             throw new TechnicalException(e.getMessage(), e);
         } catch (InterruptedException e) {
-            LOGGER.error("InterruptedException error ShellCommand.run():", e);
+            LOGGER.error("InterruptedException error ShellCommand.run():");
             Thread.currentThread().interrupt();
             throw new TechnicalException(e.getMessage(), e);
         }

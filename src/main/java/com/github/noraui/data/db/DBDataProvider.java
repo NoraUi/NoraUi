@@ -62,6 +62,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
                 throw new DatabaseException(String.format(Messages.getMessage(DatabaseException.TECHNICAL_ERROR_MESSAGE_UNKNOWN_DATABASE_TYPE), type));
             }
         } catch (final Exception e) {
+            LOGGER.error(Messages.getMessage(DatabaseException.TECHNICAL_ERROR_MESSAGE_DATABASE_EXCEPTION));
             throw new TechnicalException(Messages.getMessage(DatabaseException.TECHNICAL_ERROR_MESSAGE_DATABASE_EXCEPTION), e);
         }
         LOGGER.info(Messages.getMessage(DB_DATA_PROVIDER_USED), type);
