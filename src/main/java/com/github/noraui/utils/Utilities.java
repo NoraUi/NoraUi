@@ -81,9 +81,9 @@ public class Utilities {
     public static By getLocator(String applicationKey, String code, Object... args) {
         By locator = null;
         LOGGER.debug("getLocator with this application key : {}", applicationKey);
+        LOGGER.debug("getLocator with this code : {}", code);
         LOGGER.debug("getLocator with this locator file : {}", Context.iniFiles.get(applicationKey));
         final Ini ini = Context.iniFiles.get(applicationKey);
-
         final Map<String, String> section = ini.get(code);
         if (section != null) {
             final Entry<String, String> entry = section.entrySet().iterator().next();
