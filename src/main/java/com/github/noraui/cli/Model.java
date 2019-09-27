@@ -614,7 +614,7 @@ public class Model extends AbstractNoraUiCli {
         sb.append(TAB).append(JUNIT_TEST).append(System.lineSeparator());
         sb.append(TAB).append(PUBLIC_VOID_CHECK + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "SerializeListTest() {").append(System.lineSeparator());
         sb.append(PREPARE_MOCK).append(System.lineSeparator());
-        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " " + modelName + "1" + NEW  + + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
+        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " " + modelName + "1" + NEW  + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
                 .append(System.lineSeparator());
         i = 4000;
         for (String field : fieldList) {
@@ -622,7 +622,7 @@ public class Model extends AbstractNoraUiCli {
             sb.append(TAB2).append(modelName + "1.set" + field.toUpperCase().charAt(0) + field.substring(1) + "(\"" + i + "\");").append(System.lineSeparator());
         }
         sb.append(System.lineSeparator());
-        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " " + modelName + "2" + NEW  + + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
+        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " " + modelName + "2" + NEW  + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
                 .append(System.lineSeparator());
         for (String field : fieldList) {
             i++;
@@ -687,16 +687,16 @@ public class Model extends AbstractNoraUiCli {
                 PUBLIC_VOID_CHECK + "Delete" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "sAndAdd" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "sTest() {")
                 .append(System.lineSeparator());
         sb.append(PREPARE_MOCK).append(System.lineSeparator());
-        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " a" + NEW  + + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
+        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " a" + NEW  + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
                 .append(System.lineSeparator());
         sb.append(TAB2).append("a.set" + fieldList[0].toUpperCase().charAt(0) + fieldList[0].substring(1) + "(\"aaaa\");").append(System.lineSeparator());
-        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " b" + NEW  + + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
+        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " b" + NEW  + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
                 .append(System.lineSeparator());
         sb.append(TAB2).append("b.set" + fieldList[0].toUpperCase().charAt(0) + fieldList[0].substring(1) + "(\"cccc\");").append(System.lineSeparator());
-        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " c" + NEW  + + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
+        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " c" + NEW  + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
                 .append(System.lineSeparator());
         sb.append(TAB2).append("c.set" + fieldList[0].toUpperCase().charAt(0) + fieldList[0].substring(1) + "(\"bbbb\");").append(System.lineSeparator());
-        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " d" + NEW  + + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
+        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " d" + NEW  + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
                 .append(System.lineSeparator());
         sb.append(TAB2).append("d.set" + fieldList[0].toUpperCase().charAt(0) + fieldList[0].substring(1) + "(\"eeee\");").append(System.lineSeparator());
         sb.append(System.lineSeparator());
