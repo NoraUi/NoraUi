@@ -4,7 +4,7 @@
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
-package com.github.noraui.application.steps.demo;
+package com.github.noraui.application.steps.bakery;
 
 import static com.github.noraui.utils.Constants.DOWNLOADED_FILES_FOLDER;
 import static com.github.noraui.utils.Constants.USER_DIR;
@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import com.github.noraui.application.model.demo.Article;
 import com.github.noraui.application.model.demo.Articles;
-import com.github.noraui.application.page.demo.DemoPage;
+import com.github.noraui.application.page.bakery.DemoPage;
 import com.github.noraui.application.steps.ExpectSteps;
 import com.github.noraui.application.steps.Step;
 import com.github.noraui.cucumber.annotation.Conditioned;

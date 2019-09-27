@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import com.github.noraui.application.page.Page;
 import com.github.noraui.application.page.Page.PageElement;
-import com.github.noraui.application.page.demo.DemoPage;
+import com.github.noraui.application.page.bakery.DemoPage;
 import com.github.noraui.cucumber.injector.NoraUiInjector;
 import com.github.noraui.cucumber.injector.NoraUiInjectorSource;
 import com.github.noraui.cucumber.interceptor.ConditionedInterceptor;

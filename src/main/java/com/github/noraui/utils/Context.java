@@ -15,12 +15,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -28,7 +28,9 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
@@ -110,26 +112,13 @@ public class Context {
     protected StatisticsService statistics = new StatisticsService();
 
     /**
-     * DEMO
-     *
-     * @deprecated because use {@link #BAKERY_KEY} instead.
-     */
-    @Deprecated
-    public static final String DEMO_KEY = "demo";
-
-    /**
-     * @deprecated because use {@link #BAKERY_HOME} instead.
-     */
-    @Deprecated
-    public static final String DEMO_HOME = "DEMO_HOME";
-
-    /**
      * BAKERY
      */
     public static final String BAKERY_KEY = "bakery";
     public static final String BAKERY_HOME = "BAKERY_HOME";
     public static final String BAKERY_ADMIN = "BAKERY_ADMIN";
     public static final String BAKERY_REF = "BAKERY_REF";
+    public static final String BAKERY_DEMO = "BAKERY_DEMO";
 
     /**
      * GITHUBAPI
@@ -420,14 +409,14 @@ public class Context {
 
         // init driver callbacks
         exceptionCallbacks.put(Callbacks.RESTART_WEB_DRIVER, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, RESTART_WEB_DRIVER_METHOD_NAME);
-        exceptionCallbacks.put(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_DEMO_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, DEMO_HOME);
         exceptionCallbacks.put(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_GITHUBAPI_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, GITHUBAPI_HOME);
         exceptionCallbacks.put(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_BAKERY_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, BAKERY_HOME);
 
         // init applications
-        initApplicationDom(clazz.getClassLoader(), selectorsVersion, DEMO_KEY);
-        applications.put(DEMO_KEY, new Application(DEMO_HOME, getProperty(DEMO_KEY, applicationProperties)));
-        applications.put(BAKERY_KEY, new Application(BAKERY_HOME, getProperty(BAKERY_KEY, applicationProperties)));
+        initApplicationDom(clazz.getClassLoader(), selectorsVersion, BAKERY_KEY);
+        Application bakeryApp = new Application(BAKERY_HOME, getProperty(BAKERY_KEY, applicationProperties) + "/account/login");
+        bakeryApp.addUrlPage(BAKERY_DEMO, getProperty(BAKERY_KEY, applicationProperties) + "/public");
+        applications.put(BAKERY_KEY, bakeryApp);
         applications.put(GITHUBAPI_KEY, new Application(GITHUBAPI_HOME, getProperty(GITHUBAPI_KEY, applicationProperties)));
 
         // read and init all cucumber methods
@@ -819,8 +808,7 @@ public class Context {
             stat.setVersion(model.getVersion());
         } catch (IOException | XmlPullParserException e) {
         }
-        stat.setApplications(
-                applications.entrySet().stream().filter(e -> e.getValue().getHomeUrl() != null).collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getHomeUrl(), (a, b) -> b)));
+        stat.setApplications(applications.entrySet().stream().filter(e -> e.getValue().getHomeUrl() != null).collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getHomeUrl(), (a, b) -> b)));
         try {
             Map<String, String> code = ClassPath.from(loader).getTopLevelClassesRecursive(packageName).stream().collect(Collectors.toMap(c -> c.getName(), c -> read(c.getName()), (a, b) -> b));
             stat.setCucumberMethods(code);
@@ -857,7 +845,7 @@ public class Context {
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      */
     private static void initDataId(String scenarioName) throws TechnicalException {
-        final List<DataIndex> indexData = new ArrayList<>();
+        List<DataIndex> indexData = new ArrayList<>();
         try {
             Context.getDataInputProvider().prepare(scenarioName);
             final Class<Model> model = Context.getDataInputProvider().getModel(Context.getModelPackages());
@@ -866,13 +854,9 @@ public class Context {
                 if (headers != null) {
                     final Constructor<Model> modelConstructor = DataUtils.getModelConstructor(model, headers);
                     final Map<Integer, Map<String, ModelList>> fusionedData = DataUtils.fusionProcessor(model, modelConstructor);
-                    int dataIndex = 0;
-                    for (final Entry<Integer, Map<String, ModelList>> e : fusionedData.entrySet()) {
-                        for (final Entry<String, ModelList> e2 : e.getValue().entrySet()) {
-                            dataIndex++;
-                            indexData.add(new DataIndex(dataIndex, e2.getValue().getIds()));
-                        }
-                    }
+                    AtomicInteger dataIndex = new AtomicInteger();
+                    indexData = fusionedData.values().stream().flatMap(models -> models.values().stream()).map(ModelList::getIds).map(ids -> new DataIndex(dataIndex.incrementAndGet(), ids))
+                            .collect(Collectors.toList());
                 } else {
                     LOGGER.error(Messages.getMessage(ScenarioInitiator.SCENARIO_INITIATOR_ERROR_EMPTY_FILE));
                 }
@@ -974,30 +958,17 @@ public class Context {
      *         Second part is the corresponding invokable method.
      */
     private static Map<String, Method> getAllCucumberMethods(Class<?> clazz) {
-        final Map<String, Method> result = new HashMap<>();
         final CucumberOptions co = clazz.getAnnotation(CucumberOptions.class);
         final Set<Class<?>> classes = getClasses(co.glue());
         classes.add(BrowserSteps.class);
-
-        for (final Class<?> c : classes) {
-            final Method[] methods = c.getDeclaredMethods();
-            for (final Method method : methods) {
-                for (final Annotation stepAnnotation : method.getAnnotations()) {
-                    if (stepAnnotation.annotationType().isAnnotationPresent(StepDefAnnotation.class)) {
-                        result.put(stepAnnotation.toString(), method);
-                    }
-                }
-            }
-        }
-        return result;
+        return classes
+                .stream().flatMap(c -> Arrays.stream(c.getDeclaredMethods())).flatMap(m -> Arrays.stream(m.getAnnotations())
+                        .filter(stepAnnotation -> stepAnnotation.annotationType().isAnnotationPresent(StepDefAnnotation.class)).map(ann -> new AbstractMap.SimpleEntry<>(ann.toString(), m)))
+                .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
     }
 
     private static Set<Class<?>> getClasses(String[] packagesName) {
-        final Set<Class<?>> result = new HashSet<>();
-        for (final String packageName : packagesName) {
-            result.addAll(new Reflections(packageName, new SubTypesScanner(false)).getSubTypesOf(Step.class));
-        }
-        return result;
+        return Stream.of(packagesName).flatMap(packageName -> new Reflections(packageName, new SubTypesScanner(false)).getSubTypesOf(Step.class).stream()).collect(Collectors.toSet());
     }
 
 }

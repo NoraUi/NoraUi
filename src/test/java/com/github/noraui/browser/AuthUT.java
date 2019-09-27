@@ -49,9 +49,9 @@ public class AuthUT {
         testServer.start();
         Context.getInstance().initializeEnv("demoExcel.properties");
         Context.getInstance().initializeRobot(Runner.class);
-        Context.getApplication(Context.DEMO_KEY).addUrlPage("PROTECTED", "http://127.0.0.1:8000/protected");
-        Context.getApplication(Context.DEMO_KEY).addUrlPage("UNPROTECTED", "http://127.0.0.1:8000/unprotected");
-        Context.getApplication(Context.DEMO_KEY).addUrlPage("COOKIEPROTECTED", "http://127.0.0.1:8000/cookieprotected");
+        Context.getApplication(Context.BAKERY_KEY).addUrlPage("PROTECTED", "http://127.0.0.1:8000/protected");
+        Context.getApplication(Context.BAKERY_KEY).addUrlPage("UNPROTECTED", "http://127.0.0.1:8000/unprotected");
+        Context.getApplication(Context.BAKERY_KEY).addUrlPage("COOKIEPROTECTED", "http://127.0.0.1:8000/cookieprotected");
         bs = new BrowserSteps();
     }
 

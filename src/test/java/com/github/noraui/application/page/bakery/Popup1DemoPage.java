@@ -4,9 +4,9 @@
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
-package com.github.noraui.application.page.demo;
+package com.github.noraui.application.page.bakery;
 
-import static com.github.noraui.utils.Context.DEMO_KEY;
+import static com.github.noraui.utils.Context.BAKERY_KEY;
 
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
@@ -17,22 +17,22 @@ import com.github.noraui.exception.Callbacks;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Utilities;
 
-public class Popup3DemoPage extends Page {
+public class Popup1DemoPage extends Page {
 
     /**
      * Specific LOGGER
      */
-    protected static final Logger LOGGER = LoggerFactory.getLogger(Popup3DemoPage.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(Popup1DemoPage.class);
 
     public final PageElement bigTitle = new PageElement("-big_title", "This is a popup demo for NORAUI (Non-Regression Automation for User Interfaces).");
 
     private static final String TITLE_PAGE = "NoraUi Demo Popup";
 
-    public Popup3DemoPage() {
+    public Popup1DemoPage() {
         super();
-        this.application = DEMO_KEY;
-        this.pageKey = "DEMO_POP3";
-        this.callBack = Context.getCallBack(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_DEMO_HOME);
+        this.application = BAKERY_KEY;
+        this.pageKey = "DEMO_POP1";
+        this.callBack = Context.getCallBack(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_BAKERY_HOME);
     }
 
     /**

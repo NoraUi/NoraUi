@@ -4,12 +4,11 @@
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
-package com.github.noraui.application.steps.demo;
+package com.github.noraui.application.steps.bakery;
 
 import java.util.Map;
 
-// import com.github.noraui.application.page.Page;
-import com.github.noraui.application.page.demo.DemoPage;
+import com.github.noraui.application.page.bakery.DemoPage;
 import com.github.noraui.application.steps.Step;
 import com.github.noraui.exception.FailureException;
 import com.github.noraui.exception.TechnicalException;
@@ -27,7 +26,7 @@ public class DemoSteps extends Step {
     @Then("I update checkboxes and check radio list {string} with {string}:")
     public void selectCheckbox(String pageElement, String valueKey, Map<String, Boolean> values) throws TechnicalException, FailureException {
         String elementName = pageElement.split("-")[1];
-        // is it a sample with inject page by Guice, but you can use 'demo.DemoPage-agree' instead of 'DEMO_HOME-agree'.
+        // is it a sample with inject page by Guice, but you can use 'demo.DemoPage-agree' instead of 'BAKERY_DEMO-agree'.
         // String page = pageElement.split("-")[0];
         // selectCheckbox(Page.getInstance(page).getPageElementByKey('-' + elementName), true);
         selectCheckbox(this.demoPage.getPageElementByKey('-' + elementName), true);
