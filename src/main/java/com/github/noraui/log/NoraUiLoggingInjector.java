@@ -30,7 +30,7 @@ public class NoraUiLoggingInjector {
     /**
      * Instance of Guice logging injector.
      */
-    private static volatile Map<String, Injector> logInjectors = new HashMap<>();
+    private static Map<String, Injector> logInjectors = new HashMap<>();
 
     private NoraUiLoggingInjector() {
     }
