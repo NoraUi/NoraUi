@@ -47,6 +47,7 @@ public class NoraUiLoggingModule implements Module {
     }
 
     private void injectSlf4JLogger(Class<?> clazz) {
+        LOGGER.error("Inject" + clazz);
         while (clazz != null) {
             for (Field field : clazz.getDeclaredFields()) {
                 if (field.getType() == Logger.class && Modifier.isStatic(field.getModifiers())) {
