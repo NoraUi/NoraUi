@@ -26,6 +26,7 @@ import com.github.noraui.Runner;
 import com.github.noraui.browser.steps.BrowserSteps;
 import com.github.noraui.exception.FailureException;
 import com.github.noraui.exception.TechnicalException;
+import com.github.noraui.log.NoraUiLoggingInjector;
 import com.github.noraui.utils.Context;
 import com.sun.net.httpserver.BasicAuthenticator;
 import com.sun.net.httpserver.HttpContext;
@@ -47,6 +48,7 @@ public class AuthUT {
     @Before
     public void prepare() throws TechnicalException {
         testServer.start();
+        NoraUiLoggingInjector.resetInjector();
         Context.getInstance().initializeEnv("demoExcel.properties");
         Context.getInstance().initializeRobot(Runner.class);
         Context.getApplication(Context.DEMO_KEY).addUrlPage("PROTECTED", "http://127.0.0.1:8000/protected");
