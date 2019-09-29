@@ -6,8 +6,8 @@
  */
 package com.github.noraui.log;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.utils.Messages;
 import com.google.inject.Guice;
-import com.google.inject.Injector;
 import com.google.inject.Stage;
 
 public class NoraUiLoggingInjector {
@@ -30,18 +29,18 @@ public class NoraUiLoggingInjector {
     /**
      * Instance of Guice logging injector.
      */
-    private static Map<String, Injector> logInjectors = new HashMap<>();
+    private static List<String> logInjectors = new ArrayList<>();
 
     private NoraUiLoggingInjector() {
     }
 
-    public static Map<String, Injector> getInjector() {
+    public static List<String> getInjector() {
         return logInjectors;
     }
 
     public static void addInjector(String packageName) {
-        if (!logInjectors.containsKey(packageName)) {
-            logInjectors.put(packageName, Guice.createInjector(Stage.PRODUCTION, new NoraUiLoggingModule(packageName)));
+        if (!logInjectors.contains(packageName)) {
+            Guice.createInjector(Stage.PRODUCTION, new NoraUiLoggingModule(packageName));
             LOGGER.info("Created injector: " + packageName);
         } else {
             LOGGER.warn(
