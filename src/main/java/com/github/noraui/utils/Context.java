@@ -36,6 +36,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
+import org.slf4j.Logger;
 
 import com.github.noraui.application.Application;
 import com.github.noraui.application.steps.Step;
