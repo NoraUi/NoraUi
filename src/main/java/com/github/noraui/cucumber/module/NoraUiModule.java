@@ -12,6 +12,7 @@ import static com.google.inject.matcher.Matchers.any;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.github.noraui.application.steps.Step;
 import com.github.noraui.browser.steps.BrowserSteps;
 import com.github.noraui.cucumber.annotation.Conditioned;
 import com.github.noraui.cucumber.interceptor.ConditionedInterceptor;
@@ -32,9 +33,6 @@ import com.google.inject.matcher.Matchers;
 
 public class NoraUiModule implements Module {
 
-    /**
-     * Specific LOGGER
-     */
     private static final Logger LOGGER = LoggerFactory.getLogger(NoraUiModule.class);
 
     /**
@@ -42,9 +40,9 @@ public class NoraUiModule implements Module {
      */
     @Override
     public void configure(Binder binder) {
-        LOGGER.debug("NORAUI NoraUiModule configure");
+        LOGGER.debug("NORAUI interceptors binding");
         binder.bindInterceptor(any(), annotatedWith(Conditioned.class), new ConditionedInterceptor());
-        binder.bindInterceptor(Matchers.subclassesOf(com.github.noraui.application.steps.Step.class).or(Matchers.subclassesOf(BrowserSteps.class)), any(), new StepInterceptor());
+        binder.bindInterceptor(Matchers.subclassesOf(Step.class).or(Matchers.subclassesOf(BrowserSteps.class)), any(), new StepInterceptor());
 
         LOGGER.debug("NORAUI service binding");
         binder.bind(CryptoService.class).to(CryptoServiceImpl.class).asEagerSingleton();

@@ -13,10 +13,10 @@ import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.exception.HttpServiceException;
 import com.github.noraui.exception.TechnicalException;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.service.HttpService;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
@@ -28,13 +28,11 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+@Loggable
 @Singleton
 public class HttpServiceImpl implements HttpService {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(HttpServiceImpl.class);
+    static Logger LOGGER;
 
     /**
      * {@inheritDoc}

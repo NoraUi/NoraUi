@@ -20,18 +20,16 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.application.page.Page;
 import com.github.noraui.application.page.Page.PageElement;
 import com.github.noraui.browser.DriverFactory;
+import com.github.noraui.log.annotation.Loggable;
 
+@Loggable
 public class Utilities {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(Utilities.class);
+    static Logger LOGGER;
 
     /**
      * @param applicationKey

@@ -11,16 +11,14 @@ import java.lang.reflect.Method;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.cucumber.annotation.Experimental;
+import com.github.noraui.log.annotation.Loggable;
 
+@Loggable
 public class ExperimentalInterceptor implements MethodInterceptor {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(ExperimentalInterceptor.class);
+    static Logger LOGGER;
 
     /**
      * {@inheritDoc}

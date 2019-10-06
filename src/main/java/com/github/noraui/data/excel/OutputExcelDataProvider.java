@@ -7,19 +7,17 @@
 package com.github.noraui.data.excel;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.exception.data.EmptyDataFileContentException;
 import com.github.noraui.exception.data.WrongDataFileFormatException;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Messages;
 
+@Loggable
 public class OutputExcelDataProvider extends ExcelDataProvider {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(OutputExcelDataProvider.class);
+    static Logger LOGGER;
 
     private static final String EXCEL_OUTPUT_DATA_PROVIDER_USED = "EXCEL_OUTPUT_DATA_PROVIDER_USED";
 

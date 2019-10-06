@@ -21,16 +21,14 @@ import java.util.regex.Matcher;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import com.github.noraui.log.annotation.Loggable;
 import com.google.common.io.Files;
 
+@Loggable
 public class Model extends AbstractNoraUiCli {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(Model.class);
+    static Logger LOGGER;
 
     private static final String PUBLIC = "public";
     private static final String PUBLIC_CLASS = PUBLIC + " class";
@@ -614,7 +612,7 @@ public class Model extends AbstractNoraUiCli {
         sb.append(TAB).append(JUNIT_TEST).append(System.lineSeparator());
         sb.append(TAB).append(PUBLIC_VOID_CHECK + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "SerializeListTest() {").append(System.lineSeparator());
         sb.append(PREPARE_MOCK).append(System.lineSeparator());
-        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " " + modelName + "1" + NEW  + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
+        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " " + modelName + "1" + NEW + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
                 .append(System.lineSeparator());
         i = 4000;
         for (String field : fieldList) {
@@ -622,14 +620,14 @@ public class Model extends AbstractNoraUiCli {
             sb.append(TAB2).append(modelName + "1.set" + field.toUpperCase().charAt(0) + field.substring(1) + "(\"" + i + "\");").append(System.lineSeparator());
         }
         sb.append(System.lineSeparator());
-        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " " + modelName + "2" + NEW  + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
+        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " " + modelName + "2" + NEW + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
                 .append(System.lineSeparator());
         for (String field : fieldList) {
             i++;
             sb.append(TAB2).append(modelName + "2.set" + field.toUpperCase().charAt(0) + field.substring(1) + "(\"" + i + "\");").append(System.lineSeparator());
         }
         sb.append(System.lineSeparator());
-        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s " + modelName + "s" + NEW  + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s();")
+        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s " + modelName + "s" + NEW + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s();")
                 .append(System.lineSeparator());
         sb.append(TAB2).append(modelName + "s.add(" + modelName + "1);").append(System.lineSeparator());
         sb.append(TAB2).append(modelName + "s.add(" + modelName + "2);").append(System.lineSeparator());
@@ -654,7 +652,7 @@ public class Model extends AbstractNoraUiCli {
         sb.append(TAB).append(JUNIT_TEST).append(System.lineSeparator());
         sb.append(TAB).append(PUBLIC_VOID_CHECK + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "DeserializeListTest() {").append(System.lineSeparator());
         sb.append(RUN_TEST).append(System.lineSeparator());
-        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s " + modelName + "s" + NEW  + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s();")
+        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s " + modelName + "s" + NEW + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s();")
                 .append(System.lineSeparator());
         sb.append(TAB2).append(modelName + "s.deserialize(\"[{");
         i = 4000;
@@ -687,26 +685,26 @@ public class Model extends AbstractNoraUiCli {
                 PUBLIC_VOID_CHECK + "Delete" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "sAndAdd" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "sTest() {")
                 .append(System.lineSeparator());
         sb.append(PREPARE_MOCK).append(System.lineSeparator());
-        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " a" + NEW  + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
+        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " a" + NEW + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
                 .append(System.lineSeparator());
         sb.append(TAB2).append("a.set" + fieldList[0].toUpperCase().charAt(0) + fieldList[0].substring(1) + "(\"aaaa\");").append(System.lineSeparator());
-        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " b" + NEW  + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
+        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " b" + NEW + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
                 .append(System.lineSeparator());
         sb.append(TAB2).append("b.set" + fieldList[0].toUpperCase().charAt(0) + fieldList[0].substring(1) + "(\"cccc\");").append(System.lineSeparator());
-        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " c" + NEW  + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
+        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " c" + NEW + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
                 .append(System.lineSeparator());
         sb.append(TAB2).append("c.set" + fieldList[0].toUpperCase().charAt(0) + fieldList[0].substring(1) + "(\"bbbb\");").append(System.lineSeparator());
-        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " d" + NEW  + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
+        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " d" + NEW + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
                 .append(System.lineSeparator());
         sb.append(TAB2).append("d.set" + fieldList[0].toUpperCase().charAt(0) + fieldList[0].substring(1) + "(\"eeee\");").append(System.lineSeparator());
         sb.append(System.lineSeparator());
-        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s " + modelName + "sInGame" + NEW  +  modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s();")
+        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s " + modelName + "sInGame" + NEW + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s();")
                 .append(System.lineSeparator());
         sb.append(TAB2).append(modelName + "sInGame.add(a);").append(System.lineSeparator());
         sb.append(TAB2).append(modelName + "sInGame.add(b);").append(System.lineSeparator());
         sb.append(TAB2).append(modelName + "sInGame.add(c);").append(System.lineSeparator());
         sb.append(System.lineSeparator());
-        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s " + modelName + "s" + NEW  + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s();")
+        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s " + modelName + "s" + NEW + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s();")
                 .append(System.lineSeparator());
         sb.append(TAB2).append(modelName + "s.add(b);").append(System.lineSeparator());
         sb.append(TAB2).append(modelName + "s.add(c);").append(System.lineSeparator());

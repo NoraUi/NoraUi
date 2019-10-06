@@ -45,7 +45,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.application.Application;
 import com.github.noraui.application.steps.Step;
@@ -69,6 +68,8 @@ import com.github.noraui.exception.Callbacks;
 import com.github.noraui.exception.Callbacks.Callback;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.ScenarioRegistry;
+import com.github.noraui.log.NoraUiLoggingInjector;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.main.ScenarioInitiator;
 import com.github.noraui.model.Model;
 import com.github.noraui.model.ModelList;
@@ -84,12 +85,10 @@ import io.cucumber.junit.CucumberOptions;
 /**
  * Cucumber context.
  */
+@Loggable
 public class Context {
 
-    /**
-     * Specific LOGGER.
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(Context.class);
+    static Logger LOGGER;
 
     public static final String STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME = BrowserSteps.class.getCanonicalName();
     public static final String GO_TO_URL_METHOD_NAME = "goToUrl";
@@ -296,6 +295,7 @@ public class Context {
      * Private constructor
      */
     protected Context() {
+        NoraUiLoggingInjector.addInjector(Constants.TOP_LEVEL_PACKAGE);
         driverFactory = new DriverFactory();
         windowManager = new WindowManager();
         scenarioRegistry = new ScenarioRegistry();

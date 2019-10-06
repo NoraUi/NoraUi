@@ -6,13 +6,9 @@
  */
 package com.github.noraui.utils;
 
-import static com.github.noraui.browser.steps.BrowserSteps.CLOSE_WINDOW_AND_SWITCH_TO;
-import static com.github.noraui.browser.steps.BrowserSteps.CLOSE_ALL_WINDOWS_AND_SWITCH_TO;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.noraui.application.Application;
 import com.github.noraui.application.page.Page;
 import com.github.noraui.exception.TechnicalException;
 

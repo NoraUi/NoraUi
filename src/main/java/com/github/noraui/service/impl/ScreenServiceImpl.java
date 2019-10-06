@@ -42,7 +42,9 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
+import org.slf4j.Logger;
 
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.service.ScreenService;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.NoraUiScreenRecorder;
@@ -50,11 +52,12 @@ import com.github.noraui.utils.NoraUiScreenRecorder.NoraUiScreenRecorderConfigur
 import com.google.inject.Singleton;
 
 import io.cucumber.core.api.Scenario;
-import lombok.extern.slf4j.Slf4j;
 
 @Singleton
-@Slf4j
+@Loggable
 public class ScreenServiceImpl implements ScreenService {
+
+    static Logger LOGGER;
 
     private ScreenRecorder screenRecorder;
 
@@ -63,7 +66,7 @@ public class ScreenServiceImpl implements ScreenService {
      */
     @Override
     public void takeScreenshot(Scenario scenario) {
-        log.debug("takeScreenshot with the scenario named [{}]", scenario.getName());
+        LOGGER.debug("takeScreenshot with the scenario named [{}]", scenario.getName());
         final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
         scenario.embed(screenshot, "image/png");
     }
@@ -73,7 +76,7 @@ public class ScreenServiceImpl implements ScreenService {
      */
     @Override
     public void saveScreenshot(String screenName) throws IOException {
-        log.debug("saveScreenshot with the scenario named [{}]", screenName);
+        LOGGER.debug("saveScreenshot with the scenario named [{}]", screenName);
         final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
         FileUtils.forceMkdir(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
         FileUtils.writeByteArrayToFile(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + screenName + ".jpg"), screenshot);
@@ -84,7 +87,7 @@ public class ScreenServiceImpl implements ScreenService {
      */
     @Override
     public void saveScreenshot(String screenName, WebElement element) throws IOException {
-        log.debug("saveScreenshot with the scenario named [{}] and element [{}]", screenName, element.getTagName());
+        LOGGER.debug("saveScreenshot with the scenario named [{}] and element [{}]", screenName, element.getTagName());
 
         final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
         FileUtils.forceMkdir(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
@@ -110,7 +113,7 @@ public class ScreenServiceImpl implements ScreenService {
      */
     @Override
     public void startVideoCapture(String screenName) throws IOException, AWTException {
-        log.debug("startVideoCapture with the scenario named [{}]", screenName);
+        LOGGER.debug("startVideoCapture with the scenario named [{}]", screenName);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         NoraUiScreenRecorderConfiguration config = new NoraUiScreenRecorder.NoraUiScreenRecorderConfiguration();
 
@@ -133,7 +136,7 @@ public class ScreenServiceImpl implements ScreenService {
      */
     @Override
     public void stopVideoCapture() throws IOException {
-        log.debug("stopVideoCapture");
+        LOGGER.debug("stopVideoCapture");
         this.screenRecorder.stop();
     }
 

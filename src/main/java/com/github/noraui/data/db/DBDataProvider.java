@@ -19,21 +19,19 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.data.CommonDataProvider;
 import com.github.noraui.data.DataInputProvider;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.exception.data.DatabaseException;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Constants;
 import com.github.noraui.utils.Messages;
 
+@Loggable
 public class DBDataProvider extends CommonDataProvider implements DataInputProvider {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(DBDataProvider.class);
+    static Logger LOGGER;
 
     private static final String DB_DATA_PROVIDER_USED = "DB_DATA_PROVIDER_USED";
     private static final String DATABASE_ERROR_FORBIDDEN_WORDS_IN_QUERY = "DATABASE_ERROR_FORBIDDEN_WORDS_IN_QUERY";

@@ -18,7 +18,6 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.application.page.Page;
 import com.github.noraui.application.page.Page.PageElement;
@@ -33,6 +32,7 @@ import com.github.noraui.exception.Result;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.GherkinConditionedLoopedStep;
 import com.github.noraui.gherkin.GherkinStepCondition;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Constants;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
@@ -47,12 +47,10 @@ import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Lorsque;
 import io.cucumber.java.fr.Quand;
 
+@Loggable
 public class CommonSteps extends Step {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(CommonSteps.class);
+    static Logger LOGGER;
 
     /**
      * Waits a time in second.

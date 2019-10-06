@@ -32,6 +32,8 @@ public class Constants {
 
     public static final String DOWNLOADED_FILES_FOLDER = "downloadFiles";
 
+    public static final String TOP_LEVEL_PACKAGE = "com.github.noraui";
+
     /**
      * Private constructor
      */

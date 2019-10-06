@@ -27,7 +27,6 @@ import javax.management.ReflectionException;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.cucumber.metrics.annotation.time.Time;
 import com.github.noraui.cucumber.metrics.annotation.time.TimeName;
@@ -35,16 +34,15 @@ import com.github.noraui.cucumber.metrics.annotation.time.TimeValue;
 import com.github.noraui.cucumber.metrics.annotation.time.Times;
 import com.github.noraui.cucumber.metrics.core.impl.Meter;
 import com.github.noraui.cucumber.metrics.jmx.TimedJmxDynamicMBean;
+import com.github.noraui.log.annotation.Loggable;
 import com.google.inject.Singleton;
 
 @Singleton
+@Loggable
 public class TimeInterceptor implements MethodInterceptor {
 
-    /**
-     * Specific LOGGER
-     */
-    private final Logger LOGGER = LoggerFactory.getLogger(TimeInterceptor.class);
-    
+    static Logger LOGGER;
+
     private final ConcurrentMap<String, Meter> meters = new ConcurrentHashMap<>();
     private TimedJmxDynamicMBean mbean = null;
 

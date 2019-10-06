@@ -11,18 +11,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.exception.TechnicalException;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 
+@Loggable
 public class Counter {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(Counter.class);
+    static Logger LOGGER;
 
     private static final String COUNTER_USAGE_WARNING_MESSAGE = "COUNTER_USAGE_WARNING_MESSAGE";
 
@@ -31,14 +29,13 @@ public class Counter {
 
     public static void main(String[] args) throws TechnicalException {
         if (args.length == 1) {
+            Context.getInstance().initializeEnv("demo" + args[0] + ".properties");
             final List<String> manager = new ArrayList<>();
             final List<String> scenarioBlacklist = new ArrayList<>();
             final List<String> versionControlSystemsBlacklist = new ArrayList<>();
 
             versionControlSystemsBlacklist.add(".svn");
             versionControlSystemsBlacklist.add(".gitignore");
-
-            Context.getInstance().initializeEnv("demo" + args[0] + ".properties");
 
             if (args[0].contains("RestJson")) {
                 scenarioBlacklist.add("sampleRESTAPI");

@@ -21,9 +21,6 @@ import com.github.noraui.model.ModelList;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 public class DataUtils {
 
     private DataUtils() {

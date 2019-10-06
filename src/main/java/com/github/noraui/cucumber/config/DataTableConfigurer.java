@@ -10,10 +10,10 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.gherkin.GherkinConditionedLoopedStep;
 import com.github.noraui.gherkin.GherkinStepCondition;
+import com.github.noraui.log.annotation.Loggable;
 
 import io.cucumber.core.api.TypeRegistry;
 import io.cucumber.core.api.TypeRegistryConfigurer;
@@ -23,12 +23,10 @@ import io.cucumber.datatable.TableEntryTransformer;
 /*
  * Maps datatables in feature files to custom domain objects.
  */
+@Loggable
 public class DataTableConfigurer implements TypeRegistryConfigurer {
-    
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(DataTableConfigurer.class);
+
+    static Logger LOGGER;
 
     @Override
     public Locale locale() {

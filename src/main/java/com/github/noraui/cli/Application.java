@@ -23,16 +23,15 @@ import java.util.regex.Matcher;
 
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import com.github.noraui.log.annotation.Loggable;
 import com.google.common.io.Files;
 
+@Loggable
 public class Application extends AbstractNoraUiCli {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
+    static Logger LOGGER;
+
     public static final String SUFFIX_HOME = "_HOME\";";
     public static final String SUFFIX_KEY = "_KEY;";
 

@@ -22,10 +22,7 @@ import cucumber.runtime.Env;
 
 public abstract class AbstractMetricsModule implements Module {
 
-    /**
-     * Specific LOGGER
-     */
-    private final Logger LOGGER = LoggerFactory.getLogger(AbstractMetricsModule.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractMetricsModule.class);
 
     void setAnnotation2Interceptors(Binder binder, String annotationEnable, final Class<? extends Annotation> annotationType, MethodInterceptor... interceptors) {
         String ae = Env.INSTANCE.get(annotationEnable);

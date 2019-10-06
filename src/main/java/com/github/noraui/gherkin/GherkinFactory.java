@@ -21,17 +21,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Constants;
 import com.github.noraui.utils.Context;
 
+@Loggable
 public class GherkinFactory {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(GherkinFactory.class);
+    static Logger LOGGER;
 
     private static final String DATA = "#DATA";
     private static final String DATA_END = "#END";
