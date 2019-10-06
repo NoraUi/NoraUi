@@ -26,7 +26,7 @@ import javassist.Modifier;
 @Loggable
 public class StepInterceptor implements MethodInterceptor {
 
-    static Logger LOGGER;
+    static Logger log;
 
     /**
      * {@inheritDoc}
@@ -48,7 +48,7 @@ public class StepInterceptor implements MethodInterceptor {
             if (stepAnnotation.annotationType().isAnnotationPresent(StepDefAnnotation.class)) {
                 Matcher matcher = Pattern.compile("value=(.*)\\)").matcher(stepAnnotation.toString());
                 if (matcher.find()) {
-                    LOGGER.info("---> " + stepAnnotation.annotationType().getSimpleName() + " "
+                    log.info("---> " + stepAnnotation.annotationType().getSimpleName() + " "
                             + String.format(matcher.group(1).replaceAll("\\{\\S+\\}", "{%s}").replace("(\\?)", ""), invocation.getArguments()));
                 }
             }
@@ -56,17 +56,17 @@ public class StepInterceptor implements MethodInterceptor {
         if (m.isAnnotationPresent(RetryOnFailure.class)) {
             RetryOnFailure retryAnnotation = m.getAnnotation(RetryOnFailure.class);
             if (retryAnnotation.verbose()) {
-                LOGGER.info("NORAUI StepInterceptor invoke method " + m);
+                log.info("NORAUI StepInterceptor invoke method " + m);
             }
             for (int i = 0; i < retryAnnotation.attempts(); i++) {
                 try {
                     if (retryAnnotation.verbose()) {
-                        LOGGER.info("NORAUI StepInterceptor attempt n° " + i);
+                        log.info("NORAUI StepInterceptor attempt n° " + i);
                     }
                     return invocation.proceed();
                 } catch (FailureException e) {
                     if (retryAnnotation.verbose()) {
-                        LOGGER.info("NORAUI StepInterceptor Exception " + e.getMessage());
+                        log.info("NORAUI StepInterceptor Exception " + e.getMessage());
                     }
                     if (i == retryAnnotation.attempts() - 1) {
                         e.getFailure().fail();

@@ -41,7 +41,7 @@ public class CryptoServiceUT {
     public void setUp() throws TechnicalException {
         NoraUiInjector.resetInjector();
         new NoraUiInjectorSource().getInjector().injectMembers(this);
-        CryptoServiceImpl.LOGGER = LoggerFactory.getLogger(CryptoServiceImpl.class);
+        CryptoServiceImpl.log = LoggerFactory.getLogger(CryptoServiceImpl.class);
     }
 
     @After

@@ -27,14 +27,14 @@ import com.github.noraui.utils.Messages;
 @Loggable
 public class InputGherkinDataProvider extends CommonDataProvider implements DataInputProvider {
 
-    static Logger LOGGER;
+    static Logger log;
 
     private static final String GHERKIN_INPUT_DATA_PROVIDER_USED = "GHERKIN_INPUT_DATA_PROVIDER_USED";
 
     private String[] examples = new String[] {};
 
     public InputGherkinDataProvider() {
-        LOGGER.info(Messages.getMessage(GHERKIN_INPUT_DATA_PROVIDER_USED));
+        log.info(Messages.getMessage(GHERKIN_INPUT_DATA_PROVIDER_USED));
     }
 
     /**
@@ -46,7 +46,7 @@ public class InputGherkinDataProvider extends CommonDataProvider implements Data
         try {
             initColumns();
         } catch (final EmptyDataFileContentException e) {
-            LOGGER.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION), e);
+            log.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION), e);
             System.exit(-1);
         }
     }

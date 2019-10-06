@@ -32,7 +32,7 @@ import io.cucumber.java.fr.Et;
 @Loggable
 public class RESTSteps extends Step {
 
-    static Logger LOGGER;
+    static Logger log;
 
     @Inject
     private HttpService httpService;
@@ -60,15 +60,15 @@ public class RESTSteps extends Step {
     @Et("Je sauvegarde la valeur de cette API REST {string} {string} {string} dans {string} du contexte(\\?)")
     @And("I save the value of REST API {string} {string} {string} in {string} context key(\\?)")
     public void saveValue(String method, String pageKey, String uri, String targetKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
-        LOGGER.debug("saveValue of REST API with method [{}].", method);
-        LOGGER.debug("saveValue of REST API with pageKey [{}].", pageKey);
-        LOGGER.debug("saveValue of REST API with uri [{}].", uri);
-        LOGGER.debug("saveValue of REST API in targetKey [{}].", targetKey);
+        log.debug("saveValue of REST API with method [{}].", method);
+        log.debug("saveValue of REST API with pageKey [{}].", pageKey);
+        log.debug("saveValue of REST API with uri [{}].", uri);
+        log.debug("saveValue of REST API in targetKey [{}].", targetKey);
         String json = null;
         try {
             json = httpService.get(Context.getUrlByPagekey(pageKey), uri);
         } catch (HttpServiceException e) {
-            LOGGER.error(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_CALL_API_REST), e);
+            log.error(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_CALL_API_REST), e);
             new Result.Failure<>(Context.getApplicationByPagekey(pageKey), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_CALL_API_REST), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
         Context.saveValue(targetKey, json);
@@ -97,10 +97,10 @@ public class RESTSteps extends Step {
     @Et("Je sauvegarde la valeur de cette API REST {string} {string} {string} dans {string} du fournisseur de données en sortie(\\?)")
     @And("I save the value of REST API {string} {string} {string} in {string} column of data output provider(\\?)")
     public void saveValueInDataOutputProvider(String method, String pageKey, String uri, String targetColumn, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
-        LOGGER.debug("saveValue of REST API with method [{}].", method);
-        LOGGER.debug("saveValue of REST API with pageKey [{}].", pageKey);
-        LOGGER.debug("saveValue of REST API with uri [{}].", uri);
-        LOGGER.debug("saveValue of REST API in targetColumn [{}].", targetColumn);
+        log.debug("saveValue of REST API with method [{}].", method);
+        log.debug("saveValue of REST API with pageKey [{}].", pageKey);
+        log.debug("saveValue of REST API with uri [{}].", uri);
+        log.debug("saveValue of REST API in targetColumn [{}].", targetColumn);
         String json;
         try {
             json = httpService.get(Context.getUrlByPagekey(pageKey), uri);

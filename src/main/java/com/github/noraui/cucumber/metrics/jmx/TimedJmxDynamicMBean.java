@@ -30,7 +30,7 @@ import com.github.noraui.log.annotation.Loggable;
 @Loggable
 public class TimedJmxDynamicMBean implements DynamicMBean {
 
-    static Logger LOGGER;
+    static Logger log;
 
     private final ConcurrentMap<String, Long> value = new ConcurrentHashMap<>();
 
@@ -111,7 +111,7 @@ public class TimedJmxDynamicMBean implements DynamicMBean {
     }
 
     private void refresh() {
-        LOGGER.info("Refresh Data");
+        log.info("Refresh Data");
     }
 
 }

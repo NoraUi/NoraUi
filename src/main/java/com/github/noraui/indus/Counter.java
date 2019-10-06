@@ -20,7 +20,7 @@ import com.github.noraui.utils.Messages;
 @Loggable
 public class Counter {
 
-    static Logger LOGGER;
+    static Logger log;
 
     private static final String COUNTER_USAGE_WARNING_MESSAGE = "COUNTER_USAGE_WARNING_MESSAGE";
 
@@ -47,7 +47,7 @@ public class Counter {
             mavenRunCounter.print(counters, args[0]);
             Context.clear();
         } else {
-            LOGGER.warn(Messages.getMessage(COUNTER_USAGE_WARNING_MESSAGE));
+            log.warn(Messages.getMessage(COUNTER_USAGE_WARNING_MESSAGE));
         }
 
     }

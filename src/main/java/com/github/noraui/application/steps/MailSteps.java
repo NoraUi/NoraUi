@@ -54,7 +54,7 @@ import io.cucumber.java.fr.Et;
 @Loggable
 public class MailSteps extends Step {
 
-    static Logger LOGGER;
+    static Logger log;
 
     @Inject
     private HttpService httpService;
@@ -157,9 +157,9 @@ public class MailSteps extends Step {
         final Element link = doc.selectFirst(firstCssQuery);
         try {
             final String response = httpService.get(link.attr("href"));
-            LOGGER.debug("response is {}.", response);
+            log.debug("response is {}.", response);
         } catch (final HttpServiceException e) {
-            LOGGER.error(Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_MAIL_ACTIVATION), subjectMail), e);
+            log.error(Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_MAIL_ACTIVATION), subjectMail), e);
             new Result.Failure<>("", Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_MAIL_ACTIVATION), subjectMail), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
     }

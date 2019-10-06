@@ -30,7 +30,7 @@ import com.google.common.io.Files;
 @Loggable
 public class Application extends AbstractNoraUiCli {
 
-    static Logger LOGGER;
+    static Logger log;
 
     public static final String SUFFIX_HOME = "_HOME\";";
     public static final String SUFFIX_KEY = "_KEY;";
@@ -80,7 +80,7 @@ public class Application extends AbstractNoraUiCli {
      *            boolean to activate verbose mode (show more traces).
      */
     public void add(String applicationName, String url, Class<?> robotContext, boolean verbose) {
-        LOGGER.info("Add a new application named [{}] with this url: [{}]", applicationName, url);
+        log.info("Add a new application named [{}] with this url: [{}]", applicationName, url);
         addApplicationPages(applicationName, robotContext.getSimpleName().replace("Context", ""), robotContext, verbose);
         addApplicationSteps(applicationName, robotContext.getSimpleName().replace("Context", ""), robotContext, verbose);
         addApplicationContext(applicationName, robotContext, verbose);
@@ -102,7 +102,7 @@ public class Application extends AbstractNoraUiCli {
      *            boolean to activate verbose mode (show more traces).
      */
     public void remove(String applicationName, Class<?> robotContext, boolean verbose) {
-        LOGGER.info("Remove application named [{}].", applicationName);
+        log.info("Remove application named [{}].", applicationName);
         removeApplicationPages(applicationName, robotContext, verbose);
         removeApplicationSteps(applicationName, robotContext, verbose);
         removeApplicationModel(applicationName, robotContext, verbose);
@@ -186,15 +186,15 @@ public class Application extends AbstractNoraUiCli {
             if (!newSelector.exists()) {
                 Files.asCharSink(newSelector, StandardCharsets.UTF_8).write(sb.toString());
                 if (verbose) {
-                    LOGGER.info("File [{}] created with success.", pagePath);
+                    log.info("File [{}] created with success.", pagePath);
                 }
             } else {
                 if (verbose) {
-                    LOGGER.info("File [{}] already exist.", pagePath);
+                    log.info("File [{}] already exist.", pagePath);
                 }
             }
         } catch (Exception e) {
-            LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+            log.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 
@@ -212,10 +212,10 @@ public class Application extends AbstractNoraUiCli {
         try {
             FileUtils.forceDelete(new File(applicationPagePath));
             if (verbose) {
-                LOGGER.info("{} removed with success.", applicationPagePath);
+                log.info("{} removed with success.", applicationPagePath);
             }
         } catch (IOException e) {
-            LOGGER.debug("{} not revove because do not exist.", applicationPagePath);
+            log.debug("{} not revove because do not exist.", applicationPagePath);
         }
     }
 
@@ -273,15 +273,15 @@ public class Application extends AbstractNoraUiCli {
             if (!newSelector.exists()) {
                 Files.asCharSink(newSelector, StandardCharsets.UTF_8).write(sb.toString());
                 if (verbose) {
-                    LOGGER.info("File [{}] created with success.", stepsPath);
+                    log.info("File [{}] created with success.", stepsPath);
                 }
             } else {
                 if (verbose) {
-                    LOGGER.info("File [{}] already exist.", stepsPath);
+                    log.info("File [{}] already exist.", stepsPath);
                 }
             }
         } catch (Exception e) {
-            LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+            log.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 
@@ -299,10 +299,10 @@ public class Application extends AbstractNoraUiCli {
         try {
             FileUtils.forceDelete(new File(applicationStepsPath));
             if (verbose) {
-                LOGGER.info("{} removed with success.", applicationStepsPath);
+                log.info("{} removed with success.", applicationStepsPath);
             }
         } catch (IOException e) {
-            LOGGER.debug("{} not revove because do not exist.", applicationStepsPath);
+            log.debug("{} not revove because do not exist.", applicationStepsPath);
         }
     }
 
@@ -320,10 +320,10 @@ public class Application extends AbstractNoraUiCli {
         try {
             FileUtils.forceDelete(new File(applicationModelPath));
             if (verbose) {
-                LOGGER.info("{} removed with success.", applicationModelPath);
+                log.info("{} removed with success.", applicationModelPath);
             }
         } catch (IOException e) {
-            LOGGER.debug("{} not revove because do not exist.", applicationModelPath);
+            log.debug("{} not revove because do not exist.", applicationModelPath);
         }
     }
 
@@ -363,7 +363,7 @@ public class Application extends AbstractNoraUiCli {
         String contextPath = this.mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replace("/", Matcher.quoteReplacement(File.separator))
                 + ".java";
         if (verbose) {
-            LOGGER.info("Add application named [{}] in context.", applicationName);
+            log.info("Add application named [{}] in context.", applicationName);
         }
         try (BufferedReader br = new BufferedReader(new FileReader(contextPath))) {
             StringBuilder sb = new StringBuilder();
@@ -458,7 +458,7 @@ public class Application extends AbstractNoraUiCli {
             bw.close();
             fw.close();
         } catch (IOException e) {
-            LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+            log.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 
@@ -482,16 +482,16 @@ public class Application extends AbstractNoraUiCli {
                 if (!newSelector.exists()) {
                     Files.asCharSink(newSelector, StandardCharsets.UTF_8).write(sb.toString());
                     if (verbose) {
-                        LOGGER.info("File [{}] created with success.", iniFilePath);
+                        log.info("File [{}] created with success.", iniFilePath);
                     }
                 } else {
                     if (verbose) {
-                        LOGGER.info("File [{}] already exist.", iniFilePath);
+                        log.info("File [{}] already exist.", iniFilePath);
                     }
                 }
             }
         } catch (Exception e) {
-            LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+            log.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 
@@ -508,11 +508,11 @@ public class Application extends AbstractNoraUiCli {
             for (String version : versions) {
                 FileUtils.forceDelete(new File(selectorsPath + File.separator + version + File.separator + applicationName + ".ini"));
                 if (verbose) {
-                    LOGGER.info("{} removed with success.", selectorsPath);
+                    log.info("{} removed with success.", selectorsPath);
                 }
             }
         } catch (IOException e) {
-            LOGGER.debug("{} not revove because do not exist.", selectorsPath);
+            log.debug("{} not revove because do not exist.", selectorsPath);
         }
     }
 
@@ -552,7 +552,7 @@ public class Application extends AbstractNoraUiCli {
     private void manageApplicationInPropertiesFile(boolean addMode, String applicationName, String noraRobotName, boolean verbose) {
         String propertiesfilePath = this.mainPath + File.separator + RESOURCES + File.separator + noraRobotName + ".properties";
         if (verbose) {
-            LOGGER.info("Add application named [{}] in this properties file: {}]", applicationName, propertiesfilePath);
+            log.info("Add application named [{}] in this properties file: {}]", applicationName, propertiesfilePath);
         }
         StringBuilder sb = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader(propertiesfilePath))) {
@@ -569,7 +569,7 @@ public class Application extends AbstractNoraUiCli {
                 line = br.readLine();
             }
         } catch (IOException e) {
-            LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+            log.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
         updateFile(propertiesfilePath, sb);
     }
@@ -616,7 +616,7 @@ public class Application extends AbstractNoraUiCli {
     private void manageApplicationInEnvPropertiesFile(boolean addMode, String applicationName, String url, String env, boolean verbose) {
         String propertiesfilePath = "src" + File.separator + "test" + File.separator + RESOURCES + File.separator + "environments" + File.separator + env + ".properties";
         if (verbose) {
-            LOGGER.info("Add application named [{}] in this properties file: [{}]", applicationName, propertiesfilePath);
+            log.info("Add application named [{}] in this properties file: [{}]", applicationName, propertiesfilePath);
         }
         StringBuilder sb = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader(propertiesfilePath))) {
@@ -633,7 +633,7 @@ public class Application extends AbstractNoraUiCli {
                 line = br.readLine();
             }
         } catch (IOException e) {
-            LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+            log.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
         updateFile(propertiesfilePath, sb);
     }

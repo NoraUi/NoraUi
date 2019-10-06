@@ -28,7 +28,7 @@ import com.google.common.io.Files;
 @Loggable
 public class Model extends AbstractNoraUiCli {
 
-    static Logger LOGGER;
+    static Logger log;
 
     private static final String PUBLIC = "public";
     private static final String PUBLIC_CLASS = PUBLIC + " class";
@@ -136,16 +136,16 @@ public class Model extends AbstractNoraUiCli {
      *            boolean to activate verbose mode (show more traces).
      */
     public void add(String applicationName, String modelName, String fields, String results, Class<?> robotContext, boolean verbose) {
-        LOGGER.info("Add a new model named [{}] in application named [{}]", modelName, applicationName);
+        log.info("Add a new model named [{}] in application named [{}]", modelName, applicationName);
         String[] fieldList = fields.split(" ");
         for (String field : fieldList) {
-            LOGGER.info("field: [{}]", field);
+            log.info("field: [{}]", field);
         }
         String[] resultList = new String[0];
         if (results != null) {
             resultList = results.split(" ");
             for (String result : resultList) {
-                LOGGER.info("result: [{}]", result);
+                log.info("result: [{}]", result);
             }
         }
         addModel(applicationName, modelName, fieldList, resultList, robotContext, verbose);
@@ -167,7 +167,7 @@ public class Model extends AbstractNoraUiCli {
      *            boolean to activate verbose mode (show more traces).
      */
     public void remove(String applicationName, String modelName, Class<?> robotContext, boolean verbose) {
-        LOGGER.info("Remove model named [{}] in application named [{}]", modelName, applicationName);
+        log.info("Remove model named [{}] in application named [{}]", modelName, applicationName);
         String modelPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replace(UTILS, APPLICATION_MODEL_SLASH + applicationName)
                 .replace("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1)) + ".java";
         String modelsPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replace(UTILS, APPLICATION_MODEL_SLASH + applicationName)
@@ -372,15 +372,15 @@ public class Model extends AbstractNoraUiCli {
             if (!newSelector.exists()) {
                 Files.asCharSink(newSelector, StandardCharsets.UTF_8).write(sb.toString());
                 if (verbose) {
-                    LOGGER.info(LOG_FILE_CREATED_WITH_SUCCESS, modelPath);
+                    log.info(LOG_FILE_CREATED_WITH_SUCCESS, modelPath);
                 }
             } else {
                 if (verbose) {
-                    LOGGER.info(LOG_FILE_ALREADY_EXIST, modelPath);
+                    log.info(LOG_FILE_ALREADY_EXIST, modelPath);
                 }
             }
         } catch (Exception e) {
-            LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+            log.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 
@@ -478,15 +478,15 @@ public class Model extends AbstractNoraUiCli {
             if (!newSelector.exists()) {
                 Files.asCharSink(newSelector, StandardCharsets.UTF_8).write(sb.toString());
                 if (verbose) {
-                    LOGGER.info(LOG_FILE_CREATED_WITH_SUCCESS, modelsPath);
+                    log.info(LOG_FILE_CREATED_WITH_SUCCESS, modelsPath);
                 }
             } else {
                 if (verbose) {
-                    LOGGER.info(LOG_FILE_ALREADY_EXIST, modelsPath);
+                    log.info(LOG_FILE_ALREADY_EXIST, modelsPath);
                 }
             }
         } catch (Exception e) {
-            LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+            log.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 
@@ -741,15 +741,15 @@ public class Model extends AbstractNoraUiCli {
             if (!newSelector.exists()) {
                 Files.asCharSink(newSelector, StandardCharsets.UTF_8).write(sb.toString());
                 if (verbose) {
-                    LOGGER.info(LOG_FILE_CREATED_WITH_SUCCESS, modelPath);
+                    log.info(LOG_FILE_CREATED_WITH_SUCCESS, modelPath);
                 }
             } else {
                 if (verbose) {
-                    LOGGER.info(LOG_FILE_ALREADY_EXIST, modelPath);
+                    log.info(LOG_FILE_ALREADY_EXIST, modelPath);
                 }
             }
         } catch (Exception e) {
-            LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+            log.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 
@@ -763,10 +763,10 @@ public class Model extends AbstractNoraUiCli {
         try {
             FileUtils.forceDelete(new File(modelPath));
             if (verbose) {
-                LOGGER.info("{} removed with success.", modelPath);
+                log.info("{} removed with success.", modelPath);
             }
         } catch (IOException e) {
-            LOGGER.debug("{} not revove because do not exist.", modelPath);
+            log.debug("{} not revove because do not exist.", modelPath);
         }
     }
 
@@ -781,12 +781,12 @@ public class Model extends AbstractNoraUiCli {
             Collection<File> l = FileUtils.listFiles(new File(applicationDirectoryPath), TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
             if (l.isEmpty()) {
                 if (verbose) {
-                    LOGGER.info("Empty directory, so remove application directory.");
+                    log.info("Empty directory, so remove application directory.");
                 }
                 FileUtils.deleteDirectory(new File(applicationDirectoryPath));
             }
         } catch (IOException e) {
-            LOGGER.debug("{} not revove because do not exist.", applicationDirectoryPath);
+            log.debug("{} not revove because do not exist.", applicationDirectoryPath);
         }
     }
 

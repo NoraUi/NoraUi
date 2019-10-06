@@ -21,7 +21,7 @@ import com.github.noraui.utils.Messages;
 @Loggable
 public abstract class Page implements IPage {
 
-    static Logger LOGGER;
+    static Logger log;
 
     private static final String PAGE_UNABLE_TO_RETRIEVE = "PAGE_UNABLE_TO_RETRIEVE";
 
@@ -87,7 +87,7 @@ public abstract class Page implements IPage {
                 try {
                     p = (PageElement) f.get(this);
                 } catch (IllegalArgumentException | IllegalAccessException e) {
-                    LOGGER.error("error Page.getPageElementByKey()", e);
+                    log.error("error Page.getPageElementByKey()", e);
                     return null;
                 }
                 if (key.equals(p.getKey())) {

@@ -50,7 +50,7 @@ import io.cucumber.java.fr.Quand;
 @Loggable
 public class CommonSteps extends Step {
 
-    static Logger LOGGER;
+    static Logger log;
 
     /**
      * Waits a time in second.
@@ -383,7 +383,7 @@ public class CommonSteps extends Step {
     public void clickOn(String pageElement, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        LOGGER.debug("{} clickOn: {}", page, elementName);
+        log.debug("{} clickOn: {}", page, elementName);
         clickOn(Page.getInstance(page).getPageElementByKey('-' + elementName));
     }
 
@@ -406,7 +406,7 @@ public class CommonSteps extends Step {
     public void clickOnByJs(String pageElement, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        LOGGER.debug("{} clickOnByJs: {}", page, elementName);
+        log.debug("{} clickOnByJs: {}", page, elementName);
         clickOnByJs(Page.getInstance(page).getPageElementByKey('-' + elementName));
     }
 
@@ -429,7 +429,7 @@ public class CommonSteps extends Step {
     @Quand("Je clique via js sur xpath {string} de {string} page(\\?)")
     @When("I click by js on xpath {string} from {string} page(\\?)")
     public void clickOnXpathByJs(String xpath, String page, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
-        LOGGER.debug("clickOnByJs with xpath {} on {} page", xpath, page);
+        log.debug("clickOnByJs with xpath {} on {} page", xpath, page);
         clickOnByJs(Page.getInstance(page), xpath);
     }
 

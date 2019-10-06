@@ -13,8 +13,8 @@ import static com.github.noraui.statistics.StatisticsConfig.STATISTICS_VERSION;
 import java.io.IOException;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.service.impl.HttpServiceImpl;
 import com.github.noraui.utils.Messages;
 import com.google.gson.Gson;
@@ -26,22 +26,20 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+@Loggable
 public class StatisticsService extends HttpServiceImpl {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(StatisticsService.class);
+    static Logger log;
 
     private Callback responseCallback = new Callback() {
         @Override
         public void onFailure(Call call, IOException e) {
-            LOGGER.error(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_CALL_METICS_API_REST));
+            log.error(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_CALL_METICS_API_REST));
         }
 
         @Override
         public void onResponse(Call call, Response response) throws IOException {
-            LOGGER.debug(Messages.getMessage(Messages.THANK_YOU_FOR_YOUR_CONTRIBUTION));
+            log.debug(Messages.getMessage(Messages.THANK_YOU_FOR_YOUR_CONTRIBUTION));
         }
     };
 

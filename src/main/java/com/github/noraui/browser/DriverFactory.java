@@ -45,7 +45,7 @@ import com.github.noraui.utils.Utilities.SystemArchitecture;
 @Loggable
 public class DriverFactory {
 
-    static Logger LOGGER;
+    static Logger log;
 
     /** Default web drivers implicit wait **/
     public static final long IMPLICIT_WAIT = 500;
@@ -76,7 +76,7 @@ public class DriverFactory {
             try {
                 driver = generateWebDriver(driverName);
             } catch (final TechnicalException e) {
-                LOGGER.error("error DriverFactory.getDriver()", e);
+                log.error("error DriverFactory.getDriver()", e);
             }
         } else {
             driver = drivers.get(driverName);
@@ -107,7 +107,7 @@ public class DriverFactory {
         if (!new File(pathWebdriver).setExecutable(true)) {
             throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_WEBDRIVER_SET_EXECUTABLE));
         }
-        LOGGER.info("Generating IE driver ({}) ...", pathWebdriver);
+        log.info("Generating IE driver ({}) ...", pathWebdriver);
 
         System.setProperty(Driver.IE.getDriverName(), pathWebdriver);
 
@@ -143,7 +143,7 @@ public class DriverFactory {
         if (!new File(pathWebdriver).setExecutable(true)) {
             throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_WEBDRIVER_SET_EXECUTABLE));
         }
-        LOGGER.info("Generating Chrome driver ({}) ...", pathWebdriver);
+        log.info("Generating Chrome driver ({}) ...", pathWebdriver);
 
         System.setProperty(Driver.CHROME.getDriverName(), pathWebdriver);
 
@@ -195,7 +195,7 @@ public class DriverFactory {
         if (!new File(pathWebdriver).setExecutable(true)) {
             throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_WEBDRIVER_SET_EXECUTABLE));
         }
-        LOGGER.info("Generating Firefox driver ({}) ...", pathWebdriver);
+        log.info("Generating Firefox driver ({}) ...", pathWebdriver);
 
         System.setProperty(Driver.FIREFOX.getDriverName(), pathWebdriver);
 

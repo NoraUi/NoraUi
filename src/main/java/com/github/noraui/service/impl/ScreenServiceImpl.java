@@ -57,7 +57,7 @@ import io.cucumber.core.api.Scenario;
 @Loggable
 public class ScreenServiceImpl implements ScreenService {
 
-    static Logger LOGGER;
+    static Logger log;
 
     private ScreenRecorder screenRecorder;
 
@@ -66,7 +66,7 @@ public class ScreenServiceImpl implements ScreenService {
      */
     @Override
     public void takeScreenshot(Scenario scenario) {
-        LOGGER.debug("takeScreenshot with the scenario named [{}]", scenario.getName());
+        log.debug("takeScreenshot with the scenario named [{}]", scenario.getName());
         final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
         scenario.embed(screenshot, "image/png");
     }
@@ -76,7 +76,7 @@ public class ScreenServiceImpl implements ScreenService {
      */
     @Override
     public void saveScreenshot(String screenName) throws IOException {
-        LOGGER.debug("saveScreenshot with the scenario named [{}]", screenName);
+        log.debug("saveScreenshot with the scenario named [{}]", screenName);
         final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
         FileUtils.forceMkdir(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
         FileUtils.writeByteArrayToFile(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + screenName + ".jpg"), screenshot);
@@ -87,7 +87,7 @@ public class ScreenServiceImpl implements ScreenService {
      */
     @Override
     public void saveScreenshot(String screenName, WebElement element) throws IOException {
-        LOGGER.debug("saveScreenshot with the scenario named [{}] and element [{}]", screenName, element.getTagName());
+        log.debug("saveScreenshot with the scenario named [{}] and element [{}]", screenName, element.getTagName());
 
         final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
         FileUtils.forceMkdir(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
@@ -113,7 +113,7 @@ public class ScreenServiceImpl implements ScreenService {
      */
     @Override
     public void startVideoCapture(String screenName) throws IOException, AWTException {
-        LOGGER.debug("startVideoCapture with the scenario named [{}]", screenName);
+        log.debug("startVideoCapture with the scenario named [{}]", screenName);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         NoraUiScreenRecorderConfiguration config = new NoraUiScreenRecorder.NoraUiScreenRecorderConfiguration();
 
@@ -136,7 +136,7 @@ public class ScreenServiceImpl implements ScreenService {
      */
     @Override
     public void stopVideoCapture() throws IOException {
-        LOGGER.debug("stopVideoCapture");
+        log.debug("stopVideoCapture");
         this.screenRecorder.stop();
     }
 

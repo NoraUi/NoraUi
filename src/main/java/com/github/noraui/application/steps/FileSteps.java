@@ -40,7 +40,7 @@ import io.cucumber.java.fr.Lorsque;
 @Loggable
 public class FileSteps extends Step {
 
-    static Logger LOGGER;
+    static Logger log;
 
     /**
      * Empties the default downloaded files folder.
@@ -56,7 +56,7 @@ public class FileSteps extends Step {
             FileUtils.forceMkdir(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
             FileUtils.cleanDirectory(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
         } catch (IOException e) {
-            LOGGER.warn("IOException in cleanDownloadDirectory", e);
+            log.warn("IOException in cleanDownloadDirectory", e);
         }
     }
 
@@ -75,7 +75,7 @@ public class FileSteps extends Step {
         try {
             FileUtils.forceDelete(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + file));
         } catch (IOException e) {
-            LOGGER.warn("IOException in removefileInDownloadDirectory", e);
+            log.warn("IOException in removefileInDownloadDirectory", e);
         }
     }
 
@@ -142,7 +142,7 @@ public class FileSteps extends Step {
             f = new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + file);
             nbTry++;
         } while (!(f.exists() && !f.isDirectory()));
-        LOGGER.debug("File downloaded in {} seconds.", nbTry);
+        log.debug("File downloaded in {} seconds.", nbTry);
     }
 
     /**

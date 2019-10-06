@@ -21,7 +21,7 @@ import com.github.noraui.utils.Messages;
 @Loggable
 public abstract class Result {
 
-    static Logger LOGGER;
+    static Logger log;
 
     public static final int CONTINUE_SCENARIO = 0;
     public static final int BREAK_SCENARIO = 1;
@@ -55,9 +55,9 @@ public abstract class Result {
             }
             O s = success();
             if (s != null) {
-                LOGGER.info("{} [{}]", message, s);
+                log.info("{} [{}]", message, s);
             } else {
-                LOGGER.info("{}", message);
+                log.info("{}", message);
             }
         }
 
@@ -90,22 +90,22 @@ public abstract class Result {
                 Context.getDataOutputProvider().writeWarningResult(Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData()).getIndexes().get(nid),
                         Messages.getMessage(Messages.WARNING_MESSAGE_DEFAULT) + message);
             } catch (final TechnicalException e) {
-                LOGGER.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE), e);
+                log.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE), e);
             }
             if (!Context.scenarioHasWarning()) {
                 Context.addWarning();
                 Context.scenarioHasWarning(true);
             }
             if (takeScreenshot) {
-                LOGGER.debug("Current scenario is {}", Context.getCurrentScenario());
+                log.debug("Current scenario is {}", Context.getCurrentScenario());
                 screenService.takeScreenshot(Context.getCurrentScenario());
             }
             Context.getCurrentScenario().write(Messages.getMessage(Messages.WARNING_MESSAGE_DEFAULT) + message);
             O s = warning();
             if (s != null) {
-                LOGGER.info("{} [{}]", message, s);
+                log.info("{} [{}]", message, s);
             } else {
-                LOGGER.info("{}", message);
+                log.info("{}", message);
             }
         }
 
@@ -183,7 +183,7 @@ public abstract class Result {
                         Context.getDataOutputProvider().writeWarningResult(line, Messages.getMessage(Messages.NOT_RUN_MESSAGE));
                     }
                 } catch (final TechnicalException e) {
-                    LOGGER.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE), e);
+                    log.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE), e);
                 }
             }
             Context.addFailure();
@@ -192,7 +192,7 @@ public abstract class Result {
                 Context.scenarioHasWarning(false);
             }
             if (takeScreenshot) {
-                LOGGER.debug("Current scenario is {}", Context.getCurrentScenario());
+                log.debug("Current scenario is {}", Context.getCurrentScenario());
                 screenService.takeScreenshot(Context.getCurrentScenario());
             }
             if (callback != null) {

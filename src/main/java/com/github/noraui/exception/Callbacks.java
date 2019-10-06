@@ -19,7 +19,7 @@ import com.github.noraui.utils.Context;
 @Loggable
 public class Callbacks extends HashMap<String, Callback> {
 
-    static Logger LOGGER;
+    static Logger log;
 
     /**
      *
@@ -60,7 +60,7 @@ public class Callbacks extends HashMap<String, Callback> {
          */
         public Callback(String strClass, String strMethod, Object... parameters) {
             try {
-                LOGGER.debug("ExceptionCallback with full name of class: {}", strClass);
+                log.debug("ExceptionCallback with full name of class: {}", strClass);
                 this.objectClass = Class.forName(strClass);
 
                 final Class<?>[] paramClasses = new Class<?>[parameters.length];
@@ -70,7 +70,7 @@ public class Callbacks extends HashMap<String, Callback> {
                 this.method = objectClass.getDeclaredMethod(strMethod, paramClasses);
                 this.parameters = parameters;
             } catch (final Exception e) {
-                LOGGER.error("error Callback()", e);
+                log.error("error Callback()", e);
             }
         }
 
@@ -81,9 +81,9 @@ public class Callbacks extends HashMap<String, Callback> {
             try {
                 method.invoke(objectClass.newInstance(), parameters);
             } catch (final InvocationTargetException ite) {
-                LOGGER.error("error InvocationTargetException", ite);
+                log.error("error InvocationTargetException", ite);
             } catch (final Exception e) {
-                LOGGER.error("error Callback.call()", e);
+                log.error("error Callback.call()", e);
             }
         }
     }

@@ -35,7 +35,7 @@ import com.github.noraui.utils.Messages;
 @Loggable
 public class MavenRunCounter {
 
-    static Logger LOGGER;
+    static Logger log;
 
     private static final String STEP_KEYWORDS = "(Given|When|Then|And|But|Soit|Lorsqu|Quand|Alors|Et|Mais)";
     private static final String NEW_SCENARIO_OUTLINE = "(Scenario Outline:|Plan du Scénario:)";
@@ -93,13 +93,13 @@ public class MavenRunCounter {
                                 nbStep++;
                                 matcher = recommendedPattern.matcher(sCurrentLine);
                                 if (!matcher.find()) {
-                                    LOGGER.error("{} : {}", Messages.getMessage(Messages.SCENARIO_ERROR_MESSAGE_ILLEGAL_TAB_FORMAT), sCurrentLine);
+                                    log.error("{} : {}", Messages.getMessage(Messages.SCENARIO_ERROR_MESSAGE_ILLEGAL_TAB_FORMAT), sCurrentLine);
                                 }
                             }
                         }
                     }
                 } catch (final IOException e) {
-                    LOGGER.error("IOException error: ", e);
+                    log.error("IOException error: ", e);
                 }
                 if (counter != null) {
                     countAndAddToList(manager, result, scenarioName, nbStep, counter);
@@ -140,12 +140,12 @@ public class MavenRunCounter {
             failures += counter.getFailures();
             skipped += counter.getSkipped();
             scenarios += counter.getNbCas();
-            LOGGER.info("Scenario: {} => step: {} and cases: {} -->  runs: {}, failures: {}, errors: 0 and skips: {}", counter.getScenarioName(), counter.getNbStep(), counter.getNbCas(),
+            log.info("Scenario: {} => step: {} and cases: {} -->  runs: {}, failures: {}, errors: 0 and skips: {}", counter.getScenarioName(), counter.getNbStep(), counter.getNbCas(),
                     counter.getRun(), counter.getFailures(), counter.getSkipped());
         }
-        if (LOGGER.isInfoEnabled()) {
-            LOGGER.info("{}", generateExpected1(type, failures, scenarios));
-            LOGGER.info("{}", generateExpected2(type, run, failures, skipped, scenarios));
+        if (log.isInfoEnabled()) {
+            log.info("{}", generateExpected1(type, failures, scenarios));
+            log.info("{}", generateExpected2(type, run, failures, skipped, scenarios));
         }
     }
 
@@ -325,7 +325,7 @@ public class MavenRunCounter {
                 countWithoutModel(nbStep, result, indexData);
             }
         } catch (final Exception e) {
-            LOGGER.error("error MavenRunCounter.countNbCasFailuresAndSkipped()", e);
+            log.error("error MavenRunCounter.countNbCasFailuresAndSkipped()", e);
         }
         return result;
     }
@@ -361,12 +361,12 @@ public class MavenRunCounter {
         int skipped = 0;
         final String[] headers = Context.getDataInputProvider().readLine(0, false);
         if (headers != null) {
-            LOGGER.info("getModelConstructor model: {}", model);
+            log.info("getModelConstructor model: {}", model);
             StringBuilder sb1 = new StringBuilder();
             for (String s : headers) {
                 sb1.append(s).append(" ");
             }
-            LOGGER.info("getModelConstructor headers: {}", sb1);
+            log.info("getModelConstructor headers: {}", sb1);
             final Constructor<Model> modelConstructor = DataUtils.getModelConstructor(model, headers);
             final Map<Integer, Map<String, ModelList>> fusionedData = DataUtils.fusionProcessor(model, modelConstructor);
             int dataIndex = 0;
@@ -383,7 +383,7 @@ public class MavenRunCounter {
                 }
             }
         } else {
-            LOGGER.error(Messages.getMessage(ScenarioInitiator.SCENARIO_INITIATOR_ERROR_EMPTY_FILE));
+            log.error(Messages.getMessage(ScenarioInitiator.SCENARIO_INITIATOR_ERROR_EMPTY_FILE));
         }
         result.setNbCas(indexData.size());
         result.setFailures(failures);

@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import com.github.noraui.log.annotation.Loggable;
 import com.google.common.reflect.ClassPath;
+import com.google.common.reflect.ClassPath.ClassInfo;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 
@@ -35,7 +36,7 @@ public class NoraUiLoggingModule implements Module {
         // @formatter:off
         try {
             ClassPath.from(getClass().getClassLoader()).getTopLevelClassesRecursive(packageName).stream()
-            .map(ci -> ci.load())
+            .map(ClassInfo::load)
             .filter(c -> !Modifier.isInterface(c.getModifiers()))
             .filter(c -> c.isAnnotationPresent(Loggable.class))
             .forEach(this::injectSlf4JLogger);
@@ -52,9 +53,9 @@ public class NoraUiLoggingModule implements Module {
                 if (field.getType() == Logger.class && Modifier.isStatic(field.getModifiers())) {
                     try {
                         field.setAccessible(true);
-                        Logger logger = LoggerFactory.getLogger(field.getDeclaringClass());
-                        field.set(null, logger);
+                        field.set(null, LoggerFactory.getLogger(field.getDeclaringClass()));
                     } catch (IllegalAccessException iae) {
+                        LOGGER.error("NoraUiLoggingModule.configure(Class<?>: " + clazz + ")", iae);
                     }
                 }
             }

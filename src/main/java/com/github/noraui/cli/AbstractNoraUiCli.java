@@ -19,7 +19,7 @@ import com.github.noraui.log.annotation.Loggable;
 @Loggable
 public abstract class AbstractNoraUiCli {
 
-    static Logger LOGGER;
+    static Logger log;
     protected static final String RESOURCES = "resources";
 
     protected String getJavaClassHeaders(String noraRobotName) {
@@ -48,7 +48,7 @@ public abstract class AbstractNoraUiCli {
             bw.flush();
             bw.close();
         } catch (IOException e) {
-            LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+            log.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 

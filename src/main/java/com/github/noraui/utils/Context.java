@@ -88,7 +88,7 @@ import io.cucumber.junit.CucumberOptions;
 @Loggable
 public class Context {
 
-    static Logger LOGGER;
+    static Logger log;
 
     public static final String STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME = BrowserSteps.class.getCanonicalName();
     public static final String GO_TO_URL_METHOD_NAME = "goToUrl";
@@ -323,7 +323,7 @@ public class Context {
      *            is name of properties file.
      */
     public synchronized void initializeEnv(String propertiesFileName) {
-        LOGGER.info("Context > initializeEnv()");
+        log.info("Context > initializeEnv()");
 
         iniFiles = new HashMap<>();
         applicationProperties = initPropertiesFile(Thread.currentThread().getContextClassLoader(), propertiesFileName);
@@ -354,7 +354,7 @@ public class Context {
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      */
     public synchronized void initializeRobot(Class<?> clazz) throws TechnicalException {
-        LOGGER.info("Context > initializeRobot() with {}", clazz.getCanonicalName());
+        log.info("Context > initializeRobot() with {}", clazz.getCanonicalName());
         // set browser: chrome,firefox or ie
         browser = getProperty(BROWSER_KEY, applicationProperties);
 
@@ -399,7 +399,7 @@ public class Context {
         // set crypto key
         cryptoKey = System.getProperty(CRYPTO_KEY);
         if (cryptoKey == null) {
-            LOGGER.warn("{} not set. You can not use crypto feature.", CRYPTO_KEY);
+            log.warn("{} not set. You can not use crypto feature.", CRYPTO_KEY);
         }
 
         // stacktrace configuration
@@ -548,7 +548,7 @@ public class Context {
             try {
                 initDataId(scenarioName);
             } catch (final TechnicalException te) {
-                LOGGER.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE), te);
+                log.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE), te);
             }
         }
         getInstance().scenarioName = scenarioName;
@@ -611,15 +611,15 @@ public class Context {
             final Properties props = new Properties();
             try {
                 if (in == null) {
-                    LOGGER.error(Messages.getMessage(CONTEXT_PROPERTIES_FILE_NOT_FOUND), propertiesFileName);
+                    log.error(Messages.getMessage(CONTEXT_PROPERTIES_FILE_NOT_FOUND), propertiesFileName);
                 } else {
-                    LOGGER.info("Reading properties file ({}).", propertiesFileName);
+                    log.info("Reading properties file ({}).", propertiesFileName);
                     props.load(in);
                 }
             } catch (final IOException e) {
-                LOGGER.error("error Context.initPropertiesFile()", e);
+                log.error("error Context.initPropertiesFile()", e);
             }
-            LOGGER.info("Loaded properties from {} = {}.", propertiesFileName, props);
+            log.info("Loaded properties from {} = {}.", propertiesFileName, props);
             return props;
         }
         return null;
@@ -638,7 +638,7 @@ public class Context {
         }
         final String p = propertyFile.getProperty(key);
         if (p == null) {
-            LOGGER.error("{}{}", key, Messages.getMessage(NOT_SET_LABEL));
+            log.error("{}{}", key, Messages.getMessage(NOT_SET_LABEL));
         }
         return p;
     }
@@ -654,10 +654,10 @@ public class Context {
         final String property = propertyFile.getProperty(key);
         int p = 0;
         if (property == null) {
-            LOGGER.error("{}{}", key, Messages.getMessage(NOT_SET_LABEL));
+            log.error("{}{}", key, Messages.getMessage(NOT_SET_LABEL));
         } else {
             p = Integer.parseInt(property);
-            LOGGER.info("{} = {}", key, p);
+            log.info("{} = {}", key, p);
         }
         return p;
     }
@@ -682,9 +682,9 @@ public class Context {
                 iniFiles.put(applicationKey, ini);
             }
         } catch (final InvalidFileFormatException e) {
-            LOGGER.error("error Context.initApplicationDom()", e);
+            log.error("error Context.initApplicationDom()", e);
         } catch (final IOException e) {
-            LOGGER.error(Messages.getMessage(CONTEXT_APP_INI_FILE_NOT_FOUND), applicationKey, e);
+            log.error(Messages.getMessage(CONTEXT_APP_INI_FILE_NOT_FOUND), applicationKey, e);
         }
     }
 
@@ -808,14 +808,14 @@ public class Context {
             stat.setArtifactId(model.getArtifactId());
             stat.setVersion(model.getVersion());
         } catch (IOException | XmlPullParserException e) {
-            LOGGER.trace("noraui.version not found.");
+            log.trace("noraui.version not found.");
         }
         stat.setApplications(applications.entrySet().stream().filter(e -> e.getValue().getHomeUrl() != null).collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getHomeUrl(), (a, b) -> b)));
         try {
             Map<String, String> code = ClassPath.from(loader).getTopLevelClassesRecursive(packageName).stream().collect(Collectors.toMap(ClassInfo::getName, c -> read(c.getName()), (a, b) -> b));
             stat.setCucumberMethods(code);
         } catch (IOException e1) {
-            LOGGER.trace("Cucumber Methods not found.");
+            log.trace("Cucumber Methods not found.");
         }
         return stat;
     }
@@ -835,7 +835,7 @@ public class Context {
                 sb.append(line);
             }
         } catch (IOException e) {
-            LOGGER.trace("java file [{}].java not found.", className);
+            log.trace("java file [{}].java not found.", className);
         }
         return sb.toString();
     }
@@ -862,7 +862,7 @@ public class Context {
                     indexData = fusionedData.values().stream().flatMap(models -> models.values().stream()).map(ModelList::getIds).map(ids -> new DataIndex(dataIndex.incrementAndGet(), ids))
                             .collect(Collectors.toList());
                 } else {
-                    LOGGER.error(Messages.getMessage(ScenarioInitiator.SCENARIO_INITIATOR_ERROR_EMPTY_FILE));
+                    log.error(Messages.getMessage(ScenarioInitiator.SCENARIO_INITIATOR_ERROR_EMPTY_FILE));
                 }
             } else {
                 for (int i = 1; i < Context.getDataInputProvider().getNbLines(); i++) {
@@ -892,7 +892,7 @@ public class Context {
         } else {
             currentLocale = Locale.getDefault();
         }
-        LOGGER.info(Messages.getMessage(CONTEXT_LOCALE_USED), currentLocale);
+        log.info(Messages.getMessage(CONTEXT_LOCALE_USED), currentLocale);
     }
 
     /**
@@ -949,7 +949,7 @@ public class Context {
                 }
             }
         } catch (final Exception e) {
-            LOGGER.error(Messages.getMessage(CONTEXT_ERROR_WHEN_PLUGING_DATA_PROVIDER), e);
+            log.error(Messages.getMessage(CONTEXT_ERROR_WHEN_PLUGING_DATA_PROVIDER), e);
         }
     }
 

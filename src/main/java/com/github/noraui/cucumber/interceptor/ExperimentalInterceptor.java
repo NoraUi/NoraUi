@@ -18,7 +18,7 @@ import com.github.noraui.log.annotation.Loggable;
 @Loggable
 public class ExperimentalInterceptor implements MethodInterceptor {
 
-    static Logger LOGGER;
+    static Logger log;
 
     /**
      * {@inheritDoc}
@@ -29,9 +29,9 @@ public class ExperimentalInterceptor implements MethodInterceptor {
         Method m = invocation.getMethod();
         if (m.isAnnotationPresent(Experimental.class)) {
             Experimental experimentalAnnotation = m.getAnnotation(Experimental.class);
-            LOGGER.warn("CAUTION: You use a experimental generic step named [{}].", experimentalAnnotation.name());
+            log.warn("CAUTION: You use a experimental generic step named [{}].", experimentalAnnotation.name());
         }
-        LOGGER.debug("NORAUI ExperimentalInterceptor invoke method {}", invocation.getMethod());
+        log.debug("NORAUI ExperimentalInterceptor invoke method {}", invocation.getMethod());
         return invocation.proceed();
     }
 

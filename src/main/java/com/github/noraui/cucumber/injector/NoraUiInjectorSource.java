@@ -23,7 +23,7 @@ import cucumber.runtime.java.guice.InjectorSource;
 @Loggable
 public class NoraUiInjectorSource implements InjectorSource {
 
-    static Logger LOGGER;
+    static Logger log;
 
     /**
      * {@inheritDoc}
@@ -34,7 +34,7 @@ public class NoraUiInjectorSource implements InjectorSource {
         try {
             NoraUiInjector.createInjector(injector);
         } catch (TechnicalException e) {
-            LOGGER.error("NoraUiInjectorSource.getInjector()", e);
+            log.error("NoraUiInjectorSource.getInjector()", e);
         }
         return injector;
     }

@@ -17,13 +17,13 @@ import com.github.noraui.utils.Messages;
 @Loggable
 public class OutputExcelDataProvider extends ExcelDataProvider {
 
-    static Logger LOGGER;
+    static Logger log;
 
     private static final String EXCEL_OUTPUT_DATA_PROVIDER_USED = "EXCEL_OUTPUT_DATA_PROVIDER_USED";
 
     public OutputExcelDataProvider() {
         super();
-        LOGGER.info(Messages.getMessage(EXCEL_OUTPUT_DATA_PROVIDER_USED));
+        log.info(Messages.getMessage(EXCEL_OUTPUT_DATA_PROVIDER_USED));
     }
 
     /**
@@ -36,7 +36,7 @@ public class OutputExcelDataProvider extends ExcelDataProvider {
             openOutputData();
             initColumns();
         } catch (EmptyDataFileContentException | WrongDataFileFormatException e) {
-            LOGGER.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION), e);
+            log.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION), e);
             System.exit(-1);
         }
     }

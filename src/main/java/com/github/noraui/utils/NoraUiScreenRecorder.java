@@ -24,7 +24,7 @@ import com.github.noraui.log.annotation.Loggable;
 @Loggable
 public class NoraUiScreenRecorder extends ScreenRecorder {
 
-    static Logger LOGGER;
+    static Logger log;
 
     private String name;
 
@@ -38,7 +38,7 @@ public class NoraUiScreenRecorder extends ScreenRecorder {
         if (!movieFolder.exists()) {
             movieFolder.mkdirs();
         } else if (!movieFolder.isDirectory()) {
-            LOGGER.error("\"{}\" is not a directory.", movieFolder);
+            log.error("\"{}\" is not a directory.", movieFolder);
             throw new IOException("\"" + movieFolder + "\" is not a directory.");
         }
         return new File(movieFolder, name + "-" + new SimpleDateFormat("yyyy-MM-dd HH.mm.ss").format(new Date()) + "." + Registry.getInstance().getExtension(fileFormat));
