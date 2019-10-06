@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import cucumber.api.Scenario;
 import cucumber.runtime.CucumberException;
@@ -25,7 +26,7 @@ import io.cucumber.stepexpression.Argument;
 
 public class PickleStepDefinitionMatch extends Match implements StepDefinitionMatch {
 
-    static Logger log;
+    private static final Logger LOGGER = LoggerFactory.getLogger(PickleStepDefinitionMatch.class.getName());
 
     private final StepDefinition stepDefinition;
     private final transient String featurePath;
@@ -42,25 +43,25 @@ public class PickleStepDefinitionMatch extends Match implements StepDefinitionMa
 
     @Override
     public void runStep(Scenario scenario) throws Throwable {
-        log.debug("runStep {}", step.getText());
+        LOGGER.debug("runStep {}", step.getText());
 
         List<Argument> arguments = getArguments();
         int argumentCount = arguments.size();
 
         Integer parameterCount = stepDefinition.getParameterCount();
-        log.debug("parameterCount:{} argumentCount:{}", step.getText(), parameterCount, argumentCount);
+        LOGGER.debug("parameterCount:{} argumentCount:{}", step.getText(), parameterCount, argumentCount);
         for (Argument ar : arguments) {
-            log.debug("Argument: {}", ar);
+            LOGGER.debug("Argument: {}", ar);
         }
 
         if (parameterCount != null && (argumentCount > parameterCount || argumentCount + 1 < parameterCount)) {
-            log.error("arityMismatch: {}", parameterCount);
+            LOGGER.error("arityMismatch: {}", parameterCount);
             throw arityMismatch(parameterCount);
         }
         List<Object> result = new ArrayList<>();
         try {
             for (Argument argument : arguments) {
-                log.debug("add argument {} to result", argument.getValue());
+                LOGGER.debug("add argument {} to result", argument.getValue());
                 result.add(argument.getValue());
             }
             // add List<GherkinStepCondition> or parameters Map<String, String>
@@ -72,28 +73,28 @@ public class PickleStepDefinitionMatch extends Match implements StepDefinitionMa
                 } else if (((ParameterInfo) parameters.get(parameterCount - 1)).getType().toString().startsWith("java.util.Map<")) {
                     obj = new HashMap<>();
                 } else {
-                    log.error("arityMismatch in add List<GherkinStepCondition> or parameters Map<String, String>: {}", parameterCount);
+                    LOGGER.error("arityMismatch in add List<GherkinStepCondition> or parameters Map<String, String>: {}", parameterCount);
                     throw arityMismatch(parameterCount);
                 }
-                log.debug("add argument {} to result in add List<GherkinStepCondition> or parameters Map<String, String>", obj);
+                LOGGER.debug("add argument {} to result in add List<GherkinStepCondition> or parameters Map<String, String>", obj);
                 result.add(obj);
             }
         } catch (UndefinedDataTableTypeException e) {
-            log.error("UndefinedDataTableTypeException when add", e);
+            LOGGER.error("UndefinedDataTableTypeException when add", e);
             throw registerTypeInConfiguration(e);
         } catch (CucumberExpressionException | CucumberDataTableException e) {
-            log.error("CucumberExpressionException or CucumberDataTableException when add", e);
+            LOGGER.error("CucumberExpressionException or CucumberDataTableException when add", e);
             throw couldNotConvertArguments(e);
         }
 
         try {
-            log.debug("stepDefinition.execute {}", result.size());
+            LOGGER.debug("stepDefinition.execute {}", result.size());
             stepDefinition.execute(result.toArray(new Object[0]));
         } catch (CucumberException e) {
-            log.error("CucumberException when stepDefinition.execute: {}", e);
+            LOGGER.error("CucumberException when stepDefinition.execute: {}", e);
             throw e;
         } catch (Throwable t) {
-            log.error("Throwable when stepDefinition.execute: {}", t);
+            LOGGER.error("Throwable when stepDefinition.execute: {}", t);
             throw removeFrameworkFramesAndAppendStepLocation(t, getStepLocation());
         }
     }
