@@ -30,7 +30,7 @@ import com.google.inject.Singleton;
 @Singleton
 public class CryptoServiceImpl implements CryptoService {
 
-    static Logger LOGGER;
+    public static Logger LOGGER;
 
     /**
      * {@inheritDoc}
