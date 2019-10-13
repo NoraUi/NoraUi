@@ -13,7 +13,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 import cucumber.api.Scenario;
 import cucumber.runtime.CucumberException;
 import cucumber.runtime.StepDefinition;
@@ -26,12 +25,9 @@ import io.cucumber.datatable.UndefinedDataTableTypeException;
 import io.cucumber.stepexpression.Argument;
 
 public class PickleStepDefinitionMatch extends Match implements StepDefinitionMatch {
-    
-    /**
-     * Specific LOGGER
-     */
+
     private static final Logger LOGGER = LoggerFactory.getLogger(PickleStepDefinitionMatch.class.getName());
-    
+
     private final StepDefinition stepDefinition;
     private final transient String featurePath;
     // The official JSON gherkin format doesn't have a step attribute, so we're marking this as transient
@@ -48,16 +44,16 @@ public class PickleStepDefinitionMatch extends Match implements StepDefinitionMa
     @Override
     public void runStep(Scenario scenario) throws Throwable {
         LOGGER.debug("runStep {}", step.getText());
-        
+
         List<Argument> arguments = getArguments();
         int argumentCount = arguments.size();
-        
+
         Integer parameterCount = stepDefinition.getParameterCount();
         LOGGER.debug("parameterCount:{} argumentCount:{}", step.getText(), parameterCount, argumentCount);
         for (Argument ar : arguments) {
             LOGGER.debug("Argument: {}", ar);
         }
-        
+
         if (parameterCount != null && (argumentCount > parameterCount || argumentCount + 1 < parameterCount)) {
             LOGGER.error("arityMismatch: {}", parameterCount);
             throw arityMismatch(parameterCount);
@@ -72,9 +68,9 @@ public class PickleStepDefinitionMatch extends Match implements StepDefinitionMa
             if (parameterCount != null && argumentCount + 1 == parameterCount) {
                 List<?> parameters = stepDefinition.getParameters();
                 Object obj;
-                if (((ParameterInfo)parameters.get(parameterCount-1)).getType().toString().startsWith("java.util.List<")) {
+                if (((ParameterInfo) parameters.get(parameterCount - 1)).getType().toString().startsWith("java.util.List<")) {
                     obj = new ArrayList<>();
-                } else if (((ParameterInfo)parameters.get(parameterCount-1)).getType().toString().startsWith("java.util.Map<")) {
+                } else if (((ParameterInfo) parameters.get(parameterCount - 1)).getType().toString().startsWith("java.util.Map<")) {
                     obj = new HashMap<>();
                 } else {
                     LOGGER.error("arityMismatch in add List<GherkinStepCondition> or parameters Map<String, String>: {}", parameterCount);
@@ -104,22 +100,18 @@ public class PickleStepDefinitionMatch extends Match implements StepDefinitionMa
     }
 
     private CucumberException registerTypeInConfiguration(Exception e) {
-        return new CucumberException(String.format("" +
-                "Could not convert arguments for step [%s] defined at '%s'.\n" +
-                "It appears you did not register a data table type. The details are in the stacktrace below.", //TODO: Add doc URL
-            stepDefinition.getPattern(),
-            stepDefinition.getLocation(true)
-        ), e);
+        return new CucumberException(
+                String.format("" + "Could not convert arguments for step [%s] defined at '%s'.\n" + "It appears you did not register a data table type. The details are in the stacktrace below.", // TODO:
+                                                                                                                                                                                                   // Add
+                                                                                                                                                                                                   // doc
+                                                                                                                                                                                                   // URL
+                        stepDefinition.getPattern(), stepDefinition.getLocation(true)),
+                e);
     }
 
-
     private CucumberException couldNotConvertArguments(Exception e) {
-        return new CucumberException(String.format(
-            "Could not convert arguments for step [%s] defined at '%s'.\n" +
-                "The details are in the stacktrace below.",
-            stepDefinition.getPattern(),
-            stepDefinition.getLocation(true)
-        ), e);
+        return new CucumberException(String.format("Could not convert arguments for step [%s] defined at '%s'.\n" + "The details are in the stacktrace below.", stepDefinition.getPattern(),
+                stepDefinition.getLocation(true)), e);
     }
 
     @Override
@@ -129,16 +121,8 @@ public class PickleStepDefinitionMatch extends Match implements StepDefinitionMa
 
     private CucumberException arityMismatch(int parameterCount) {
         List<String> arguments = createArgumentsForErrorMessage();
-        return new CucumberException(String.format(
-            "Step [%s] is defined with %s parameters at '%s'.\n" +
-                "However, the gherkin step has %s arguments%sStep text: %s",
-            stepDefinition.getPattern(),
-            parameterCount,
-            stepDefinition.getLocation(true),
-            arguments.size(),
-            formatArguments(arguments),
-            step.getText()
-        ));
+        return new CucumberException(String.format("Step [%s] is defined with %s parameters at '%s'.\n" + "However, the gherkin step has %s arguments%sStep text: %s", stepDefinition.getPattern(),
+                parameterCount, stepDefinition.getLocation(true), arguments.size(), formatArguments(arguments), step.getText()));
     }
 
     private String formatArguments(List<String> arguments) {
@@ -205,4 +189,3 @@ public class PickleStepDefinitionMatch extends Match implements StepDefinitionMa
         return step.getLocations().get(step.getLocations().size() - 1).getLine();
     }
 }
-

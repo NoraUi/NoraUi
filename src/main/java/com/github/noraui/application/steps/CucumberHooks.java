@@ -11,11 +11,11 @@ import java.util.Collection;
 import org.joda.time.DateTime;
 import org.joda.time.Seconds;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.browser.Auth;
 import com.github.noraui.exception.Result;
 import com.github.noraui.exception.TechnicalException;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Constants;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
@@ -24,18 +24,17 @@ import io.cucumber.core.api.Scenario;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 
+@Loggable
 public class CucumberHooks {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(CucumberHooks.class);
+    static Logger log;
+
     private static final String PROGRESS_MESSAGE = "PROGRESS_MESSAGE";
     private static final String SUCCESS_MESSAGE_BY_DEFAULT = "SUCCESS_MESSAGE_BY_DEFAULT";
 
     @Before()
     public static void setUpScenario(Scenario scenario) throws TechnicalException {
-        LOGGER.debug("setUpScenario {} scenario.", scenario.getName());
+        log.debug("setUpScenario {} scenario.", scenario.getName());
         if (Context.getCurrentScenarioData() == 0) {
             // Retrieve input data provider (by scenario name) to read
             String scenarioName = System.getProperty("scenario.name") != null ? System.getProperty("scenario.name") : getFirstNonEnvironmentTag(scenario.getSourceTagNames());
@@ -54,15 +53,15 @@ public class CucumberHooks {
 
     @After()
     public static void tearDown(Scenario scenario) {
-        LOGGER.debug("tearDown {} scenario.", scenario.getName());
-        LOGGER.debug("Context.getCurrentScenarioData()={}", Context.getCurrentScenarioData());
-        LOGGER.debug("ExcelFactory.getNbLines()={}", Context.getDataInputProvider().getNbGherkinExample());
+        log.debug("tearDown {} scenario.", scenario.getName());
+        log.debug("Context.getCurrentScenarioData()={}", Context.getCurrentScenarioData());
+        log.debug("ExcelFactory.getNbLines()={}", Context.getDataInputProvider().getNbGherkinExample());
         printProgressBuild(scenario);
         if (Context.getCurrentScenarioData() >= Context.getDataInputProvider().getNbGherkinExample()) {
-            LOGGER.debug("Go to next feature");
+            log.debug("Go to next feature");
             Context.goToNextFeature();
         } else {
-            LOGGER.debug("No go to next feature");
+            log.debug("No go to next feature");
         }
     }
 
@@ -84,12 +83,12 @@ public class CucumberHooks {
         }
         postStar.append("*");
 
-        LOGGER.info("{}", star);
-        LOGGER.info("{}", postStar);
-        LOGGER.info(message, scenario.getSourceTagNames(), Context.getCurrentScenarioData(), Context.getDataInputProvider().getNbGherkinExample(), Context.getNbFailure(), Context.getNbWarning(),
+        log.info("{}", star);
+        log.info("{}", postStar);
+        log.info(message, scenario.getSourceTagNames(), Context.getCurrentScenarioData(), Context.getDataInputProvider().getNbGherkinExample(), Context.getNbFailure(), Context.getNbWarning(),
                 remainingTime);
-        LOGGER.info("{}", postStar);
-        LOGGER.info("{}", star);
+        log.info("{}", postStar);
+        log.info("{}", star);
     }
 
     protected static int getRemainingTime() {

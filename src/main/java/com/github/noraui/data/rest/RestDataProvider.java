@@ -9,7 +9,6 @@ package com.github.noraui.data.rest;
 import java.util.List;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.data.CommonDataProvider;
 import com.github.noraui.data.DataInputProvider;
@@ -18,17 +17,16 @@ import com.github.noraui.exception.HttpServiceException;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.exception.data.EmptyDataFileContentException;
 import com.github.noraui.exception.data.WebServicesException;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.service.HttpService;
 import com.github.noraui.service.impl.HttpServiceImpl;
 import com.github.noraui.utils.Messages;
 import com.google.gson.Gson;
 
+@Loggable
 public class RestDataProvider extends CommonDataProvider implements DataInputProvider, DataOutputProvider {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(RestDataProvider.class);
+    static Logger log;
 
     private static final String REST_DATA_PROVIDER_USED = "REST_DATA_PROVIDER_USED";
     private static final String REST_DATA_PROVIDER_WRITING_IN_REST_WS_ERROR_MESSAGE = "REST_DATA_PROVIDER_WRITING_IN_REST_WS_ERROR_MESSAGE";
@@ -57,7 +55,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
      *             if technical Exception occurred but for a Web Services.
      */
     public RestDataProvider(String type, String host, String port) throws WebServicesException {
-        LOGGER.info(Messages.getMessage(REST_DATA_PROVIDER_USED));
+        log.info(Messages.getMessage(REST_DATA_PROVIDER_USED));
         this.norauiWebServicesApi = host + ":" + port + NORAUI_API;
         this.httpService = new HttpServiceImpl();
         if (!types.JSON.toString().equals(type) && !types.XML.toString().equals(type)) {
@@ -71,11 +69,11 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
     @Override
     public void prepare(String scenario) throws TechnicalException {
         scenarioName = scenario;
-        LOGGER.info("prepare scenario [{}]", scenarioName);
+        log.info("prepare scenario [{}]", scenarioName);
         try {
             initColumns();
         } catch (final EmptyDataFileContentException e) {
-            LOGGER.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION), e);
+            log.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION), e);
             System.exit(-1);
         }
     }
@@ -88,7 +86,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
         try {
             return Integer.parseInt(httpService.get(this.norauiWebServicesApi, scenarioName + "/nbLines")) + 1;
         } catch (TechnicalException | NumberFormatException | HttpServiceException e) {
-            LOGGER.error("getNbLines error", e);
+            log.error("getNbLines error", e);
             return 0;
         }
 
@@ -99,7 +97,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
      */
     @Override
     public String readValue(String column, int line) {
-        LOGGER.debug("readValue at line [{}] in column [{}]", line, column);
+        log.debug("readValue at line [{}] in column [{}]", line, column);
         final String url = this.norauiWebServicesApi + scenarioName + COLUMN + (columns.indexOf(column) + 1) + LINE + line;
         try {
             return httpService.get(url);
@@ -113,7 +111,7 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
      */
     @Override
     public String[] readLine(int line, boolean readResult) {
-        LOGGER.debug("readLine at line [{}]", line);
+        log.debug("readLine at line [{}]", line);
         try {
             String httpResponse = httpService.get(this.norauiWebServicesApi + scenarioName + LINE + line);
             if (!"".equals(httpResponse)) {
@@ -125,17 +123,17 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
                     return response;
                 }
             }
-            LOGGER.warn("No line could be returned at {}", line);
+            log.warn("No line could be returned at {}", line);
             return null;
         } catch (TechnicalException | NumberFormatException | HttpServiceException e) {
-            LOGGER.error("readLine error at line [{}]", line, e);
+            log.error("readLine error at line [{}]", line, e);
             return null;
         }
     }
 
     private void initColumns() throws EmptyDataFileContentException {
         final String url = this.norauiWebServicesApi + scenarioName + "/columns";
-        LOGGER.debug("initColumns with this url [{}]", url);
+        log.debug("initColumns with this url [{}]", url);
         try {
             String httpResponse = httpService.get(url);
             if (!"".equals(httpResponse)) {
@@ -144,15 +142,15 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
                     resultColumnName = Messages.getMessage(ResultColumnNames.RESULT_COLUMN_NAME);
                     columns.add(resultColumnName);
                 } else {
-                    LOGGER.warn("No column could be returned at {}", url);
+                    log.warn("No column could be returned at {}", url);
                     throw new EmptyDataFileContentException(Messages.getMessage(EmptyDataFileContentException.EMPTY_DATA_FILE_CONTENT_ERROR_MESSAGE));
                 }
             } else {
-                LOGGER.warn("No column could be returned at {}", url);
+                log.warn("No column could be returned at {}", url);
                 throw new EmptyDataFileContentException(Messages.getMessage(EmptyDataFileContentException.EMPTY_DATA_FILE_CONTENT_ERROR_MESSAGE));
             }
         } catch (TechnicalException | NumberFormatException | HttpServiceException e) {
-            LOGGER.error("initColumns error", e);
+            log.error("initColumns error", e);
         }
     }
 
@@ -161,23 +159,23 @@ public class RestDataProvider extends CommonDataProvider implements DataInputPro
      */
     @Override
     protected void writeValue(String column, int line, String value) {
-        LOGGER.info("Writing: [{}] at line [{}] in column [{}]", value, line, column);
+        log.info("Writing: [{}] at line [{}] in column [{}]", value, line, column);
         final int colIndex = columns.indexOf(column);
         final String url = this.norauiWebServicesApi + scenarioName + COLUMN + colIndex + LINE + line;
-        LOGGER.info("url: [{}]", url);
+        log.info("url: [{}]", url);
         try {
             final DataModel dataModel = new Gson().fromJson(httpService.post(url, value), DataModel.class);
             if (resultColumnName.equals(column)) {
                 if (value.equals(dataModel.getRows().get(line - 1).getResult())) {
-                    LOGGER.info(Messages.getMessage(REST_DATA_PROVIDER_WRITING_IN_REST_WS_ERROR_MESSAGE), column, line, value);
+                    log.info(Messages.getMessage(REST_DATA_PROVIDER_WRITING_IN_REST_WS_ERROR_MESSAGE), column, line, value);
                 }
             } else {
                 if (value.equals(dataModel.getRows().get(line - 1).getColumns().get(colIndex - 1))) {
-                    LOGGER.info(Messages.getMessage(REST_DATA_PROVIDER_WRITING_IN_REST_WS_ERROR_MESSAGE), column, line, value);
+                    log.info(Messages.getMessage(REST_DATA_PROVIDER_WRITING_IN_REST_WS_ERROR_MESSAGE), column, line, value);
                 }
             }
         } catch (TechnicalException | NumberFormatException | HttpServiceException e) {
-            LOGGER.error("writeValue error", e);
+            log.error("writeValue error", e);
         }
     }
 

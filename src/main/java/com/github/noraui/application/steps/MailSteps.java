@@ -29,7 +29,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.cucumber.annotation.Conditioned;
 import com.github.noraui.cucumber.annotation.Experimental;
@@ -40,6 +39,7 @@ import com.github.noraui.exception.HttpServiceException;
 import com.github.noraui.exception.Result;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.GherkinStepCondition;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.service.HttpService;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
@@ -51,12 +51,10 @@ import io.cucumber.java.fr.Et;
 /**
  * This class contains Gherkin callable steps that aim for expecting a specific result.
  */
+@Loggable
 public class MailSteps extends Step {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(MailSteps.class);
+    static Logger log;
 
     @Inject
     private HttpService httpService;
@@ -73,7 +71,7 @@ public class MailSteps extends Step {
      * @param senderMail
      *            sender of mail box
      * @param subjectMail
-     *            subject of mail box                        
+     *            subject of mail box
      * @param firstCssQuery
      *            the first matching element
      * @param conditions
@@ -159,9 +157,9 @@ public class MailSteps extends Step {
         final Element link = doc.selectFirst(firstCssQuery);
         try {
             final String response = httpService.get(link.attr("href"));
-            LOGGER.debug("response is {}.", response);
+            log.debug("response is {}.", response);
         } catch (final HttpServiceException e) {
-            LOGGER.error(Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_MAIL_ACTIVATION), subjectMail), e);
+            log.error(Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_MAIL_ACTIVATION), subjectMail), e);
             new Result.Failure<>("", Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_MAIL_ACTIVATION), subjectMail), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
     }

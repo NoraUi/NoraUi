@@ -17,10 +17,7 @@ import com.google.inject.Inject;
 
 public class TimeModule extends AbstractMetricsModule {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(TimeModule.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(TimeModule.class);
 
     public static final String TIME_ANNOTATION_ENABLE = "Time.annotation.enable";
     public static final String TIMES_ANNOTATION_ENABLE = "Times.annotation.enable";

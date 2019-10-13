@@ -11,18 +11,16 @@ import java.net.URISyntaxException;
 
 import org.openqa.selenium.Cookie;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.exception.TechnicalException;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 
+@Loggable
 public class Auth {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(Auth.class);
+    static Logger log;
 
     private static final String WRONG_URI_SYNTAX = "WRONG_URI_SYNTAX";
 
@@ -148,7 +146,7 @@ public class Auth {
                     final String cookieDomain = new URI(domainUrl).getHost().replaceAll("self.", "");
                     final String cookiePath = cookieStr.substring(indexPath + 6);
                     getInstance().authCookie = new Cookie.Builder(cookieName, cookieValue).domain(cookieDomain).path(cookiePath).build();
-                    LOGGER.debug("New cookie created: {}={} on domain {}{}", cookieName, cookieValue, cookieDomain, cookiePath);
+                    log.debug("New cookie created: {}={} on domain {}{}", cookieName, cookieValue, cookieDomain, cookiePath);
                 }
             } catch (final URISyntaxException e) {
                 throw new TechnicalException(Messages.getMessage(WRONG_URI_SYNTAX), e);

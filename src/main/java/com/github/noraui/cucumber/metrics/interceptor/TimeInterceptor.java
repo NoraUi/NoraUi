@@ -27,7 +27,6 @@ import javax.management.ReflectionException;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.cucumber.metrics.annotation.time.Time;
 import com.github.noraui.cucumber.metrics.annotation.time.TimeName;
@@ -35,16 +34,15 @@ import com.github.noraui.cucumber.metrics.annotation.time.TimeValue;
 import com.github.noraui.cucumber.metrics.annotation.time.Times;
 import com.github.noraui.cucumber.metrics.core.impl.Meter;
 import com.github.noraui.cucumber.metrics.jmx.TimedJmxDynamicMBean;
+import com.github.noraui.log.annotation.Loggable;
 import com.google.inject.Singleton;
 
 @Singleton
+@Loggable
 public class TimeInterceptor implements MethodInterceptor {
 
-    /**
-     * Specific LOGGER
-     */
-    private final Logger LOGGER = LoggerFactory.getLogger(TimeInterceptor.class);
-    
+    static Logger log;
+
     private final ConcurrentMap<String, Meter> meters = new ConcurrentHashMap<>();
     private TimedJmxDynamicMBean mbean = null;
 
@@ -54,13 +52,13 @@ public class TimeInterceptor implements MethodInterceptor {
         try {
             mbs.registerMBean(this.mbean, new ObjectName("cucumber.metrics.jmx:type=TimedJmxDynamicMBean"));
         } catch (InstanceAlreadyExistsException e) {
-            LOGGER.warn("TimedInterceptor Exception - InstanceAlreadyExistsException" + e);
+            log.warn("TimedInterceptor Exception - InstanceAlreadyExistsException" + e);
         } catch (MBeanRegistrationException e) {
-            LOGGER.warn("TimedInterceptor Exception - MBeanRegistrationException" + e);
+            log.warn("TimedInterceptor Exception - MBeanRegistrationException" + e);
         } catch (NotCompliantMBeanException e) {
-            LOGGER.warn("TimedInterceptor Exception - NotCompliantMBeanException" + e);
+            log.warn("TimedInterceptor Exception - NotCompliantMBeanException" + e);
         } catch (MalformedObjectNameException e) {
-            LOGGER.warn("TimedInterceptor Exception - MalformedObjectNameException" + e);
+            log.warn("TimedInterceptor Exception - MalformedObjectNameException" + e);
         }
     }
 
@@ -85,9 +83,9 @@ public class TimeInterceptor implements MethodInterceptor {
         }
 
         //
-        LOGGER.debug("Cucumber Metrics TimedInterceptor invoke method " + invocation.getMethod() + " is called on " + invocation.getThis() + " with args " + invocation.getArguments());
+        log.debug("Cucumber Metrics TimedInterceptor invoke method " + invocation.getMethod() + " is called on " + invocation.getThis() + " with args " + invocation.getArguments());
         Object result = invocation.proceed();
-        LOGGER.debug("method " + invocation.getMethod() + " returns " + result);
+        log.debug("method " + invocation.getMethod() + " returns " + result);
         return result;
     }
 
@@ -95,12 +93,12 @@ public class TimeInterceptor implements MethodInterceptor {
         String timedName = getTimeName(m, as, args, timeAnnotation);
         int timedMark = getTimeMark(as, args, timeAnnotation);
         if (timeAnnotation.verbose()) {
-            LOGGER.debug("Timed name:" + timedName + "  Timed mark:" + timedMark);
+            log.debug("Timed name:" + timedName + "  Timed mark:" + timedMark);
         }
 
         timed(timedName, timedMark);
         if (timeAnnotation.verbose()) {
-            LOGGER.debug("Timed of :" + timedName + " is " + meters.get(timedName).getCount());
+            log.debug("Timed of :" + timedName + " is " + meters.get(timedName).getCount());
         }
 
         // JMX

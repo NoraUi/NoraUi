@@ -18,7 +18,6 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.application.page.Page;
 import com.github.noraui.application.page.Page.PageElement;
@@ -33,6 +32,7 @@ import com.github.noraui.exception.Result;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.GherkinConditionedLoopedStep;
 import com.github.noraui.gherkin.GherkinStepCondition;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Constants;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
@@ -47,12 +47,10 @@ import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Lorsque;
 import io.cucumber.java.fr.Quand;
 
+@Loggable
 public class CommonSteps extends Step {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(CommonSteps.class);
+    static Logger log;
 
     /**
      * Waits a time in second.
@@ -385,7 +383,7 @@ public class CommonSteps extends Step {
     public void clickOn(String pageElement, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        LOGGER.debug("{} clickOn: {}", page, elementName);
+        log.debug("{} clickOn: {}", page, elementName);
         clickOn(Page.getInstance(page).getPageElementByKey('-' + elementName));
     }
 
@@ -408,7 +406,7 @@ public class CommonSteps extends Step {
     public void clickOnByJs(String pageElement, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        LOGGER.debug("{} clickOnByJs: {}", page, elementName);
+        log.debug("{} clickOnByJs: {}", page, elementName);
         clickOnByJs(Page.getInstance(page).getPageElementByKey('-' + elementName));
     }
 
@@ -431,7 +429,7 @@ public class CommonSteps extends Step {
     @Quand("Je clique via js sur xpath {string} de {string} page(\\?)")
     @When("I click by js on xpath {string} from {string} page(\\?)")
     public void clickOnXpathByJs(String xpath, String page, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
-        LOGGER.debug("clickOnByJs with xpath {} on {} page", xpath, page);
+        log.debug("clickOnByJs with xpath {} on {} page", xpath, page);
         clickOnByJs(Page.getInstance(page), xpath);
     }
 

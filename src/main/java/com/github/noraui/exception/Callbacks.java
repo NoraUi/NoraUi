@@ -11,22 +11,20 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.exception.Callbacks.Callback;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Context;
 
+@Loggable
 public class Callbacks extends HashMap<String, Callback> {
+
+    static Logger log;
 
     /**
      *
      */
     private static final long serialVersionUID = -8116045885450166607L;
-
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(Callbacks.class);
 
     public static final String CLOSE_WINDOW_AND_SWITCH_TO_BAKERY_HOME = "CLOSE_WINDOW_AND_SWITCH_TO_BAKERY_HOME";
     public static final String CLOSE_WINDOW_AND_SWITCH_TO_GITHUBAPI_HOME = "CLOSE_WINDOW_AND_SWITCH_TO_GITHUBAPI_HOME";
@@ -62,7 +60,7 @@ public class Callbacks extends HashMap<String, Callback> {
          */
         public Callback(String strClass, String strMethod, Object... parameters) {
             try {
-                LOGGER.debug("ExceptionCallback with full name of class: {}", strClass);
+                log.debug("ExceptionCallback with full name of class: {}", strClass);
                 this.objectClass = Class.forName(strClass);
 
                 final Class<?>[] paramClasses = new Class<?>[parameters.length];
@@ -72,7 +70,7 @@ public class Callbacks extends HashMap<String, Callback> {
                 this.method = objectClass.getDeclaredMethod(strMethod, paramClasses);
                 this.parameters = parameters;
             } catch (final Exception e) {
-                LOGGER.error("error Callback()", e);
+                log.error("error Callback()", e);
             }
         }
 
@@ -83,9 +81,9 @@ public class Callbacks extends HashMap<String, Callback> {
             try {
                 method.invoke(objectClass.newInstance(), parameters);
             } catch (final InvocationTargetException ite) {
-                LOGGER.error("error InvocationTargetException", ite);
+                log.error("error InvocationTargetException", ite);
             } catch (final Exception e) {
-                LOGGER.error("error Callback.call()", e);
+                log.error("error Callback.call()", e);
             }
         }
     }

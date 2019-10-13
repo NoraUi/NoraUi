@@ -21,16 +21,14 @@ import java.util.regex.Matcher;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import com.github.noraui.log.annotation.Loggable;
 import com.google.common.io.Files;
 
+@Loggable
 public class Model extends AbstractNoraUiCli {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(Model.class);
+    static Logger log;
 
     private static final String PUBLIC = "public";
     private static final String PUBLIC_CLASS = PUBLIC + " class";
@@ -138,16 +136,16 @@ public class Model extends AbstractNoraUiCli {
      *            boolean to activate verbose mode (show more traces).
      */
     public void add(String applicationName, String modelName, String fields, String results, Class<?> robotContext, boolean verbose) {
-        LOGGER.info("Add a new model named [{}] in application named [{}]", modelName, applicationName);
+        log.info("Add a new model named [{}] in application named [{}]", modelName, applicationName);
         String[] fieldList = fields.split(" ");
         for (String field : fieldList) {
-            LOGGER.info("field: [{}]", field);
+            log.info("field: [{}]", field);
         }
         String[] resultList = new String[0];
         if (results != null) {
             resultList = results.split(" ");
             for (String result : resultList) {
-                LOGGER.info("result: [{}]", result);
+                log.info("result: [{}]", result);
             }
         }
         addModel(applicationName, modelName, fieldList, resultList, robotContext, verbose);
@@ -169,7 +167,7 @@ public class Model extends AbstractNoraUiCli {
      *            boolean to activate verbose mode (show more traces).
      */
     public void remove(String applicationName, String modelName, Class<?> robotContext, boolean verbose) {
-        LOGGER.info("Remove model named [{}] in application named [{}]", modelName, applicationName);
+        log.info("Remove model named [{}] in application named [{}]", modelName, applicationName);
         String modelPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replace(UTILS, APPLICATION_MODEL_SLASH + applicationName)
                 .replace("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1)) + ".java";
         String modelsPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replace(UTILS, APPLICATION_MODEL_SLASH + applicationName)
@@ -374,15 +372,15 @@ public class Model extends AbstractNoraUiCli {
             if (!newSelector.exists()) {
                 Files.asCharSink(newSelector, StandardCharsets.UTF_8).write(sb.toString());
                 if (verbose) {
-                    LOGGER.info(LOG_FILE_CREATED_WITH_SUCCESS, modelPath);
+                    log.info(LOG_FILE_CREATED_WITH_SUCCESS, modelPath);
                 }
             } else {
                 if (verbose) {
-                    LOGGER.info(LOG_FILE_ALREADY_EXIST, modelPath);
+                    log.info(LOG_FILE_ALREADY_EXIST, modelPath);
                 }
             }
         } catch (Exception e) {
-            LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+            log.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 
@@ -480,15 +478,15 @@ public class Model extends AbstractNoraUiCli {
             if (!newSelector.exists()) {
                 Files.asCharSink(newSelector, StandardCharsets.UTF_8).write(sb.toString());
                 if (verbose) {
-                    LOGGER.info(LOG_FILE_CREATED_WITH_SUCCESS, modelsPath);
+                    log.info(LOG_FILE_CREATED_WITH_SUCCESS, modelsPath);
                 }
             } else {
                 if (verbose) {
-                    LOGGER.info(LOG_FILE_ALREADY_EXIST, modelsPath);
+                    log.info(LOG_FILE_ALREADY_EXIST, modelsPath);
                 }
             }
         } catch (Exception e) {
-            LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+            log.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 
@@ -614,7 +612,7 @@ public class Model extends AbstractNoraUiCli {
         sb.append(TAB).append(JUNIT_TEST).append(System.lineSeparator());
         sb.append(TAB).append(PUBLIC_VOID_CHECK + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "SerializeListTest() {").append(System.lineSeparator());
         sb.append(PREPARE_MOCK).append(System.lineSeparator());
-        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " " + modelName + "1" + NEW  + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
+        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " " + modelName + "1" + NEW + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
                 .append(System.lineSeparator());
         i = 4000;
         for (String field : fieldList) {
@@ -622,14 +620,14 @@ public class Model extends AbstractNoraUiCli {
             sb.append(TAB2).append(modelName + "1.set" + field.toUpperCase().charAt(0) + field.substring(1) + "(\"" + i + "\");").append(System.lineSeparator());
         }
         sb.append(System.lineSeparator());
-        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " " + modelName + "2" + NEW  + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
+        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " " + modelName + "2" + NEW + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
                 .append(System.lineSeparator());
         for (String field : fieldList) {
             i++;
             sb.append(TAB2).append(modelName + "2.set" + field.toUpperCase().charAt(0) + field.substring(1) + "(\"" + i + "\");").append(System.lineSeparator());
         }
         sb.append(System.lineSeparator());
-        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s " + modelName + "s" + NEW  + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s();")
+        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s " + modelName + "s" + NEW + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s();")
                 .append(System.lineSeparator());
         sb.append(TAB2).append(modelName + "s.add(" + modelName + "1);").append(System.lineSeparator());
         sb.append(TAB2).append(modelName + "s.add(" + modelName + "2);").append(System.lineSeparator());
@@ -654,7 +652,7 @@ public class Model extends AbstractNoraUiCli {
         sb.append(TAB).append(JUNIT_TEST).append(System.lineSeparator());
         sb.append(TAB).append(PUBLIC_VOID_CHECK + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "DeserializeListTest() {").append(System.lineSeparator());
         sb.append(RUN_TEST).append(System.lineSeparator());
-        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s " + modelName + "s" + NEW  + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s();")
+        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s " + modelName + "s" + NEW + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s();")
                 .append(System.lineSeparator());
         sb.append(TAB2).append(modelName + "s.deserialize(\"[{");
         i = 4000;
@@ -687,26 +685,26 @@ public class Model extends AbstractNoraUiCli {
                 PUBLIC_VOID_CHECK + "Delete" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "sAndAdd" + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "sTest() {")
                 .append(System.lineSeparator());
         sb.append(PREPARE_MOCK).append(System.lineSeparator());
-        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " a" + NEW  + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
+        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " a" + NEW + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
                 .append(System.lineSeparator());
         sb.append(TAB2).append("a.set" + fieldList[0].toUpperCase().charAt(0) + fieldList[0].substring(1) + "(\"aaaa\");").append(System.lineSeparator());
-        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " b" + NEW  + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
+        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " b" + NEW + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
                 .append(System.lineSeparator());
         sb.append(TAB2).append("b.set" + fieldList[0].toUpperCase().charAt(0) + fieldList[0].substring(1) + "(\"cccc\");").append(System.lineSeparator());
-        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " c" + NEW  + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
+        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " c" + NEW + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
                 .append(System.lineSeparator());
         sb.append(TAB2).append("c.set" + fieldList[0].toUpperCase().charAt(0) + fieldList[0].substring(1) + "(\"bbbb\");").append(System.lineSeparator());
-        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " d" + NEW  + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
+        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + " d" + NEW + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "();")
                 .append(System.lineSeparator());
         sb.append(TAB2).append("d.set" + fieldList[0].toUpperCase().charAt(0) + fieldList[0].substring(1) + "(\"eeee\");").append(System.lineSeparator());
         sb.append(System.lineSeparator());
-        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s " + modelName + "sInGame" + NEW  +  modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s();")
+        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s " + modelName + "sInGame" + NEW + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s();")
                 .append(System.lineSeparator());
         sb.append(TAB2).append(modelName + "sInGame.add(a);").append(System.lineSeparator());
         sb.append(TAB2).append(modelName + "sInGame.add(b);").append(System.lineSeparator());
         sb.append(TAB2).append(modelName + "sInGame.add(c);").append(System.lineSeparator());
         sb.append(System.lineSeparator());
-        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s " + modelName + "s" + NEW  + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s();")
+        sb.append(TAB2).append(modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s " + modelName + "s" + NEW + modelName.toUpperCase().charAt(0) + modelName.substring(1) + "s();")
                 .append(System.lineSeparator());
         sb.append(TAB2).append(modelName + "s.add(b);").append(System.lineSeparator());
         sb.append(TAB2).append(modelName + "s.add(c);").append(System.lineSeparator());
@@ -743,15 +741,15 @@ public class Model extends AbstractNoraUiCli {
             if (!newSelector.exists()) {
                 Files.asCharSink(newSelector, StandardCharsets.UTF_8).write(sb.toString());
                 if (verbose) {
-                    LOGGER.info(LOG_FILE_CREATED_WITH_SUCCESS, modelPath);
+                    log.info(LOG_FILE_CREATED_WITH_SUCCESS, modelPath);
                 }
             } else {
                 if (verbose) {
-                    LOGGER.info(LOG_FILE_ALREADY_EXIST, modelPath);
+                    log.info(LOG_FILE_ALREADY_EXIST, modelPath);
                 }
             }
         } catch (Exception e) {
-            LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+            log.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 
@@ -765,10 +763,10 @@ public class Model extends AbstractNoraUiCli {
         try {
             FileUtils.forceDelete(new File(modelPath));
             if (verbose) {
-                LOGGER.info("{} removed with success.", modelPath);
+                log.info("{} removed with success.", modelPath);
             }
         } catch (IOException e) {
-            LOGGER.debug("{} not revove because do not exist.", modelPath);
+            log.debug("{} not revove because do not exist.", modelPath);
         }
     }
 
@@ -783,12 +781,12 @@ public class Model extends AbstractNoraUiCli {
             Collection<File> l = FileUtils.listFiles(new File(applicationDirectoryPath), TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
             if (l.isEmpty()) {
                 if (verbose) {
-                    LOGGER.info("Empty directory, so remove application directory.");
+                    log.info("Empty directory, so remove application directory.");
                 }
                 FileUtils.deleteDirectory(new File(applicationDirectoryPath));
             }
         } catch (IOException e) {
-            LOGGER.debug("{} not revove because do not exist.", applicationDirectoryPath);
+            log.debug("{} not revove because do not exist.", applicationDirectoryPath);
         }
     }
 

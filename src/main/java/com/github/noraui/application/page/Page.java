@@ -10,20 +10,18 @@ import java.lang.reflect.Field;
 
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.cucumber.injector.NoraUiInjector;
 import com.github.noraui.exception.Callbacks.Callback;
 import com.github.noraui.exception.TechnicalException;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 
+@Loggable
 public abstract class Page implements IPage {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(Page.class);
+    static Logger log;
 
     private static final String PAGE_UNABLE_TO_RETRIEVE = "PAGE_UNABLE_TO_RETRIEVE";
 
@@ -89,7 +87,7 @@ public abstract class Page implements IPage {
                 try {
                     p = (PageElement) f.get(this);
                 } catch (IllegalArgumentException | IllegalAccessException e) {
-                    LOGGER.error("error Page.getPageElementByKey()", e);
+                    log.error("error Page.getPageElementByKey()", e);
                     return null;
                 }
                 if (key.equals(p.getKey())) {

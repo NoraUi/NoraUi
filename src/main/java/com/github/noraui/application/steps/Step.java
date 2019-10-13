@@ -38,6 +38,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.slf4j.Logger;
 
 import com.github.noraui.application.page.IPage;
 import com.github.noraui.application.page.Page;
@@ -50,6 +51,7 @@ import com.github.noraui.exception.Result;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.GherkinConditionedLoopedStep;
 import com.github.noraui.gherkin.GherkinStepCondition;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.service.CryptoService;
 import com.github.noraui.service.CucumberExpressionService;
 import com.github.noraui.service.UserNameService;
@@ -60,13 +62,10 @@ import com.github.noraui.utils.Utilities;
 import com.google.common.base.Function;
 import com.google.inject.Inject;
 
-import lombok.extern.slf4j.Slf4j;
-
-/**
- * Specific LOGGER
- */
-@Slf4j
+@Loggable
 public abstract class Step implements IStep {
+
+    static Logger log;
 
     protected static final String SECURE_MASK = "[secure]";
 

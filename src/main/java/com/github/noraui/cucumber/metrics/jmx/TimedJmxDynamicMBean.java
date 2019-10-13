@@ -24,15 +24,14 @@ import javax.management.MBeanParameterInfo;
 import javax.management.ReflectionException;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import com.github.noraui.log.annotation.Loggable;
+
+@Loggable
 public class TimedJmxDynamicMBean implements DynamicMBean {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(TimedJmxDynamicMBean.class);
-    
+    static Logger log;
+
     private final ConcurrentMap<String, Long> value = new ConcurrentHashMap<>();
 
     @Override
@@ -112,7 +111,7 @@ public class TimedJmxDynamicMBean implements DynamicMBean {
     }
 
     private void refresh() {
-        LOGGER.info("Refresh Data");
+        log.info("Refresh Data");
     }
 
 }

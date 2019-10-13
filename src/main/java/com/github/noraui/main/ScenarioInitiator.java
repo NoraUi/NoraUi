@@ -18,25 +18,23 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.data.DataUtils;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.GherkinFactory;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.model.Model;
 import com.github.noraui.model.ModelList;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 
+@Loggable
 public class ScenarioInitiator {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(ScenarioInitiator.class);
+    static Logger log;
 
     public static final String SCENARIO_INITIATOR_ERROR_EMPTY_FILE = "SCENARIO_INITIATOR_ERROR_EMPTY_FILE";
-    
+
     private static final String SCENARIO_INITIATOR_ERROR_UNABLE_TO_GET_TAGS = "SCENARIO_INITIATOR_ERROR_UNABLE_TO_GET_TAGS";
     private static final String SCENARIO_INITIATOR_USAGE = "SCENARIO_INITIATOR_USAGE";
     private static final String SCENARIO_INITIATOR_INJECT_WITHOUT_MODEL = "SCENARIO_INITIATOR_INJECT_WITHOUT_MODEL";
@@ -50,14 +48,14 @@ public class ScenarioInitiator {
      *            can be contains a specific a scenario name if you want run ONLY ONE feature by run(job in CICD).
      */
     public void start(String[] args) {
-        LOGGER.info("Working Directory is '{}'", System.getProperty(USER_DIR));
-        LOGGER.info("ScenarioInitiator > start()");
+        log.info("Working Directory is '{}'", System.getProperty(USER_DIR));
+        log.info("ScenarioInitiator > start()");
         if (args != null && args.length == 1 && !"@TOSPECIFY".equals(args[0])) {
-            LOGGER.info("# {}", args[0]);
+            log.info("# {}", args[0]);
             final String scenarioName = args[0];
             processInjection(scenarioName);
         } else {
-            LOGGER.warn(Messages.getMessage(SCENARIO_INITIATOR_USAGE));
+            log.warn(Messages.getMessage(SCENARIO_INITIATOR_USAGE));
             final String cucumberOptions = System.getProperty("cucumber.options");
             if (cucumberOptions != null && cucumberOptions.contains("--tags")) {
                 final Matcher matcher = Pattern.compile(".*--tags '(.*)'.*").matcher(cucumberOptions);
@@ -70,7 +68,7 @@ public class ScenarioInitiator {
                     }
                 }
             } else {
-                LOGGER.error(Messages.getMessage(SCENARIO_INITIATOR_ERROR_UNABLE_TO_GET_TAGS));
+                log.error(Messages.getMessage(SCENARIO_INITIATOR_ERROR_UNABLE_TO_GET_TAGS));
             }
         }
     }
@@ -86,14 +84,14 @@ public class ScenarioInitiator {
             Context.getDataInputProvider().prepare(scenarioName);
             final Class<Model> model = Context.getDataInputProvider().getModel(Context.getModelPackages());
             if (model == null) {
-                LOGGER.info(Messages.getMessage(SCENARIO_INITIATOR_INJECT_WITHOUT_MODEL), scenarioName);
+                log.info(Messages.getMessage(SCENARIO_INITIATOR_INJECT_WITHOUT_MODEL), scenarioName);
                 injectWithoutModel(scenarioName);
             } else {
-                LOGGER.info(Messages.getMessage(SCENARIO_INITIATOR_INJECT_WITH_MODEL), scenarioName, model.getSimpleName());
+                log.info(Messages.getMessage(SCENARIO_INITIATOR_INJECT_WITH_MODEL), scenarioName, model.getSimpleName());
                 injectWithModel(scenarioName, model);
             }
         } catch (final Exception e) {
-            LOGGER.error("error ScenarioInitiator.processInjection()", e);
+            log.error("error ScenarioInitiator.processInjection()", e);
         }
     }
 
@@ -124,7 +122,7 @@ public class ScenarioInitiator {
             } while (Context.getDataInputProvider().readLine(++i, false) != null || example != null);
             GherkinFactory.injectDataInGherkinExamples(scenarioName, examplesTable);
         } else {
-            LOGGER.error(Messages.getMessage(SCENARIO_INITIATOR_ERROR_EMPTY_FILE));
+            log.error(Messages.getMessage(SCENARIO_INITIATOR_ERROR_EMPTY_FILE));
         }
     }
 
@@ -157,7 +155,7 @@ public class ScenarioInitiator {
                 }
                 GherkinFactory.injectDataInGherkinExamples(scenarioName, examplesTable);
             } else {
-                LOGGER.error(Messages.getMessage(SCENARIO_INITIATOR_ERROR_EMPTY_FILE));
+                log.error(Messages.getMessage(SCENARIO_INITIATOR_ERROR_EMPTY_FILE));
             }
         } catch (final Exception te) {
             throw new TechnicalException(Messages.getMessage(SCENARIO_INITIATOR_ERROR_ON_INJECTING_MODEL) + te.getMessage(), te);

@@ -16,10 +16,7 @@ import com.google.inject.Binder;
 
 public class SpeedRegulatorModule extends AbstractMetricsModule {
 
-    /**
-     * Specific LOGGER
-     */
-    private final Logger LOGGER = LoggerFactory.getLogger(SpeedRegulatorModule.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SpeedRegulatorModule.class);
 
     public static final String SPEED_REGULATOR_ANNOTATION_ENABLE = "SpeedRegulator.annotation.enable";
     public static final String SPEED_REGULATORS_ANNOTATION_ENABLE = "SpeedRegulators.annotation.enable";

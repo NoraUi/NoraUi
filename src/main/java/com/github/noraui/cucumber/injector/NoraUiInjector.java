@@ -11,6 +11,7 @@ import com.github.noraui.utils.Messages;
 import com.google.inject.Injector;
 
 public class NoraUiInjector {
+    public static final String TECHNICAL_ERROR_MESSAGE_NORAUI_INJECTOR_SOURCE_ALREADY_EXISTS = "TECHNICAL_ERROR_MESSAGE_NORAUI_INJECTOR_SOURCE_ALREADY_EXISTS";
 
     /**
      * Instance of Guice injector. ({@link com.github.noraui.cucumber.injector.NoraUiInjectorSource}).
@@ -28,8 +29,7 @@ public class NoraUiInjector {
         if (noraUiInjectorSource == null) {
             noraUiInjectorSource = injector;
         } else {
-            throw new TechnicalException(
-                    Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_NORAUI_INJECTOR_SOURCE_ALREADY_EXISTS));
+            throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + Messages.getMessage(TECHNICAL_ERROR_MESSAGE_NORAUI_INJECTOR_SOURCE_ALREADY_EXISTS));
         }
     }
 
