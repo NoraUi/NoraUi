@@ -102,22 +102,18 @@ public class PickleStepDefinitionMatch extends Match implements StepDefinitionMa
     }
 
     private CucumberException registerTypeInConfiguration(Exception e) {
-        return new CucumberException(String.format("" +
-                "Could not convert arguments for step [%s] defined at '%s'.\n" +
-                "It appears you did not register a data table type. The details are in the stacktrace below.", //TODO: Add doc URL
-            stepDefinition.getPattern(),
-            stepDefinition.getLocation(true)
-        ), e);
+        return new CucumberException(
+                String.format("" + "Could not convert arguments for step [%s] defined at '%s'.\n" + "It appears you did not register a data table type. The details are in the stacktrace below.", // TODO:
+                                                                                                                                                                                                   // Add
+                                                                                                                                                                                                   // doc
+                                                                                                                                                                                                   // URL
+                        stepDefinition.getPattern(), stepDefinition.getLocation(true)),
+                e);
     }
 
-
     private CucumberException couldNotConvertArguments(Exception e) {
-        return new CucumberException(String.format(
-            "Could not convert arguments for step [%s] defined at '%s'.\n" +
-                "The details are in the stacktrace below.",
-            stepDefinition.getPattern(),
-            stepDefinition.getLocation(true)
-        ), e);
+        return new CucumberException(String.format("Could not convert arguments for step [%s] defined at '%s'.\n" + "The details are in the stacktrace below.", stepDefinition.getPattern(),
+                stepDefinition.getLocation(true)), e);
     }
 
     @Override
@@ -127,16 +123,8 @@ public class PickleStepDefinitionMatch extends Match implements StepDefinitionMa
 
     private CucumberException arityMismatch(int parameterCount) {
         List<String> arguments = createArgumentsForErrorMessage();
-        return new CucumberException(String.format(
-            "Step [%s] is defined with %s parameters at '%s'.\n" +
-                "However, the gherkin step has %s arguments%sStep text: %s",
-            stepDefinition.getPattern(),
-            parameterCount,
-            stepDefinition.getLocation(true),
-            arguments.size(),
-            formatArguments(arguments),
-            step.getText()
-        ));
+        return new CucumberException(String.format("Step [%s] is defined with %s parameters at '%s'.\n" + "However, the gherkin step has %s arguments%sStep text: %s", stepDefinition.getPattern(),
+                parameterCount, stepDefinition.getLocation(true), arguments.size(), formatArguments(arguments), step.getText()));
     }
 
     private String formatArguments(List<String> arguments) {
@@ -200,4 +188,3 @@ public class PickleStepDefinitionMatch extends Match implements StepDefinitionMa
     }
 
 }
-

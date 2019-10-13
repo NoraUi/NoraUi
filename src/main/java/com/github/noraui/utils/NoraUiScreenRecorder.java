@@ -17,11 +17,14 @@ import java.util.Date;
 import org.monte.media.Format;
 import org.monte.media.Registry;
 import org.monte.screenrecorder.ScreenRecorder;
+import org.slf4j.Logger;
 
-import lombok.extern.slf4j.Slf4j;
+import com.github.noraui.log.annotation.Loggable;
 
-@Slf4j
+@Loggable
 public class NoraUiScreenRecorder extends ScreenRecorder {
+
+    static Logger log;
 
     private String name;
 

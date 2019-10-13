@@ -12,19 +12,17 @@ import java.util.List;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.cucumber.annotation.Conditioned;
 import com.github.noraui.gherkin.GherkinStepCondition;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 
+@Loggable
 public class ConditionedInterceptor implements MethodInterceptor {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(ConditionedInterceptor.class);
+    static Logger log;
 
     private static final String SKIPPED_DUE_TO_CONDITIONS = "SKIPPED_DUE_TO_CONDITIONS";
 
@@ -48,7 +46,7 @@ public class ConditionedInterceptor implements MethodInterceptor {
             }
         }
 
-        LOGGER.debug("NORAUI ConditionedInterceptor invoke method {}", invocation.getMethod());
+        log.debug("NORAUI ConditionedInterceptor invoke method {}", invocation.getMethod());
         return invocation.proceed();
     }
 
@@ -61,7 +59,7 @@ public class ConditionedInterceptor implements MethodInterceptor {
      *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
      */
     private void displayMessageAtTheBeginningOfMethod(String methodName, List<GherkinStepCondition> conditions) {
-        LOGGER.debug("{} with {} contition(s)", methodName, conditions.size());
+        log.debug("{} with {} contition(s)", methodName, conditions.size());
         displayConditionsAtTheBeginningOfMethod(conditions);
     }
 
@@ -76,7 +74,7 @@ public class ConditionedInterceptor implements MethodInterceptor {
      *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
      */
     protected void displayMessageAtTheBeginningOfMethod(String methodName, String field, List<GherkinStepCondition> conditions) {
-        LOGGER.debug("{}: {} with {} contition(s)", methodName, field, conditions.size());
+        log.debug("{}: {} with {} contition(s)", methodName, field, conditions.size());
         displayConditionsAtTheBeginningOfMethod(conditions);
     }
 
@@ -90,8 +88,8 @@ public class ConditionedInterceptor implements MethodInterceptor {
         int i = 0;
         for (GherkinStepCondition gherkinCondition : conditions) {
             i++;
-            LOGGER.debug("  expected contition N°{}={}", i, gherkinCondition.getExpected());
-            LOGGER.debug("  actual   contition N°{}={}", i, gherkinCondition.getActual());
+            log.debug("  expected contition N°{}={}", i, gherkinCondition.getExpected());
+            log.debug("  actual   contition N°{}={}", i, gherkinCondition.getActual());
         }
     }
 
@@ -104,7 +102,7 @@ public class ConditionedInterceptor implements MethodInterceptor {
      */
     public boolean checkConditions(List<GherkinStepCondition> conditions) {
         for (GherkinStepCondition gherkinCondition : conditions) {
-            LOGGER.debug("checkConditions {} in context is ", gherkinCondition.getActual(), Context.getValue(gherkinCondition.getActual()));
+            log.debug("checkConditions {} in context is ", gherkinCondition.getActual(), Context.getValue(gherkinCondition.getActual()));
             if (!gherkinCondition.checkCondition()) {
                 return false;
             }

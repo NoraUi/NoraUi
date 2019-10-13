@@ -43,8 +43,8 @@ public class CucumberExpressionServiceUT {
         Assert.assertEquals("[2]", res);
         res = new Gson().toJson(cucumberExpressionService.match("I wait {int} second(s)(\\?)", "I wait 2 seconds!")); //false
         Assert.assertEquals("null", res);
-        res = new Gson().toJson(cucumberExpressionService.match("If {string} matches {string}, While {string} respects {string} I do with {int} max tries:", "If 'foo' matches '.+', While 'demo.DemoPage-big_title' respects 'This is a demo for NORAUI.*' I do with 3 max tries:"));
-        Assert.assertEquals("[\"foo\",\".+\",\"demo.DemoPage-big_title\",\"This is a demo for NORAUI.*\",3]", res);
+        res = new Gson().toJson(cucumberExpressionService.match("If {string} matches {string}, While {string} respects {string} I do with {int} max tries:", "If 'foo' matches '.+', While 'bakery.DemoPage-big_title' respects 'This is a demo for NORAUI.*' I do with 3 max tries:"));
+        Assert.assertEquals("[\"foo\",\".+\",\"bakery.DemoPage-big_title\",\"This is a demo for NORAUI.*\",3]", res);
     }
 
 }

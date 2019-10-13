@@ -10,14 +10,17 @@ import static com.github.noraui.utils.Constants.DATA_IN;
 import static com.github.noraui.utils.Constants.DATA_OUT;
 import static com.github.noraui.utils.Constants.SCENARIO_FILE;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -25,8 +28,13 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.NotImplementedException;
+import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.ini4j.Ini;
 import org.ini4j.InvalidFileFormatException;
 import org.joda.time.DateTime;
@@ -37,7 +45,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.application.Application;
 import com.github.noraui.application.steps.Step;
@@ -61,9 +68,15 @@ import com.github.noraui.exception.Callbacks;
 import com.github.noraui.exception.Callbacks.Callback;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.ScenarioRegistry;
+import com.github.noraui.log.NoraUiLoggingInjector;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.main.ScenarioInitiator;
 import com.github.noraui.model.Model;
 import com.github.noraui.model.ModelList;
+import com.github.noraui.statistics.Statistics;
+import com.github.noraui.statistics.StatisticsService;
+import com.google.common.reflect.ClassPath;
+import com.google.common.reflect.ClassPath.ClassInfo;
 
 import io.cucumber.java.Scenario;
 import io.cucumber.java.StepDefinitionAnnotation;
@@ -72,12 +85,10 @@ import io.cucumber.junit.CucumberOptions;
 /**
  * Cucumber context.
  */
+@Loggable
 public class Context {
 
-    /**
-     * Specific LOGGER.
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(Context.class);
+    static Logger log;
 
     public static final String STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME = BrowserSteps.class.getCanonicalName();
     public static final String GO_TO_URL_METHOD_NAME = "goToUrl";
@@ -98,19 +109,7 @@ public class Context {
     public static final String MODEL_PACKAGES = "model.packages";
     public static final String SELECTORS_VERSION = "selectors.version";
 
-    /**
-     * DEMO
-     *
-     * @deprecated because use {@link #BAKERY_KEY} instead.
-     */
-    @Deprecated
-    public static final String DEMO_KEY = "demo";
-
-    /**
-     * @deprecated because use {@link #BAKERY_HOME} instead.
-     */
-    @Deprecated
-    public static final String DEMO_HOME = "DEMO_HOME";
+    protected StatisticsService statistics = new StatisticsService();
 
     /**
      * BAKERY
@@ -119,6 +118,7 @@ public class Context {
     public static final String BAKERY_HOME = "BAKERY_HOME";
     public static final String BAKERY_ADMIN = "BAKERY_ADMIN";
     public static final String BAKERY_REF = "BAKERY_REF";
+    public static final String BAKERY_DEMO = "BAKERY_DEMO";
 
     /**
      * GITHUBAPI
@@ -295,6 +295,7 @@ public class Context {
      * Private constructor
      */
     protected Context() {
+        NoraUiLoggingInjector.addInjector(Constants.TOP_LEVEL_PACKAGE);
         driverFactory = new DriverFactory();
         windowManager = new WindowManager();
         scenarioRegistry = new ScenarioRegistry();
@@ -322,7 +323,7 @@ public class Context {
      *            is name of properties file.
      */
     public synchronized void initializeEnv(String propertiesFileName) {
-        LOGGER.info("Context > initializeEnv()");
+        log.info("Context > initializeEnv()");
 
         iniFiles = new HashMap<>();
         applicationProperties = initPropertiesFile(Thread.currentThread().getContextClassLoader(), propertiesFileName);
@@ -353,7 +354,7 @@ public class Context {
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      */
     public synchronized void initializeRobot(Class<?> clazz) throws TechnicalException {
-        LOGGER.info("Context > initializeRobot() with {}", clazz.getCanonicalName());
+        log.info("Context > initializeRobot() with {}", clazz.getCanonicalName());
         // set browser: chrome,firefox or ie
         browser = getProperty(BROWSER_KEY, applicationProperties);
 
@@ -398,7 +399,7 @@ public class Context {
         // set crypto key
         cryptoKey = System.getProperty(CRYPTO_KEY);
         if (cryptoKey == null) {
-            LOGGER.warn("{} not set. You can not use crypto feature.", CRYPTO_KEY);
+            log.warn("{} not set. You can not use crypto feature.", CRYPTO_KEY);
         }
 
         // stacktrace configuration
@@ -409,15 +410,14 @@ public class Context {
 
         // init driver callbacks
         exceptionCallbacks.put(Callbacks.RESTART_WEB_DRIVER, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, RESTART_WEB_DRIVER_METHOD_NAME);
-        exceptionCallbacks.put(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_DEMO_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, DEMO_HOME);
         exceptionCallbacks.put(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_GITHUBAPI_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, GITHUBAPI_HOME);
         exceptionCallbacks.put(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_BAKERY_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, BAKERY_HOME);
 
         // init applications
-        final String indexPage = "/index.html";
-        initApplicationDom(clazz.getClassLoader(), selectorsVersion, DEMO_KEY);
-        applications.put(DEMO_KEY, new Application(DEMO_HOME, getProperty(DEMO_KEY, applicationProperties) + indexPage));
-
+        initApplicationDom(clazz.getClassLoader(), selectorsVersion, BAKERY_KEY);
+        Application bakeryApp = new Application(BAKERY_HOME, getProperty(BAKERY_KEY, applicationProperties) + "/account/login");
+        bakeryApp.addUrlPage(BAKERY_DEMO, getProperty(BAKERY_KEY, applicationProperties) + "/public");
+        applications.put(BAKERY_KEY, bakeryApp);
         applications.put(GITHUBAPI_KEY, new Application(GITHUBAPI_HOME, getProperty(GITHUBAPI_KEY, applicationProperties)));
 
         // read and init all cucumber methods
@@ -548,7 +548,7 @@ public class Context {
             try {
                 initDataId(scenarioName);
             } catch (final TechnicalException te) {
-                LOGGER.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE), te);
+                log.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE), te);
             }
         }
         getInstance().scenarioName = scenarioName;
@@ -611,15 +611,15 @@ public class Context {
             final Properties props = new Properties();
             try {
                 if (in == null) {
-                    LOGGER.error(Messages.getMessage(CONTEXT_PROPERTIES_FILE_NOT_FOUND), propertiesFileName);
+                    log.error(Messages.getMessage(CONTEXT_PROPERTIES_FILE_NOT_FOUND), propertiesFileName);
                 } else {
-                    LOGGER.info("Reading properties file ({}).", propertiesFileName);
+                    log.info("Reading properties file ({}).", propertiesFileName);
                     props.load(in);
                 }
             } catch (final IOException e) {
-                LOGGER.error("error Context.initPropertiesFile()", e);
+                log.error("error Context.initPropertiesFile()", e);
             }
-            LOGGER.info("Loaded properties from {} = {}.", propertiesFileName, props);
+            log.info("Loaded properties from {} = {}.", propertiesFileName, props);
             return props;
         }
         return null;
@@ -638,7 +638,7 @@ public class Context {
         }
         final String p = propertyFile.getProperty(key);
         if (p == null) {
-            LOGGER.error("{}{}", key, Messages.getMessage(NOT_SET_LABEL));
+            log.error("{}{}", key, Messages.getMessage(NOT_SET_LABEL));
         }
         return p;
     }
@@ -654,10 +654,10 @@ public class Context {
         final String property = propertyFile.getProperty(key);
         int p = 0;
         if (property == null) {
-            LOGGER.error("{}{}", key, Messages.getMessage(NOT_SET_LABEL));
+            log.error("{}{}", key, Messages.getMessage(NOT_SET_LABEL));
         } else {
             p = Integer.parseInt(property);
-            LOGGER.info("{} = {}", key, p);
+            log.info("{} = {}", key, p);
         }
         return p;
     }
@@ -682,9 +682,9 @@ public class Context {
                 iniFiles.put(applicationKey, ini);
             }
         } catch (final InvalidFileFormatException e) {
-            LOGGER.error("error Context.initApplicationDom()", e);
+            log.error("error Context.initApplicationDom()", e);
         } catch (final IOException e) {
-            LOGGER.error(Messages.getMessage(CONTEXT_APP_INI_FILE_NOT_FOUND), applicationKey, e);
+            log.error(Messages.getMessage(CONTEXT_APP_INI_FILE_NOT_FOUND), applicationKey, e);
         }
     }
 
@@ -788,6 +788,59 @@ public class Context {
     }
 
     /**
+     * statisticsProcessor retrieves specific information from the robot to return it to users statistic feature.
+     * 
+     * @param loader
+     *            is class loader.
+     * @param packageName
+     *            read for users statistic feature.
+     * @return it to users statistic feature.
+     */
+    protected Statistics statisticsProcessor(ClassLoader loader, String packageName) {
+        Statistics stat = new Statistics();
+        MavenXpp3Reader reader = new MavenXpp3Reader();
+        org.apache.maven.model.Model model;
+        try {
+            model = reader.read(new FileReader("pom.xml"));
+            stat.setNorauiVersion(model.getProperties().getProperty("noraui.version"));
+            stat.setName(model.getName());
+            stat.setGroupId(model.getGroupId());
+            stat.setArtifactId(model.getArtifactId());
+            stat.setVersion(model.getVersion());
+        } catch (IOException | XmlPullParserException e) {
+            log.trace("noraui.version not found.");
+        }
+        stat.setApplications(applications.entrySet().stream().filter(e -> e.getValue().getHomeUrl() != null).collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getHomeUrl(), (a, b) -> b)));
+        try {
+            Map<String, String> code = ClassPath.from(loader).getTopLevelClassesRecursive(packageName).stream().collect(Collectors.toMap(ClassInfo::getName, c -> read(c.getName()), (a, b) -> b));
+            stat.setCucumberMethods(code);
+        } catch (IOException e1) {
+            log.trace("Cucumber Methods not found.");
+        }
+        return stat;
+    }
+
+    /**
+     * @param className
+     *            read for users statistic feature.
+     * @return
+     */
+    private String read(String className) {
+        String filePath = "src" + File.separator + "main" + File.separator + "java" + File.separator + className.replaceAll("\\.", "/") + ".java";
+        StringBuilder sb = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line = br.readLine();
+            while (line != null) {
+                line = br.readLine();
+                sb.append(line);
+            }
+        } catch (IOException e) {
+            log.trace("java file [{}].java not found.", className);
+        }
+        return sb.toString();
+    }
+
+    /**
      * init all Data index (by model).
      *
      * @param scenarioName
@@ -796,7 +849,7 @@ public class Context {
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      */
     private static void initDataId(String scenarioName) throws TechnicalException {
-        final List<DataIndex> indexData = new ArrayList<>();
+        List<DataIndex> indexData = new ArrayList<>();
         try {
             Context.getDataInputProvider().prepare(scenarioName);
             final Class<Model> model = Context.getDataInputProvider().getModel(Context.getModelPackages());
@@ -805,15 +858,11 @@ public class Context {
                 if (headers != null) {
                     final Constructor<Model> modelConstructor = DataUtils.getModelConstructor(model, headers);
                     final Map<Integer, Map<String, ModelList>> fusionedData = DataUtils.fusionProcessor(model, modelConstructor);
-                    int dataIndex = 0;
-                    for (final Entry<Integer, Map<String, ModelList>> e : fusionedData.entrySet()) {
-                        for (final Entry<String, ModelList> e2 : e.getValue().entrySet()) {
-                            dataIndex++;
-                            indexData.add(new DataIndex(dataIndex, e2.getValue().getIds()));
-                        }
-                    }
+                    AtomicInteger dataIndex = new AtomicInteger();
+                    indexData = fusionedData.values().stream().flatMap(models -> models.values().stream()).map(ModelList::getIds).map(ids -> new DataIndex(dataIndex.incrementAndGet(), ids))
+                            .collect(Collectors.toList());
                 } else {
-                    LOGGER.error(Messages.getMessage(ScenarioInitiator.SCENARIO_INITIATOR_ERROR_EMPTY_FILE));
+                    log.error(Messages.getMessage(ScenarioInitiator.SCENARIO_INITIATOR_ERROR_EMPTY_FILE));
                 }
             } else {
                 for (int i = 1; i < Context.getDataInputProvider().getNbLines(); i++) {
@@ -843,7 +892,7 @@ public class Context {
         } else {
             currentLocale = Locale.getDefault();
         }
-        LOGGER.info(Messages.getMessage(CONTEXT_LOCALE_USED), currentLocale);
+        log.info(Messages.getMessage(CONTEXT_LOCALE_USED), currentLocale);
     }
 
     /**
@@ -900,7 +949,7 @@ public class Context {
                 }
             }
         } catch (final Exception e) {
-            LOGGER.error(Messages.getMessage(CONTEXT_ERROR_WHEN_PLUGING_DATA_PROVIDER), e);
+            log.error(Messages.getMessage(CONTEXT_ERROR_WHEN_PLUGING_DATA_PROVIDER), e);
         }
     }
 
@@ -913,30 +962,17 @@ public class Context {
      *         Second part is the corresponding invokable method.
      */
     private static Map<String, Method> getAllCucumberMethods(Class<?> clazz) {
-        final Map<String, Method> result = new HashMap<>();
         final CucumberOptions co = clazz.getAnnotation(CucumberOptions.class);
         final Set<Class<?>> classes = getClasses(co.glue());
         classes.add(BrowserSteps.class);
-
-        for (final Class<?> c : classes) {
-            final Method[] methods = c.getDeclaredMethods();
-            for (final Method method : methods) {
-                for (final Annotation stepAnnotation : method.getAnnotations()) {
-                    if (stepAnnotation.annotationType().isAnnotationPresent(StepDefinitionAnnotation.class)) {
-                        result.put(stepAnnotation.toString(), method);
-                    }
-                }
-            }
-        }
-        return result;
+        return classes
+                .stream().flatMap(c -> Arrays.stream(c.getDeclaredMethods())).flatMap(m -> Arrays.stream(m.getAnnotations())
+                        .filter(stepAnnotation -> stepAnnotation.annotationType().isAnnotationPresent(StepDefinitionAnnotation.class)).map(ann -> new AbstractMap.SimpleEntry<>(ann.toString(), m)))
+                .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
     }
 
     private static Set<Class<?>> getClasses(String[] packagesName) {
-        final Set<Class<?>> result = new HashSet<>();
-        for (final String packageName : packagesName) {
-            result.addAll(new Reflections(packageName, new SubTypesScanner(false)).getSubTypesOf(Step.class));
-        }
-        return result;
+        return Stream.of(packagesName).flatMap(packageName -> new Reflections(packageName, new SubTypesScanner(false)).getSubTypesOf(Step.class).stream()).collect(Collectors.toSet());
     }
 
 }

@@ -11,18 +11,17 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.exception.TechnicalException;
+import com.github.noraui.log.annotation.Loggable;
 
+@Loggable
 public class ShellCommand {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(ShellCommand.class);
+    static Logger log;
 
     private static final String SHELL_RUNNING_COMMAND = "SHELL_RUNNING_COMMAND";
     private final String command;
@@ -37,25 +36,25 @@ public class ShellCommand {
         final Runtime rt = Runtime.getRuntime();
         final List<String> cmdList = new ArrayList<>();
         cmdList.add(command);
-        LOGGER.info(Messages.getMessage(SHELL_RUNNING_COMMAND), command);
-        for (final String param : parameters) {
-            LOGGER.info(param);
+        log.info(Messages.getMessage(SHELL_RUNNING_COMMAND), command);
+        Stream.of(parameters).forEach(param -> {
+            log.info(param);
             cmdList.add(param);
-        }
+        });
         try {
             final Process p = rt.exec(cmdList.toArray(new String[cmdList.size()]));
             final BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
 
             String line;
             while ((line = reader.readLine()) != null) {
-                LOGGER.info(line);
+                log.info(line);
             }
             return p.waitFor();
         } catch (IOException e) {
-            LOGGER.error("IOException error ShellCommand.run():", e);
+            log.error("IOException error ShellCommand.run():");
             throw new TechnicalException(e.getMessage(), e);
         } catch (InterruptedException e) {
-            LOGGER.error("InterruptedException error ShellCommand.run():", e);
+            log.error("InterruptedException error ShellCommand.run():");
             Thread.currentThread().interrupt();
             throw new TechnicalException(e.getMessage(), e);
         }

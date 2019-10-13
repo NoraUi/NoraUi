@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.data.CommonDataProvider;
 import com.github.noraui.data.DataInputProvider;
@@ -26,18 +25,17 @@ import com.github.noraui.data.DataOutputProvider;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.exception.data.EmptyDataFileContentException;
 import com.github.noraui.exception.data.WrongDataFileFormatException;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Messages;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.CSVWriter;
 
+@Loggable
 public class CsvDataProvider extends CommonDataProvider implements DataInputProvider, DataOutputProvider {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(CsvDataProvider.class);
+    static Logger log;
 
     public static final String CSV_TYPE = "csv";
     public static final char CSV_CHAR_SEPARATOR = ';';
@@ -50,7 +48,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
 
     public CsvDataProvider() {
         super();
-        LOGGER.info(Messages.getMessage(CSV_DATA_PROVIDER_USED));
+        log.info(Messages.getMessage(CSV_DATA_PROVIDER_USED));
     }
 
     /**
@@ -62,7 +60,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
         try {
             initColumns();
         } catch (IOException | EmptyDataFileContentException | WrongDataFileFormatException e) {
-            LOGGER.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION), e);
+            log.error(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_DATA_IOEXCEPTION), e);
             System.exit(-1);
         }
     }
@@ -100,7 +98,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
      */
     @Override
     public String[] readLine(int line, boolean readResult) {
-        LOGGER.debug("readLine at line {}", line);
+        log.debug("readLine at line {}", line);
         try {
             final CSVReader reader = openInputData();
             final List<String[]> a = reader.readAll();
@@ -112,13 +110,11 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
                 return null;
             } else {
                 final String[] ret = readResult ? new String[columns.size()] : new String[columns.size() - 1];
-                for (int i = 0; i < ret.length; i++) {
-                    ret[i] = row[i];
-                }
+                System.arraycopy(row, 0, ret, 0, ret.length);
                 return ret;
             }
         } catch (final IOException e) {
-            LOGGER.error("error CsvDataProvider.readLine()", e);
+            log.error("error CsvDataProvider.readLine()", e);
             return null;
         }
     }
@@ -147,7 +143,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
      */
     @Override
     protected void writeValue(String column, int line, String value) {
-        LOGGER.debug("Writing: [{}] at line [{}] in column [{}]", value, line, column);
+        log.debug("Writing: [{}] at line [{}] in column [{}]", value, line, column);
         final int colIndex = columns.indexOf(column);
         CSVReader reader;
         try {
@@ -157,7 +153,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
             reader.close();
             writeValue(column, line, value, csvBody);
         } catch (final IOException e1) {
-            LOGGER.error(Messages.getMessage(CSV_DATA_PROVIDER_WRITING_IN_CSV_ERROR_MESSAGE), column, line, value, e1);
+            log.error(Messages.getMessage(CSV_DATA_PROVIDER_WRITING_IN_CSV_ERROR_MESSAGE), column, line, value, e1);
         }
     }
 
@@ -166,7 +162,7 @@ public class CsvDataProvider extends CommonDataProvider implements DataInputProv
             writer.writeAll(csvBody);
             writer.flush();
         } catch (final IOException e) {
-            LOGGER.error(Messages.getMessage(CSV_DATA_PROVIDER_WRITING_IN_CSV_ERROR_MESSAGE), column, line, value, e);
+            log.error(Messages.getMessage(CSV_DATA_PROVIDER_WRITING_IN_CSV_ERROR_MESSAGE), column, line, value, e);
         }
     }
 

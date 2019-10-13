@@ -17,16 +17,18 @@ import java.util.stream.Stream;
 
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
+import org.slf4j.Logger;
 
 import com.github.noraui.annotation.Column;
 import com.github.noraui.exception.TechnicalException;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.model.Model;
 import com.github.noraui.utils.Messages;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
+@Loggable
 public abstract class CommonDataProvider implements DataProvider {
+
+    static Logger log;
 
     protected String dataInPath;
     protected String dataOutPath;

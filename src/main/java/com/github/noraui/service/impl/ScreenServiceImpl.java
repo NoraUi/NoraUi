@@ -42,7 +42,9 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
+import org.slf4j.Logger;
 
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.service.ScreenService;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.NoraUiScreenRecorder;
@@ -50,11 +52,12 @@ import com.github.noraui.utils.NoraUiScreenRecorder.NoraUiScreenRecorderConfigur
 import com.google.inject.Singleton;
 
 import io.cucumber.java.Scenario;
-import lombok.extern.slf4j.Slf4j;
 
 @Singleton
-@Slf4j
+@Loggable
 public class ScreenServiceImpl implements ScreenService {
+
+    static Logger log;
 
     private ScreenRecorder screenRecorder;
 

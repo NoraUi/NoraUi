@@ -13,14 +13,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import com.github.noraui.log.annotation.Loggable;
+
+@Loggable
 public abstract class AbstractNoraUiCli {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractNoraUiCli.class);
+    static Logger log;
     protected static final String RESOURCES = "resources";
 
     protected String getJavaClassHeaders(String noraRobotName) {
@@ -28,8 +27,8 @@ public abstract class AbstractNoraUiCli {
         sb.append("/**").append(System.lineSeparator());
         sb.append(" * " + noraRobotName + " generated free by NoraUi Organization https://github.com/NoraUi").append(System.lineSeparator());
         sb.append(" * " + noraRobotName + " is licensed under the license BSD.").append(System.lineSeparator());
-        sb.append(" * ").append(System.lineSeparator());
         sb.append(" * CAUTION: " + noraRobotName + " use NoraUi library. This project is licensed under the license GNU AFFERO GENERAL PUBLIC LICENSE").append(System.lineSeparator());
+        sb.append(" * ").append(System.lineSeparator());
         sb.append(" * @author Nicolas HALLOUIN").append(System.lineSeparator());
         sb.append(" * @author Stéphane GRILLON").append(System.lineSeparator());
         sb.append(" */").append(System.lineSeparator());
@@ -38,9 +37,9 @@ public abstract class AbstractNoraUiCli {
 
     /**
      * @param propertiesfilePath
-     *            path of properties file.	 
+     *            path of properties file.
      * @param sb
-     *            is stringBuilder contain all data.	 
+     *            is stringBuilder contain all data.
      */
     protected void updateFile(String propertiesfilePath, StringBuilder sb) {
         try (FileWriter fw = new FileWriter(propertiesfilePath)) {
@@ -49,7 +48,7 @@ public abstract class AbstractNoraUiCli {
             bw.flush();
             bw.close();
         } catch (IOException e) {
-            LOGGER.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
+            log.error(TECHNICAL_IO_EXCEPTION, e.getMessage(), e);
         }
     }
 

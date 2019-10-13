@@ -11,16 +11,14 @@ import java.lang.reflect.Method;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.cucumber.annotation.Experimental;
+import com.github.noraui.log.annotation.Loggable;
 
+@Loggable
 public class ExperimentalInterceptor implements MethodInterceptor {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(ExperimentalInterceptor.class);
+    static Logger log;
 
     /**
      * {@inheritDoc}
@@ -31,9 +29,9 @@ public class ExperimentalInterceptor implements MethodInterceptor {
         Method m = invocation.getMethod();
         if (m.isAnnotationPresent(Experimental.class)) {
             Experimental experimentalAnnotation = m.getAnnotation(Experimental.class);
-            LOGGER.warn("CAUTION: You use a experimental generic step named [{}].", experimentalAnnotation.name());
+            log.warn("CAUTION: You use a experimental generic step named [{}].", experimentalAnnotation.name());
         }
-        LOGGER.debug("NORAUI ExperimentalInterceptor invoke method {}", invocation.getMethod());
+        log.debug("NORAUI ExperimentalInterceptor invoke method {}", invocation.getMethod());
         return invocation.proceed();
     }
 

@@ -46,7 +46,7 @@ public class CommonStepsUT {
             Assert.assertFalse("checkMandatoryField must return TechnicalException", true);
         }
         try {
-            s.checkMandatoryField("demo.DemoPage-mockField", "text", new ArrayList<GherkinStepCondition>());
+            s.checkMandatoryField("bakery.DemoPage-mockField", "text", new ArrayList<GherkinStepCondition>());
         } catch (final FailureException a) {
             Assert.assertEquals(Messages.getMessage("FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT") + " [-mockField]", a.getMessage());
         }

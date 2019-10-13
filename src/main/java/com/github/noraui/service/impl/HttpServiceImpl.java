@@ -13,10 +13,10 @@ import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.exception.HttpServiceException;
 import com.github.noraui.exception.TechnicalException;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.service.HttpService;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
@@ -28,35 +28,33 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+@Loggable
 @Singleton
 public class HttpServiceImpl implements HttpService {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(HttpServiceImpl.class);
+    static Logger log;
 
     /**
      * {@inheritDoc}
      */
     @Override
     public String get(String url) throws HttpServiceException, TechnicalException {
-        LOGGER.debug("HttpService GET on url: {}", url);
+        log.debug("HttpService GET on url: {}", url);
         Response response;
         try {
             response = getClient().newCall(new Request.Builder().url(new URL(url)).header("Accept", "application/json").build()).execute();
             if (response.code() == 200) {
                 String jsonResponse = response.body().string();
-                LOGGER.info("JSON response code:[{}] and body:[{}]", response.code(), jsonResponse);
+                log.info("JSON response code:[{}] and body:[{}]", response.code(), jsonResponse);
                 response.close();
                 return jsonResponse;
             } else {
-                LOGGER.info("JSON response code:[{}]", response.code());
+                log.info("JSON response code:[{}]", response.code());
                 response.close();
                 return "";
             }
         } catch (IOException e) {
-            LOGGER.error(Messages.getMessage(HttpServiceException.HTTP_SERVICE_ERROR_MESSAGE), e);
+            log.error(Messages.getMessage(HttpServiceException.HTTP_SERVICE_ERROR_MESSAGE));
             throw new HttpServiceException(Messages.getMessage(HttpServiceException.HTTP_SERVICE_ERROR_MESSAGE), e);
         }
     }
@@ -74,24 +72,32 @@ public class HttpServiceImpl implements HttpService {
      */
     @Override
     public String post(String url, String json) throws HttpServiceException, TechnicalException {
-        LOGGER.debug("HttpService POST on url: {}", url);
+        log.debug("HttpService POST on url: {}", url);
         Response response;
         try {
             response = getClient().newCall(new Request.Builder().url(url).post(RequestBody.create(MediaType.parse("application/json"), json)).build()).execute();
             String jsonResponse = response.body().string();
-            LOGGER.info("JSON response is: {}", jsonResponse);
+            log.info("JSON response is: {}", jsonResponse);
             response.close();
             return jsonResponse;
         } catch (IOException e) {
-            LOGGER.error(Messages.getMessage(HttpServiceException.HTTP_SERVICE_ERROR_MESSAGE), e);
+            log.error(Messages.getMessage(HttpServiceException.HTTP_SERVICE_ERROR_MESSAGE));
             throw new HttpServiceException(Messages.getMessage(HttpServiceException.HTTP_SERVICE_ERROR_MESSAGE), e);
         }
     }
 
     /**
-     * @return
+     * {@inheritDoc}
      */
-    private OkHttpClient getClient() {
+    @Override
+    public String post(String baseUrl, String uri, String json) throws HttpServiceException, TechnicalException {
+        return post(baseUrl + uri, json);
+    }
+
+    /**
+     * @return OkHttp Client with all configuration (proxy, timeout, ...)
+     */
+    protected OkHttpClient getClient() {
         OkHttpClient client;
         org.openqa.selenium.Proxy proxy = Context.getProxy();
         if (proxy != null && proxy.getHttpProxy() != null && !"".equals(proxy.getHttpProxy())) {

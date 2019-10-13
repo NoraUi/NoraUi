@@ -1,73 +1,24 @@
 # NoraUi
 Non-Regression Automation for User Interfaces
 
+# Demonstration
+[![Demonstration](https://noraui.github.io/howToUse/1play.gif)](https://www.youtube.com/watch?v=X0fSEfmApGE&t=3s)
+
 # Technical documentation
 
 [Public website for NoraUi (Non-Regression Automation for User Interfaces)](https://noraui.github.io/).
 
 [![Javadocs](https://img.shields.io/badge/javadoc-3.1.1-brightgreen.svg)](https://noraui.github.io/NoraUi)
 
+[Migration guide](https://noraui.github.io/migrate.md).
+
 # News 
 See [change log](https://noraui.github.io/changelog.txt) for details
+* 2019-09-xx: NoraUi [4.1.0] is in progress.
 * 2019-09-xx: NoraUi [4.0.0] is in progress.
 * 2018-05-24: NoraUi [3.2.0] is released.
-* 2018-03-19: NoraUi [3.1.3] is released.
-* 2018-03-14: NoraUi [3.1.2] is released.
-* 2018-03-06: NoraUi [3.1.1] is released.
-* 2018-03-02: NoraUi [3.1.0] is released.
-* 2018-02-05: NoraUi [3.0.2] is released.
-* 2017-12-07: NoraUi [3.0.1] is released.
 * 2017-11-12: NoraUi [3.0.0] is released.
 * 2017-09-21: NoraUi [2.6.3] **is prohibited.**
-
-# How to migrate from [3.x.x] to [4.x.x]
-
-* You need use all new features from cucumber v4.x.x. (Use Cucumber Expressions)
-* You need use Cucumber Expressions instead of regular expressions
-* You need use java 8 instead of java 7.
-* You can use JUnit 5 instead of JUnit 4.3.
-* Rename all `jenkinsresourcespath` by `ciToolResourcesPath` in your CI/CD
-* Rename all import `cucumber.api.java.en.*` by `io.cucumber.java.en.*`
-* Rename all import `cucumber.api.java.fr.*` by `io.cucumber.java.fr.*`
-* Rename all import `cucumber.api.Scenario` by `io.cucumber.core.api.Scenario`
-* Rename all import `cucumber.api.java.After` by `io.cucumber.java.After`
-* Rename all import `cucumber.api.java.Before` by `io.cucumber.java.Before`
-* Rename all import `cucumber.api.TypeRegistry` by `io.cucumber.core.api.TypeRegistry`
-* Rename all import `cucumber.api.TypeRegistryConfigurer` by `io.cucumber.core.api.TypeRegistryConfigurer`
-* Rename all import `cucumber.api.CucumberOptions` by `io.cucumber.junit.CucumberOptions`
-* Rename all import `cucumber.api.Cucumber` by `io.cucumber.junit.Cucumber`
-* Rename all import `cucumber.api.java.ObjectFactory` by `io.cucumber.core.backend.ObjectFactory`
-* Rename all import `cucumber.api.Transpose` by `io.cucumber.java.Transpose`
-* All dataTable (Cucumber Expressions) return null if empty value.
-
-# How to migrate from [2.x.x] to [3.x.x] (mandatory because forbidden license)
-
-* -Dcucumber.options="--tags '@tag1 or @tag2 or @tag3 or @tag4'"
-* NoraUi use Oracle Jdbc Driver
-1. if you use Oracle Db provider, use com.oracle.jdbc:ojdbc8 dependency and configure your env with OTN: Sample(https://github.com/sgrillon14/MavenSampleOracleJdbc) (default)
-2. if you do not use Oracle Db provider, just exclude com.oracle.jdbc:ojdbc8 dependency in the noraui dependency call within your pom.xml. You can follow these instructions at https://maven.apache.org/guides/introduction/introduction-to-optional-and-excludes-dependencies.html. It should look something like that :
-```xml
-<dependency>
-    <groupId>com.github.noraui</groupId>
-    <artifactId>noraui</artifactId>
-    <version>${noraui.version}</version>
-    <exclusions>
-        <exclusion>
-            <groupId>com.oracle.jdbc</groupId>
-            <artifactId>ojdbc8</artifactId>
-        </exclusion>
-    </exclusions>
-</dependency>
-```
-* Change all "noraui" import to "com.github.noraui"
-* Change all `private static Logger LOGGER = Logger.getLogger` by `private static final Logger LOGGER = LoggerFactory.getLogger`
-* Change all `import org.apache.log4j.Logger;` by `import org.slf4j.Logger;` and `import org.slf4j.LoggerFactory;`
-* Change com.github.noraui.browser.DriverFactory#setProperty(String key, Properties propertyFile) to com.github.noraui.browser.DriverFactory#getProperty(String key, Properties propertyFile)
-* Change com.github.noraui.browser.DriverFactory#setIntProperty(String key, Properties propertyFile) to com.github.noraui.browser.DriverFactory#getIntProperty(String key, Properties propertyFile)
-* replace all step constructors by `com.google.inject.Inject` (inject pages)
-* replace loadAuthentication(String browser) by loadAuthentication(Cookie cookie)
-* replace PhantomJs by Chrome headless
-* replace springframework RestTemplate by OkHttp
 
 # Supported languages
 
@@ -163,7 +114,7 @@ Before create issue check [![Ask at StackOverflow](https://img.shields.io/badge/
 
 The [issue tracker](https://github.com/NoraUi/NoraUi/issues) is the preferred channel for bug reports, features requests and submitting pull requests.
 
-For pull requests, read [CONTRIBUTING](/CONTRIBUTING) before.
+For pull requests, read [CONTRIBUTING](/.github/CONTRIBUTING.md) before.
 
 * Step 1: Create a fork.
 * Step 2: Create a branch on this new fork.

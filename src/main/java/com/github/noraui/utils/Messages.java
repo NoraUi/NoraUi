@@ -50,6 +50,11 @@ public class Messages {
     /**
      * Functional fail messages.
      */
+    public static final String THANK_YOU_FOR_YOUR_CONTRIBUTION = "THANK_YOU_FOR_YOUR_CONTRIBUTION";
+    
+    /**
+     * Functional fail messages.
+     */
     public static final String FAIL_MESSAGE_UNKNOWN_CREDENTIALS = "FAIL_MESSAGE_UNKNOWN_CREDENTIALS";
     public static final String FAIL_MESSAGE_HOME_PAGE_NOT_FOUND = "FAIL_MESSAGE_HOME_PAGE_NOT_FOUND";
     public static final String FAIL_MESSAGE_LOGOUT = "FAIL_MESSAGE_LOGOUT";
@@ -59,7 +64,8 @@ public class Messages {
     public static final String FAIL_MESSAGE_ELEMENT_STILL_VISIBLE = "FAIL_MESSAGE_ELEMENT_STILL_VISIBLE";
     public static final String FAIL_MESSAGE_UNABLE_TO_OPEN_A_NEW_WINDOW = "FAIL_MESSAGE_UNABLE_TO_OPEN_A_NEW_WINDOW";
     public static final String FAIL_MESSAGE_UNABLE_TO_CALL_API_REST = "FAIL_MESSAGE_UNABLE_TO_CALL_API_REST";
-
+    public static final String FAIL_MESSAGE_UNABLE_TO_CALL_METICS_API_REST = "FAIL_MESSAGE_UNABLE_TO_CALL_METICS_API_REST";
+    
     /**
      * Functional fail messages with parameters.
      */
@@ -67,7 +73,6 @@ public class Messages {
     public static final String FAIL_MESSAGE_UNABLE_TO_OPEN_PAGE = "FAIL_MESSAGE_UNABLE_TO_OPEN_PAGE";
     public static final String FAIL_MESSAGE_ERROR_ON_INPUT = "FAIL_MESSAGE_ERROR_ON_INPUT";
     public static final String FAIL_MESSAGE_ERROR_CLEAR_ON_INPUT = "FAIL_MESSAGE_ERROR_CLEAR_ON_INPUT";
-
     public static final String FAIL_MESSAGE_UNEXPECTED_DATE = "FAIL_MESSAGE_UNEXPECTED_DATE";
     public static final String DATE_GREATER_THAN_TODAY = "DATE_GREATER_THAN_TODAY";
     public static final String FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK = "FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK";
@@ -97,6 +102,7 @@ public class Messages {
     public static final String FAIL_MESSAGE_FILE_NOT_MATCHES = "FAIL_MESSAGE_FILE_NOT_MATCHES";
     public static final String FAIL_MESSAGE_UPLOADING_FILE = "FAIL_MESSAGE_UPLOADING_FILE";
     public static final String FAIL_MESSAGE_MAIL_ACTIVATION = "FAIL_MESSAGE_MAIL_ACTIVATION";
+
 
     /**
      * Format given message with provided arguments

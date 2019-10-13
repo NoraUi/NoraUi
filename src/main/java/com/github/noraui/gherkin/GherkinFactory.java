@@ -21,17 +21,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Constants;
 import com.github.noraui.utils.Context;
 
+@Loggable
 public class GherkinFactory {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(GherkinFactory.class);
+    static Logger log;
 
     private static final String DATA = "#DATA";
     private static final String DATA_END = "#END";
@@ -59,7 +57,7 @@ public class GherkinFactory {
                 final Path filePath = getFeaturePath(filename);
                 final String fileContent = new String(Files.readAllBytes(filePath), Constants.DEFAULT_ENDODING);
                 String lang = getFeatureLanguage(fileContent);
-                LOGGER.info(lang);
+                log.info(lang);
                 StringBuilder examplesString;
                 final String[] scenarioOutlines = "fr".equals(lang) ? fileContent.split(SCENARIO_OUTLINE_SPLIT_FR) : fileContent.split(SCENARIO_OUTLINE_SPLIT);
                 for (final Entry<Integer, List<String[]>> examples : examplesTable.entrySet()) {
@@ -93,7 +91,7 @@ public class GherkinFactory {
                 }
             }
         } catch (final IOException e) {
-            LOGGER.error("error GherkinFactory.injectDataInGherkinExamples()", e);
+            log.error("error GherkinFactory.injectDataInGherkinExamples()", e);
         }
     }
 
@@ -126,7 +124,7 @@ public class GherkinFactory {
             // Return lines - #DATA - #END
             return examples.length > 2 ? Arrays.copyOfRange(examples, 1, examples.length - 1) : new String[] {};
         } catch (final IOException e) {
-            LOGGER.error("error GherkinFactory.getExamples()", e);
+            log.error("error GherkinFactory.getExamples()", e);
         }
         return new String[] {};
     }

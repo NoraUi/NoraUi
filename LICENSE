@@ -477,6 +477,13 @@ patent license under the contributor's essential patent claims, to
 make, use, sell, offer for sale, import and otherwise run, modify and
 propagate the contents of its contributor version.
 
+  Each user, can be agreed to share your usage statistics and
+configuration of robot that uses that uses NoraUi to the NoraUi
+team anonymously. This was asked when generating the robot via
+the artifact Maven.This allows us to improve the user experience
+in future versions. This information is not used for commercial
+purposes.
+
   In the following three paragraphs, a "patent license" is any express
 agreement or commitment, however denominated, not to enforce a patent
 (such as an express permission to practice a patent or covenant not to

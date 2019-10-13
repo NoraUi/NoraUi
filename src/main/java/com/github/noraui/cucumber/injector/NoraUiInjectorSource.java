@@ -7,25 +7,23 @@
 package com.github.noraui.cucumber.injector;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import com.github.noraui.cucumber.metrics.module.SpeedRegulatorModule;
+import com.github.noraui.cucumber.metrics.module.TimeModule;
 import com.github.noraui.cucumber.module.NoraUiModule;
 import com.github.noraui.exception.TechnicalException;
+import com.github.noraui.log.annotation.Loggable;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Stage;
 
 import io.cucumber.guice.CucumberModules;
-import cucumber.metrics.module.SpeedRegulatorModule;
-import cucumber.metrics.module.TimeModule;
 import io.cucumber.guice.InjectorSource;
 
+@Loggable
 public class NoraUiInjectorSource implements InjectorSource {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(NoraUiInjectorSource.class.getName());
+    static Logger log;
 
     /**
      * {@inheritDoc}
@@ -36,7 +34,7 @@ public class NoraUiInjectorSource implements InjectorSource {
         try {
             NoraUiInjector.createInjector(injector);
         } catch (TechnicalException e) {
-            LOGGER.error("error NoraUiInjectorSource.getInjector()", e);
+            log.error("NoraUiInjectorSource.getInjector()", e);
         }
         return injector;
     }

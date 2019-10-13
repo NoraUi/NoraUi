@@ -35,8 +35,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.slf4j.Logger;
 
 import com.github.noraui.application.page.IPage;
 import com.github.noraui.application.page.Page;
@@ -49,6 +51,7 @@ import com.github.noraui.exception.Result;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.GherkinConditionedLoopedStep;
 import com.github.noraui.gherkin.GherkinStepCondition;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.service.CryptoService;
 import com.github.noraui.service.CucumberExpressionService;
 import com.github.noraui.service.UserNameService;
@@ -59,13 +62,10 @@ import com.github.noraui.utils.Utilities;
 import com.google.common.base.Function;
 import com.google.inject.Inject;
 
-import lombok.extern.slf4j.Slf4j;
-
-/**
- * Specific LOGGER
- */
-@Slf4j
+@Loggable
 public abstract class Step implements IStep {
+
+    static Logger log;
 
     protected static final String SECURE_MASK = "[secure]";
 
@@ -691,10 +691,9 @@ public abstract class Step implements IStep {
      */
     protected void passOver(PageElement element) throws TechnicalException, FailureException {
         try {
-            final String javascript = "var evObj = document.createEvent('MouseEvents');"
-                    + "evObj.initMouseEvent(\"mouseover\",true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);" + "arguments[0].dispatchEvent(evObj);";
-            ((JavascriptExecutor) getDriver()).executeScript(javascript, Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(element))));
-
+            Actions action = new Actions(getDriver());
+            WebElement we = getDriver().findElement(Utilities.getLocator(element));
+            action.moveToElement(we).build().perform();
         } catch (final Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_PASS_OVER_ELEMENT), element, element.getPage().getApplication()), true,
                     element.getPage().getCallBack());
@@ -1029,7 +1028,6 @@ public abstract class Step implements IStep {
             new Result.Failure<>(text.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : text,
                     Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_VALUE_NOT_AVAILABLE_IN_THE_LIST), element, element.getPage().getApplication()), false, element.getPage().getCallBack());
         }
-
     }
 
 }

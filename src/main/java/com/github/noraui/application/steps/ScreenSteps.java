@@ -12,7 +12,6 @@ import java.util.List;
 
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.application.page.Page;
 import com.github.noraui.cucumber.annotation.Conditioned;
@@ -20,6 +19,7 @@ import com.github.noraui.exception.FailureException;
 import com.github.noraui.exception.Result;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.GherkinStepCondition;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.service.ScreenService;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
@@ -32,12 +32,10 @@ import io.cucumber.java.fr.Et;
 /**
  * This class contains Gherkin callable steps that goal of working with the screen (scrennshot, ...).
  */
+@Loggable
 public class ScreenSteps extends Step {
 
-    /**
-     * Specific LOGGER.
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(ScreenSteps.class);
+    static Logger log;
 
     @Inject
     private ScreenService screenService;
@@ -52,7 +50,7 @@ public class ScreenSteps extends Step {
     @Et("Je prends une capture d'écran(\\?)")
     @And("I take a screenshot(\\?)")
     public void takeScreenshot(List<GherkinStepCondition> conditions) {
-        LOGGER.debug("I take a screenshot for [{}] scenario.", Context.getCurrentScenario());
+        log.debug("I take a screenshot for [{}] scenario.", Context.getCurrentScenario());
         screenService.takeScreenshot(Context.getCurrentScenario());
     }
 
@@ -70,7 +68,7 @@ public class ScreenSteps extends Step {
     @Et("Je sauvegarde une capture d\'écran dans {string}(\\?)")
     @And("I save a screenshot in {string}(\\?)")
     public void saveScreenshot(String screenName, List<GherkinStepCondition> conditions) throws IOException {
-        LOGGER.debug("I save a screenshot in [{}].", screenName);
+        log.debug("I save a screenshot in [{}].", screenName);
         screenService.saveScreenshot(screenName);
     }
 
@@ -98,7 +96,7 @@ public class ScreenSteps extends Step {
     public void saveWebElementInScreenshot(String pageElement, String screenName, List<GherkinStepCondition> conditions) throws IOException, FailureException, TechnicalException {
         String page = pageElement.split("-")[0];
         String element = pageElement.split("-")[1];
-        LOGGER.debug("I save a screenshot of [{}-{}] in [{}.jpg]", page, element, screenName);
+        log.debug("I save a screenshot of [{}-{}] in [{}.jpg]", page, element, screenName);
         try {
             screenService.saveScreenshot(screenName, Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + element)))));
         } catch (Exception e) {
@@ -122,7 +120,7 @@ public class ScreenSteps extends Step {
     @Et("Je commence la capture vidéo dans {string}(\\?)")
     @And("I start video capture in {string}(\\?)")
     public void startVideoCapture(String screenName, List<GherkinStepCondition> conditions) throws IOException, AWTException {
-        LOGGER.debug("I start video capture in [{}].", screenName);
+        log.debug("I start video capture in [{}].", screenName);
         screenService.startVideoCapture(screenName);
     }
 
@@ -138,7 +136,7 @@ public class ScreenSteps extends Step {
     @Et("Je stop la capture vidéo(\\?)")
     @And("I stop video capture(\\?)")
     public void stopVideoCapture(List<GherkinStepCondition> conditions) throws IOException {
-        LOGGER.debug("I stop video capture.");
+        log.debug("I stop video capture.");
         screenService.stopVideoCapture();
     }
 

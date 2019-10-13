@@ -75,7 +75,6 @@
         <j2objc-annotations.version>1.3</j2objc-annotations.version>
         <logback.version>1.2.3</logback.version>
         <slf4j.version>1.7.25</slf4j.version>
-        <lombok.version>1.18.4</lombok.version>
         <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
         <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
         <maven-javadoc-plugin.version>3.0.0-M1</maven-javadoc-plugin.version>
@@ -90,11 +89,12 @@
         <sonar.sources>${project.basedir}/src/main/java/</sonar.sources>
         <sonar.junit.reportPaths>${project.build.directory}/surefire-reports/junit</sonar.junit.reportPaths>
         <sonar.surefire.reportPaths>${project.build.directory}/surefire-reports</sonar.surefire.reportPaths>
-        <sonar.jacoco.reportPaths>${project.testresult.directory}/coverage/jacoco/jacoco.exec</sonar.jacoco.reportPaths>
+        <sonar.jacoco.directory>${project.testresult.directory}/coverage/jacoco</sonar.jacoco.directory>
+        <sonar.jacoco.reportPaths>${sonar.jacoco.directory}/jacoco.exec</sonar.jacoco.reportPaths>
         <sonar.tests>${project.basedir}/src/test/</sonar.tests>
         <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
-        <!-->sonar.branch.name>sonar</sonar.branch.name-->
-        <sonar.exclusions>**/cucumber/**/*,**/*Exception.*,**/annotation/**/*,**/noraui/model/**/*,**/noraui/data/rest/Row.java,**/noraui/utils/Constants.java,**/noraui/application/steps/MailSteps.java,*.css</sonar.exclusions>
+        <sonar.exclusions>**/cucumber/**/*,**/*Exception.*,**/annotation/**/*,**/noraui/model/**/*,**/noraui/data/rest/Row.java,**/noraui/utils/Constants.java,**/noraui/application/steps/MailSteps.java</sonar.exclusions>
+        <sonar.test.exclusions>**/*.css</sonar.test.exclusions>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <javadoc.opts>-Xdoclint:none</javadoc.opts>
     </properties>
@@ -319,13 +319,6 @@
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
-        
-        <dependency>
-    		<groupId>org.projectlombok</groupId>
-    		<artifactId>lombok</artifactId>
-    		<version>${lombok.version}</version>
-    		<scope>provided</scope>
-		</dependency>
 
         <!-- javassist -->
         <dependency>
@@ -358,7 +351,12 @@
             <version>1.17.1</version>
             <scope>test</scope>
         </dependency>
-
+        
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-model</artifactId>
+            <version>3.6.2</version>
+        </dependency>
 
     </dependencies>
 
@@ -741,7 +739,7 @@
                                     <goal>prepare-agent</goal>
                                 </goals>
                                 <configuration>
-                                    <destFile>${project.testresult.directory}/coverage/jacoco/jacoco.exec</destFile>
+                                    <destFile>${sonar.jacoco.reportPaths}</destFile>
                                     <propertyName>surefireArgLine</propertyName>
                                 </configuration>
                             </execution>
@@ -752,8 +750,8 @@
                                     <goal>report</goal>
                                 </goals>
                                 <configuration>
-                                    <dataFile>${project.testresult.directory}/coverage/jacoco/jacoco.exec</dataFile>
-                                    <outputDirectory>${project.testresult.directory}/coverage/jacoco</outputDirectory>
+                                    <dataFile>${sonar.jacoco.reportPaths}</dataFile>
+                                    <outputDirectory>${sonar.jacoco.directory}</outputDirectory>
                                 </configuration>
                             </execution>
                         </executions>
