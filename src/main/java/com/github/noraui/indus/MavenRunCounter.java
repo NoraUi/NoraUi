@@ -63,54 +63,57 @@ public class MavenRunCounter {
      */
     public List<Counter> count(List<String> versionControlSystemsBlacklist, List<String> blacklist, List<String> manager, File scenarioFolder) throws TechnicalException {
         final List<Counter> result = new ArrayList<>();
-        final List<String> files = listFilesForFolder(versionControlSystemsBlacklist, scenarioFolder);
+        final List<String> features = listFilesForFolder(versionControlSystemsBlacklist, scenarioFolder);
 
         final Pattern recommendedPattern = Pattern.compile("^[ ]{4}" + STEP_KEYWORDS);
         final Pattern requiredPattern = Pattern.compile("^[\\s]*" + STEP_KEYWORDS);
         final Pattern newScenario = Pattern.compile("^[\\s]*" + NEW_SCENARIO_OUTLINE);
 
-        for (final String file : files) {
-            final String scenarioName = file.substring(file.lastIndexOf(File.separator) + 1, file.lastIndexOf('.'));
-            if (!blacklist.contains(scenarioName)) {
-                int nbStep = 0;
-                int nbScenario = 0;
-                Counter counter = null;
-                Matcher matcher;
-                try (BufferedReader br = new BufferedReader(new FileReader(file));) {
-                    String sCurrentLine;
+        for (final String feature : features) {
+            readFeature(blacklist, manager, result, recommendedPattern, requiredPattern, newScenario, feature);
+        }
+        return result;
+    }
 
-                    while ((sCurrentLine = br.readLine()) != null) {
-                        matcher = newScenario.matcher(sCurrentLine);
+    private void readFeature(List<String> blacklist, List<String> manager, final List<Counter> result, final Pattern recommendedPattern, final Pattern requiredPattern, final Pattern newScenario,
+            final String feature) throws TechnicalException {
+        final String scenarioName = feature.substring(feature.lastIndexOf(File.separator) + 1, feature.lastIndexOf('.'));
+        if (!blacklist.contains(scenarioName)) {
+            int nbStep = 0;
+            int nbScenario = 0;
+            Counter counter = null;
+            Matcher matcher;
+            try (BufferedReader br = new BufferedReader(new FileReader(feature));) {
+                String sCurrentLine;
+                while ((sCurrentLine = br.readLine()) != null) {
+                    matcher = newScenario.matcher(sCurrentLine);
+                    if (matcher.find()) {
+                        if (counter != null) {
+                            countAndAddToList(manager, result, scenarioName, nbStep, counter);
+                        }
+                        nbScenario++;
+                        counter = new Counter(scenarioName, nbScenario);
+                        nbStep = 0;
+                    } else {
+                        matcher = requiredPattern.matcher(sCurrentLine);
                         if (matcher.find()) {
-                            if (counter != null) {
-                                countAndAddToList(manager, result, scenarioName, nbStep, counter);
-                            }
-                            nbScenario++;
-                            counter = new Counter(scenarioName, nbScenario);
-                            nbStep = 0;
-
-                        } else {
-                            matcher = requiredPattern.matcher(sCurrentLine);
-                            if (matcher.find()) {
-                                nbStep++;
-                                matcher = recommendedPattern.matcher(sCurrentLine);
-                                if (!matcher.find()) {
-                                    LOGGER.error("{} : {}", Messages.getMessage(Messages.SCENARIO_ERROR_MESSAGE_ILLEGAL_TAB_FORMAT), sCurrentLine);
-                                }
+                            nbStep++;
+                            matcher = recommendedPattern.matcher(sCurrentLine);
+                            if (!matcher.find()) {
+                                LOGGER.error("{} : {}", Messages.getMessage(Messages.SCENARIO_ERROR_MESSAGE_ILLEGAL_TAB_FORMAT), sCurrentLine);
                             }
                         }
                     }
-                } catch (final IOException e) {
-                    LOGGER.error("IOException error: ", e);
                 }
-                if (counter != null) {
-                    countAndAddToList(manager, result, scenarioName, nbStep, counter);
-                } else {
-                    throw new TechnicalException(Messages.format(Messages.getMessage(Messages.SCENARIO_ERROR_MESSAGE_SCENARIO_OUTLINE_IS_MANDATORY, scenarioName)));
-                }
+            } catch (final IOException e) {
+                LOGGER.error("IOException error: ", e);
+            }
+            if (counter != null) {
+                countAndAddToList(manager, result, scenarioName, nbStep, counter);
+            } else {
+                throw new TechnicalException(Messages.format(Messages.getMessage(Messages.SCENARIO_ERROR_MESSAGE_SCENARIO_OUTLINE_IS_MANDATORY, scenarioName)));
             }
         }
-        return result;
     }
 
     private void countAndAddToList(List<String> manager, final List<Counter> result, final String scenarioName, int nbStep, Counter counter) {
