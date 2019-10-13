@@ -4,7 +4,7 @@
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
-package com.github.noraui.application.page.demo;
+package com.github.noraui.application.page.bakery;
 
 import static com.github.noraui.utils.Context.BAKERY_KEY;
 

@@ -6,7 +6,7 @@
  */
 package com.github.noraui.application.page.demo;
 
-import static com.github.noraui.utils.Context.DEMO_KEY;
+import static com.github.noraui.utils.Context.BAKERY_KEY;
 
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
@@ -30,9 +30,9 @@ public class Popup1DemoPage extends Page {
 
     public Popup1DemoPage() {
         super();
-        this.application = DEMO_KEY;
+        this.application = BAKERY_KEY;
         this.pageKey = "DEMO_POP1";
-        this.callBack = Context.getCallBack(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_DEMO_HOME);
+        this.callBack = Context.getCallBack(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_BAKERY_HOME);
     }
 
     /**

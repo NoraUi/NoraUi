@@ -4,7 +4,7 @@
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
-package com.github.noraui.application.page.demo;
+package com.github.noraui.application.page.bakery;
 
 import static com.github.noraui.utils.Context.BAKERY_KEY;
 
@@ -17,21 +17,21 @@ import com.github.noraui.exception.Callbacks;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Utilities;
 
-public class Popup2DemoPage extends Page {
+public class Popup1DemoPage extends Page {
 
     /**
      * Specific LOGGER
      */
-    protected static final Logger LOGGER = LoggerFactory.getLogger(Popup2DemoPage.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(Popup1DemoPage.class);
 
     public final PageElement bigTitle = new PageElement("-big_title", "This is a popup demo for NORAUI (Non-Regression Automation for User Interfaces).");
 
     private static final String TITLE_PAGE = "NoraUi Demo Popup";
 
-    public Popup2DemoPage() {
+    public Popup1DemoPage() {
         super();
         this.application = BAKERY_KEY;
-        this.pageKey = "DEMO_POP2";
+        this.pageKey = "DEMO_POP1";
         this.callBack = Context.getCallBack(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_BAKERY_HOME);
     }
 
