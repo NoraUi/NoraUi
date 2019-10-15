@@ -54,10 +54,5 @@ public class GherkinStepCondition {
         }
         return actu.matches("(?i)" + this.expected);
     }
-    
-    @Override
-    public String toString() {
-        return "key:" + key + " expected:" + expected + " actual:" + actual;
-    }
 
 }
