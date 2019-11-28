@@ -326,12 +326,16 @@ public class Application extends AbstractNoraUiCli {
             if (verbose) {
                 log.info("{} removed with success.", applicationModelPath);
             }
-            FileUtils.forceDelete(new File(applicationModelPath));
+        } catch (IOException e) {
+            log.debug("{} not revove because do not exist.", applicationModelPath);
+        }
+        try {
+            FileUtils.forceDelete(new File(applicationModelUTPath));
             if (verbose) {
                 log.info("{} removed with success.", applicationModelUTPath);
             }
         } catch (IOException e) {
-            log.debug("{} not revove because do not exist.", applicationModelPath);
+            log.debug("{} not revove because do not exist.", applicationModelUTPath);
         }
     }
 
