@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -1079,12 +1080,13 @@ public class NoraUiCommandLineInterface {
 
     /**
      * CLI status feature display all datas from NoraUi CLI files (.noraui folder at the root of robot).
+     * if the status is false, the element is filtered.
      * 
      * @param noraUiCliFile
      *            Object contain all data from CLI Files.
      */
     private void status(NoraUiCliFile noraUiCliFile) {
-        List<NoraUiApplicationFile> applications = noraUiCliFile.getApplicationFiles();
+        List<NoraUiApplicationFile> applications = noraUiCliFile.getApplicationFiles().stream().filter(applicationFile -> applicationFile.getStatus()).collect(Collectors.toList());
         for (NoraUiApplicationFile a : applications) {
             log.info("Application: [{}]", a.getName());
             log.info(" - url: [{}]", a.getUrl());
@@ -1098,7 +1100,7 @@ public class NoraUiCommandLineInterface {
                 }
             }
         }
-        List<NoraUiScenarioFile> scenarios = noraUiCliFile.getScenarioFiles();
+        List<NoraUiScenarioFile> scenarios = noraUiCliFile.getScenarioFiles().stream().filter(scenarioFiles -> scenarioFiles.getStatus()).collect(Collectors.toList());;
         for (NoraUiScenarioFile s : scenarios) {
             log.info("Scenario: [{}]", s.getName());
             log.info(" - description: [{}]", s.getDescription());

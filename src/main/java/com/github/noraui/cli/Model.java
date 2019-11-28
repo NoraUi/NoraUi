@@ -172,13 +172,13 @@ public class Model extends AbstractNoraUiCli {
                 .replace("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1)) + ".java";
         String modelsPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replace(UTILS, APPLICATION_MODEL_SLASH + applicationName)
                 .replace("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1)) + "s.java";
-        String modelTUPath = testPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replace(UTILS, APPLICATION_MODEL_SLASH + applicationName)
+        String modelUTPath = testPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/").replace(UTILS, APPLICATION_MODEL_SLASH + applicationName)
                 .replace("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), modelName.toUpperCase().charAt(0) + modelName.substring(1)) + "UT.java";
         removeModelFile(verbose, modelPath);
         removeModelFile(verbose, modelsPath);
         removeApplicationDirectoryIfEmpty(verbose, modelPath.substring(0, modelPath.lastIndexOf(File.separator)));
-        removeModelFile(verbose, modelTUPath);
-        removeApplicationDirectoryIfEmpty(verbose, modelTUPath.substring(0, modelPath.lastIndexOf(File.separator)));
+        removeModelFile(verbose, modelUTPath);
+        removeApplicationDirectoryIfEmpty(verbose, modelUTPath.substring(0, modelPath.lastIndexOf(File.separator)));
 
     }
 

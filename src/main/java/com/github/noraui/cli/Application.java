@@ -36,6 +36,7 @@ public class Application extends AbstractNoraUiCli {
     public static final String SUFFIX_KEY = "_KEY;";
 
     private String mainPath;
+    private String testPath = "src" + File.separator + "test";
 
     public Application() {
         this.mainPath = "src" + File.separator + "main";
@@ -105,7 +106,7 @@ public class Application extends AbstractNoraUiCli {
         log.info("Remove application named [{}].", applicationName);
         removeApplicationPages(applicationName, robotContext, verbose);
         removeApplicationSteps(applicationName, robotContext, verbose);
-        removeApplicationModel(applicationName, robotContext, verbose);
+        removeApplicationModels(applicationName, robotContext, verbose);
         removeApplicationContext(robotContext, applicationName, verbose);
         removeApplicationSelector(applicationName, verbose);
         removeApplicationInPropertiesFile(applicationName, robotContext.getSimpleName().replace("Context", ""), verbose);
@@ -307,6 +308,7 @@ public class Application extends AbstractNoraUiCli {
     }
 
     /**
+     * Remove application models (with unit tests).
      * @param applicationName
      *            name of application removed.
      * @param robotContext
@@ -314,13 +316,19 @@ public class Application extends AbstractNoraUiCli {
      * @param verbose
      *            boolean to activate verbose mode (show more traces).
      */
-    private void removeApplicationModel(String applicationName, Class<?> robotContext, boolean verbose) {
+    private void removeApplicationModels(String applicationName, Class<?> robotContext, boolean verbose) {
         String applicationModelPath = mainPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/")
+                .replace("utils", "application/model/" + applicationName).replace("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), "");
+        String applicationModelUTPath = testPath + File.separator + "java" + File.separator + robotContext.getCanonicalName().replaceAll("\\.", "/")
                 .replace("utils", "application/model/" + applicationName).replace("/", Matcher.quoteReplacement(File.separator)).replaceAll(robotContext.getSimpleName(), "");
         try {
             FileUtils.forceDelete(new File(applicationModelPath));
             if (verbose) {
                 log.info("{} removed with success.", applicationModelPath);
+            }
+            FileUtils.forceDelete(new File(applicationModelPath));
+            if (verbose) {
+                log.info("{} removed with success.", applicationModelUTPath);
             }
         } catch (IOException e) {
             log.debug("{} not revove because do not exist.", applicationModelPath);
