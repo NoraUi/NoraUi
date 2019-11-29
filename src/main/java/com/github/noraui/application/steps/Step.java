@@ -668,7 +668,7 @@ public abstract class Step implements IStep {
         try {
             final List<WebElement> radioButtons = Context.waitUntil(ExpectedConditions.presenceOfAllElementsLocatedBy(Utilities.getLocator(pageElement)));
             for (final WebElement button : radioButtons) {
-                if (button.getAttribute(VALUE).contains(value)) {
+                if (button.getAttribute(VALUE).equals(value)) {
                     button.click();
                     break;
                 }
