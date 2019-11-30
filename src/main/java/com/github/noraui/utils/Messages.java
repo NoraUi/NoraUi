@@ -103,6 +103,11 @@ public class Messages {
     public static final String FAIL_MESSAGE_UPLOADING_FILE = "FAIL_MESSAGE_UPLOADING_FILE";
     public static final String FAIL_MESSAGE_MAIL_ACTIVATION = "FAIL_MESSAGE_MAIL_ACTIVATION";
 
+    /**
+     * Functional Material fail messages with parameters.
+     */
+    public static final String FAIL_MESSAGE_MATERIAL_UNABLE_TO_CHECK_ELEMENT = "FAIL_MESSAGE_MATERIAL_UNABLE_TO_CHECK_ELEMENT";
+    public static final String FAIL_MESSAGE_MATERIAL_UNABLE_TO_SELECT_RADIO_BUTTON = "FAIL_MESSAGE_MATERIAL_UNABLE_TO_SELECT_RADIO_BUTTON";
 
     /**
      * Format given message with provided arguments
