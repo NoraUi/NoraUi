@@ -15,7 +15,7 @@ Non-Regression Automation for User Interfaces
 # News 
 See [change log](https://noraui.github.io/changelog.txt) for details
 * 2019-09-xx: NoraUi [4.1.0] is in progress.
-* 2019-09-xx: NoraUi [4.0.0] is in progress.
+* 2019-12-02: NoraUi [4.0.0] is released.
 * 2018-05-24: NoraUi [3.2.0] is released.
 * 2017-11-12: NoraUi [3.0.0] is released.
 * 2017-09-21: NoraUi [2.6.3] **is prohibited.**
