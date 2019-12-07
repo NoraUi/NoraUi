@@ -570,6 +570,18 @@ public class Context {
         getInstance().startCurrentScenario = DateTime.now();
     }
 
+    /**
+     * Wait will ignore instances of NotFoundException that are encountered (thrown) by default in
+     * the 'until' condition, and immediately propagate all others. You can add more to the ignore
+     * list by calling ignoring(exceptions to add).
+     * 
+     * @param <T>
+     *            The function's expected return type.
+     * @param condition
+     *            the parameter to pass to the {@link ExpectedCondition}
+     * @return The function's return value if the function returned something different
+     *         from null or false before the timeout expired.
+     */
     public static <T> T waitUntil(ExpectedCondition<T> condition) {
         if (getInstance().webDriverWait == null) {
             getInstance().webDriverWait = new WebDriverWait(getDriver(), getTimeout());
@@ -577,8 +589,22 @@ public class Context {
         return getInstance().webDriverWait.until(condition);
     }
 
-    public static <T> T waitUntil(ExpectedCondition<T> condition, int time) {
-        getInstance().webDriverCustomWait = new WebDriverWait(getDriver(), time);
+    /**
+     * Wait will ignore instances of NotFoundException that are encountered (thrown) by default in
+     * the 'until' condition, and immediately propagate all others. You can add more to the ignore
+     * list by calling ignoring(exceptions to add).
+     * 
+     * @param <T>
+     *            The function's expected return type.
+     * @param condition
+     *            the parameter to pass to the {@link ExpectedCondition}
+     * @param timeOutInSeconds
+     *            The timeout in seconds when an expectation is called
+     * @return The function's return value if the function returned something different
+     *         from null or false before the timeout expired.
+     */
+    public static <T> T waitUntil(ExpectedCondition<T> condition, int timeOutInSeconds) {
+        getInstance().webDriverCustomWait = new WebDriverWait(getDriver(), timeOutInSeconds);
         return getInstance().webDriverCustomWait.until(condition);
     }
 
