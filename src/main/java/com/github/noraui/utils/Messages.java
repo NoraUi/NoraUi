@@ -102,6 +102,9 @@ public class Messages {
     public static final String FAIL_MESSAGE_FILE_NOT_MATCHES = "FAIL_MESSAGE_FILE_NOT_MATCHES";
     public static final String FAIL_MESSAGE_UPLOADING_FILE = "FAIL_MESSAGE_UPLOADING_FILE";
     public static final String FAIL_MESSAGE_MAIL_ACTIVATION = "FAIL_MESSAGE_MAIL_ACTIVATION";
+    public static final String FAIL_MESSAGE_CONTEXT_NOT_EQUALS = "FAIL_MESSAGE_CONTEXT_NOT_EQUALS";
+    public static final String FAIL_MESSAGE_CONTEXT_NOT_EQUALS_IGNORE_CASE  = "FAIL_MESSAGE_CONTEXT_NOT_EQUALS_IGNORE_CASE";
+    public static final String FAIL_MESSAGE_CONTEXT_NOT_CONTAINS = "FAIL_MESSAGE_CONTEXT_NOT_CONTAINS";
 
     /**
      * Functional Material fail messages with parameters.

@@ -47,7 +47,7 @@ public class BrowserSteps {
 
     /**
      * Open new window with conditions.
-     * Note: after this action, you need use "Given '.....' is opened."
+     * Note: after this action, you need use "Given '.....' is opened"
      * {@link com.github.noraui.browser.steps.BrowserSteps#openUrlIfDifferent(String, List) openUrlIfDifferent}
      *
      * @param conditions
