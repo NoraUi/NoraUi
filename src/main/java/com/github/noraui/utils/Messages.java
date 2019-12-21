@@ -105,6 +105,7 @@ public class Messages {
     public static final String FAIL_MESSAGE_CONTEXT_NOT_EQUALS = "FAIL_MESSAGE_CONTEXT_NOT_EQUALS";
     public static final String FAIL_MESSAGE_CONTEXT_NOT_EQUALS_IGNORE_CASE  = "FAIL_MESSAGE_CONTEXT_NOT_EQUALS_IGNORE_CASE";
     public static final String FAIL_MESSAGE_CONTEXT_NOT_CONTAINS = "FAIL_MESSAGE_CONTEXT_NOT_CONTAINS";
+    public static final String FAIL_MESSAGE_DATE_FORMATTER = "FAIL_MESSAGE_DATE_FORMATTER";
 
     /**
      * Functional Material fail messages with parameters.

@@ -131,11 +131,16 @@ public class ExpectSteps extends Step {
     public static ExpectedCondition<List<WebElement>> visibilityOfNbElementsLocatedBy(final By locator, final int nb) {
         return (WebDriver driver) -> {
             int nbElementIsDisplayed = 0;
-            final List<WebElement> elements = driver.findElements(locator);
-            for (final WebElement element : elements) {
-                if (element.isDisplayed()) {
-                    nbElementIsDisplayed++;
+            final List<WebElement> elements;
+            try {
+                elements = driver.findElements(locator);
+                for (final WebElement element : elements) {
+                    if (element.isDisplayed()) {
+                        nbElementIsDisplayed++;
+                    }
                 }
+            } catch (final Exception e) {
+                return null;
             }
             return nbElementIsDisplayed == nb ? elements : null;
         };
