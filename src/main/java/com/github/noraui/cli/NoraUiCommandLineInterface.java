@@ -1101,7 +1101,6 @@ public class NoraUiCommandLineInterface {
             }
         }
         List<NoraUiScenarioFile> scenarios = noraUiCliFile.getScenarioFiles().stream().filter(NoraUiScenarioFile::getStatus).collect(Collectors.toList());
-        ;
         for (NoraUiScenarioFile s : scenarios) {
             log.info("Scenario: [{}]", s.getName());
             log.info(" - description: [{}]", s.getDescription());
