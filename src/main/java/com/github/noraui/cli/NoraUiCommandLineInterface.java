@@ -1086,7 +1086,7 @@ public class NoraUiCommandLineInterface {
      *            Object contain all data from CLI Files.
      */
     private void status(NoraUiCliFile noraUiCliFile) {
-        List<NoraUiApplicationFile> applications = noraUiCliFile.getApplicationFiles().stream().filter(applicationFile -> applicationFile.getStatus()).collect(Collectors.toList());
+        List<NoraUiApplicationFile> applications = noraUiCliFile.getApplicationFiles().stream().filter(NoraUiApplicationFile::getStatus).collect(Collectors.toList());
         for (NoraUiApplicationFile a : applications) {
             log.info("Application: [{}]", a.getName());
             log.info(" - url: [{}]", a.getUrl());
@@ -1100,7 +1100,8 @@ public class NoraUiCommandLineInterface {
                 }
             }
         }
-        List<NoraUiScenarioFile> scenarios = noraUiCliFile.getScenarioFiles().stream().filter(scenarioFiles -> scenarioFiles.getStatus()).collect(Collectors.toList());;
+        List<NoraUiScenarioFile> scenarios = noraUiCliFile.getScenarioFiles().stream().filter(NoraUiScenarioFile::getStatus).collect(Collectors.toList());
+        ;
         for (NoraUiScenarioFile s : scenarios) {
             log.info("Scenario: [{}]", s.getName());
             log.info(" - description: [{}]", s.getDescription());
