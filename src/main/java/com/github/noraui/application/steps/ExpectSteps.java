@@ -105,7 +105,7 @@ public class ExpectSteps extends Step {
      * An expectation for checking that nb elements that match the locator are present on the web page.
      *
      * @param locator
-     *            Locator of element
+     *            Locator of elements
      * @param nb
      *            Expected number of elements
      * @return the list of WebElements once they are located
@@ -114,6 +114,38 @@ public class ExpectSteps extends Step {
         return (WebDriver driver) -> {
             final List<WebElement> elements = driver.findElements(locator);
             return elements.size() == nb ? elements : null;
+        };
+    }
+
+    /**
+     * An expectation for checking that nb elements that match (or more) the locator are present on the web page.
+     *
+     * @param locator
+     *            Locator of elements
+     * @param nb
+     *            Expected number of elements
+     * @return the list of WebElements once they are located
+     */
+    public static ExpectedCondition<List<WebElement>> presenceOfMinimumElementsLocatedBy(final By locator, final int nb) {
+        return (WebDriver driver) -> {
+            final List<WebElement> elements = driver.findElements(locator);
+            return elements.size() >= nb ? elements : null;
+        };
+    }
+
+    /**
+     * An expectation for checking that nb elements that match (or less) the locator are present on the web page.
+     *
+     * @param locator
+     *            Locator of elements
+     * @param nb
+     *            Expected number of elements
+     * @return the list of WebElements once they are located
+     */
+    public static ExpectedCondition<List<WebElement>> presenceOfMaximumElementsLocatedBy(final By locator, final int nb) {
+        return (WebDriver driver) -> {
+            final List<WebElement> elements = driver.findElements(locator);
+            return elements.size() <= nb ? elements : null;
         };
     }
 
