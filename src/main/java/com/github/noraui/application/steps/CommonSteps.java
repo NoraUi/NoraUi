@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
 
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
 
@@ -87,8 +86,7 @@ public class CommonSteps extends Step {
     public void waitInvisibilityOf(String pageElement, int time, List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        final WebElement we = Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName));
-        Context.waitUntil(ExpectedConditions.invisibilityOf(we), time);
+        Context.waitUntil(ExpectedConditions.invisibilityOf(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName))), time);
     }
 
     /**
@@ -109,8 +107,7 @@ public class CommonSteps extends Step {
     public void waitStalenessOf(String pageElement, int time, List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        final WebElement we = Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName));
-        Context.waitUntil(ExpectedConditions.stalenessOf(we), time);
+        Context.waitUntil(ExpectedConditions.stalenessOf(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName))), time);
     }
 
     /**
@@ -293,9 +290,30 @@ public class CommonSteps extends Step {
     @Et("Je sauvegarde la valeur de {string}(\\?)")
     @And("I save the value of {string}(\\?)")
     public void saveElementValue(String pageElement, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
-        saveElementValue('-' + elementName, Page.getInstance(page));
+        saveElementValue(pageElement);
+    }
+
+    /**
+     * Save field in memory if all 'expected' parameters equals 'actual' parameters in conditions.
+     * The value is saved directly into the Context targetKey.
+     *
+     * @param pageElement
+     *            The concerned page of field AND name of the field to save in memory. (sample: demo.DemoPage-button)
+     * @param targetKey
+     *            Target key to save retrieved value.
+     * @param conditions
+     *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
+     * @throws FailureException
+     *             if the scenario encounters a functional error (with message and screenshot)
+     * @throws TechnicalException
+     *             is thrown if the scenario encounters a technical error (format, configuration, data, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} or {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_RETRIEVE_VALUE}
+     */
+    @Conditioned
+    @Et("Je sauvegarde la valeur de {string} dans la clé {string} du contexte(\\?)")
+    @And("I save the value of {string} in {string} context key(\\?)")
+    public void saveValue(String pageElement, String targetKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+        saveElementValue(pageElement, targetKey);
     }
 
     /**
@@ -337,31 +355,6 @@ public class CommonSteps extends Step {
                 new Result.Warning<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_WRITE_MESSAGE_IN_RESULT_FILE), targetColumn), false, 0);
             }
         }
-    }
-
-    /**
-     * Save field in memory if all 'expected' parameters equals 'actual' parameters in conditions.
-     * The value is saved directly into the Context targetKey.
-     *
-     * @param pageElement
-     *            The concerned page of field AND name of the field to save in memory. (sample: demo.DemoPage-button)
-     * @param targetKey
-     *            Target key to save retrieved value.
-     * @param conditions
-     *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
-     * @throws FailureException
-     *             if the scenario encounters a functional error (with message and screenshot)
-     * @throws TechnicalException
-     *             is thrown if the scenario encounters a technical error (format, configuration, data, ...) in NoraUi.
-     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} or {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_RETRIEVE_VALUE}
-     */
-    @Conditioned
-    @Et("Je sauvegarde la valeur de {string} dans la clé {string} du contexte(\\?)")
-    @And("I save the value of {string} in {string} context key(\\?)")
-    public void saveValue(String pageElement, String targetKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
-        saveElementValue('-' + elementName, targetKey, Page.getInstance(page));
     }
 
     /**

@@ -539,10 +539,8 @@ public abstract class Step implements IStep {
     /**
      * Save value in memory using default target key (Page key + field).
      *
-     * @param field
-     *            is name of the field to retrieve.
-     * @param page
-     *            is target page.
+     * @param pageElement
+     *            The concerned page of field AND name of the field to save in memory. (sample: demo.DemoPage-button)
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} message (with screenshot, with exception) or with
@@ -551,20 +549,20 @@ public abstract class Step implements IStep {
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    protected void saveElementValue(String field, Page page) throws TechnicalException, FailureException {
-        log.debug("saveValueInStep: {} in {}.", field, page.getApplication());
-        saveElementValue(field, page.getPageKey() + field, page);
+    protected void saveElementValue(String pageElement) throws TechnicalException, FailureException {
+        String page = pageElement.split("-")[0];
+        String elementName = pageElement.split("-")[1];
+        log.debug("saveElementValue: {} in {}.", '-' + elementName, Page.getInstance(page).getApplication());
+        saveElementValue(pageElement, Page.getInstance(page).getPageKey() + '-' + elementName);
     }
 
     /**
      * Save value in memory.
      *
-     * @param field
-     *            is name of the field to retrieve.
+     * @param pageElement
+     *            The concerned page of field AND name of the field to save in memory to targetKey. (sample: demo.DemoPage-name_field in name)
      * @param targetKey
      *            is the key to save value to
-     * @param page
-     *            is target page.
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} message (with screenshot, with exception) or with
@@ -573,21 +571,23 @@ public abstract class Step implements IStep {
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    protected void saveElementValue(String field, String targetKey, Page page) throws TechnicalException, FailureException {
-        log.debug("saveValueInStep: {} to {} in {}.", field, targetKey, page.getApplication());
+    protected void saveElementValue(String pageElement, String targetKey) throws TechnicalException, FailureException {
+        String page = pageElement.split("-")[0];
+        String elementName = pageElement.split("-")[1];
+        log.debug("saveElementValue: {} to {} in {}.", '-' + elementName, targetKey, Page.getInstance(page).getApplication());
         String txt = "";
         try {
-            final WebElement elem = Utilities.findElement(page, field);
+            final WebElement elem = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName))));
             txt = elem.getAttribute(VALUE) != null ? elem.getAttribute(VALUE) : elem.getText();
         } catch (final Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, page.getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, Page.getInstance(page).getCallBack());
         }
         try {
             Context.saveValue(targetKey, txt);
             Context.getCurrentScenario().write("SAVE " + targetKey + "=" + txt);
         } catch (final Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_RETRIEVE_VALUE), page.getPageElementByKey(field), page.getApplication()), true,
-                    page.getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_RETRIEVE_VALUE), Page.getInstance(page).getPageElementByKey('-' + elementName),
+                    Page.getInstance(page).getApplication()), true, Page.getInstance(page).getCallBack());
         }
     }
 
