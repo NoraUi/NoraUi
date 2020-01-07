@@ -1,4 +1,3 @@
-
 # NoraUi
 Non-Regression Automation for User Interfaces
 
