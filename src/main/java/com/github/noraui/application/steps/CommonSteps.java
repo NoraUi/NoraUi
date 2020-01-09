@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.slf4j.Logger;
 
 import com.github.noraui.application.page.Page;
 import com.github.noraui.application.page.Page.PageElement;
@@ -48,67 +47,6 @@ import io.cucumber.java.fr.Quand;
 
 @Loggable
 public class CommonSteps extends Step {
-
-    static Logger log;
-
-    /**
-     * Waits a time in second.
-     *
-     * @param time
-     *            is time to wait
-     * @param conditions
-     *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
-     * @throws InterruptedException
-     *             Exception for the sleep
-     */
-    @Conditioned
-    @Lorsque("Je patiente {int} seconde(s)(\\?)")
-    @Then("I wait {int} second(s)(\\?)")
-    public void wait(int time, List<GherkinStepCondition> conditions) throws InterruptedException {
-        Thread.sleep((long) time * 1000);
-    }
-
-    /**
-     * Waits invisibility of element with timeout of x seconds.
-     *
-     * @param pageElement
-     *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
-     * @param time
-     *            is custom timeout
-     * @param conditions
-     *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
-     * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
-     */
-    @Conditioned
-    @Lorsque("Je patiente l'invisibilité de {string} avec un timeout de {int} secondes(\\?)")
-    @Then("I wait invisibility of {string} with timeout of {int} seconds(\\?)")
-    public void waitInvisibilityOf(String pageElement, int time, List<GherkinStepCondition> conditions) throws TechnicalException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
-        Context.waitUntil(ExpectedConditions.invisibilityOf(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName))), time);
-    }
-
-    /**
-     * Waits staleness of element with timeout of x seconds.
-     *
-     * @param pageElement
-     *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
-     * @param time
-     *            is custom timeout
-     * @param conditions
-     *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
-     * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
-     */
-    @Conditioned
-    @Lorsque("Je patiente la disparition de {string} avec un timeout de {int} seconde(s)(\\?)")
-    @Then("I wait staleness of {string} with timeout of {int} second(s)(\\?)")
-    public void waitStalenessOf(String pageElement, int time, List<GherkinStepCondition> conditions) throws TechnicalException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
-        Context.waitUntil(ExpectedConditions.stalenessOf(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName))), time);
-    }
 
     /**
      * Loops on steps execution for a specific number of times.
@@ -682,8 +620,9 @@ public class CommonSteps extends Step {
     }
 
     /**
-     * Checks if an html element is visible.
-     *
+     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.application.steps.WaitSteps.waitVisibilityOf(String, List<GherkinStepCondition>)}
+     *             "I wait visibility of {string}(\\?)"
+     *             Checks if an html element is visible.
      * @param pageElement
      *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
      * @param conditions
@@ -694,6 +633,7 @@ public class CommonSteps extends Step {
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
+    @Deprecated
     @Conditioned
     @Et("Je vérifie que {string} est visible(\\?)")
     @And("I check that {string} is visible(\\?)")
@@ -704,8 +644,9 @@ public class CommonSteps extends Step {
     }
 
     /**
-     * Checks if an html element is not visible.
-     *
+     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.application.steps.WaitSteps.waitInvisibilityOf(String, List<GherkinStepCondition>)}
+     *             "I wait invisibility of {string}(\\?)"
+     *             Checks if an html element is not visible.
      * @param pageElement
      *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
      * @param conditions
@@ -716,6 +657,7 @@ public class CommonSteps extends Step {
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
+    @Deprecated
     @Conditioned
     @Et("Je vérifie que {string} n'est pas visible(\\?)")
     @And("I check that {string} is not visible(\\?)")
