@@ -17,7 +17,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.application.model.demo.Article;
 import com.github.noraui.application.model.demo.Articles;
@@ -32,6 +31,7 @@ import com.github.noraui.cucumber.metrics.annotation.time.Time;
 import com.github.noraui.exception.FailureException;
 import com.github.noraui.exception.Result;
 import com.github.noraui.gherkin.GherkinStepCondition;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 import com.github.noraui.utils.Utilities;
@@ -43,12 +43,10 @@ import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Etantdonné;
 import io.cucumber.java.fr.Lorsque;
 
+@Loggable
 public class HelloByeSteps extends Step {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(HelloByeSteps.class);
+    static Logger log;
 
     @Inject
     private DemoPage demoPage;
@@ -68,7 +66,7 @@ public class HelloByeSteps extends Step {
         if (!f.exists()) {
             f.createNewFile();
         } else {
-            LOGGER.warn("File already exists");
+            log.warn("File already exists");
         }
     }
 
@@ -78,13 +76,13 @@ public class HelloByeSteps extends Step {
     @Etantdonné("j'ai un bonjour, s'il vous plaît. Cordialement {string}(\\?)")
     @Given("me a hello, please. Best Regards {string}(\\?)")
     public void hello(String name, List<GherkinStepCondition> conditions) {
-        LOGGER.info("Hello " + name + "!");
+        log.info("Hello " + name + "!");
     }
 
     @Lorsque("moi un chat, s'il vous plaît, meilleures salutations {string}.")
     @Given("me a cat, please. Best Regards {string}.")
     public void hello(String name) {
-        LOGGER.info("Take my cat " + name + "!");
+        log.info("Take my cat " + name + "!");
     }
 
     @Lorsque("j'ai un au revoir, s'il vous plaît. Cordialement {string}:")
@@ -93,9 +91,9 @@ public class HelloByeSteps extends Step {
         int i = 0;
         for (Map.Entry<String, String> entry : params.entrySet()) {
             i++;
-            LOGGER.info(String.format("  Key N°%d: %s   Value:%s", i, entry.getKey(), entry.getValue()));
+            log.info(String.format("  Key N°%d: %s   Value:%s", i, entry.getKey(), entry.getValue()));
         }
-        LOGGER.info("Bye " + name + "!");
+        log.info("Bye " + name + "!");
     }
 
     @Lorsque("moi une erreur si {string} est Paris.")
@@ -127,8 +125,8 @@ public class HelloByeSteps extends Step {
             if ("anonymous".equals(article.getAuthor())) {
                 new Result.Failure<>("anonymous", "anonymous is prohibited in demo blog!!", true, this.demoPage.getCallBack());
             } else {
-                LOGGER.info("> " + blog);
-                LOGGER.info("    > " + article.getTitle() + ": " + article.getText());
+                log.info("> " + blog);
+                log.info("    > " + article.getTitle() + ": " + article.getText());
             }
         }
     }
@@ -136,7 +134,7 @@ public class HelloByeSteps extends Step {
     @Lorsque("test pour {string}")
     @Given("test for {string}")
     public void testforCancel(String word) {
-        LOGGER.info("testforCancel: " + word);
+        log.info("testforCancel: " + word);
     }
 
 }
