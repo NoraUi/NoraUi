@@ -4,7 +4,7 @@
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
-package com.github.noraui.service;
+package com.github.noraui.service.impl;
 
 import static org.mockito.Mockito.when;
 
@@ -19,11 +19,13 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.slf4j.LoggerFactory;
 
 import com.github.noraui.cucumber.injector.NoraUiInjector;
 import com.github.noraui.cucumber.injector.NoraUiInjectorSource;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.log.NoraUiLoggingInjector;
+import com.github.noraui.service.CryptoService;
 import com.github.noraui.utils.Context;
 import com.google.inject.Inject;
 
@@ -39,11 +41,13 @@ public class CryptoServiceUT {
     public void setUp() throws TechnicalException {
         NoraUiInjector.resetInjector();
         new NoraUiInjectorSource().getInjector().injectMembers(this);
+        CryptoServiceImpl.log = LoggerFactory.getLogger(CryptoServiceImpl.class);
     }
 
     @After
     public void tearDown() {
         NoraUiInjector.resetInjector();
+        NoraUiLoggingInjector.resetInjector();
     }
 
     @Test
