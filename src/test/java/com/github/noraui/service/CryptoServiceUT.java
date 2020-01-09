@@ -44,7 +44,6 @@ public class CryptoServiceUT {
     @After
     public void tearDown() {
         NoraUiInjector.resetInjector();
-        NoraUiLoggingInjector.resetInjector();
     }
 
     @Test
