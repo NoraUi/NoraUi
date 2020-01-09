@@ -11,21 +11,19 @@ import static com.github.noraui.utils.Context.BAKERY_KEY;
 
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.application.page.Page;
 import com.github.noraui.exception.Callbacks;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Utilities;
 import com.google.inject.Singleton;
 
+@Loggable
 @Singleton
 public class BakeryPage extends Page {
 
-    /**
-     * Specific LOGGER
-     */
-    protected static final Logger LOGGER = LoggerFactory.getLogger(BakeryPage.class);
+    static Logger log;
 
     public final PageElement login = new PageElement("-login_field", "Login");
     public final PageElement loginTitle = new PageElement("-login_title", "Login title");
@@ -49,7 +47,7 @@ public class BakeryPage extends Page {
             Context.waitUntil(ExpectedConditions.visibilityOfElementLocated(Utilities.getLocator(loginTitle)));
             return true;
         } catch (Exception e) {
-            LOGGER.error("login title not found", e);
+            log.error("login title not found", e);
             return false;
         }
     }
