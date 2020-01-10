@@ -15,7 +15,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.application.page.Page;
 import com.github.noraui.application.page.Page.PageElement;
@@ -26,15 +25,14 @@ import com.github.noraui.cucumber.interceptor.ConditionedInterceptor;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.GherkinConditionedLoopedStep;
 import com.github.noraui.gherkin.GherkinStepCondition;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 
+@Loggable
 public class StepUT {
 
-    /**
-     * Specific LOGGER
-     */
-    private final Logger LOGGER = LoggerFactory.getLogger(StepUT.class);
+    static Logger log;
 
     public static final String BAKERY_DEMO_PAGE_NAME = "bakery.DemoPage";
 
@@ -388,11 +386,11 @@ public class StepUT {
         final GherkinConditionedLoopedStep gherkinConditionedLoopedStep = new GherkinConditionedLoopedStep("1", "I want to do '4' things I cant.", expected, actual);
         steps.add(gherkinConditionedLoopedStep);
         try {
-            LOGGER.info("before runAllStepsInLoop {}", step);
+            log.info("before runAllStepsInLoop {}", step);
             step.runAllStepsInLoop(steps);
             Assert.fail("TechnicalException should have been thrown");
         } catch (final TechnicalException e) {
-            LOGGER.info("TechnicalException in catch {}", e.getMessage());
+            log.info("TechnicalException in catch {}", e.getMessage());
             Assert.assertEquals(String.format(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_STEP_UNDEFINED), "I want to do '4' things I cant."), e.getMessage().replace("\"", ""));
         }
     }

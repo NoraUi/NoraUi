@@ -4,7 +4,7 @@
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
-package com.github.noraui.service;
+package com.github.noraui.service.impl;
 
 import static org.mockito.Mockito.when;
 
@@ -25,7 +25,7 @@ import com.github.noraui.cucumber.injector.NoraUiInjector;
 import com.github.noraui.cucumber.injector.NoraUiInjectorSource;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.log.NoraUiLoggingInjector;
-import com.github.noraui.service.impl.CryptoServiceImpl;
+import com.github.noraui.service.CryptoService;
 import com.github.noraui.utils.Context;
 import com.google.inject.Inject;
 

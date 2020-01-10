@@ -11,7 +11,6 @@ import java.util.List;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.application.page.bakery.AdminPage;
 import com.github.noraui.application.page.bakery.BakeryPage;
@@ -23,6 +22,7 @@ import com.github.noraui.exception.FailureException;
 import com.github.noraui.exception.Result;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.GherkinStepCondition;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 import com.github.noraui.utils.Utilities;
@@ -33,12 +33,10 @@ import io.cucumber.java.en.When;
 import io.cucumber.java.fr.Alors;
 import io.cucumber.java.fr.Quand;
 
+@Loggable
 public class BakerySteps extends Step {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(BakerySteps.class);
+    static Logger log;
 
     @Inject
     private BakeryPage bakeryPage;
@@ -87,7 +85,8 @@ public class BakerySteps extends Step {
     }
 
     /**
-     * @param conditions list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
+     * @param conditions
+     *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
      * @throws FailureException
      *             if the scenario encounters a functional error.
      */
@@ -110,7 +109,8 @@ public class BakerySteps extends Step {
     }
 
     /**
-     * @param conditions list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
+     * @param conditions
+     *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
      * @throws FailureException
      *             if the scenario encounters a functional error.
      */
@@ -149,7 +149,7 @@ public class BakerySteps extends Step {
             WebElement outMenu = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(this.adminPage.signOutMenu)));
             outMenu.click();
         } else {
-            LOGGER.warn(Messages.getMessage("USER_WAS_ALREADY_LOGOUT", "robot"));
+            log.warn(Messages.getMessage("USER_WAS_ALREADY_LOGOUT", "robot"));
             Context.getCurrentScenario().write(Messages.getMessage("USER_WAS_ALREADY_LOGOUT", "robot"));
         }
     }
