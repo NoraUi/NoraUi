@@ -129,7 +129,7 @@ public class FileSteps extends Step {
      *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_DOWNLOADED_FILE_NOT_FOUND} message (with screenshot, no exception)
      */
     @Conditioned
-    @Lorsque("Je patiente que le fichier nommé {string} soit téléchargé avec un timeout de {int} seconde(s)(\\?)")
+    @Lorsque("J'attends que le fichier nommé {string} soit téléchargé avec un timeout de {int} seconde(s)(\\?)")
     @Then("I wait file named {string} to be downloaded with timeout of {int} second(s)(\\?)")
     public void waitDownloadFile(String file, int timeout, List<GherkinStepCondition> conditions) throws InterruptedException, FailureException, TechnicalException {
         File f;

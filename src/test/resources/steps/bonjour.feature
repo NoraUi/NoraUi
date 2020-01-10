@@ -17,7 +17,7 @@ Fonctionnalité: bonjour (Fonction pour valider l'environnement.)
         |élément|<élément>|
         |élément2|<élément2>|
 
-    Alors Je patiente 1 secondes
+    Alors J'attends 1 secondes
 
     Lorsque 'BAKERY_DEMO' est ouvert
     Alors Le portail DEMO est affiché
@@ -86,13 +86,13 @@ Fonctionnalité: bonjour (Fonction pour valider l'environnement.)
 
     Alors Si '' vérifie '', je fais 2 fois:
         |key|step|expected|actual|
-        |1|Je patiente 3 secondes?|1|1|
-        |2|Je patiente 4 secondes?|1|2|
+        |1|J'attends 3 secondes?|1|1|
+        |2|J'attends 4 secondes?|1|2|
 
     Alors Si '' vérifie '', je fais jusqu'à 'myOutLoopKey' respecte 'Rennes' avec 4 essais maxi: 
         |key|step|expected|actual|
-        |1|Je patiente 3 secondes?|1|1|
-        |2|Je patiente 4 secondes?|1|2|
+        |1|J'attends 3 secondes?|1|1|
+        |2|J'attends 4 secondes?|1|2|
         |3|Je mets à jour la liste déroulante 'bakery.DemoPage-input_select_field' avec '<ville>'|||
         |4|Je sauvegarde la valeur de 'bakery.DemoPage-input_select_field' dans la clé 'myOutLoopKey' du contexte|||
 
@@ -159,10 +159,10 @@ Fonctionnalité: bonjour (Fonction pour valider l'environnement.)
     Et Je sauvegarde une capture d'écran de 'bakery.DemoPage-changeValueButton' dans 'changeValueButton<id>'
 
     Quand Je clique sur 'bakery.DemoPage-disappearButton'
-    Et Je patiente l'invisibilité de 'bakery.DemoPage-disappearButton' avec un timeout de 10 secondes
+    Et J'attends l'invisibilité de 'bakery.DemoPage-disappearButton' avec un timeout de 10 secondes
 
     Quand Je clique sur 'bakery.DemoPage-staleButton'
-    Et Je patiente la disparition de 'bakery.DemoPage-staleButton' avec un timeout de 10 secondes
+    Et J'attends la disparition de 'bakery.DemoPage-staleButton' avec un timeout de 10 secondes
 
     Et Je mets à jour le texte 'bakery.DemoPage-input_text_field' avec une valeur aléatoire qui vérifie 'noraui[a-zA-Z0-9]{6}'
 
@@ -184,7 +184,7 @@ Fonctionnalité: bonjour (Fonction pour valider l'environnement.)
         |id|1|<id>|
 
     Et Je clique sur 'bakery.DemoPage-exportCSV'
-    Et Je patiente que le fichier nommé 'stock-data.csv' soit téléchargé avec un timeout de 3 secondes
+    Et J'attends que le fichier nommé 'stock-data.csv' soit téléchargé avec un timeout de 3 secondes
     Et Le fichier 'stock-data.csv' encodé en 'ISO-8859-1' vérifie 'Symbol;Company;Price'
     Et Je supprime le fichier 'stock-data.csv' dans repertoire des téléchargements
 
