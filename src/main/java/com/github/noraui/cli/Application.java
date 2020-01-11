@@ -145,9 +145,6 @@ public class Application extends AbstractNoraUiCli {
         sb.append("").append(System.lineSeparator());
         sb.append("public class " + applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "Page extends Page {").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
-        sb.append("    /**").append(System.lineSeparator());
-        sb.append("     * Specific LOGGER").append(System.lineSeparator());
-        sb.append("     */").append(System.lineSeparator());
         sb.append("    private static final Logger LOGGER = LoggerFactory.getLogger(" + applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "Page.class);")
                 .append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
@@ -309,6 +306,7 @@ public class Application extends AbstractNoraUiCli {
 
     /**
      * Remove application models (with unit tests).
+     * 
      * @param applicationName
      *            name of application removed.
      * @param robotContext

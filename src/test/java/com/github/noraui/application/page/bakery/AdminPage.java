@@ -6,27 +6,27 @@
  */
 package com.github.noraui.application.page.bakery;
 
-import static com.github.noraui.utils.Context.BAKERY_KEY;
 import static com.github.noraui.utils.Context.BAKERY_ADMIN;
+import static com.github.noraui.utils.Context.BAKERY_KEY;
 
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.application.page.Page;
 import com.github.noraui.exception.Callbacks;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Utilities;
+import com.google.inject.Singleton;
 
+@Loggable
+@Singleton
 public class AdminPage extends Page {
 
-    /**
-     * Specific LOGGER
-     */
-    protected static final Logger LOGGER = LoggerFactory.getLogger(AdminPage.class);
+    static Logger log;
 
     public final PageElement titleMessage = new PageElement("-title_message");
-    
+
     public final PageElement accountMenu = new PageElement("-accountMenu", "Account menu");
     public final PageElement signOutMenu = new PageElement("-signout_menu");
 
@@ -46,7 +46,7 @@ public class AdminPage extends Page {
             Context.waitUntil(ExpectedConditions.visibilityOfElementLocated(Utilities.getLocator(titleMessage)));
             return true;
         } catch (Exception e) {
-            LOGGER.error("signIn message not found", e);
+            log.error("signIn message not found", e);
             return false;
         }
     }

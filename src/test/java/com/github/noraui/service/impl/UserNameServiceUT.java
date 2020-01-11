@@ -4,7 +4,7 @@
  * @author Nicolas HALLOUIN
  * @author Stéphane GRILLON
  */
-package com.github.noraui.service;
+package com.github.noraui.service.impl;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,6 +21,7 @@ import org.openqa.selenium.support.ui.Select;
 import com.github.noraui.cucumber.injector.NoraUiInjector;
 import com.github.noraui.cucumber.injector.NoraUiInjectorSource;
 import com.github.noraui.exception.TechnicalException;
+import com.github.noraui.service.UserNameService;
 import com.google.inject.Inject;
 
 public class UserNameServiceUT {

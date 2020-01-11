@@ -21,9 +21,6 @@ public class NoraUiLoggingInjector {
 
     public static final String TECHNICAL_ERROR_MESSAGE_NORAUI_LOGGING_INJECTOR_ALREADY_EXISTS = "TECHNICAL_ERROR_MESSAGE_NORAUI_LOGGING_INJECTOR_ALREADY_EXISTS";
 
-    /**
-     * Specific LOGGER
-     */
     private static final Logger LOGGER = LoggerFactory.getLogger(NoraUiLoggingInjector.class.getName());
 
     /**

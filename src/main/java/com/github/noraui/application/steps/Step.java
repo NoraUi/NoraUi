@@ -360,6 +360,40 @@ public abstract class Step implements IStep {
     }
 
     /**
+     * Checks if HTML text equals expected value.
+     *
+     * @param pageElement
+     *            Is target element
+     * @param textOrKey
+     *            Is the new data (text or text in context (after a save))
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_WRONG_EXPECTED_VALUE} message (with screenshot, with exception) or with
+     *             {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} message
+     *             (with screenshot, with exception)
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     */
+    protected void checkText(PageElement pageElement, String textOrKey, Object... args) throws TechnicalException, FailureException {
+        WebElement webElement = null;
+        String value = getTextOrKey(textOrKey);
+        try {
+            webElement = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement, args)));
+        } catch (final Exception e) {
+            new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
+        }
+
+        final String innerText = webElement == null ? null : webElement.getText();
+        if (log.isDebugEnabled()) {
+            log.debug("checkText() expected [{}] and found [{}].", textOrKey.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : value, innerText);
+        }
+        if (!value.equals(innerText)) {
+            new Result.Failure<>(innerText, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE), pageElement,
+                    textOrKey.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : value, pageElement.getPage().getApplication()), true, pageElement.getPage().getCallBack());
+        }
+    }
+
+    /**
      * Checks if HTML text contains expected value.
      *
      * @param pageElement
@@ -374,20 +408,20 @@ public abstract class Step implements IStep {
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    protected void checkText(PageElement pageElement, String textOrKey) throws TechnicalException, FailureException {
+    protected void checkTextContains(PageElement pageElement, String textOrKey, Object... args) throws TechnicalException, FailureException {
         WebElement webElement = null;
         String value = getTextOrKey(textOrKey);
         try {
-            webElement = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
+            webElement = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement, args)));
         } catch (final Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
         }
 
         final String innerText = webElement == null ? null : webElement.getText();
         if (log.isDebugEnabled()) {
-            log.debug("checkText() expected [{}] and found [{}].", textOrKey.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : value, innerText);
+            log.debug("checkTextContains() expected [{}] and found [{}].", textOrKey.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : value, innerText);
         }
-        if (!value.equals(innerText)) {
+        if (!innerText.contains(value)) {
             new Result.Failure<>(innerText, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE), pageElement,
                     textOrKey.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : value, pageElement.getPage().getApplication()), true, pageElement.getPage().getCallBack());
         }
@@ -404,10 +438,10 @@ public abstract class Step implements IStep {
      *             if the scenario encounters a functional error. Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} message
      *             (with screenshot, with exception)
      */
-    protected void checkElementVisible(PageElement pageElement, boolean displayed) throws FailureException {
+    protected void checkElementVisible(PageElement pageElement, boolean displayed, Object... args) throws FailureException {
         if (displayed) {
             try {
-                Context.waitUntil(ExpectedConditions.visibilityOfElementLocated(Utilities.getLocator(pageElement)));
+                Context.waitUntil(ExpectedConditions.visibilityOfElementLocated(Utilities.getLocator(pageElement, args)));
             } catch (final Exception e) {
                 new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_ELEMENT_STILL_VISIBLE), true, pageElement.getPage().getCallBack());
             }
@@ -431,16 +465,16 @@ public abstract class Step implements IStep {
      *             if the scenario encounters a functional error. Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} message
      *             (with screenshot, with exception)
      */
-    protected void checkElementPresence(PageElement pageElement, boolean present) throws FailureException {
+    protected void checkElementPresence(PageElement pageElement, boolean present, Object... args) throws FailureException {
         if (present) {
             try {
-                Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
+                Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement, args)));
             } catch (final Exception e) {
                 new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
             }
         } else {
             try {
-                Context.waitUntil(ExpectedConditions.not(ExpectedConditions.presenceOfAllElementsLocatedBy(Utilities.getLocator(pageElement))));
+                Context.waitUntil(ExpectedConditions.not(ExpectedConditions.presenceOfAllElementsLocatedBy(Utilities.getLocator(pageElement, args))));
             } catch (final Exception e) {
                 new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_ELEMENT_STILL_VISIBLE), true, pageElement.getPage().getCallBack());
             }
@@ -462,10 +496,10 @@ public abstract class Step implements IStep {
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    protected void updateList(PageElement pageElement, String textOrKey) throws TechnicalException, FailureException {
+    protected void updateList(PageElement pageElement, String textOrKey, Object... args) throws TechnicalException, FailureException {
         String value = getTextOrKey(textOrKey);
         try {
-            setDropDownValue(pageElement, value);
+            setDropDownValue(pageElement, value, args);
         } catch (final Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_ERROR_ON_INPUT), pageElement, pageElement.getPage().getApplication()), true,
                     pageElement.getPage().getCallBack());
@@ -483,9 +517,9 @@ public abstract class Step implements IStep {
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    protected boolean checkTextSelectedInList(PageElement pageElement, String text) throws FailureException {
+    protected boolean checkTextSelectedInList(PageElement pageElement, String text, Object... args) throws FailureException {
         try {
-            final WebElement select = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(pageElement)));
+            final WebElement select = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(pageElement, args)));
             final Select dropDown = new Select(select);
             return text.equalsIgnoreCase(dropDown.getFirstSelectedOption().getText());
         } catch (final Exception e) {
@@ -511,7 +545,7 @@ public abstract class Step implements IStep {
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    protected void updateDateValidated(PageElement pageElement, String dateType, String date) throws TechnicalException, FailureException {
+    protected void updateDateValidated(PageElement pageElement, String dateType, String date, Object... args) throws TechnicalException, FailureException {
         log.debug("updateDateValidated with elementName={}, dateType={} and date={}", pageElement, dateType, date);
         final DateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT);
         final Date today = Calendar.getInstance().getTime();
@@ -519,13 +553,13 @@ public abstract class Step implements IStep {
             final Date valideDate = formatter.parse(date);
             if ("any".equals(dateType)) {
                 log.debug("update Date with any date: {}", date);
-                updateText(pageElement, date);
+                updateText(pageElement, date, args);
             } else if (formatter.format(today).equals(date) && ("future".equals(dateType) || "today".equals(dateType))) {
                 log.debug("update Date with today");
-                updateText(pageElement, date);
+                updateText(pageElement, date, args);
             } else if (valideDate.after(Calendar.getInstance().getTime()) && ("future".equals(dateType) || "future_strict".equals(dateType))) {
                 log.debug("update Date with a date after today: {}", date);
-                updateText(pageElement, date);
+                updateText(pageElement, date, args);
             } else {
                 new Result.Failure<>(date, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNEXPECTED_DATE), Messages.getMessage(Messages.DATE_GREATER_THAN_TODAY)), true,
                         pageElement.getPage().getCallBack());
@@ -549,11 +583,11 @@ public abstract class Step implements IStep {
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    protected void saveElementValue(String pageElement) throws TechnicalException, FailureException {
+    protected void saveElementValue(String pageElement, Object... args) throws TechnicalException, FailureException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
         log.debug("saveElementValue: {} in {}.", '-' + elementName, Page.getInstance(page).getApplication());
-        saveElementValue(pageElement, Page.getInstance(page).getPageKey() + '-' + elementName);
+        saveElementValue(pageElement, Page.getInstance(page).getPageKey() + '-' + elementName, args);
     }
 
     /**
@@ -571,13 +605,14 @@ public abstract class Step implements IStep {
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    protected void saveElementValue(String pageElement, String targetKey) throws TechnicalException, FailureException {
+    protected void saveElementValue(String pageElement, String targetKey, Object... args) throws TechnicalException, FailureException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
         log.debug("saveElementValue: {} to {} in {}.", '-' + elementName, targetKey, Page.getInstance(page).getApplication());
         String txt = "";
         try {
-            final WebElement elem = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName))));
+            final WebElement elem = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName), args)));
+            log.info("value: {} and text: {}", elem.getAttribute(VALUE), elem.getText());
             txt = elem.getAttribute(VALUE) != null ? elem.getAttribute(VALUE) : elem.getText();
         } catch (final Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, Page.getInstance(page).getCallBack());
@@ -1018,7 +1053,7 @@ public abstract class Step implements IStep {
         }
     }
 
-    private void setDropDownValue(PageElement element, String text) throws TechnicalException, FailureException {
+    private void setDropDownValue(PageElement element, String text, Object... args) throws TechnicalException, FailureException {
         final WebElement select = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(element)));
         final Select dropDown = new Select(select);
         final int index = userNameService.findOptionByIgnoreCaseText(text, dropDown);

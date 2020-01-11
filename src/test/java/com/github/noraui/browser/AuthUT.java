@@ -183,9 +183,6 @@ class TestServer {
 
     class CookieTestHttpHandler implements HttpHandler {
 
-        /**
-         * Specific LOGGER
-         */
         private final Logger logger = LoggerFactory.getLogger(CookieTestHttpHandler.class);
 
         @Override

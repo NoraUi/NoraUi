@@ -7,17 +7,15 @@
 package com.github.noraui.utils;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.application.page.Page;
 import com.github.noraui.exception.TechnicalException;
+import com.github.noraui.log.annotation.Loggable;
 
+@Loggable
 public class UnitTest4CLIContext extends Context {
 
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(UnitTest4CLIContext.class);
+    static Logger log;
 
     // applications
 
@@ -36,10 +34,10 @@ public class UnitTest4CLIContext extends Context {
     @Override
     public synchronized void initializeRobot(Class<?> clazz) throws TechnicalException {
         super.initializeRobot(clazz);
-        LOGGER.info("NoraRobotContext > initializeRobot()");
+        log.info("NoraRobotContext > initializeRobot()");
 
         // This line is here as an example to show how to do with internationalization using messages bundles.
-        LOGGER.info(Messages.format(Messages.getMessage("HELLO", "UnitTest4CLI"), "UnitTest4CLI"));
+        log.info(Messages.format(Messages.getMessage("HELLO", "UnitTest4CLI"), "UnitTest4CLI"));
 
         // Urls configuration
 

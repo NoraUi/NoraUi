@@ -7,22 +7,18 @@
 package com.github.noraui.application.steps.bakery;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.application.page.bakery.ReferencerPage;
 import com.github.noraui.application.steps.Step;
+import com.github.noraui.log.annotation.Loggable;
 import com.google.inject.Inject;
 
+@Loggable
 public class RefererSteps extends Step {
-    
-    /**
-     * Specific LOGGER
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(BakerySteps.class);
+
+    static Logger log;
 
     @Inject
     private ReferencerPage refererPage;
-    
-    
 
 }

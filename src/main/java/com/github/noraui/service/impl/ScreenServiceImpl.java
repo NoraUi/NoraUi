@@ -53,8 +53,8 @@ import com.google.inject.Singleton;
 
 import io.cucumber.core.api.Scenario;
 
-@Singleton
 @Loggable
+@Singleton
 public class ScreenServiceImpl implements ScreenService {
 
     static Logger log;

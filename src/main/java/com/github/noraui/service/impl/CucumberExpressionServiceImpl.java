@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.service.CucumberExpressionService;
 import com.google.inject.Singleton;
 
@@ -18,14 +21,18 @@ import io.cucumber.cucumberexpressions.CucumberExpression;
 import io.cucumber.cucumberexpressions.Expression;
 import io.cucumber.cucumberexpressions.ParameterTypeRegistry;
 
+@Loggable
 @Singleton
 public class CucumberExpressionServiceImpl implements CucumberExpressionService {
+
+    static Logger log;
 
     /**
      * {@inheritDoc}
      */
     @Override
     public List<Object> match(String expressionString, String text) {
+        log.debug("CucumberExpressionService match expressionString: {} and text: {}", expressionString, text);
         Expression expression;
         ParameterTypeRegistry parameterTypeRegistry = new ParameterTypeRegistry(Locale.ENGLISH);
         expression = new CucumberExpression(expressionString, parameterTypeRegistry);

@@ -15,9 +15,6 @@ import com.google.inject.Module;
 
 public class NoraUiLoggingModule implements Module {
 
-    /**
-     * Specific LOGGER
-     */
     private static final Logger LOGGER = LoggerFactory.getLogger(NoraUiLoggingModule.class);
 
     private String packageName;

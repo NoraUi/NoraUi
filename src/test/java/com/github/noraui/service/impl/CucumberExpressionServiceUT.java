@@ -1,4 +1,4 @@
-package com.github.noraui.service;
+package com.github.noraui.service.impl;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -8,6 +8,7 @@ import org.junit.Test;
 import com.github.noraui.cucumber.injector.NoraUiInjector;
 import com.github.noraui.cucumber.injector.NoraUiInjectorSource;
 import com.github.noraui.exception.TechnicalException;
+import com.github.noraui.service.CucumberExpressionService;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
 

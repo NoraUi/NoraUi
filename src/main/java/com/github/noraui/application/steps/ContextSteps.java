@@ -32,7 +32,7 @@ public class ContextSteps extends Step {
      * 
      * @param srcValueOrKey
      *            is source value (or value in context).
-     * @param value
+     * @param compareValueOrKey
      *            is value compared (or value in context).
      * @param conditions
      *            list of 'expected' values condition and 'actual' values
@@ -58,7 +58,7 @@ public class ContextSteps extends Step {
      * 
      * @param srcValueOrKey
      *            is source value (or value in context).
-     * @param value
+     * @param compareValueOrKey
      *            is value compared (or value in context).
      * @param conditions
      *            list of 'expected' values condition and 'actual' values
@@ -84,7 +84,7 @@ public class ContextSteps extends Step {
      * 
      * @param srcValueOrKey
      *            is source value (or value in context).
-     * @param value
+     * @param compareValueOrKey
      *            is value compared (or value in context).
      * @param conditions
      *            list of 'expected' values condition and 'actual' values

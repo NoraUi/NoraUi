@@ -10,21 +10,19 @@ import static com.github.noraui.utils.Context.GITHUBAPI_HOME;
 import static com.github.noraui.utils.Context.GITHUBAPI_KEY;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.application.page.Page;
 import com.github.noraui.application.steps.ExpectSteps;
 import com.github.noraui.exception.Callbacks;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Context;
 import com.google.inject.Singleton;
 
+@Loggable
 @Singleton
 public class GithubapiPage extends Page {
 
-    /**
-     * Specific LOGGER
-     */
-    protected static final Logger LOGGER = LoggerFactory.getLogger(GithubapiPage.class);
+    static Logger log;
 
     public GithubapiPage() {
         super();
@@ -40,10 +38,10 @@ public class GithubapiPage extends Page {
     public boolean checkPage(Object... elements) {
         try {
             Context.waitUntil(ExpectSteps.waitForLoad());
-            LOGGER.debug("GitHub API loaded.");
+            log.debug("GitHub API loaded.");
             return true;
         } catch (Exception e) {
-            LOGGER.error("GitHub API not loaded.", e);
+            log.error("GitHub API not loaded.", e);
             return false;
         }
     }

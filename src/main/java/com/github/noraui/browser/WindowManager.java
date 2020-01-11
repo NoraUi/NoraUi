@@ -68,10 +68,12 @@ public class WindowManager {
     }
 
     /**
+     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.selenium.NoraUiExpectedConditions.newWindowOpens()}
      * @param currentHandles
      *            is list of opened windows.
      * @return a string with new Window Opens (GUID)
      */
+    @Deprecated
     public static ExpectedCondition<String> newWindowOpens(final Set<String> currentHandles) {
         return (@Nullable WebDriver driver) -> {
             if (driver != null && !currentHandles.equals(driver.getWindowHandles())) {
@@ -86,12 +88,13 @@ public class WindowManager {
     }
 
     /**
-     * Click can be done without alert on Element.
-     *
+     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.selenium.NoraUiExpectedConditions.clickCanBeDoneWithoutAlertOnElement()}
+     *             Click can be done without alert on Element.
      * @param element
      *            is target WebElement.
      * @return true or false
      */
+    @Deprecated
     public static ExpectedCondition<Boolean> clickCanBeDoneWithoutAlertOnElement(final WebElement element) {
         return (@Nullable WebDriver driver) -> {
             try {
@@ -106,12 +109,13 @@ public class WindowManager {
     }
 
     /**
-     * click can be done without alert on element located.
-     *
+     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.selenium.NoraUiExpectedConditions.clickCanBeDoneWithoutAlertOnElementLocated()}
+     *             click can be done without alert on element located.
      * @param locator
      *            is the selenium locator
      * @return true or false
      */
+    @Deprecated
     public static ExpectedCondition<Boolean> clickCanBeDoneWithoutAlertOnElementLocated(final By locator) {
         return (@Nullable WebDriver driver) -> {
             try {

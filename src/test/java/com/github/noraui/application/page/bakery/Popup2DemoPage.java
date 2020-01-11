@@ -10,19 +10,19 @@ import static com.github.noraui.utils.Context.BAKERY_KEY;
 
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.noraui.application.page.Page;
 import com.github.noraui.exception.Callbacks;
+import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Utilities;
+import com.google.inject.Singleton;
 
+@Loggable
+@Singleton
 public class Popup2DemoPage extends Page {
 
-    /**
-     * Specific LOGGER
-     */
-    protected static final Logger LOGGER = LoggerFactory.getLogger(Popup2DemoPage.class);
+    static Logger log;
 
     public final PageElement bigTitle = new PageElement("-big_title", "This is a popup demo for NORAUI (Non-Regression Automation for User Interfaces).");
 
@@ -43,21 +43,21 @@ public class Popup2DemoPage extends Page {
         try {
             Context.waitUntil(ExpectedConditions.not(ExpectedConditions.titleIs("")));
             if (!TITLE_PAGE.equals(getDriver().getTitle())) {
-                LOGGER.error("HTML title is not good");
+                log.error("HTML title is not good");
                 return false;
             }
         } catch (Exception e) {
-            LOGGER.error("HTML title Exception", e);
+            log.error("HTML title Exception", e);
             return false;
         }
         try {
             if (bigTitle.getLabel().equals(Utilities.findElement(bigTitle).getText())) {
                 return true;
             }
-            LOGGER.error("Big title is not good");
+            log.error("Big title is not good");
             return false;
         } catch (Exception e) {
-            LOGGER.error("Big title Exception", e);
+            log.error("Big title Exception", e);
             return false;
         }
     }
