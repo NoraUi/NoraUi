@@ -139,14 +139,17 @@ public class Application extends AbstractNoraUiCli {
         sb.append("import org.slf4j.Logger;").append(System.lineSeparator());
         sb.append("import org.slf4j.LoggerFactory;").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
+        sb.append("import com.github.noraui.log.annotation.Loggable;").append(System.lineSeparator());
         sb.append("import com.github.noraui.application.page.Page;").append(System.lineSeparator());
         sb.append("import com.github.noraui.utils.Context;").append(System.lineSeparator());
+        sb.append("import com.google.inject.Singleton;").append(System.lineSeparator());
         sb.append("import " + robotContext.getCanonicalName() + ";").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
+        sb.append("@Loggable").append(System.lineSeparator());
+        sb.append("@Singleton").append(System.lineSeparator());
         sb.append("public class " + applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "Page extends Page {").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
-        sb.append("    private static final Logger LOGGER = LoggerFactory.getLogger(" + applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "Page.class);")
-                .append(System.lineSeparator());
+        sb.append("    static Logger log;").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
         sb.append("    public final PageElement pageElementSample = new PageElement(\"-pageElementSample\", \"PageElement Sample\");").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
@@ -167,12 +170,12 @@ public class Application extends AbstractNoraUiCli {
         sb.append("        try {").append(System.lineSeparator());
         sb.append("            Context.waitUntil(ExpectedConditions.not(ExpectedConditions.titleIs(\"\")));").append(System.lineSeparator());
         sb.append("            if (!TITLE_PAGE.equals(getDriver().getTitle())) {").append(System.lineSeparator());
-        sb.append("                LOGGER.error(\"HTML title is not good\");").append(System.lineSeparator());
+        sb.append("                log.error(\"HTML title is not good\");").append(System.lineSeparator());
         sb.append("                return false;").append(System.lineSeparator());
         sb.append("            }").append(System.lineSeparator());
         sb.append("            return true;").append(System.lineSeparator());
         sb.append("        } catch (Exception e) {").append(System.lineSeparator());
-        sb.append("            LOGGER.error(\"HTML title Exception\", e);").append(System.lineSeparator());
+        sb.append("            log.error(\"HTML title Exception\", e);").append(System.lineSeparator());
         sb.append("            return false;").append(System.lineSeparator());
         sb.append("        }").append(System.lineSeparator());
         sb.append("    }").append(System.lineSeparator());
@@ -235,9 +238,12 @@ public class Application extends AbstractNoraUiCli {
         sb.append(getJavaClassHeaders(noraRobotName)).append(System.lineSeparator());
         sb.append(robotContext.getPackage().toString().replace("utils", "application.steps." + applicationName) + ";").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
+        sb.append("import org.slf4j.Logger;").append(System.lineSeparator());
+        sb.append("").append(System.lineSeparator());
         sb.append("import com.github.noraui.application.steps.Step;").append(System.lineSeparator());
         sb.append("import com.github.noraui.exception.FailureException;").append(System.lineSeparator());
         sb.append("import com.github.noraui.exception.Result;").append(System.lineSeparator());
+        sb.append("import com.github.noraui.log.annotation.Loggable;").append(System.lineSeparator());
         sb.append("import com.github.noraui.utils.Messages;").append(System.lineSeparator());
         sb.append("import com.google.inject.Inject;").append(System.lineSeparator());
         sb.append("import " + robotContext.getCanonicalName().replace("utils", "application.pages." + applicationName).replaceAll(robotContext.getSimpleName(),
@@ -245,7 +251,10 @@ public class Application extends AbstractNoraUiCli {
         sb.append("").append(System.lineSeparator());
         sb.append("import io.cucumber.java.en.Then;").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
+        sb.append("@Loggable").append(System.lineSeparator());
         sb.append("public class " + applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "Steps extends Step {").append(System.lineSeparator());
+        sb.append("").append(System.lineSeparator());
+        sb.append("    static Logger log;").append(System.lineSeparator());
         sb.append("").append(System.lineSeparator());
         sb.append("    @Inject").append(System.lineSeparator());
         sb.append("    private " + applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "Page " + applicationName + "Page;").append(System.lineSeparator());
@@ -258,6 +267,7 @@ public class Application extends AbstractNoraUiCli {
         sb.append("     */").append(System.lineSeparator());
         sb.append("    @Then(\"The " + applicationName.toUpperCase() + " home page is displayed\")").append(System.lineSeparator());
         sb.append("    public void check" + applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "HomePage() throws FailureException {").append(System.lineSeparator());
+        sb.append("        log.debug(\"check " + applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + " home page is displayed\");").append(System.lineSeparator());
         sb.append("        if (!" + applicationName + "Page.checkPage()) {").append(System.lineSeparator());
         sb.append("            new Result.Failure<>(" + applicationName + "Page.getApplication(), Messages.getMessage(Messages.FAIL_MESSAGE_HOME_PAGE_NOT_FOUND), true, " + applicationName
                 + "Page.getCallBack());").append(System.lineSeparator());
