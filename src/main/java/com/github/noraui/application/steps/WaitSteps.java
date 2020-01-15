@@ -104,7 +104,7 @@ public class WaitSteps extends Step {
      *
      * @param pageElement
      *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
-     * @param time
+     * @param timeOutInSeconds
      *            is custom timeout in seconds
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).

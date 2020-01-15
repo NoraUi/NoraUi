@@ -213,4 +213,24 @@ public class NoraUiExpectedConditions {
         };
     }
 
+    /**
+     * text to be presentInElement on element located.
+     *
+     * @param locator
+     *            is the selenium locator
+     * @return content string (not empty).
+     */
+    public static ExpectedCondition<String> textToBePresentInElement(final By locator) {
+        return (@Nullable WebDriver driver) -> {
+            try {
+                final WebElement element = driver.findElement(locator);
+                if (element != null && element.getText() != null && !"".equals(element.getText())) {
+                    return element.getText();
+                }
+            } catch (final Exception e) {
+            }
+            return null;
+        };
+    }
+
 }
