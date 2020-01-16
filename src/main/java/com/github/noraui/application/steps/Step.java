@@ -187,6 +187,10 @@ public abstract class Step implements IStep {
         updateText(pageElement, textOrKey, null, args);
     }
 
+    protected void setText(PageElement pageElement, String textOrKey, Object... args) throws TechnicalException, FailureException {
+        setText(pageElement, textOrKey, null, args);
+    }
+
     /**
      * Update a html input text with a text.
      *
@@ -219,6 +223,23 @@ public abstract class Step implements IStep {
                 if (keysToSend != null) {
                     element.sendKeys(keysToSend);
                 }
+            } catch (final Exception e) {
+                new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_ERROR_ON_INPUT), pageElement, pageElement.getPage().getApplication()), true,
+                        pageElement.getPage().getCallBack());
+            }
+        } else {
+            log.debug("Empty data provided. No need to update text. If you want clear data, you need use: \"I clear text in ...\"");
+        }
+    }
+
+    protected void setText(PageElement pageElement, String textOrKey, CharSequence keysToSend, Object... args) throws TechnicalException, FailureException {
+        String value = getTextOrKey(textOrKey);
+        if (!"".equals(value)) {
+            try {
+                final WebElement element = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(pageElement, args)));
+                String javascript = "arguments[0].value=arguments[1];";
+                ((JavascriptExecutor) getDriver()).executeScript(javascript, element, value.substring(0, value.length() - 1));
+                element.sendKeys(value.substring(value.length() - 1));
             } catch (final Exception e) {
                 new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_ERROR_ON_INPUT), pageElement, pageElement.getPage().getApplication()), true,
                         pageElement.getPage().getCallBack());

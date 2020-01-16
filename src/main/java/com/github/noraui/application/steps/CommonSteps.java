@@ -514,6 +514,16 @@ public class CommonSteps extends Step {
         updateText(Page.getInstance(page).getPageElementByKey('-' + elementName), textOrKey);
     }
 
+    @Conditioned
+    @Quand("Je remplace le texte {string} avec {string}(\\?)")
+    @When("I set text {string} with {string}(\\?)")
+    public void setText(String pageElement, String textOrKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+        String page = pageElement.split("-")[0];
+        String elementName = pageElement.split("-")[1];
+        clearText(Page.getInstance(page).getPageElementByKey('-' + elementName));
+        setText(Page.getInstance(page).getPageElementByKey('-' + elementName), textOrKey);
+    }
+
     /**
      * Update a html input text with a random text.
      *
@@ -620,7 +630,7 @@ public class CommonSteps extends Step {
     }
 
     /**
-     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.application.steps.WaitSteps.waitVisibilityOf(String, List<GherkinStepCondition>)}
+     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.application.steps.WaitSteps#waitVisibilityOf(String pageElement, List)}
      *             "I wait visibility of {string}(\\?)"
      *             Checks if an html element is visible.
      * @param pageElement
@@ -644,7 +654,7 @@ public class CommonSteps extends Step {
     }
 
     /**
-     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.application.steps.WaitSteps.waitInvisibilityOf(String, List<GherkinStepCondition>)}
+     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.application.steps.WaitSteps#waitInvisibilityOf(String, List)}
      *             "I wait invisibility of {string}(\\?)"
      *             Checks if an html element is not visible.
      * @param pageElement
