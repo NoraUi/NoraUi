@@ -40,7 +40,7 @@ public class StepInterceptor implements MethodInterceptor {
         if (annotations.length > 0) {
             Annotation stepAnnotation = annotations[annotations.length - 1];
             for (Annotation a : annotations) {
-                if (a.annotationType().getName().startsWith("io.cucumber.java.en." + Context.getLocale().getLanguage())) {
+                if (a.annotationType().getName().startsWith("io.cucumber.java." + Context.getLocale().getLanguage())) {
                     stepAnnotation = a;
                     break;
                 }
