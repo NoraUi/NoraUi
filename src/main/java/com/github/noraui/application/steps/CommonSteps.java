@@ -21,6 +21,7 @@ import com.github.noraui.application.page.Page;
 import com.github.noraui.application.page.Page.PageElement;
 import com.github.noraui.browser.WindowManager;
 import com.github.noraui.cucumber.annotation.Conditioned;
+import com.github.noraui.cucumber.annotation.Experimental;
 import com.github.noraui.cucumber.metrics.annotation.time.Time;
 import com.github.noraui.cucumber.metrics.annotation.time.TimeName;
 import com.github.noraui.exception.AssertError;
@@ -514,6 +515,7 @@ public class CommonSteps extends Step {
         updateText(Page.getInstance(page).getPageElementByKey('-' + elementName), textOrKey);
     }
 
+    @Experimental
     @Conditioned
     @Quand("Je remplace le texte {string} avec {string}(\\?)")
     @When("I set text {string} with {string}(\\?)")
