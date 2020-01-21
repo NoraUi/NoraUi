@@ -285,6 +285,11 @@ public class Context {
      */
     protected Map<String, Application> applications;
 
+    /**
+     * Map of properties
+     */
+    protected Map<String, String> properties;
+
     protected static volatile Map<String, Ini> iniFiles;
 
     protected String resourcesPath;
@@ -303,6 +308,7 @@ public class Context {
         scenarioHasWarning = false;
         exceptionCallbacks = new Callbacks();
         applications = new HashMap<>();
+        properties = new HashMap<>();
         cucumberMethods = new HashMap<>();
     }
 
@@ -788,6 +794,10 @@ public class Context {
 
     public static Application getApplication(String applicationKey) {
         return getInstance().applications.get(applicationKey);
+    }
+
+    public static String getPropertie(String key) {
+        return getInstance().properties.get(key);
     }
 
     /**
