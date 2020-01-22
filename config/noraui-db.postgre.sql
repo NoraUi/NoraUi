@@ -8,7 +8,7 @@ CREATE TABLE hello (
     "date" text,
     "title" text
 );
-INSERT INTO hello VALUES (1, 'Jenkins T1', '35000', 'Rennes', 'smile', 'smile', '16/01/2020', '');
+INSERT INTO hello VALUES (1, 'Jenkins T1', '35000', 'Rennes', 'smile', 'smile', '16/01/2050', '');
 INSERT INTO hello VALUES (2, 'Jenkins T2', '75000', 'Paris', 'smile', 'smile', '', '');
 INSERT INTO hello VALUES (3, 'Jenkins T3', '56100', 'Lorient', 'smile', 'smile', '', '');
 INSERT INTO hello VALUES (4, 'Jenkins T4', '35000', 'Rennes', 'smile', 'smile', '', '');
