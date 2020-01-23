@@ -81,10 +81,10 @@
         <maven-javadoc-plugin.version>3.0.0-M1</maven-javadoc-plugin.version>
         <maven-resources-plugin.version>3.0.2</maven-resources-plugin.version>
         <exec-maven-plugin.version>1.6.0</exec-maven-plugin.version>
-        <maven-surefire-plugin.version>2.20.1</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
-        <jacoco-maven-plugin.version>0.7.9</jacoco-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.5</jacoco-maven-plugin.version>
         <sonar-maven-plugin.version>3.3.0.603</sonar-maven-plugin.version>
         <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
         <sonar.sources>${project.basedir}/src/main/java/</sonar.sources>
