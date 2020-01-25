@@ -21,7 +21,6 @@ import com.github.noraui.application.page.Page;
 import com.github.noraui.application.page.Page.PageElement;
 import com.github.noraui.browser.WindowManager;
 import com.github.noraui.cucumber.annotation.Conditioned;
-import com.github.noraui.cucumber.annotation.Experimental;
 import com.github.noraui.cucumber.metrics.annotation.time.Time;
 import com.github.noraui.cucumber.metrics.annotation.time.TimeName;
 import com.github.noraui.exception.AssertError;
@@ -515,14 +514,12 @@ public class CommonSteps extends Step {
         updateText(Page.getInstance(page).getPageElementByKey('-' + elementName), textOrKey);
     }
 
-    @Experimental
     @Conditioned
     @Quand("Je remplace le texte {string} avec {string}(\\?)")
     @When("I set text {string} with {string}(\\?)")
     public void setText(String pageElement, String textOrKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        clearText(Page.getInstance(page).getPageElementByKey('-' + elementName));
         setText(Page.getInstance(page).getPageElementByKey('-' + elementName), textOrKey);
     }
 

@@ -215,8 +215,8 @@ public abstract class Step implements IStep {
                 final WebElement element = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(pageElement, args)));
                 element.clear();
                 if (DriverFactory.IE.equals(Context.getBrowser())) {
-                    final String javascript = "arguments[0].value='" + value + "';";
-                    ((JavascriptExecutor) getDriver()).executeScript(javascript, element);
+                    final String javascript = "arguments[0].value=arguments[1];";
+                    ((JavascriptExecutor) getDriver()).executeScript(javascript, element, value);
                 } else {
                     element.sendKeys(value);
                 }
@@ -237,6 +237,7 @@ public abstract class Step implements IStep {
         if (!"".equals(value)) {
             try {
                 final WebElement element = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(pageElement, args)));
+                element.clear();
                 String javascript = "arguments[0].value=arguments[1];";
                 ((JavascriptExecutor) getDriver()).executeScript(javascript, element, value.substring(0, value.length() - 1));
                 element.sendKeys(value.substring(value.length() - 1));
