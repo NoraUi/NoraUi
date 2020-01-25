@@ -168,7 +168,7 @@ public class WaitSteps extends Step {
     @Conditioned
     @Lorsque("J'attends que le nombre de fenêtre soient {int}(\\?)")
     @Then("I wait number of windows to be {int}(\\?)")
-    public void waitNumberOfWindowsToBe(final Integer expectedNumberOfWindows, List<GherkinStepCondition> conditions) throws TechnicalException {
+    public void waitNumberOfWindowsToBe(final Integer expectedNumberOfWindows, List<GherkinStepCondition> conditions) {
         Context.waitUntil(ExpectedConditions.numberOfWindowsToBe(expectedNumberOfWindows));
     }
 
@@ -266,35 +266,35 @@ public class WaitSteps extends Step {
     @Conditioned
     @Lorsque("J'attends que le titre correspond {string}(\\?)")
     @Then("I wait title contains {string}(\\?)")
-    public void waitTitleContains(final String title, List<GherkinStepCondition> conditions) throws TechnicalException {
+    public void waitTitleContains(final String title, List<GherkinStepCondition> conditions) {
         Context.waitUntil(ExpectedConditions.titleContains(title));
     }
 
     @Conditioned
     @Lorsque("J'attends que le titre correspond à {string}(\\?)")
     @Then("I wait title equals {string}(\\?)")
-    public void waitTitleIs(final String title, List<GherkinStepCondition> conditions) throws TechnicalException {
+    public void waitTitleIs(final String title, List<GherkinStepCondition> conditions) {
         Context.waitUntil(ExpectedConditions.titleIs(title));
     }
 
     @Conditioned
     @Lorsque("J'attends que l'url correspond {string}(\\?)")
     @Then("I wait url contains {string}(\\?)")
-    public void waitUrlContains(final String fraction, List<GherkinStepCondition> conditions) throws TechnicalException {
+    public void waitUrlContains(final String fraction, List<GherkinStepCondition> conditions) {
         Context.waitUntil(ExpectedConditions.urlContains(fraction));
     }
 
     @Conditioned
     @Lorsque("J'attends que l'url vérifie le texte {string}(\\?)")
     @Then("I wait url matches {string}(\\?)")
-    public void waitUrlMatches(final String regex, List<GherkinStepCondition> conditions) throws TechnicalException {
+    public void waitUrlMatches(final String regex, List<GherkinStepCondition> conditions) {
         Context.waitUntil(ExpectedConditions.urlMatches(regex));
     }
 
     @Conditioned
     @Lorsque("J'attends que l'url correspond à {string}(\\?)")
     @Then("I wait url equals {string}(\\?)")
-    public void waitUrlToBe(final String url, List<GherkinStepCondition> conditions) throws TechnicalException {
+    public void waitUrlToBe(final String url, List<GherkinStepCondition> conditions) {
         Context.waitUntil(ExpectedConditions.urlToBe(url));
     }
 
