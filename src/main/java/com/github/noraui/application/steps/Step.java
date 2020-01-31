@@ -634,7 +634,7 @@ public abstract class Step implements IStep {
         String txt = "";
         try {
             final WebElement elem = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName), args)));
-            log.info("value: {} and text: {}", elem.getAttribute(VALUE), elem.getText());
+            log.debug("value: {} and text: {}", elem.getAttribute(VALUE), elem.getText());
             txt = elem.getAttribute(VALUE) != null ? elem.getAttribute(VALUE) : elem.getText();
         } catch (final Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, Page.getInstance(page).getCallBack());
