@@ -85,7 +85,7 @@
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.5</jacoco-maven-plugin.version>
-        <sonar-maven-plugin.version>3.3.0.603</sonar-maven-plugin.version>
+        <sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
         <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
         <sonar.sources>${project.basedir}/src/main/java/</sonar.sources>
         <sonar.junit.reportPaths>${project.build.directory}/surefire-reports/junit</sonar.junit.reportPaths>
