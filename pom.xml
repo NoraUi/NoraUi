@@ -742,6 +742,7 @@
                                 <phase>compile</phase>
                                 <goals>
                                     <goal>prepare-agent</goal>
+                                    <goal>report</goal>
                                 </goals>
                                 <configuration>
                                     <destFile>${sonar.jacoco.reportPaths}</destFile>
