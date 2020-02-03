@@ -51,18 +51,59 @@ public class TimeSteps extends Step {
         }
     }
 
+    @Et("J\'initialise une date avec aujourd\'hui plus {int} en jour ouvrés et je sauvegarde dans la clé {string} du contexte:")
+    @And("I initialize a date with today plus {int} in business day and I save in {string} context key:")
+    public void initializeBusinessDayWithAdd(int offsetDay, String targetKey, Map<String, String> params) throws FailureException {
+        try {
+            String formatter = params.getOrDefault("formatter", "yyyy-MM-dd");
+            String zone = params.getOrDefault("zone", "Europe/London");
+            ZonedDateTime d = ZonedDateTime.now(ZoneId.of(zone)).plusDays(offsetDay);
+            if ("SATURDAY".equals(d.getDayOfWeek().toString())) {
+                d = d.plusDays(2);
+            } else if ("SUNDAY".equals(d.getDayOfWeek().toString())) {
+                d = d.plusDays(1);
+            }
+            String date = d.format(DateTimeFormatter.ofPattern(formatter));
+            Context.saveValue(targetKey, date);
+            Context.getCurrentScenario().write("SAVE " + targetKey + "=" + date);
+        } catch (Exception e) {
+            new Result.Failure<>("", Messages.getMessage(Messages.FAIL_MESSAGE_DATE_FORMATTER), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+        }
+    }
+
+    @Et("J\'initialise une date avec aujourd\'hui moins {int} en jours ouvrés et je sauvegarde dans la clé {string} du contexte:")
+    @And("I initialize a date with today minus {int} in business days and I save in {string} context key:")
+    public void initializeBusinessDayWithMinus(int offsetDay, String targetKey, Map<String, String> params) throws FailureException {
+        try {
+            String formatter = params.getOrDefault("formatter", "yyyy-MM-dd");
+            String zone = params.getOrDefault("zone", "Europe/London");
+            ZonedDateTime d = ZonedDateTime.now(ZoneId.of(zone)).minusDays(offsetDay);
+            if ("SATURDAY".equals(d.getDayOfWeek().toString())) {
+                d = d.minusDays(1);
+            } else if ("SUNDAY".equals(d.getDayOfWeek().toString())) {
+                d = d.minusDays(2);
+            }
+            String date = d.format(DateTimeFormatter.ofPattern(formatter));
+            Context.saveValue(targetKey, date);
+            Context.getCurrentScenario().write("SAVE " + targetKey + "=" + date);
+        } catch (Exception e) {
+            new Result.Failure<>("", Messages.getMessage(Messages.FAIL_MESSAGE_DATE_FORMATTER), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+        }
+    }
+
     /**
      * @param targetKey
      *            is target key for the context.
      * @param params
      *            contains formatter ("yyyy-MM-dd" by default), zone ("Europe/London" by default)
-     *            and the list of possible add (plusNanos, plusSeconds, plusMinutes, plusHours, plusDays, plusWeeks, plusMonths).
+     *            and the list of possible add (plusNanos, plusSeconds, plusMinutes, plusHours, plusDays, plusWeeks, plusMonths)
+     *            and the list of possible sub (minusNanos, minusSeconds, minusMinutes, minusHours, minusDays, minusWeeks, minusMonths).
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    @Et("J\'ajoute à la date et je sauvegarde dans la clé {string} du contexte:")
-    @And("I add to date and I save in {string} context key:")
-    public void foo(String targetKey, Map<String, String> params) throws FailureException {
+    @Et("Je change la date et je sauvegarde dans la clé {string} du contexte:")
+    @And("I change date and I save in {string} context key:")
+    public void changeDate(String targetKey, Map<String, String> params) throws FailureException {
         try {
             final String value = Context.getValue(targetKey);
             String formatter = params.getOrDefault("formatter", "yyyy-MM-dd");
@@ -74,10 +115,20 @@ public class TimeSteps extends Step {
             String plusDays = params.getOrDefault("plusDays", "0");
             String plusWeeks = params.getOrDefault("plusWeeks", "0");
             String plusMonths = params.getOrDefault("plusMonths", "0");
+            String minusNanos = params.getOrDefault("minusNanos", "0");
+            String minusSeconds = params.getOrDefault("minusSeconds", "0");
+            String minusMinutes = params.getOrDefault("minusMinutes", "0");
+            String minusHours = params.getOrDefault("minusHours", "0");
+            String minusDays = params.getOrDefault("minusDays", "0");
+            String minusWeeks = params.getOrDefault("minusWeeks", "0");
+            String minusMonths = params.getOrDefault("minusMonths", "0");
             LocalDate localDate = LocalDate.parse(value);
             ZonedDateTime dateTime = localDate.atStartOfDay(ZoneId.of(zone));
-            String after = dateTime.plusNanos(Integer.parseInt(plusNanos)).plusSeconds(Integer.parseInt(plusSeconds)).plusMinutes(Integer.parseInt(plusMinutes)).plusHours(Integer.parseInt(plusHours))
-                    .plusDays(Integer.parseInt(plusDays)).plusWeeks(Integer.parseInt(plusWeeks)).plusMonths(Integer.parseInt(plusMonths)).format(DateTimeFormatter.ofPattern(formatter));
+            dateTime = dateTime.plusNanos(Integer.parseInt(plusNanos)).plusSeconds(Integer.parseInt(plusSeconds)).plusMinutes(Integer.parseInt(plusMinutes)).plusHours(Integer.parseInt(plusHours))
+                    .plusDays(Integer.parseInt(plusDays)).plusWeeks(Integer.parseInt(plusWeeks)).plusMonths(Integer.parseInt(plusMonths)).minusNanos(Integer.parseInt(minusNanos))
+                    .minusSeconds(Integer.parseInt(minusSeconds)).minusMinutes(Integer.parseInt(minusMinutes)).minusHours(Integer.parseInt(minusHours)).minusDays(Integer.parseInt(minusDays))
+                    .minusWeeks(Integer.parseInt(minusWeeks)).minusMonths(Integer.parseInt(minusMonths));
+            String after = dateTime.format(DateTimeFormatter.ofPattern(formatter));
             Context.saveValue(targetKey, after);
             Context.getCurrentScenario().write("SAVE " + targetKey + "=" + after);
         } catch (Exception e) {
