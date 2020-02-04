@@ -122,7 +122,7 @@ public class TimeSteps extends Step {
             String minusDays = params.getOrDefault("minusDays", "0");
             String minusWeeks = params.getOrDefault("minusWeeks", "0");
             String minusMonths = params.getOrDefault("minusMonths", "0");
-            LocalDate localDate = LocalDate.parse(value);
+            LocalDate localDate = LocalDate.parse(value, DateTimeFormatter.ofPattern(formatter));
             ZonedDateTime dateTime = localDate.atStartOfDay(ZoneId.of(zone));
             dateTime = dateTime.plusNanos(Integer.parseInt(plusNanos)).plusSeconds(Integer.parseInt(plusSeconds)).plusMinutes(Integer.parseInt(plusMinutes)).plusHours(Integer.parseInt(plusHours))
                     .plusDays(Integer.parseInt(plusDays)).plusWeeks(Integer.parseInt(plusWeeks)).plusMonths(Integer.parseInt(plusMonths)).minusNanos(Integer.parseInt(minusNanos))
