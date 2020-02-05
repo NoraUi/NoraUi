@@ -16,39 +16,39 @@ public class HttpServiceException extends Exception {
     public static final String HTTP_SERVICE_ERROR_MESSAGE = "HTTP_SERVICE_ERROR_MESSAGE";
 
     /**
-     * Construit un objet <code>HttpServiceException</code>.
+     * Build an object <code>HttpServiceException</code>.
      */
     public HttpServiceException() {
         super();
     }
 
     /**
-     * Construit un objet <code>HttpServiceException</code>.
+     * Build an object <code>HttpServiceException</code>.
      *
      * @param message
-     *            le message d'erreur
+     *            error message.
      * @param source
-     *            l'exception source
+     *            exception source.
      */
     public HttpServiceException(String message, Throwable source) {
         super(message, source);
     }
 
     /**
-     * Construit un objet <code>HttpServiceException</code>.
+     * Build an object <code>HttpServiceException</code>.
      *
      * @param message
-     *            le message d'erreur
+     *            error message.
      */
     public HttpServiceException(String message) {
         super(message);
     }
 
     /**
-     * Construit un objet <code>HttpServiceException</code>.
+     * Build an object <code>HttpServiceException</code>.
      *
      * @param source
-     *            l'exception source
+     *            exception source.
      */
     public HttpServiceException(Throwable source) {
         super(source);

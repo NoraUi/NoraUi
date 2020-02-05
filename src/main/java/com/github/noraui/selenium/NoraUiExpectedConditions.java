@@ -23,6 +23,10 @@ import com.beust.jcommander.internal.Nullable;
 
 public class NoraUiExpectedConditions {
 
+    private NoraUiExpectedConditions() {
+        // Utility class
+    }
+
     /**
      * Expects that the target element contains the given value as text.
      * The inner text and 'value' attribute of the element are checked.

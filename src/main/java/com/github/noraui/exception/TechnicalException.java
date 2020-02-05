@@ -29,39 +29,39 @@ public class TechnicalException extends Exception {
     public static final String TECHNICAL_IO_EXCEPTION = "IOException {}";
 
     /**
-     * Construit un objet <code>TechnicalException</code>.
+     * Build an object <code>TechnicalException</code>.
      */
     public TechnicalException() {
         super();
     }
 
     /**
-     * Construit un objet <code>TechnicalException</code>.
+     * Build an object <code>TechnicalException</code>.
      *
      * @param message
-     *            le message d'erreur
+     *            error message.
      * @param source
-     *            l'exception source
+     *            exception source.
      */
     public TechnicalException(String message, Throwable source) {
         super(message, source);
     }
 
     /**
-     * Construit un objet <code>TechnicalException</code>.
+     * Build an object <code>TechnicalException</code>.
      *
      * @param message
-     *            le message d'erreur
+     *            error message.
      */
     public TechnicalException(String message) {
         super(message);
     }
 
     /**
-     * Construit un objet <code>TechnicalException</code>.
+     * Build an object <code>TechnicalException</code>.
      *
      * @param source
-     *            l'exception source
+     *            exception source.
      */
     public TechnicalException(Throwable source) {
         super(source);

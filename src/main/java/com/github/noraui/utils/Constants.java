@@ -16,7 +16,12 @@ public class Constants {
 
     public static final String VALUE = "value";
 
+    public static final String PREFIX_SAVE = "SAVE ";
+
     public static final Charset DEFAULT_ENDODING = StandardCharsets.UTF_8;
+
+    public static final String DEFAULT_ZONE_ID = "Europe/London";
+    public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
 
     public static final String USER_DIR = "user.dir";
     public static final String CLI_FILES_DIR = ".noraui";

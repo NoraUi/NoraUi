@@ -6,6 +6,10 @@
  */
 package com.github.noraui.application.steps;
 
+import static com.github.noraui.utils.Constants.DEFAULT_DATE_FORMAT;
+import static com.github.noraui.utils.Constants.DEFAULT_ZONE_ID;
+import static com.github.noraui.utils.Constants.PREFIX_SAVE;
+
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -29,6 +33,8 @@ public class TimeSteps extends Step {
 
     static Logger log;
 
+    public static final String FORMATTER = "formatter";
+
     /**
      * @param targetKey
      *            is target key for the context.
@@ -41,11 +47,11 @@ public class TimeSteps extends Step {
     @And("I initialize a date and I save in {string} context key:")
     public void initDateInContext(String targetKey, Map<String, String> params) throws FailureException {
         try {
-            String formatter = params.getOrDefault("formatter", "yyyy-MM-dd");
-            String zone = params.getOrDefault("zone", "Europe/London");
+            String formatter = params.getOrDefault(FORMATTER, DEFAULT_DATE_FORMAT);
+            String zone = params.getOrDefault("zone", DEFAULT_ZONE_ID);
             String date = ZonedDateTime.now(ZoneId.of(zone)).format(DateTimeFormatter.ofPattern(formatter));
             Context.saveValue(targetKey, date);
-            Context.getCurrentScenario().write("SAVE " + targetKey + "=" + date);
+            Context.getCurrentScenario().write(PREFIX_SAVE + targetKey + "=" + date);
         } catch (Exception e) {
             new Result.Failure<>("", Messages.getMessage(Messages.FAIL_MESSAGE_DATE_FORMATTER), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
@@ -55,8 +61,8 @@ public class TimeSteps extends Step {
     @And("I initialize a date with today plus {int} in business day and I save in {string} context key:")
     public void initializeBusinessDayWithAdd(int offsetDay, String targetKey, Map<String, String> params) throws FailureException {
         try {
-            String formatter = params.getOrDefault("formatter", "yyyy-MM-dd");
-            String zone = params.getOrDefault("zone", "Europe/London");
+            String formatter = params.getOrDefault(FORMATTER, DEFAULT_DATE_FORMAT);
+            String zone = params.getOrDefault("zone", DEFAULT_ZONE_ID);
             ZonedDateTime d = ZonedDateTime.now(ZoneId.of(zone)).plusDays(offsetDay);
             if ("SATURDAY".equals(d.getDayOfWeek().toString())) {
                 d = d.plusDays(2);
@@ -65,7 +71,7 @@ public class TimeSteps extends Step {
             }
             String date = d.format(DateTimeFormatter.ofPattern(formatter));
             Context.saveValue(targetKey, date);
-            Context.getCurrentScenario().write("SAVE " + targetKey + "=" + date);
+            Context.getCurrentScenario().write(PREFIX_SAVE + targetKey + "=" + date);
         } catch (Exception e) {
             new Result.Failure<>("", Messages.getMessage(Messages.FAIL_MESSAGE_DATE_FORMATTER), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
@@ -75,8 +81,8 @@ public class TimeSteps extends Step {
     @And("I initialize a date with today minus {int} in business days and I save in {string} context key:")
     public void initializeBusinessDayWithMinus(int offsetDay, String targetKey, Map<String, String> params) throws FailureException {
         try {
-            String formatter = params.getOrDefault("formatter", "yyyy-MM-dd");
-            String zone = params.getOrDefault("zone", "Europe/London");
+            String formatter = params.getOrDefault(FORMATTER, DEFAULT_DATE_FORMAT);
+            String zone = params.getOrDefault("zone", DEFAULT_ZONE_ID);
             ZonedDateTime d = ZonedDateTime.now(ZoneId.of(zone)).minusDays(offsetDay);
             if ("SATURDAY".equals(d.getDayOfWeek().toString())) {
                 d = d.minusDays(1);
@@ -85,7 +91,7 @@ public class TimeSteps extends Step {
             }
             String date = d.format(DateTimeFormatter.ofPattern(formatter));
             Context.saveValue(targetKey, date);
-            Context.getCurrentScenario().write("SAVE " + targetKey + "=" + date);
+            Context.getCurrentScenario().write(PREFIX_SAVE + targetKey + "=" + date);
         } catch (Exception e) {
             new Result.Failure<>("", Messages.getMessage(Messages.FAIL_MESSAGE_DATE_FORMATTER), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
@@ -106,8 +112,8 @@ public class TimeSteps extends Step {
     public void changeDate(String targetKey, Map<String, String> params) throws FailureException {
         try {
             final String value = Context.getValue(targetKey);
-            String formatter = params.getOrDefault("formatter", "yyyy-MM-dd");
-            String zone = params.getOrDefault("zone", "Europe/London");
+            String formatter = params.getOrDefault(FORMATTER, DEFAULT_DATE_FORMAT);
+            String zone = params.getOrDefault("zone", DEFAULT_ZONE_ID);
             String plusNanos = params.getOrDefault("plusNanos", "0");
             String plusSeconds = params.getOrDefault("plusSeconds", "0");
             String plusMinutes = params.getOrDefault("plusMinutes", "0");
@@ -130,7 +136,7 @@ public class TimeSteps extends Step {
                     .minusWeeks(Integer.parseInt(minusWeeks)).minusMonths(Integer.parseInt(minusMonths));
             String after = dateTime.format(DateTimeFormatter.ofPattern(formatter));
             Context.saveValue(targetKey, after);
-            Context.getCurrentScenario().write("SAVE " + targetKey + "=" + after);
+            Context.getCurrentScenario().write(PREFIX_SAVE + targetKey + "=" + after);
         } catch (Exception e) {
             new Result.Failure<>("", Messages.getMessage(Messages.FAIL_MESSAGE_DATE_FORMATTER), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }

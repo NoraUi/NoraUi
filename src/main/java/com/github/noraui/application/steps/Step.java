@@ -7,6 +7,7 @@
 package com.github.noraui.application.steps;
 
 import static com.github.noraui.utils.Constants.DOWNLOADED_FILES_FOLDER;
+import static com.github.noraui.utils.Constants.PREFIX_SAVE;
 import static com.github.noraui.utils.Constants.USER_DIR;
 import static com.github.noraui.utils.Constants.VALUE;
 
@@ -608,7 +609,7 @@ public abstract class Step implements IStep {
     protected void saveElementValue(String pageElement, Object... args) throws TechnicalException, FailureException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        log.debug("saveElementValue: {} in {}.", '-' + elementName, Page.getInstance(page).getApplication());
+        log.debug("saveElementValue: {} in {}.", elementName, Page.getInstance(page).getApplication());
         saveElementValue(pageElement, Page.getInstance(page).getPageKey() + '-' + elementName, args);
     }
 
@@ -630,7 +631,7 @@ public abstract class Step implements IStep {
     protected void saveElementValue(String pageElement, String targetKey, Object... args) throws TechnicalException, FailureException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        log.debug("saveElementValue: {} to {} in {}.", '-' + elementName, targetKey, Page.getInstance(page).getApplication());
+        log.debug("saveElementValue: {} to {} in {}.", elementName, targetKey, Page.getInstance(page).getApplication());
         String txt = "";
         try {
             final WebElement elem = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName), args)));
@@ -641,7 +642,7 @@ public abstract class Step implements IStep {
         }
         try {
             Context.saveValue(targetKey, txt);
-            Context.getCurrentScenario().write("SAVE " + targetKey + "=" + txt);
+            Context.getCurrentScenario().write(PREFIX_SAVE + targetKey + "=" + txt);
         } catch (final Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_RETRIEVE_VALUE), Page.getInstance(page).getPageElementByKey('-' + elementName),
                     Page.getInstance(page).getApplication()), true, Page.getInstance(page).getCallBack());
@@ -1076,7 +1077,7 @@ public abstract class Step implements IStep {
     }
 
     private void setDropDownValue(PageElement element, String text, Object... args) throws TechnicalException, FailureException {
-        final WebElement select = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(element)));
+        final WebElement select = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(element, args)));
         final Select dropDown = new Select(select);
         final int index = userNameService.findOptionByIgnoreCaseText(text, dropDown);
         if (index != -1) {
