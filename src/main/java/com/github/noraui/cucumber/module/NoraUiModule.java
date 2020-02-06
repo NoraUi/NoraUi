@@ -21,11 +21,13 @@ import com.github.noraui.service.CryptoService;
 import com.github.noraui.service.CucumberExpressionService;
 import com.github.noraui.service.HttpService;
 import com.github.noraui.service.ScreenService;
+import com.github.noraui.service.TimeService;
 import com.github.noraui.service.UserNameService;
 import com.github.noraui.service.impl.CryptoServiceImpl;
 import com.github.noraui.service.impl.CucumberExpressionServiceImpl;
 import com.github.noraui.service.impl.HttpServiceImpl;
 import com.github.noraui.service.impl.ScreenServiceImpl;
+import com.github.noraui.service.impl.TimeServiceImpl;
 import com.github.noraui.service.impl.UserNameServiceImpl;
 import com.google.inject.Binder;
 import com.google.inject.Module;
@@ -50,5 +52,6 @@ public class NoraUiModule implements Module {
         binder.bind(HttpService.class).to(HttpServiceImpl.class).asEagerSingleton();
         binder.bind(ScreenService.class).to(ScreenServiceImpl.class).asEagerSingleton();
         binder.bind(UserNameService.class).to(UserNameServiceImpl.class).asEagerSingleton();
+        binder.bind(TimeService.class).to(TimeServiceImpl.class).asEagerSingleton();
     }
 }

@@ -22,8 +22,10 @@ import com.github.noraui.exception.Callbacks;
 import com.github.noraui.exception.FailureException;
 import com.github.noraui.exception.Result;
 import com.github.noraui.log.annotation.Loggable;
+import com.github.noraui.service.TimeService;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
+import com.google.inject.Inject;
 
 import io.cucumber.java.en.And;
 import io.cucumber.java.fr.Et;
@@ -34,6 +36,9 @@ public class TimeSteps extends Step {
     static Logger log;
 
     public static final String FORMATTER = "formatter";
+
+    @Inject
+    private TimeService timeService;
 
     /**
      * @param targetKey
@@ -63,13 +68,7 @@ public class TimeSteps extends Step {
         try {
             String formatter = params.getOrDefault(FORMATTER, DEFAULT_DATE_FORMAT);
             String zone = params.getOrDefault("zone", DEFAULT_ZONE_ID);
-            ZonedDateTime d = ZonedDateTime.now(ZoneId.of(zone)).plusDays(offsetDay);
-            if ("SATURDAY".equals(d.getDayOfWeek().toString())) {
-                d = d.plusDays(2);
-            } else if ("SUNDAY".equals(d.getDayOfWeek().toString())) {
-                d = d.plusDays(1);
-            }
-            String date = d.format(DateTimeFormatter.ofPattern(formatter));
+            String date = timeService.getDayPlusXBusinessDay(offsetDay, zone, formatter);
             Context.saveValue(targetKey, date);
             Context.getCurrentScenario().write(PREFIX_SAVE + targetKey + "=" + date);
         } catch (Exception e) {
@@ -83,13 +82,7 @@ public class TimeSteps extends Step {
         try {
             String formatter = params.getOrDefault(FORMATTER, DEFAULT_DATE_FORMAT);
             String zone = params.getOrDefault("zone", DEFAULT_ZONE_ID);
-            ZonedDateTime d = ZonedDateTime.now(ZoneId.of(zone)).minusDays(offsetDay);
-            if ("SATURDAY".equals(d.getDayOfWeek().toString())) {
-                d = d.minusDays(1);
-            } else if ("SUNDAY".equals(d.getDayOfWeek().toString())) {
-                d = d.minusDays(2);
-            }
-            String date = d.format(DateTimeFormatter.ofPattern(formatter));
+            String date = timeService.getDayMinusXBusinessDay(offsetDay, zone, formatter);
             Context.saveValue(targetKey, date);
             Context.getCurrentScenario().write(PREFIX_SAVE + targetKey + "=" + date);
         } catch (Exception e) {
