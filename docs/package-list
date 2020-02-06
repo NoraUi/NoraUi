@@ -35,6 +35,7 @@ com.github.noraui.log
 com.github.noraui.log.annotation
 com.github.noraui.main
 com.github.noraui.model
+com.github.noraui.selenium
 com.github.noraui.service
 com.github.noraui.service.impl
 com.github.noraui.statistics
