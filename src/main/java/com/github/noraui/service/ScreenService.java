@@ -39,7 +39,7 @@ public interface ScreenService {
      * @param screenName
      *            name of screenshot file.
      * @param element
-     *            WebElement concerned
+     *            WebElement concerned.
      * @throws IOException
      *             if file or directory is wrong.
      */
@@ -64,5 +64,11 @@ public interface ScreenService {
      *             if file or directory is wrong.
      */
     void stopVideoCapture() throws IOException;
+
+    /**
+     * @param element
+     *            WebElement concerned.
+     */
+    void scrollIntoView(WebElement element);
 
 }
