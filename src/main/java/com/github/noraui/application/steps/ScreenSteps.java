@@ -140,4 +140,14 @@ public class ScreenSteps extends Step {
         screenService.stopVideoCapture();
     }
 
+    @Conditioned
+    @Et("Je défile vers {string}(\\?)")
+    @And("I scroll to {string}(\\?)")
+    public void scrollIntoView(String pageElement, List<GherkinStepCondition> conditions) throws TechnicalException {
+        String page = pageElement.split("-")[0];
+        String element = pageElement.split("-")[1];
+        log.debug("I scroll to [{}-{}]", page, element);
+        screenService.scrollIntoView(Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + element)))));
+    }
+
 }
