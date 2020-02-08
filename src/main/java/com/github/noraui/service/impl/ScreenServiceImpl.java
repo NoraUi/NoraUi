@@ -26,6 +26,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
+import java.awt.image.RasterFormatException;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -38,6 +39,7 @@ import org.monte.media.Format;
 import org.monte.media.FormatKeys.MediaType;
 import org.monte.media.math.Rational;
 import org.monte.screenrecorder.ScreenRecorder;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.TakesScreenshot;
@@ -87,7 +89,7 @@ public class ScreenServiceImpl implements ScreenService {
      */
     @Override
     public void saveScreenshot(String screenName, WebElement element) throws IOException {
-        log.debug("saveScreenshot with the scenario named [{}] and element [{}]", screenName, element.getTagName());
+        log.debug("saveScreenshot with the screen named [{}] and element [{}]", screenName, element.getTagName());
 
         final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
         FileUtils.forceMkdir(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
@@ -103,9 +105,18 @@ public class ScreenServiceImpl implements ScreenService {
         int eleHeight = element.getSize().getHeight();
 
         // Crop the entire page screenshot to get only element screenshot
-        BufferedImage eleScreenshot = fullImg.getSubimage(point.getX(), point.getY(), eleWidth, eleHeight);
-        ImageIO.write(convertType(eleScreenshot, BufferedImage.TYPE_3BYTE_BGR), "jpg",
-                new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + screenName + ".jpg"));
+        try {
+            BufferedImage eleScreenshot = fullImg.getSubimage(point.getX(), point.getY(), eleWidth, eleHeight);
+            ImageIO.write(convertType(eleScreenshot, BufferedImage.TYPE_3BYTE_BGR), "jpg",
+                    new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + screenName + ".jpg"));
+        } catch (RasterFormatException e) {
+            // if image protrudes from the screen, the whole image is saved.
+            log.warn("image protrudes from the screen, the whole image is saved.");
+            scrollIntoView(element);
+            ImageIO.write(convertType(fullImg, BufferedImage.TYPE_3BYTE_BGR), "jpg",
+                    new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + screenName + ".jpg"));
+        }
+
     }
 
     /**
@@ -138,6 +149,18 @@ public class ScreenServiceImpl implements ScreenService {
     public void stopVideoCapture() throws IOException {
         log.debug("stopVideoCapture");
         this.screenRecorder.stop();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void scrollIntoView(WebElement element) {
+        ((JavascriptExecutor) Context.getDriver()).executeScript("arguments[0].scrollIntoView(true);", element);
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+        }
     }
 
     private BufferedImage convertType(BufferedImage eleScreenshot, int type) {
