@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 
 import com.github.noraui.cucumber.injector.NoraUiInjector;
+import com.github.noraui.cucumber.injector.NoraUiInjectorSource;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.log.NoraUiLoggingInjector;
 import com.github.noraui.log.annotation.Loggable;
@@ -33,6 +34,7 @@ public class TimeServiceImplUT {
     public void setUp() throws TechnicalException {
         NoraUiInjector.resetInjector();
         NoraUiLoggingInjector.addInjector(this.getClass().getPackage().getName());
+        new NoraUiInjectorSource().getInjector().injectMembers(this);
     }
 
     @After
