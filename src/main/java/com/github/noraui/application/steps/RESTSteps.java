@@ -6,6 +6,8 @@
  */
 package com.github.noraui.application.steps;
 
+import static com.github.noraui.utils.Constants.PREFIX_SAVE;
+
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -72,6 +74,7 @@ public class RESTSteps extends Step {
             new Result.Failure<>(Context.getApplicationByPagekey(pageKey), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_CALL_API_REST), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
         Context.saveValue(targetKey, json);
+        Context.getCurrentScenario().write(PREFIX_SAVE + targetKey + "=" + json);
     }
 
     /**
