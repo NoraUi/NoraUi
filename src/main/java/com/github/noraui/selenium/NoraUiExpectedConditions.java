@@ -100,8 +100,12 @@ public class NoraUiExpectedConditions {
      */
     public static ExpectedCondition<List<WebElement>> presenceOfMinimumElementsLocatedBy(final By locator, final int nb) {
         return (WebDriver driver) -> {
-            final List<WebElement> elements = driver.findElements(locator);
-            return elements.size() >= nb ? elements : null;
+            try {
+                final List<WebElement> elements = driver.findElements(locator);
+                return elements.size() >= nb ? elements : null;
+            } catch (final Exception e) {
+                return null;
+            }
         };
     }
 
@@ -116,8 +120,12 @@ public class NoraUiExpectedConditions {
      */
     public static ExpectedCondition<List<WebElement>> presenceOfMaximumElementsLocatedBy(final By locator, final int nb) {
         return (WebDriver driver) -> {
-            final List<WebElement> elements = driver.findElements(locator);
-            return elements.size() <= nb ? elements : null;
+            try {
+                final List<WebElement> elements = driver.findElements(locator);
+                return elements.size() <= nb ? elements : null;
+            } catch (final Exception e) {
+                return null;
+            }
         };
     }
 
