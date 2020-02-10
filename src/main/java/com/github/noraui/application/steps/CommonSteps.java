@@ -19,7 +19,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.github.noraui.application.page.Page;
 import com.github.noraui.application.page.Page.PageElement;
-import com.github.noraui.browser.WindowManager;
 import com.github.noraui.cucumber.annotation.Conditioned;
 import com.github.noraui.cucumber.metrics.annotation.time.Time;
 import com.github.noraui.cucumber.metrics.annotation.time.TimeName;
@@ -31,6 +30,7 @@ import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.GherkinConditionedLoopedStep;
 import com.github.noraui.gherkin.GherkinStepCondition;
 import com.github.noraui.log.annotation.Loggable;
+import com.github.noraui.selenium.NoraUiExpectedConditions;
 import com.github.noraui.utils.Constants;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
@@ -395,7 +395,7 @@ public class CommonSteps extends Step {
             try {
                 final Set<String> initialWindows = getDriver().getWindowHandles();
                 clickOn(Page.getInstance(page).getPageElementByKey('-' + elementName));
-                final String newWindowHandle = Context.waitUntil(WindowManager.newWindowOpens(initialWindows));
+                final String newWindowHandle = Context.waitUntil(NoraUiExpectedConditions.newWindowOpens(initialWindows));
                 Context.addWindow(wKey, newWindowHandle);
                 getDriver().switchTo().window(newWindowHandle);
                 // As a workaround: NoraUi specify window size manually, e.g. window_size: 1920 x 1080 (instead of .window().maximize()).
