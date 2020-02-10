@@ -71,7 +71,13 @@ public class StepInterceptor implements MethodInterceptor {
                     if (i == retryAnnotation.attempts() - 1) {
                         e.getFailure().fail();
                     }
+                    if (retryAnnotation.verbose()) {
+                        log.info("NORAUI StepInterceptor waitting " + retryAnnotation.unit().toMillis(retryAnnotation.delay()) + " ms");
+                    }
                     Thread.sleep(retryAnnotation.unit().toMillis(retryAnnotation.delay()));
+                    if (retryAnnotation.verbose()) {
+                        log.info("NORAUI StepInterceptor wait finished");
+                    }
                 }
             }
         } else {
