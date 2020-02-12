@@ -6,6 +6,8 @@
  */
 package com.github.noraui.application.steps;
 
+import static com.github.noraui.utils.Constants.PREFIX_SAVE;
+
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -19,8 +21,11 @@ import com.github.noraui.gherkin.GherkinStepCondition;
 import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
+import com.mifmif.common.regex.Generex;
 
 import io.cucumber.java.en.And;
+import io.cucumber.java.en.When;
+import io.cucumber.java.fr.Quand;
 
 @Loggable
 public class ContextSteps extends Step {
@@ -101,7 +106,35 @@ public class ContextSteps extends Step {
         final String compare = Context.getValue(compareValueOrKey) != null ? Context.getValue(compareValueOrKey) : compareValueOrKey;
         if (!src.contains(compare)) {
             log.error("The value « {} » not contains « {} »", src, compare);
-            new Result.Failure<>("", Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_CONTEXT_NOT_CONTAINS), src, compare), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+            new Result.Failure<>("", Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_CONTEXT_NOT_CONTAINS), src, compare), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+        }
+    }
+
+    /**
+     * Save in context a text generated with ramdom match a regExp.
+     * 
+     * @param randRegex
+     *            Is the new data (random value generated and match with randRegex)
+     * @param targetKey
+     *            Target key to save retrieved value.
+     * @param conditions
+     *            list of 'expected' values condition and 'actual' values
+     *            ({@link com.github.noraui.gherkin.GherkinStepCondition}).
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     * @throws TechnicalException
+     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     */
+    @Conditioned
+    @Quand("Je génère du texte aléatoire correspond à {string} et j\'enregistre la valeur dans la clé {string} d contexte(\\?)")
+    @When("I generate text with ramdom match {string} and save the value in {string} context key(\\?)")
+    public void generateAndSaveTextWithRamdomValueMatchRegexp(String randRegex, String targetKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+        try {
+            String rand = new Generex(randRegex).random();
+            Context.saveValue(targetKey, rand);
+            Context.getCurrentScenario().write(PREFIX_SAVE + targetKey + "=" + rand);
+        } catch (final Exception e) {
+            new Result.Failure<>("", Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_GENERATE_RANDOM_VALUE), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
     }
 
