@@ -96,7 +96,7 @@ public class WaitSteps extends Step {
     public void waitInvisibilityOf(String pageElement, List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Context.waitUntil(ExpectedConditions.invisibilityOf(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName))));
+        Context.waitUntil(ExpectedConditions.invisibilityOfElementLocated(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName))));
     }
 
     /**
@@ -117,7 +117,7 @@ public class WaitSteps extends Step {
     public void waitInvisibilityOf(String pageElement, int timeOutInSeconds, List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Context.waitUntil(ExpectedConditions.invisibilityOf(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName))), timeOutInSeconds);
+        Context.waitUntil(ExpectedConditions.invisibilityOfElementLocated(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName))), timeOutInSeconds);
     }
 
     @Conditioned
@@ -304,7 +304,7 @@ public class WaitSteps extends Step {
     public void waitVisibilityOf(String pageElement, List<GherkinStepCondition> conditions) throws TechnicalException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
-        Context.waitUntil(ExpectedConditions.visibilityOf(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName))));
+        Context.waitUntil(ExpectedConditions.visibilityOfElementLocated(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName))));
     }
 
     @Conditioned
@@ -315,7 +315,7 @@ public class WaitSteps extends Step {
         String elementName = pageElement.split("-")[1];
         String childPage = childPageElement.split("-")[0];
         String childElementName = childPageElement.split("-")[1];
-        Context.waitUntil(ExpectedConditions.visibilityOfNestedElementsLocatedBy(Utilities.findElement(Page.getInstance(page).getPageElementByKey('-' + elementName)),
+        Context.waitUntil(ExpectedConditions.visibilityOfNestedElementsLocatedBy(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)),
                 Utilities.getLocator(Page.getInstance(childPage).getPageElementByKey('-' + childElementName))));
     }
 
