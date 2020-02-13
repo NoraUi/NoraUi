@@ -276,6 +276,8 @@ public class BrowserSteps {
         Context.addWindow(pageKey, windowHandle);
         Context.setMainWindow(pageKey);
         Context.getDriver().navigate().to(urlToOpen);
+        // As a workaround: NoraUi specify window size manually, e.g. window_size: 1920 x 1080 (instead of .window().maximize()).
+        Context.getDriver().manage().window().setSize(new Dimension(1920, 1080));
     }
 
     /**
@@ -285,12 +287,16 @@ public class BrowserSteps {
         Context.addWindow(key, handleToKeep);
         Context.setMainWindow(key);
         Context.getDriver().switchTo().window(handleToKeep);
+        // As a workaround: NoraUi specify window size manually, e.g. window_size: 1920 x 1080 (instead of .window().maximize()).
+        Context.getDriver().manage().window().setSize(new Dimension(1920, 1080));
     }
 
     private void closeAllWindows(String handleToKeep) {
         for (String windowHandle : Context.getDriver().getWindowHandles()) {
             if (!windowHandle.equals(handleToKeep)) {
                 Context.getDriver().switchTo().window(windowHandle);
+                // As a workaround: NoraUi specify window size manually, e.g. window_size: 1920 x 1080 (instead of .window().maximize()).
+                Context.getDriver().manage().window().setSize(new Dimension(1920, 1080));
                 Context.getDriver().close();
             }
         }
