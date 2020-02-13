@@ -13,7 +13,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -388,8 +387,6 @@ public class CommonSteps extends Step {
         final String handleToSwitch = Context.getWindows().get(wKey);
         if (handleToSwitch != null) {
             Context.getDriver().switchTo().window(handleToSwitch);
-            // As a workaround: NoraUi specify window size manually, e.g. window_size: 1920 x 1080 (instead of .window().maximize()).
-            Context.getDriver().manage().window().setSize(new Dimension(1920, 1080));
             Context.setMainWindow(windowKey);
         } else {
             try {
@@ -398,8 +395,6 @@ public class CommonSteps extends Step {
                 final String newWindowHandle = Context.waitUntil(NoraUiExpectedConditions.newWindowOpens(initialWindows));
                 Context.addWindow(wKey, newWindowHandle);
                 getDriver().switchTo().window(newWindowHandle);
-                // As a workaround: NoraUi specify window size manually, e.g. window_size: 1920 x 1080 (instead of .window().maximize()).
-                Context.getDriver().manage().window().setSize(new Dimension(1920, 1080));
                 Context.setMainWindow(newWindowHandle);
             } catch (final Exception e) {
                 new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_SWITCH_WINDOW), windowKey), true, Page.getInstance(page).getCallBack());

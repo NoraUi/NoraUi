@@ -38,6 +38,7 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.ini4j.Ini;
 import org.ini4j.InvalidFileFormatException;
 import org.joda.time.DateTime;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -468,6 +469,8 @@ public class Context {
     }
 
     public static void setMainWindow(String window) {
+        // As a workaround: NoraUi specify window size manually, e.g. window_size: 1920 x 1080 (instead of .window().maximize()).
+        getDriver().manage().window().setSize(new Dimension(1920, 1080));
         getInstance().windowManager.setMainWindow(window);
     }
 

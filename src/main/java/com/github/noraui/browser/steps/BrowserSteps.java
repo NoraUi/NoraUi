@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.slf4j.Logger;
 
@@ -309,8 +308,6 @@ public class BrowserSteps {
         String handleToSwitch = Context.getWindows().get(windowKey);
         if (handleToSwitch != null) {
             Context.getDriver().switchTo().window(handleToSwitch);
-            // As a workaround: NoraUi specify window size manually, e.g. window_size: 1920 x 1080 (instead of .window().maximize()).
-            Context.getDriver().manage().window().setSize(new Dimension(1920, 1080));
             Context.setMainWindow(windowKey);
         } else {
             log.error("Error when switch Window: handleToSwitch is null");
