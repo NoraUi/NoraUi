@@ -399,6 +399,9 @@ public abstract class Step implements IStep {
                 String javascript = "arguments[0].value=arguments[1];";
                 ((JavascriptExecutor) getDriver()).executeScript(javascript, element, value.substring(0, value.length() - 1));
                 element.sendKeys(value.substring(value.length() - 1));
+                if (keysToSend != null) {
+                    element.sendKeys(keysToSend);
+                }
             } catch (final Exception e) {
                 new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_ERROR_ON_INPUT), pageElement, pageElement.getPage().getApplication()), true,
                         pageElement.getPage().getCallBack());
