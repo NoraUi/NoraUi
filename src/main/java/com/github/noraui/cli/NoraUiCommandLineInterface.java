@@ -581,11 +581,11 @@ public class NoraUiCommandLineInterface {
         if (noraUiCliParameters.getInteractiveMode()) {
             if (noraUiCliParameters.getApplicationName() == null || "".equals(noraUiCliParameters.getApplicationName())) {
                 log.info("Enter application name:");
-                noraUiCliParameters.setApplicationName(noraUiCliParameters.getInput().nextLine());
+                noraUiCliParameters.setApplicationName(noraUiCliParameters.getInput().nextLine().trim());
             }
             if (noraUiCliParameters.getUrl() == null || "".equals(noraUiCliParameters.getUrl())) {
                 log.info("Enter url:");
-                noraUiCliParameters.setUrl(noraUiCliParameters.getInput().nextLine());
+                noraUiCliParameters.setUrl(noraUiCliParameters.getInput().nextLine().trim());
             }
             application.add(noraUiCliParameters.getApplicationName(), noraUiCliParameters.getUrl(), noraUiCliParameters.getRobotContext(), noraUiCliParameters.getVerbose());
         } else {
