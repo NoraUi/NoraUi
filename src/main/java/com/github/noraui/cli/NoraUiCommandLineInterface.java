@@ -651,11 +651,11 @@ public class NoraUiCommandLineInterface {
             if (noraUiCliParameters.getApplicationName() != null && !"".equals(noraUiCliParameters.getApplicationName())) {
                 if (noraUiCliParameters.getScenarioName() == null || "".equals(noraUiCliParameters.getScenarioName())) {
                     log.info("Enter scenario name:");
-                    noraUiCliParameters.setScenarioName(noraUiCliParameters.getInput().nextLine());
+                    noraUiCliParameters.setScenarioName(noraUiCliParameters.getInput().nextLine().trim());
                 }
                 if (noraUiCliParameters.getDescription() == null || "".equals(noraUiCliParameters.getDescription())) {
                     log.info("Enter description:");
-                    noraUiCliParameters.setDescription(noraUiCliParameters.getInput().nextLine());
+                    noraUiCliParameters.setDescription(noraUiCliParameters.getInput().nextLine().trim());
                 }
                 scenario.add(noraUiCliParameters.getScenarioName(), noraUiCliParameters.getDescription(), noraUiCliParameters.getApplicationName(),
                         noraUiCliParameters.getRobotContext().getSimpleName().replace(CONTEXT, ""), noraUiCliParameters.getVerbose());
