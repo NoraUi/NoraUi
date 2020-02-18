@@ -12,14 +12,14 @@ import java.nio.charset.StandardCharsets;
 public class Constants {
 
     /**
-     * @deprecated As of release 4.1.4, replaced by {@linkcom.github.noraui.utils.FRENCH_DATE_FORMAT}
+     * @deprecated As of release 4.1.4, replaced by {@link #FRENCH_DATE_FORMAT}
      *             French date format.
      */
     @Deprecated
     public static final String DATE_FORMAT = "dd/MM/yyyy";
 
     /**
-     * @deprecated As of release 4.1.4, replaced by {@linkcom.github.noraui.utils.FRENCH_DATE_FORMAT_REG_EXP}
+     * @deprecated As of release 4.1.4, replaced by {@link #FRENCH_DATE_FORMAT_REG_EXP}
      *             Regex to validate date format dd/mm/yyyy.
      */
     @Deprecated
