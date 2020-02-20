@@ -117,7 +117,6 @@ public class Application extends AbstractNoraUiCli {
         for (final File f : new File("src" + File.separator + "test" + File.separator + RESOURCES + File.separator + "environments").listFiles()) {
             if (f.isFile()) {
                 if (f.getName().matches(".*\\.properties")) {
-                    System.out.println(f.getName());
                     removeApplicationInEnvPropertiesFile(applicationName, f.getName(), verbose);
                 }
             }
