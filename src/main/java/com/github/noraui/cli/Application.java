@@ -87,9 +87,14 @@ public class Application extends AbstractNoraUiCli {
         addApplicationContext(applicationName, robotContext, verbose);
         addApplicationSelector(applicationName, verbose);
         addApplicationInPropertiesFile(applicationName, robotContext.getSimpleName().replace("Context", ""), verbose);
-        addApplicationInEnvPropertiesFile(applicationName, url, "ci", verbose);
-        addApplicationInEnvPropertiesFile(applicationName, url, "dev", verbose);
-        addApplicationInEnvPropertiesFile(applicationName, url, "prod", verbose);
+        for (final File f : new File("src" + File.separator + "test" + File.separator + RESOURCES + File.separator + "environments").listFiles()) {
+            if (f.isFile()) {
+                if (f.getName().matches(".*\\.properties")) {
+                    System.out.println(f.getName());
+                    addApplicationInEnvPropertiesFile(applicationName, url, f.getName(), verbose);
+                }
+            }
+        }
     }
 
     /**
@@ -110,9 +115,14 @@ public class Application extends AbstractNoraUiCli {
         removeApplicationContext(robotContext, applicationName, verbose);
         removeApplicationSelector(applicationName, verbose);
         removeApplicationInPropertiesFile(applicationName, robotContext.getSimpleName().replace("Context", ""), verbose);
-        removeApplicationInEnvPropertiesFile(applicationName, "ci", verbose);
-        removeApplicationInEnvPropertiesFile(applicationName, "dev", verbose);
-        removeApplicationInEnvPropertiesFile(applicationName, "prod", verbose);
+        for (final File f : new File("src" + File.separator + "test" + File.separator + RESOURCES + File.separator + "environments").listFiles()) {
+            if (f.isFile()) {
+                if (f.getName().matches(".*\\.properties")) {
+                    System.out.println(f.getName());
+                    removeApplicationInEnvPropertiesFile(applicationName, f.getName(), verbose);
+                }
+            }
+        }
     }
 
     /**
@@ -634,7 +644,7 @@ public class Application extends AbstractNoraUiCli {
      *            boolean to activate verbose mode (show more traces).
      */
     private void manageApplicationInEnvPropertiesFile(boolean addMode, String applicationName, String url, String env, boolean verbose) {
-        String propertiesfilePath = "src" + File.separator + "test" + File.separator + RESOURCES + File.separator + "environments" + File.separator + env + ".properties";
+        String propertiesfilePath = "src" + File.separator + "test" + File.separator + RESOURCES + File.separator + "environments" + File.separator + env;
         if (verbose) {
             log.info("Add application named [{}] in this properties file: [{}]", applicationName, propertiesfilePath);
         }
