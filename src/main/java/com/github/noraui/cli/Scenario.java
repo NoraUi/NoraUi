@@ -6,8 +6,8 @@
  */
 package com.github.noraui.cli;
 
+import static com.github.noraui.Constants.SCENARIO_FILE;
 import static com.github.noraui.exception.TechnicalException.TECHNICAL_IO_EXCEPTION;
-import static com.github.noraui.utils.Constants.SCENARIO_FILE;
 
 import java.io.BufferedReader;
 import java.io.File;

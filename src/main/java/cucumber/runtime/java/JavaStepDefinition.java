@@ -30,11 +30,7 @@ class JavaStepDefinition implements StepDefinition {
 
     private final List<ParameterInfo> parameterInfos;
 
-    JavaStepDefinition(Method method,
-                       String expression,
-                       long timeoutMillis,
-                       ObjectFactory objectFactory,
-                       TypeRegistry typeRegistry) {
+    JavaStepDefinition(Method method, String expression, long timeoutMillis, ObjectFactory objectFactory, TypeRegistry typeRegistry) {
         this.method = method;
         this.timeoutMillis = timeoutMillis;
         this.objectFactory = objectFactory;
@@ -76,7 +72,7 @@ class JavaStepDefinition implements StepDefinition {
     public Integer getParameterCount() {
         return parameterInfos.size();
     }
-    
+
     @Override
     public List<?> getParameters() {
         return parameterInfos;

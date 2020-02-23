@@ -12,11 +12,11 @@ import org.joda.time.DateTime;
 import org.joda.time.Seconds;
 import org.slf4j.Logger;
 
+import com.github.noraui.Constants;
 import com.github.noraui.browser.Auth;
 import com.github.noraui.exception.Result;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.log.annotation.Loggable;
-import com.github.noraui.utils.Constants;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 
@@ -61,7 +61,7 @@ public class CucumberHooks {
             log.debug("Go to next feature");
             Context.goToNextFeature();
         } else {
-            log.debug("No go to next feature");
+            log.debug("Data remaining on current feature");
         }
     }
 

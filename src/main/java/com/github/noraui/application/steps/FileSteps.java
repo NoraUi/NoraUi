@@ -6,8 +6,8 @@
  */
 package com.github.noraui.application.steps;
 
-import static com.github.noraui.utils.Constants.DOWNLOADED_FILES_FOLDER;
-import static com.github.noraui.utils.Constants.USER_DIR;
+import static com.github.noraui.Constants.DOWNLOADED_FILES_FOLDER;
+import static com.github.noraui.Constants.USER_DIR;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 
-import com.github.noraui.application.page.Page;
+import com.github.noraui.application.page.Page.PageElement;
 import com.github.noraui.cucumber.annotation.Conditioned;
 import com.github.noraui.exception.Callbacks;
 import com.github.noraui.exception.FailureException;
@@ -146,7 +146,7 @@ public class FileSteps extends Step {
     }
 
     /**
-     * Waits the full download of a file with a maximum timeout in seconds.
+     * Waits the full download of a file.
      *
      * @param pageElement
      *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
@@ -161,12 +161,10 @@ public class FileSteps extends Step {
      *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UPLOADING_FILE} message (with screenshot, no exception)
      */
     @Conditioned
-    @Lorsque("J'utilise l'élément {string} pour uploader le fichier {string}(\\?)")
-    @Then("I use {string} element to upload {string} file(\\?)")
-    public void uploadFile(String pageElement, String filename, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
-        uploadFile(Page.getInstance(page).getPageElementByKey('-' + elementName), filename);
+    @Lorsque("J'utilise l'élément {page-element} pour uploader le fichier {string}(\\?)")
+    @Then("I use {page-element} element to upload {string} file(\\?)")
+    public void uploadFile(PageElement pageElement, String filename, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
+        uploadFile(pageElement, filename);
     }
 
 }

@@ -6,9 +6,9 @@
  */
 package com.github.noraui.application.steps;
 
-import static com.github.noraui.utils.Constants.DOWNLOADED_FILES_FOLDER;
-import static com.github.noraui.utils.Constants.USER_DIR;
-import static com.github.noraui.utils.Constants.VALUE;
+import static com.github.noraui.Constants.DOWNLOADED_FILES_FOLDER;
+import static com.github.noraui.Constants.USER_DIR;
+import static com.github.noraui.Constants.VALUE;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -40,10 +40,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.slf4j.Logger;
 
+import com.github.noraui.Constants;
 import com.github.noraui.application.page.IPage;
 import com.github.noraui.application.page.Page;
 import com.github.noraui.application.page.Page.PageElement;
 import com.github.noraui.browser.DriverFactory;
+import com.github.noraui.browser.waits.Wait;
 import com.github.noraui.cucumber.annotation.Conditioned;
 import com.github.noraui.cucumber.injector.NoraUiInjector;
 import com.github.noraui.exception.FailureException;
@@ -55,7 +57,6 @@ import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.service.CryptoService;
 import com.github.noraui.service.CucumberExpressionService;
 import com.github.noraui.service.UserNameService;
-import com.github.noraui.utils.Constants;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 import com.github.noraui.utils.Utilities;
@@ -113,7 +114,7 @@ public abstract class Step implements IStep {
     protected void clickOn(PageElement toClick, Object... args) throws TechnicalException, FailureException {
         displayMessageAtTheBeginningOfMethod("clickOn: %s in %s", toClick.toString(), toClick.getPage().getApplication());
         try {
-            Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(toClick, args))).click();
+            Wait.until(ExpectedConditions.elementToBeClickable(Utilities.getLocator(toClick, args))).click();
         } catch (final Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK), toClick, toClick.getPage().getApplication()), true,
                     toClick.getPage().getCallBack());
@@ -136,7 +137,7 @@ public abstract class Step implements IStep {
     protected void clickOnByJs(PageElement toClick, Object... args) throws TechnicalException, FailureException {
         displayMessageAtTheBeginningOfMethod("clickOnByJs: %s in %s", toClick.toString(), toClick.getPage().getApplication());
         try {
-            Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(toClick, args)));
+            Wait.until(ExpectedConditions.elementToBeClickable(Utilities.getLocator(toClick, args)));
             ((JavascriptExecutor) getDriver()).executeScript("document.evaluate(\"" + StringEscapeUtils.escapeJava(Utilities.getLocatorValue(toClick, args))
                     + "\", document, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null).snapshotItem(0).click();");
         } catch (final Exception e) {
@@ -161,7 +162,7 @@ public abstract class Step implements IStep {
     protected void clickOnByJs(Page page, String xpath) throws TechnicalException, FailureException {
         displayMessageAtTheBeginningOfMethod("clickOnByJs: %s in %s", xpath, page.getApplication());
         try {
-            Context.waitUntil(ExpectedConditions.elementToBeClickable(By.xpath(xpath.replaceAll("\\\\'", "'"))));
+            Wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xpath.replaceAll("\\\\'", "'"))));
             ((JavascriptExecutor) getDriver()).executeScript("document.evaluate(\"" + xpath + "\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click();");
         } catch (final Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_EVALUATE_XPATH), xpath, page.getApplication()), true, page.getCallBack());
@@ -208,17 +209,21 @@ public abstract class Step implements IStep {
         String value = getTextOrKey(textOrKey);
         if (!"".equals(value)) {
             try {
-                final WebElement element = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(pageElement, args)));
-                element.clear();
-                if (DriverFactory.IE.equals(Context.getBrowser())) {
-                    final String javascript = "arguments[0].value='" + value + "';";
-                    ((JavascriptExecutor) getDriver()).executeScript(javascript, element);
-                } else {
-                    element.sendKeys(value);
-                }
-                if (keysToSend != null) {
-                    element.sendKeys(keysToSend);
-                }
+                Wait.untilAnd(ExpectedConditions.elementToBeClickable(Utilities.getLocator(pageElement, args))).map((WebElement elem) -> {
+                    elem.clear();
+                    return elem;
+                }).then((elem) -> {
+                    if (DriverFactory.IE.equals(Context.getBrowser())) {
+                        final String javascript = "arguments[0].value='" + value + "';";
+                        ((JavascriptExecutor) getDriver()).executeScript(javascript, elem);
+                    } else {
+                        elem.sendKeys(value);
+                    }
+                    if (keysToSend != null) {
+                        elem.sendKeys(keysToSend);
+                    }
+                });
+
             } catch (final Exception e) {
                 new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_ERROR_ON_INPUT), pageElement, pageElement.getPage().getApplication()), true,
                         pageElement.getPage().getCallBack());
@@ -262,7 +267,7 @@ public abstract class Step implements IStep {
      */
     protected void clearText(PageElement pageElement, CharSequence keysToSend, Object... args) throws TechnicalException, FailureException {
         try {
-            final WebElement element = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement, args)));
+            final WebElement element = Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement, args)));
             element.clear();
             if (keysToSend != null) {
                 element.sendKeys(keysToSend);
@@ -291,7 +296,7 @@ public abstract class Step implements IStep {
         WebElement inputText = null;
         String value = getTextOrKey(textOrKey);
         try {
-            inputText = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
+            inputText = Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
         } catch (final Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
         }
@@ -317,12 +322,12 @@ public abstract class Step implements IStep {
         WebElement element = null;
         String value = getTextOrKey(textOrKey);
         try {
-            element = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
+            element = Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
         } catch (final Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
         }
         try {
-            Context.waitUntil(ExpectSteps.textToBeEqualsToExpectedValue(Utilities.getLocator(pageElement), value));
+            Wait.until(ExpectSteps.textToBeEqualsToExpectedValue(Utilities.getLocator(pageElement), value));
         } catch (final Exception e) {
             log.error("error in expectText. element is [{}]", element == null ? null : element.getText());
             new Result.Failure<>(element == null ? null : element.getText(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE), pageElement,
@@ -343,7 +348,7 @@ public abstract class Step implements IStep {
     protected boolean checkMandatoryTextField(PageElement pageElement) throws FailureException {
         WebElement inputText = null;
         try {
-            inputText = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
+            inputText = Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
         } catch (final Exception e) {
             new Result.Failure<>(pageElement, Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
         }
@@ -352,7 +357,7 @@ public abstract class Step implements IStep {
 
     protected String readValueTextField(PageElement pageElement) throws FailureException {
         try {
-            return Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement))).getAttribute(VALUE);
+            return Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement))).getAttribute(VALUE);
         } catch (final Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
         }
@@ -378,7 +383,7 @@ public abstract class Step implements IStep {
         WebElement webElement = null;
         String value = getTextOrKey(textOrKey);
         try {
-            webElement = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement, args)));
+            webElement = Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement, args)));
         } catch (final Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
         }
@@ -412,7 +417,7 @@ public abstract class Step implements IStep {
         WebElement webElement = null;
         String value = getTextOrKey(textOrKey);
         try {
-            webElement = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement, args)));
+            webElement = Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement, args)));
         } catch (final Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
         }
@@ -441,13 +446,13 @@ public abstract class Step implements IStep {
     protected void checkElementVisible(PageElement pageElement, boolean displayed, Object... args) throws FailureException {
         if (displayed) {
             try {
-                Context.waitUntil(ExpectedConditions.visibilityOfElementLocated(Utilities.getLocator(pageElement, args)));
+                Wait.until(ExpectedConditions.visibilityOfElementLocated(Utilities.getLocator(pageElement, args)));
             } catch (final Exception e) {
                 new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_ELEMENT_STILL_VISIBLE), true, pageElement.getPage().getCallBack());
             }
         } else {
             try {
-                Context.waitUntil(ExpectedConditions.not(ExpectedConditions.visibilityOfElementLocated(Utilities.getLocator(pageElement))));
+                Wait.until(ExpectedConditions.not(ExpectedConditions.visibilityOfElementLocated(Utilities.getLocator(pageElement))));
             } catch (final Exception e) {
                 new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_ELEMENT_STILL_VISIBLE), true, pageElement.getPage().getCallBack());
             }
@@ -468,13 +473,13 @@ public abstract class Step implements IStep {
     protected void checkElementPresence(PageElement pageElement, boolean present, Object... args) throws FailureException {
         if (present) {
             try {
-                Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement, args)));
+                Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement, args)));
             } catch (final Exception e) {
                 new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
             }
         } else {
             try {
-                Context.waitUntil(ExpectedConditions.not(ExpectedConditions.presenceOfAllElementsLocatedBy(Utilities.getLocator(pageElement, args))));
+                Wait.until(ExpectedConditions.not(ExpectedConditions.presenceOfAllElementsLocatedBy(Utilities.getLocator(pageElement, args))));
             } catch (final Exception e) {
                 new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_ELEMENT_STILL_VISIBLE), true, pageElement.getPage().getCallBack());
             }
@@ -519,7 +524,7 @@ public abstract class Step implements IStep {
      */
     protected boolean checkTextSelectedInList(PageElement pageElement, String text, Object... args) throws FailureException {
         try {
-            final WebElement select = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(pageElement, args)));
+            final WebElement select = Wait.until(ExpectedConditions.elementToBeClickable(Utilities.getLocator(pageElement, args)));
             final Select dropDown = new Select(select);
             return text.equalsIgnoreCase(dropDown.getFirstSelectedOption().getText());
         } catch (final Exception e) {
@@ -583,11 +588,9 @@ public abstract class Step implements IStep {
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    protected void saveElementValue(String pageElement, Object... args) throws TechnicalException, FailureException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
-        log.debug("saveElementValue: {} in {}.", '-' + elementName, Page.getInstance(page).getApplication());
-        saveElementValue(pageElement, Page.getInstance(page).getPageKey() + '-' + elementName, args);
+    protected void saveElementValue(PageElement pageElement, Object... args) throws TechnicalException, FailureException {
+        log.debug("saveElementValue: {} in {}.", pageElement.getKey(), pageElement.getPage().getApplication());
+        saveElementValue(pageElement, pageElement.getKey(), args);
     }
 
     /**
@@ -605,24 +608,22 @@ public abstract class Step implements IStep {
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    protected void saveElementValue(String pageElement, String targetKey, Object... args) throws TechnicalException, FailureException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
-        log.debug("saveElementValue: {} to {} in {}.", '-' + elementName, targetKey, Page.getInstance(page).getApplication());
+    protected void saveElementValue(PageElement pageElement, String targetKey, Object... args) throws TechnicalException, FailureException {
+        log.debug("saveElementValue: {} to {} in {}.", pageElement, targetKey, pageElement.getPage().getApplication());
         String txt = "";
         try {
-            final WebElement elem = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName), args)));
+            final WebElement elem = Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement, args)));
             log.info("value: {} and text: {}", elem.getAttribute(VALUE), elem.getText());
             txt = elem.getAttribute(VALUE) != null ? elem.getAttribute(VALUE) : elem.getText();
         } catch (final Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, Page.getInstance(page).getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
         }
         try {
             Context.saveValue(targetKey, txt);
             Context.getCurrentScenario().write("SAVE " + targetKey + "=" + txt);
         } catch (final Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_RETRIEVE_VALUE), Page.getInstance(page).getPageElementByKey('-' + elementName),
-                    Page.getInstance(page).getApplication()), true, Page.getInstance(page).getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_RETRIEVE_VALUE), pageElement, pageElement.getPage().getApplication()), true,
+                    pageElement.getPage().getCallBack());
         }
     }
 
@@ -644,7 +645,7 @@ public abstract class Step implements IStep {
     protected void updateRadioList(PageElement pageElement, String valueKeyOrKey, Map<String, String> printedValues) throws TechnicalException, FailureException {
         final String valueKey = Context.getValue(valueKeyOrKey) != null ? Context.getValue(valueKeyOrKey) : valueKeyOrKey;
         try {
-            final List<WebElement> radioButtons = Context.waitUntil(ExpectedConditions.presenceOfAllElementsLocatedBy(Utilities.getLocator(pageElement)));
+            final List<WebElement> radioButtons = Wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(Utilities.getLocator(pageElement)));
             String radioToSelect = printedValues.get(valueKey);
             if (radioToSelect == null) {
                 radioToSelect = printedValues.get("Default");
@@ -673,7 +674,7 @@ public abstract class Step implements IStep {
      */
     protected boolean checkRadioList(PageElement pageElement, String value) throws FailureException {
         try {
-            final List<WebElement> radioButtons = Context.waitUntil(ExpectedConditions.presenceOfAllElementsLocatedBy(Utilities.getLocator(pageElement)));
+            final List<WebElement> radioButtons = Wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(Utilities.getLocator(pageElement)));
             for (final WebElement button : radioButtons) {
                 if (button.getAttribute(VALUE).equalsIgnoreCase(value) && button.isSelected()) {
                     return true;
@@ -701,7 +702,7 @@ public abstract class Step implements IStep {
     protected void updateRadioList(PageElement pageElement, String valueOrKey) throws TechnicalException, FailureException {
         final String value = Context.getValue(valueOrKey) != null ? Context.getValue(valueOrKey) : valueOrKey;
         try {
-            final List<WebElement> radioButtons = Context.waitUntil(ExpectedConditions.presenceOfAllElementsLocatedBy(Utilities.getLocator(pageElement)));
+            final List<WebElement> radioButtons = Wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(Utilities.getLocator(pageElement)));
             for (final WebElement button : radioButtons) {
                 if (button.getAttribute(VALUE).equals(value)) {
                     button.click();
@@ -753,7 +754,7 @@ public abstract class Step implements IStep {
      */
     protected void selectCheckbox(PageElement element, boolean checked, Object... args) throws TechnicalException, FailureException {
         try {
-            final WebElement webElement = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(element, args)));
+            final WebElement webElement = Wait.until(ExpectedConditions.elementToBeClickable(Utilities.getLocator(element, args)));
             if (webElement.isSelected() != checked) {
                 webElement.click();
             }
@@ -781,7 +782,7 @@ public abstract class Step implements IStep {
     protected void selectCheckbox(PageElement element, String valueKeyOrKey, Map<String, Boolean> values) throws TechnicalException, FailureException {
         final String valueKey = Context.getValue(valueKeyOrKey) != null ? Context.getValue(valueKeyOrKey) : valueKeyOrKey;
         try {
-            final WebElement webElement = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(element)));
+            final WebElement webElement = Wait.until(ExpectedConditions.elementToBeClickable(Utilities.getLocator(element)));
             Boolean checkboxValue = values.get(valueKey);
             if (checkboxValue == null) {
                 checkboxValue = values.get("Default");
@@ -810,7 +811,7 @@ public abstract class Step implements IStep {
      */
     protected void switchFrame(PageElement element, Object... args) throws FailureException, TechnicalException {
         try {
-            Context.waitUntil(ExpectedConditions.frameToBeAvailableAndSwitchToIt(Utilities.getLocator(element, args)));
+            Wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(Utilities.getLocator(element, args)));
         } catch (final Exception e) {
             new Result.Failure<>(element, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_SWITCH_FRAME), element, element.getPage().getApplication()), true,
                     element.getPage().getCallBack());
@@ -836,7 +837,7 @@ public abstract class Step implements IStep {
         final String path = Context.getValue(fileOrKey) != null ? Context.getValue(fileOrKey) : System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + fileOrKey;
         if (!"".equals(path)) {
             try {
-                final WebElement element = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement, args)));
+                final WebElement element = Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement, args)));
                 element.clear();
                 if (DriverFactory.IE.equals(Context.getBrowser())) {
                     final String javascript = "arguments[0].value='" + path + "';";
@@ -1054,7 +1055,7 @@ public abstract class Step implements IStep {
     }
 
     private void setDropDownValue(PageElement element, String text, Object... args) throws TechnicalException, FailureException {
-        final WebElement select = Context.waitUntil(ExpectedConditions.elementToBeClickable(Utilities.getLocator(element)));
+        final WebElement select = Wait.until(ExpectedConditions.elementToBeClickable(Utilities.getLocator(element)));
         final Select dropDown = new Select(select);
         final int index = userNameService.findOptionByIgnoreCaseText(text, dropDown);
         if (index != -1) {

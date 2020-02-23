@@ -159,10 +159,10 @@ Fonctionnalité: bonjour (Fonction pour valider l'environnement.)
     Et Je sauvegarde une capture d'écran de 'bakery.DemoPage-changeValueButton' dans 'changeValueButton<id>'
 
     Quand Je clique sur 'bakery.DemoPage-disappearButton'
-    Et J'attends l'invisibilité de 'bakery.DemoPage-disappearButton' avec un timeout de 10 secondes
+    Et L'élément 'bakery.DemoPage-disappearButton' devrait être invisible dans les 10 secondes
 
     Quand Je clique sur 'bakery.DemoPage-staleButton'
-    Et J'attends la disparition de 'bakery.DemoPage-staleButton' avec un timeout de 10 secondes
+    Et L'élément 'bakery.DemoPage-staleButton' devrait périmer dans les 10 secondes
 
     Et Je mets à jour le texte 'bakery.DemoPage-input_text_field' avec une valeur aléatoire qui vérifie 'noraui[a-zA-Z0-9]{6}'
 
@@ -193,7 +193,7 @@ Fonctionnalité: bonjour (Fonction pour valider l'environnement.)
   Exemples:
     #DATA
     |id|auteur|codepostal|ville|élément|élément2|date|titre|
-    |1|Jenkins T1|35000|Rennes|smile|smile|16/01/2020||
+    |1|Jenkins T1|35000|Rennes|smile|smile|16/01/2050||
     |2|Jenkins T2|75000|Paris|smile|smile|||
     |3|Jenkins T3|56100|Lorient|smile|smile|||
     |4|Jenkins T4|35000|Rennes|smile|smile|||

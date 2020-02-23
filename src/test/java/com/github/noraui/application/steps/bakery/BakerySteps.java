@@ -8,7 +8,6 @@ package com.github.noraui.application.steps.bakery;
 
 import java.util.List;
 
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
 
@@ -17,6 +16,7 @@ import com.github.noraui.application.page.bakery.BakeryPage;
 import com.github.noraui.application.page.bakery.ReferencerPage;
 import com.github.noraui.application.steps.Step;
 import com.github.noraui.browser.Auth;
+import com.github.noraui.browser.waits.Wait;
 import com.github.noraui.cucumber.annotation.Conditioned;
 import com.github.noraui.exception.FailureException;
 import com.github.noraui.exception.Result;
@@ -75,7 +75,7 @@ public class BakerySteps extends Step {
     @Then("I log in to BAKERY as {string} {string}")
     public void logInToBakery(String login, String password) throws FailureException {
         try {
-            Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(bakeryPage.signInButton)));
+            Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(bakeryPage.signInButton)));
             Utilities.findElement(bakeryPage.login).sendKeys(login);
             Utilities.findElement(bakeryPage.password).sendKeys(cryptoService.decrypt(password));
             Utilities.findElement(bakeryPage.signInButton).click();
@@ -95,7 +95,7 @@ public class BakerySteps extends Step {
     @Then("The administrator part of the BAKERY portal is displayed(\\?)")
     public void checkAdministratorPage(List<GherkinStepCondition> conditions) throws FailureException {
         try {
-            Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(adminPage.titleMessage)));
+            Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(adminPage.titleMessage)));
             if (!adminPage.checkPage()) {
                 logInToBakeryWithBakeryRobot();
             }
@@ -119,7 +119,7 @@ public class BakerySteps extends Step {
     @Then("The referencer part of the BAKERY portal is displayed(\\?)")
     public void checkReferencerPage(List<GherkinStepCondition> conditions) throws FailureException {
         try {
-            Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(referencerPage.titleMessage)));
+            Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(referencerPage.titleMessage)));
             if (!referencerPage.checkPage()) {
                 logInToBakeryWithBakeryRobot();
             }
@@ -146,8 +146,7 @@ public class BakerySteps extends Step {
         if (Auth.isConnected()) {
             getDriver().switchTo().defaultContent();
             clickOn(adminPage.accountMenu);
-            WebElement outMenu = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(this.adminPage.signOutMenu)));
-            outMenu.click();
+            Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(this.adminPage.signOutMenu))).click();
         } else {
             log.warn(Messages.getMessage("USER_WAS_ALREADY_LOGOUT", "robot"));
             Context.getCurrentScenario().write(Messages.getMessage("USER_WAS_ALREADY_LOGOUT", "robot"));

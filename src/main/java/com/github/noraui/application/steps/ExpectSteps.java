@@ -6,7 +6,7 @@
  */
 package com.github.noraui.application.steps;
 
-import static com.github.noraui.utils.Constants.VALUE;
+import static com.github.noraui.Constants.VALUE;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 
 import com.beust.jcommander.internal.Nullable;
-import com.github.noraui.application.page.Page;
+import com.github.noraui.application.page.Page.PageElement;
 import com.github.noraui.cucumber.annotation.Conditioned;
 import com.github.noraui.exception.FailureException;
 import com.github.noraui.exception.TechnicalException;
@@ -47,12 +47,10 @@ public class ExpectSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Et("Je m'attends à avoir {string} avec le texte {string}(\\?)")
-    @And("I expect to have {string} with the text {string}(\\?)")
-    public void expectText(String pageElement, String textOrKey, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
-        expectText(Page.getInstance(page).getPageElementByKey('-' + elementName), textOrKey);
+    @Et("Je m'attends à avoir {page-element} avec le texte {string}(\\?)")
+    @And("I expect to have {page-element} with the text {string}(\\?)")
+    public void expectText(PageElement pageElement, String textOrKey, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
+        expectText(pageElement, textOrKey);
     }
 
     /**

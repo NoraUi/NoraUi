@@ -51,7 +51,7 @@ public class Messages {
      * Functional fail messages.
      */
     public static final String THANK_YOU_FOR_YOUR_CONTRIBUTION = "THANK_YOU_FOR_YOUR_CONTRIBUTION";
-    
+
     /**
      * Functional fail messages.
      */
@@ -65,7 +65,7 @@ public class Messages {
     public static final String FAIL_MESSAGE_UNABLE_TO_OPEN_A_NEW_WINDOW = "FAIL_MESSAGE_UNABLE_TO_OPEN_A_NEW_WINDOW";
     public static final String FAIL_MESSAGE_UNABLE_TO_CALL_API_REST = "FAIL_MESSAGE_UNABLE_TO_CALL_API_REST";
     public static final String FAIL_MESSAGE_UNABLE_TO_CALL_METICS_API_REST = "FAIL_MESSAGE_UNABLE_TO_CALL_METICS_API_REST";
-    
+
     /**
      * Functional fail messages with parameters.
      */
@@ -103,7 +103,7 @@ public class Messages {
     public static final String FAIL_MESSAGE_UPLOADING_FILE = "FAIL_MESSAGE_UPLOADING_FILE";
     public static final String FAIL_MESSAGE_MAIL_ACTIVATION = "FAIL_MESSAGE_MAIL_ACTIVATION";
     public static final String FAIL_MESSAGE_CONTEXT_NOT_EQUALS = "FAIL_MESSAGE_CONTEXT_NOT_EQUALS";
-    public static final String FAIL_MESSAGE_CONTEXT_NOT_EQUALS_IGNORE_CASE  = "FAIL_MESSAGE_CONTEXT_NOT_EQUALS_IGNORE_CASE";
+    public static final String FAIL_MESSAGE_CONTEXT_NOT_EQUALS_IGNORE_CASE = "FAIL_MESSAGE_CONTEXT_NOT_EQUALS_IGNORE_CASE";
     public static final String FAIL_MESSAGE_CONTEXT_NOT_CONTAINS = "FAIL_MESSAGE_CONTEXT_NOT_CONTAINS";
     public static final String FAIL_MESSAGE_DATE_FORMATTER = "FAIL_MESSAGE_DATE_FORMATTER";
 

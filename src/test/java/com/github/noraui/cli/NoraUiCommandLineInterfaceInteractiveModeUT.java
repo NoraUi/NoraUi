@@ -29,10 +29,10 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
 
     @Rule
     public final SystemErrRule stdErrLog = new SystemErrRule();
-    
+
     @Rule
     public final SystemOutRule stdOutLog = new SystemOutRule().enableLog();
-    
+
     @Rule
     public final TextFromStandardInputStream systemInMock = emptyStandardInputStream();
 

@@ -65,10 +65,11 @@ public class WindowManager {
      */
     public void clear() {
         windows.clear();
+        this.mainWindow = "";
     }
 
     /**
-     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.selenium.NoraUiExpectedConditions.newWindowOpens()}
+     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.selenium.NoraUiExpectedConditions#newWindowOpens(Set)}
      * @param currentHandles
      *            is list of opened windows.
      * @return a string with new Window Opens (GUID)
@@ -88,7 +89,7 @@ public class WindowManager {
     }
 
     /**
-     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.selenium.NoraUiExpectedConditions.clickCanBeDoneWithoutAlertOnElement()}
+     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.selenium.NoraUiExpectedConditions#clickCanBeDoneWithoutAlertOnElement(WebElement)}
      *             Click can be done without alert on Element.
      * @param element
      *            is target WebElement.
@@ -109,7 +110,7 @@ public class WindowManager {
     }
 
     /**
-     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.selenium.NoraUiExpectedConditions.clickCanBeDoneWithoutAlertOnElementLocated()}
+     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.selenium.NoraUiExpectedConditions#clickCanBeDoneWithoutAlertOnElementLocated(By)}
      *             click can be done without alert on element located.
      * @param locator
      *            is the selenium locator

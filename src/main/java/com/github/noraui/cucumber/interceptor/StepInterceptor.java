@@ -15,6 +15,7 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 
+import com.github.noraui.Constants;
 import com.github.noraui.cucumber.annotation.RetryOnFailure;
 import com.github.noraui.exception.FailureException;
 import com.github.noraui.log.annotation.Loggable;
@@ -46,11 +47,7 @@ public class StepInterceptor implements MethodInterceptor {
                 }
             }
             if (stepAnnotation.annotationType().isAnnotationPresent(StepDefAnnotation.class)) {
-                Matcher matcher = Pattern.compile("value=(.*)\\)").matcher(stepAnnotation.toString());
-                if (matcher.find()) {
-                    log.info("---> " + stepAnnotation.annotationType().getSimpleName() + " "
-                            + String.format(matcher.group(1).replaceAll("\\{\\S+\\}", "{%s}").replace("(\\?)", ""), invocation.getArguments()));
-                }
+                logRunningStep(stepAnnotation, invocation);
             }
         }
         if (m.isAnnotationPresent(RetryOnFailure.class)) {
@@ -86,5 +83,26 @@ public class StepInterceptor implements MethodInterceptor {
             }
         }
         return result;
+    }
+
+    private void logRunningStep(Annotation annotation, MethodInvocation invocation) {
+        Matcher matcher = Pattern.compile("value=(.*)\\)").matcher(annotation.toString());
+        if (matcher.find()) {
+            Context.goToNextStep();
+            final StringBuilder builder = new StringBuilder();
+            final String stepIndex = Context.getCurrentSubStepIndex() > 0 ? Context.getCurrentStepIndex() + "." + (Context.getCurrentSubStepIndex() - 1)
+                    : String.valueOf(Context.getCurrentStepIndex());
+            builder.append("#").append(stepIndex).append(" - ").append(blue(annotation.annotationType().getSimpleName())).append(" ")
+                    .append(String.format(matcher.group(1).replaceAll("\\{\\S+\\}", yellow("{%s}")).replace("(\\?)", ""), invocation.getArguments()));
+            log.info(builder.toString());
+        }
+    }
+
+    private String blue(String text) {
+        return Constants.BLUE + text + Constants.RESET;
+    }
+
+    private String yellow(String text) {
+        return Constants.YELLOW + text + Constants.RESET;
     }
 }

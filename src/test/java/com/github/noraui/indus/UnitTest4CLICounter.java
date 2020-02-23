@@ -20,8 +20,8 @@ public class UnitTest4CLICounter {
     public static void main(String[] args) throws TechnicalException {
 
         List<String> manager = new ArrayList<>();
-		
-		// You can add non running scenario here
+
+        // You can add non running scenario here
         List<String> scenarioBlacklist = new ArrayList<>();
         // scenarioBlacklist.add("--- You can add non running scenario here ---");
 

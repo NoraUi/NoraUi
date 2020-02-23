@@ -158,10 +158,10 @@ Feature: hello (Function to validate the environment.)
     And I save a screenshot of 'bakery.DemoPage-changeValueButton' in 'changeValueButton<id>'
 
     Then I click on 'bakery.DemoPage-disappearButton'
-    And I wait invisibility of 'bakery.DemoPage-disappearButton' with timeout of 10 seconds
+    And The element 'bakery.DemoPage-disappearButton' should be invisible within 10 seconds
 
     Then I click on 'bakery.DemoPage-staleButton'
-    And I wait staleness of 'bakery.DemoPage-disappearButton' with timeout of 10 seconds
+    And The element 'bakery.DemoPage-disappearButton' should become stale within the 10 seconds
 
     And I update text 'bakery.DemoPage-input_text_field' with ramdom match 'noraui[a-zA-Z0-9]{6}'
 
@@ -192,7 +192,7 @@ Feature: hello (Function to validate the environment.)
   Examples:
     #DATA
     |id|author|zip|city|element|element2|date|title|
-    |1|Jenkins T1|35000|Rennes|smile|smile|16/01/2020||
+    |1|Jenkins T1|35000|Rennes|smile|smile|16/01/2050||
     |2|Jenkins T2|75000|Paris|smile|smile|||
     |3|Jenkins T3|56100|Lorient|smile|smile|||
     |4|Jenkins T4|35000|Rennes|smile|smile|||

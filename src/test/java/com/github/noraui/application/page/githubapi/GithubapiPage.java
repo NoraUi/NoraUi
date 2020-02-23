@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 
 import com.github.noraui.application.page.Page;
 import com.github.noraui.application.steps.ExpectSteps;
+import com.github.noraui.browser.waits.Wait;
 import com.github.noraui.exception.Callbacks;
 import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Context;
@@ -37,7 +38,7 @@ public class GithubapiPage extends Page {
     @Override
     public boolean checkPage(Object... elements) {
         try {
-            Context.waitUntil(ExpectSteps.waitForLoad());
+            Wait.until(ExpectSteps.waitForLoad());
             log.debug("GitHub API loaded.");
             return true;
         } catch (Exception e) {

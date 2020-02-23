@@ -36,7 +36,7 @@ public class NoraUiCommandLineInterfaceUT {
 
     @Rule
     public final SystemOutRule stdOutLog = new SystemOutRule().enableLog();
-    
+
     private NoraUiCommandLineInterface cli;
 
     @Before

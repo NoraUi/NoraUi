@@ -6,7 +6,7 @@
  */
 package com.github.noraui.selenium;
 
-import static com.github.noraui.utils.Constants.VALUE;
+import static com.github.noraui.Constants.VALUE;
 
 import java.util.List;
 import java.util.Set;
