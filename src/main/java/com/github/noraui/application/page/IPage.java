@@ -30,8 +30,10 @@ public interface IPage {
      * @param key
      *            of PageElement
      * @return noraui.application.page.Page.PageElement
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
      */
-    PageElement getPageElementByKey(String key);
+    PageElement getPageElementByKey(String key) throws IllegalArgumentException, IllegalAccessException;
 
     /**
      * @return key of page

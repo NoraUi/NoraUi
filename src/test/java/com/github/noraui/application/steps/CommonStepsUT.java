@@ -13,6 +13,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.github.noraui.application.page.Page;
 import com.github.noraui.cucumber.injector.NoraUiInjector;
 import com.github.noraui.cucumber.injector.NoraUiInjectorSource;
 import com.github.noraui.exception.FailureException;
@@ -22,7 +23,7 @@ import com.github.noraui.utils.Messages;
 
 public class CommonStepsUT {
 
-    private CommonSteps s = null;
+    private CommonSteps s;
 
     @Before
     public void setUp() {
@@ -37,18 +38,23 @@ public class CommonStepsUT {
     }
 
     @Test
-    public void checkMandatoryFieldTextTypeTest() throws TechnicalException {
+    public void checkMandatoryFieldTextTypeTest()
+            throws TechnicalException, IllegalArgumentException, IllegalAccessException, ClassNotFoundException {
         try {
-            s.checkMandatoryField("demo.DemoSteps-mockField", "text", new ArrayList<GherkinStepCondition>());
+            s.checkMandatoryField(Page.getInstance("demo.DemoSteps").getPageElementByKey("-mockField"), "text",
+                    new ArrayList<GherkinStepCondition>());
         } catch (final TechnicalException e) {
-            Assert.assertEquals(String.format(Messages.getMessage("PAGE_UNABLE_TO_RETRIEVE"), "demo.DemoSteps"), e.getMessage());
+            Assert.assertEquals(String.format(Messages.getMessage("PAGE_UNABLE_TO_RETRIEVE"), "demo.DemoSteps"),
+                    e.getMessage());
         } catch (final FailureException a) {
             Assert.assertFalse("checkMandatoryField must return TechnicalException", true);
         }
         try {
-            s.checkMandatoryField("bakery.DemoPage-mockField", "text", new ArrayList<GherkinStepCondition>());
+            s.checkMandatoryField(Page.getInstance("bakery.DemoPage").getPageElementByKey("-mockField"), "text",
+                    new ArrayList<GherkinStepCondition>());
         } catch (final FailureException a) {
-            Assert.assertEquals(Messages.getMessage("FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT") + " [-mockField]", a.getMessage());
+            Assert.assertEquals(Messages.getMessage("FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT") + " [-mockField]",
+                    a.getMessage());
         }
     }
 

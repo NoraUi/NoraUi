@@ -20,6 +20,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import com.github.noraui.application.page.Page;
 import com.github.noraui.application.page.Page.PageElement;
 import com.github.noraui.browser.WindowManager;
+import com.github.noraui.browser.waits.Wait;
 import com.github.noraui.cucumber.annotation.Conditioned;
 import com.github.noraui.cucumber.metrics.annotation.time.Time;
 import com.github.noraui.cucumber.metrics.annotation.time.TimeName;
@@ -70,7 +71,8 @@ public class CommonSteps extends Step {
                 }
             }
         } catch (final TechnicalException e) {
-            throw new AssertError(Messages.getMessage(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE) + e.getMessage());
+            throw new AssertError(
+                    Messages.getMessage(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE) + e.getMessage());
         }
     }
 
@@ -92,17 +94,20 @@ public class CommonSteps extends Step {
      */
     @Lorsque("Si {string} vérifie {string}, je fais jusqu'à {string} respecte {string} avec {int} essais maxi:")
     @Then("If {string} matches {string}, I do until {string} respects {string} with {int} max tries:")
-    public void doUntil(String actual, String expected, String key, String breakCondition, int tries, List<GherkinConditionedLoopedStep> conditions) {
+    public void doUntil(String actual, String expected, String key, String breakCondition, int tries,
+            List<GherkinConditionedLoopedStep> conditions) {
         try {
             if (new GherkinStepCondition("doUntilKey", expected, actual).checkCondition()) {
                 int i = 0;
                 do {
                     i++;
                     runAllStepsInLoop(conditions);
-                } while (!Pattern.compile(breakCondition).matcher(Context.getValue(key) == null ? "" : Context.getValue(key)).find() && i <= tries);
+                } while (!Pattern.compile(breakCondition)
+                        .matcher(Context.getValue(key) == null ? "" : Context.getValue(key)).find() && i <= tries);
             }
         } catch (final TechnicalException e) {
-            throw new AssertError(Messages.getMessage(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE) + e.getMessage());
+            throw new AssertError(
+                    Messages.getMessage(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE) + e.getMessage());
         }
     }
 
@@ -124,17 +129,20 @@ public class CommonSteps extends Step {
      */
     @Lorsque("Si {string} vérifie {string}, Tant que {string} respecte {string} je fais avec {int} essais maxi:")
     @Then("If {string} matches {string}, While {string} respects {string} I do with {int} max tries:")
-    public void whileDo(String actual, String expected, String key, String breakCondition, int tries, List<GherkinConditionedLoopedStep> conditions) {
+    public void whileDo(String actual, String expected, String key, String breakCondition, int tries,
+            List<GherkinConditionedLoopedStep> conditions) {
         try {
             if (new GherkinStepCondition("whileDoKey", expected, actual).checkCondition()) {
                 int i = 0;
-                while (!Pattern.compile(breakCondition).matcher(Context.getValue(key) == null ? "" : Context.getValue(key)).find() && i <= tries) {
+                while (!Pattern.compile(breakCondition)
+                        .matcher(Context.getValue(key) == null ? "" : Context.getValue(key)).find() && i <= tries) {
                     i++;
                     runAllStepsInLoop(conditions);
                 }
             }
         } catch (final TechnicalException e) {
-            throw new AssertError(Messages.getMessage(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE) + e.getMessage());
+            throw new AssertError(
+                    Messages.getMessage(TechnicalException.TECHNICAL_SUBSTEP_ERROR_MESSAGE) + e.getMessage());
         }
     }
 
@@ -158,11 +166,14 @@ public class CommonSteps extends Step {
     @Time(name = "{textOrKey}")
     @Lorsque("Je vérifie que {string} {string} n'est pas vide(\\?)")
     @Given("I check that {string} {string} is not empty(\\?)")
-    public void checkNotEmpty(String data, @TimeName("textOrKey") String textOrKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+    public void checkNotEmpty(String data, @TimeName("textOrKey") String textOrKey,
+            List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         if (!"".equals(data)) {
             final String value = Context.getValue(textOrKey) != null ? Context.getValue(textOrKey) : textOrKey;
             if ("".equals(value)) {
-                new Result.Failure<>(textOrKey, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_EMPTY_DATA), data), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+                new Result.Failure<>(textOrKey,
+                        Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_EMPTY_DATA), data), false,
+                        Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
             }
         }
     }
@@ -191,7 +202,8 @@ public class CommonSteps extends Step {
             final StringBuilder errorMessage = new StringBuilder();
             int index = errorMessage.length();
             for (int j = 0; j < errors.size(); j++) {
-                errorMessage.append(Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_EMPTY_DATA), errors.get(j)));
+                errorMessage
+                        .append(Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_EMPTY_DATA), errors.get(j)));
                 if (j == 0) {
                     errorMessage.setCharAt(index, Character.toUpperCase(errorMessage.charAt(index)));
                 } else {
@@ -205,7 +217,8 @@ public class CommonSteps extends Step {
             }
             errorMessage.delete(errorMessage.length() - 2, errorMessage.length());
             errorMessage.append('.');
-            new Result.Failure<>(mandatoryFields, errorMessage.toString(), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+            new Result.Failure<>(mandatoryFields, errorMessage.toString(), false,
+                    Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
     }
 
@@ -225,9 +238,10 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Et("Je sauvegarde la valeur de {string}(\\?)")
-    @And("I save the value of {string}(\\?)")
-    public void saveElementValue(String pageElement, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+    @Et("Je sauvegarde la valeur de {page-element}(\\?)")
+    @And("I save the value of {page-element}(\\?)")
+    public void saveElementValue(PageElement pageElement, List<GherkinStepCondition> conditions)
+            throws TechnicalException, FailureException {
         saveElementValue(pageElement);
     }
 
@@ -248,9 +262,10 @@ public class CommonSteps extends Step {
      *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} or {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_RETRIEVE_VALUE}
      */
     @Conditioned
-    @Et("Je sauvegarde la valeur de {string} dans la clé {string} du contexte(\\?)")
-    @And("I save the value of {string} in {string} context key(\\?)")
-    public void saveValue(String pageElement, String targetKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+    @Et("Je sauvegarde la valeur de {page-element} dans la clé {string} du contexte(\\?)")
+    @And("I save the value of {page-element} in {string} context key(\\?)")
+    public void saveValue(PageElement pageElement, String targetKey, List<GherkinStepCondition> conditions)
+            throws TechnicalException, FailureException {
         saveElementValue(pageElement, targetKey);
     }
 
@@ -271,26 +286,32 @@ public class CommonSteps extends Step {
      *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} or {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_RETRIEVE_VALUE}
      */
     @Conditioned
-    @Et("Je sauvegarde la valeur de {string} dans la colonne {string} du fournisseur de données en sortie(\\?)")
-    @And("I save the value of {string} in {string} column of data output provider(\\?)")
-    public void saveValueInDataOutputProvider(String pageElement, String targetColumn, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
+    @Et("Je sauvegarde la valeur de {page-element} dans la colonne {string} du fournisseur de données en sortie(\\?)")
+    @And("I save the value of {page-element} in {string} column of data output provider(\\?)")
+    public void saveValueInDataOutputProvider(PageElement pageElement, String targetColumn,
+            List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         String value = "";
         try {
-            value = Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + elementName)))).getText();
+            value = Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)))
+                    .getText();
             if (value == null) {
                 value = "";
             }
         } catch (final Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, Page.getInstance(page).getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT),
+                    true, pageElement.getPage().getCallBack());
         }
-        Context.getCurrentScenario().write(Messages.format("Value of %s is: %s\n", elementName, value));
-        for (final Integer line : Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData()).getIndexes()) {
+        Context.getCurrentScenario().write(Messages.format("Value of %s is: %s\n", pageElement, value));
+        for (final Integer line : Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData())
+                .getIndexes()) {
             try {
                 Context.getDataOutputProvider().writeDataResult(targetColumn, line, value);
             } catch (final TechnicalException e) {
-                new Result.Warning<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_WRITE_MESSAGE_IN_RESULT_FILE), targetColumn), false, 0);
+                new Result.Warning<>(e.getMessage(),
+                        Messages.format(
+                                Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_WRITE_MESSAGE_IN_RESULT_FILE),
+                                targetColumn),
+                        false, 0);
             }
         }
     }
@@ -309,13 +330,12 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Quand("Je clique sur {string}(\\?)")
-    @When("I click on {string}(\\?)")
-    public void clickOn(String pageElement, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
-        log.debug("{} clickOn: {}", page, elementName);
-        clickOn(Page.getInstance(page).getPageElementByKey('-' + elementName));
+    @Quand("Je clique sur {page-element}(\\?)")
+    @When("I click on {page-element}(\\?)")
+    public void clickOn(PageElement pageElement, List<GherkinStepCondition> conditions)
+            throws TechnicalException, FailureException {
+        log.debug("{} clickOn: {}", pageElement.getPage().getPageKey(), pageElement);
+        clickOn(pageElement);
     }
 
     /**
@@ -332,13 +352,12 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Quand("Je clique via js sur {string}(\\?)")
-    @When("I click by js on {string}(\\?)")
-    public void clickOnByJs(String pageElement, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
-        log.debug("{} clickOnByJs: {}", page, elementName);
-        clickOnByJs(Page.getInstance(page).getPageElementByKey('-' + elementName));
+    @Quand("Je clique via js sur {page-element}(\\?)")
+    @When("I click by js on {page-element}(\\?)")
+    public void clickOnByJs(PageElement pageElement, List<GherkinStepCondition> conditions)
+            throws TechnicalException, FailureException {
+        log.debug("{} clickOnByJs: {}", pageElement.getPage().getPageKey(), pageElement);
+        clickOnByJs(pageElement);
     }
 
     /**
@@ -357,11 +376,12 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Quand("Je clique via js sur xpath {string} de {string} page(\\?)")
-    @When("I click by js on xpath {string} from {string} page(\\?)")
-    public void clickOnXpathByJs(String xpath, String page, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
-        log.debug("clickOnByJs with xpath {} on {} page", xpath, page);
-        clickOnByJs(Page.getInstance(page), xpath);
+    @Quand("Je clique via js sur xpath {string} de {page} page(\\?)")
+    @When("I click by js on xpath {string} from {page} page(\\?)")
+    public void clickOnXpathByJs(String xpath, Page page, List<GherkinStepCondition> conditions)
+            throws TechnicalException, FailureException {
+        log.debug("clickOnByJs with xpath {} on {} page", xpath, page.getPageKey());
+        clickOnByJs(page, xpath);
     }
 
     /**
@@ -377,14 +397,15 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     * @throws ClassNotFoundException
      */
     @Conditioned
-    @Quand("Je clique sur {string} et passe sur {string} de type fenêtre(\\?)")
-    @When("I click on {string} and switch to {string} window(\\?)")
-    public void clickOnAndSwitchWindow(String pageElement, String windowKey, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
-        final String wKey = Page.getInstance(page).getApplication() + Page.getInstance(windowKey).getPageKey();
+    @Quand("Je clique sur {page-element} et passe sur {string} de type fenêtre(\\?)")
+    @When("I click on {page-element} and switch to {string} window(\\?)")
+    public void clickOnAndSwitchWindow(PageElement pageElement, String windowKey, List<GherkinStepCondition> conditions)
+            throws FailureException, TechnicalException, ClassNotFoundException {
+        final Page windowPage = Page.getInstance(windowKey);
+        final String wKey = pageElement.getPage().getApplication() + windowPage.getPageKey();
         final String handleToSwitch = Context.getWindows().get(wKey);
         if (handleToSwitch != null) {
             Context.getDriver().switchTo().window(handleToSwitch);
@@ -394,18 +415,22 @@ public class CommonSteps extends Step {
         } else {
             try {
                 final Set<String> initialWindows = getDriver().getWindowHandles();
-                clickOn(Page.getInstance(page).getPageElementByKey('-' + elementName));
-                final String newWindowHandle = Context.waitUntil(WindowManager.newWindowOpens(initialWindows));
+                clickOn(pageElement);
+                final String newWindowHandle = Wait.until(WindowManager.newWindowOpens(initialWindows));
                 Context.addWindow(wKey, newWindowHandle);
                 getDriver().switchTo().window(newWindowHandle);
                 // As a workaround: NoraUi specify window size manually, e.g. window_size: 1920 x 1080 (instead of .window().maximize()).
                 Context.getDriver().manage().window().setSize(new Dimension(1920, 1080));
                 Context.setMainWindow(newWindowHandle);
             } catch (final Exception e) {
-                new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_SWITCH_WINDOW), windowKey), true, Page.getInstance(page).getCallBack());
+                new Result.Failure<>(e.getMessage(),
+                        Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_SWITCH_WINDOW), windowKey),
+                        true, pageElement.getPage().getCallBack());
             }
-            if (!Page.getInstance(windowKey).checkPage()) {
-                new Result.Failure<>(windowKey, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_SWITCH_WINDOW), windowKey), true, Page.getInstance(page).getCallBack());
+            if (!windowPage.checkPage()) {
+                new Result.Failure<>(windowKey,
+                        Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_SWITCH_WINDOW), windowKey),
+                        true, pageElement.getPage().getCallBack());
             }
         }
     }
@@ -424,12 +449,11 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Quand("Je passe au dessus de {string}(\\?)")
-    @When("I pass over {string}(\\?)")
-    public void passOver(String pageElement, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
-        passOver(Page.getInstance(page).getPageElementByKey('-' + elementName));
+    @Quand("Je passe au dessus de {page-element}(\\?)")
+    @When("I pass over {page-element}(\\?)")
+    public void passOver(PageElement pageElement, List<GherkinStepCondition> conditions)
+            throws TechnicalException, FailureException {
+        passOver(pageElement);
     }
 
     /**
@@ -450,18 +474,17 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Quand("Je mets à jour la date {string} avec une {string} date {string}(\\?)")
-    @When("I update date {string} with a {string} date {string}(\\?)")
-    public void updateDate(String pageElement, String dateType, String dateOrKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
+    @Quand("Je mets à jour la date {page-element} avec une {string} date {string}(\\?)")
+    @When("I update date {page-element} with a {string} date {string}(\\?)")
+    public void updateDate(PageElement pageElement, String dateType, String dateOrKey,
+            List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         final String date = Context.getValue(dateOrKey) != null ? Context.getValue(dateOrKey) : dateOrKey;
         if (!"".equals(date)) {
-            final PageElement pe = Page.getInstance(page).getPageElementByKey('-' + elementName);
             if (date.matches(Constants.DATE_FORMAT_REG_EXP)) {
-                updateDateValidated(pe, dateType, date);
+                updateDateValidated(pageElement, dateType, date);
             } else {
-                new Result.Failure<>(date, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_DATE_FORMAT), date, elementName), false, pe.getPage().getCallBack());
+                new Result.Failure<>(date, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_DATE_FORMAT),
+                        date, pageElement), false, pageElement.getPage().getCallBack());
             }
         }
     }
@@ -482,12 +505,11 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Quand("Je mets à jour la liste déroulante {string} avec {string}(\\?)")
-    @When("I update select list {string} with {string}(\\?)")
-    public void updateList(String pageElement, String textOrKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
-        updateList(Page.getInstance(page).getPageElementByKey('-' + elementName), textOrKey);
+    @Quand("Je mets à jour la liste déroulante {page-element} avec {string}(\\?)")
+    @When("I update select list {page-element} with {string}(\\?)")
+    public void updateList(PageElement pageElement, String textOrKey, List<GherkinStepCondition> conditions)
+            throws TechnicalException, FailureException {
+        updateList(pageElement, textOrKey);
     }
 
     /**
@@ -506,12 +528,11 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Quand("Je mets à jour le texte {string} avec {string}(\\?)")
-    @When("I update text {string} with {string}(\\?)")
-    public void updateText(String pageElement, String textOrKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
-        updateText(Page.getInstance(page).getPageElementByKey('-' + elementName), textOrKey);
+    @Quand("Je mets à jour le texte {page-element} avec {string}(\\?)")
+    @When("I update text {page-element} with {string}(\\?)")
+    public void updateText(PageElement pageElement, String textOrKey, List<GherkinStepCondition> conditions)
+            throws TechnicalException, FailureException {
+        updateText(pageElement, textOrKey);
     }
 
     /**
@@ -530,12 +551,11 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Quand("Je mets à jour le texte {string} avec une valeur aléatoire qui vérifie {string}(\\?)")
-    @When("I update text {string} with ramdom match {string}(\\?)")
-    public void updateTextWithRamdomValueMatchRegexp(String pageElement, String randRegex, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
-        updateText(Page.getInstance(page).getPageElementByKey('-' + elementName), new Generex(randRegex).random());
+    @Quand("Je mets à jour le texte {page-element} avec une valeur aléatoire qui vérifie {string}(\\?)")
+    @When("I update text {page-element} with ramdom match {string}(\\?)")
+    public void updateTextWithRamdomValueMatchRegexp(PageElement pageElement, String randRegex,
+            List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+        updateText(pageElement, new Generex(randRegex).random());
     }
 
     /**
@@ -553,12 +573,11 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Quand("Je mets à jour le texte {string} et entre ENTRER avec {string}(\\?)")
-    @When("I update text {string} and type ENTER with {string}(\\?)")
-    public void updateTextAndEnter(String pageElement, String textOrKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
-        updateText(Page.getInstance(page).getPageElementByKey('-' + elementName), textOrKey, Keys.ENTER);
+    @Quand("Je mets à jour le texte {page-element} et entre ENTRER avec {string}(\\?)")
+    @When("I update text {page-element} and type ENTER with {string}(\\?)")
+    public void updateTextAndEnter(PageElement pageElement, String textOrKey, List<GherkinStepCondition> conditions)
+            throws TechnicalException, FailureException {
+        updateText(pageElement, textOrKey, Keys.ENTER);
     }
 
     /**
@@ -577,18 +596,22 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Lorsque("Je vérifie le champ obligatoire {string} de type {string}(\\?)")
-    @Then("I check mandatory field {string} of type {string}(\\?)")
-    public void checkMandatoryField(String pageElement, String type, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
-        final PageElement pe = Page.getInstance(page).getPageElementByKey('-' + elementName);
+    @Lorsque("Je vérifie le champ obligatoire {page-element} de type {string}(\\?)")
+    @Then("I check mandatory field {page-element} of type {string}(\\?)")
+    public void checkMandatoryField(PageElement pageElement, String type, List<GherkinStepCondition> conditions)
+            throws TechnicalException, FailureException {
         if ("text".equals(type)) {
-            if (!checkMandatoryTextField(pe)) {
-                new Result.Failure<>(pe, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_EMPTY_MANDATORY_FIELD), pe, pe.getPage().getApplication()), true, pe.getPage().getCallBack());
+            if (!checkMandatoryTextField(pageElement)) {
+                new Result.Failure<>(
+                        pageElement, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_EMPTY_MANDATORY_FIELD),
+                                pageElement, pageElement.getPage().getApplication()),
+                        true, pageElement.getPage().getCallBack());
             }
         } else {
-            new Result.Failure<>(type, Messages.format(Messages.getMessage(Messages.SCENARIO_ERROR_MESSAGE_TYPE_NOT_IMPLEMENTED), type, "checkMandatoryField"), false, pe.getPage().getCallBack());
+            new Result.Failure<>(type,
+                    Messages.format(Messages.getMessage(Messages.SCENARIO_ERROR_MESSAGE_TYPE_NOT_IMPLEMENTED), type,
+                            "checkMandatoryField"),
+                    false, pageElement.getPage().getCallBack());
         }
 
     }
@@ -609,13 +632,12 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Et("Je vérifie le texte {string} avec {string}(\\?)")
-    @And("I check text {string} with {string}(\\?)")
-    public void checkInputText(String pageElement, String textOrKey, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
-        if (!checkInputText(Page.getInstance(page).getPageElementByKey('-' + elementName), textOrKey)) {
-            checkText(Page.getInstance(page).getPageElementByKey('-' + elementName), textOrKey);
+    @Et("Je vérifie le texte {page-element} avec {string}(\\?)")
+    @And("I check text {page-element} with {string}(\\?)")
+    public void checkInputText(PageElement pageElement, String textOrKey, List<GherkinStepCondition> conditions)
+            throws FailureException, TechnicalException {
+        if (!checkInputText(pageElement, textOrKey)) {
+            checkText(pageElement, textOrKey);
         }
     }
 
@@ -635,12 +657,11 @@ public class CommonSteps extends Step {
      */
     @Deprecated
     @Conditioned
-    @Et("Je vérifie que {string} est visible(\\?)")
-    @And("I check that {string} is visible(\\?)")
-    public void checkElementVisible(String pageElement, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
-        checkElementVisible(Page.getInstance(page).getPageElementByKey('-' + elementName), true);
+    @Et("Je vérifie que {page-element} est visible(\\?)")
+    @And("I check that {page-element} is visible(\\?)")
+    public void checkElementVisible(PageElement pageElement, List<GherkinStepCondition> conditions)
+            throws FailureException, TechnicalException {
+        checkElementVisible(pageElement, true);
     }
 
     /**
@@ -659,12 +680,11 @@ public class CommonSteps extends Step {
      */
     @Deprecated
     @Conditioned
-    @Et("Je vérifie que {string} n'est pas visible(\\?)")
-    @And("I check that {string} is not visible(\\?)")
-    public void checkElementNotDisplayed(String pageElement, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
-        checkElementVisible(Page.getInstance(page).getPageElementByKey('-' + elementName), false);
+    @Et("Je vérifie que {page-element} n'est pas visible(\\?)")
+    @And("I check that {page-element} is not visible(\\?)")
+    public void checkElementNotDisplayed(PageElement pageElement, List<GherkinStepCondition> conditions)
+            throws FailureException, TechnicalException {
+        checkElementVisible(pageElement, false);
     }
 
     /**
@@ -680,13 +700,13 @@ public class CommonSteps extends Step {
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
+    @Deprecated
     @Conditioned
-    @Et("Je vérifie que {string} est présent(\\?)")
-    @And("I check that {string} is present(\\?)")
-    public void checkElementPresent(String pageElement, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
-        checkElementPresence(Page.getInstance(page).getPageElementByKey('-' + elementName), true);
+    @Et("Je vérifie que {page-element} est présent(\\?)")
+    @And("I check that {page-element} is present(\\?)")
+    public void checkElementPresent(PageElement pageElement, List<GherkinStepCondition> conditions)
+            throws FailureException, TechnicalException {
+        checkElementPresence(pageElement, true);
     }
 
     /**
@@ -703,12 +723,11 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Et("Je vérifie que {string} n'est pas présent(\\?)")
-    @And("I check that {string} is not present(\\?)")
-    public void checkElementNotPresent(String pageElement, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
-        checkElementPresence(Page.getInstance(page).getPageElementByKey('-' + elementName), false);
+    @Et("Je vérifie que {page-element} n'est pas présent(\\?)")
+    @And("I check that {page-element} is not present(\\?)")
+    public void checkElementNotPresent(PageElement pageElement, List<GherkinStepCondition> conditions)
+            throws FailureException, TechnicalException {
+        checkElementPresence(pageElement, false);
     }
 
     /**
@@ -724,11 +743,13 @@ public class CommonSteps extends Step {
      * @throws TechnicalException
      *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with message and with screenshot and with exception if functional error but no screenshot and no exception if technical error.
+     * @throws ClassNotFoundException
      */
     @Conditioned
     @Lorsque("Je vérifie l'absence d'alerte dans {string}(\\?)")
     @Then("I check absence of alert in {string}(\\?)")
-    public void checkAlert(String page, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
+    public void checkAlert(String page, List<GherkinStepCondition> conditions)
+            throws FailureException, TechnicalException, ClassNotFoundException {
         checkAlert(Page.getInstance(page));
     }
 
@@ -749,7 +770,9 @@ public class CommonSteps extends Step {
         final String message = Context.getValue(messageOrKey) != null ? Context.getValue(messageOrKey) : messageOrKey;
         final String msg = getAlertMessage();
         if (msg == null || !msg.equals(message)) {
-            new Result.Failure<>(msg, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_NOT_FOUND_ON_ALERT), message), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+            new Result.Failure<>(msg,
+                    Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_NOT_FOUND_ON_ALERT), message), false,
+                    Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
     }
 
@@ -769,12 +792,11 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Et("Je mets à jour la liste radio {string} avec {string}(\\?)")
-    @And("I update radio list {string} with {string}(\\?)")
-    public void updateRadioList(String pageElement, String valueOrKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
-        updateRadioList(Page.getInstance(page).getPageElementByKey('-' + elementName), valueOrKey);
+    @Et("Je mets à jour la liste radio {page-element} avec {string}(\\?)")
+    @And("I update radio list {page-element} with {string}(\\?)")
+    public void updateRadioList(PageElement pageElement, String valueOrKey, List<GherkinStepCondition> conditions)
+            throws TechnicalException, FailureException {
+        updateRadioList(pageElement, valueOrKey);
     }
 
     /**
@@ -792,12 +814,11 @@ public class CommonSteps extends Step {
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    @Et("Je mets à jour la liste radio {string} avec {string} à partir de ces valeurs:")
-    @And("I update radio list {string} with {string} from these values:")
-    public void updateRadioList(String pageElement, String valueKeyOrKey, Map<String, String> printedValues) throws TechnicalException, FailureException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
-        updateRadioList(Page.getInstance(page).getPageElementByKey('-' + elementName), valueKeyOrKey, printedValues);
+    @Et("Je mets à jour la liste radio {page-element} avec {string} à partir de ces valeurs:")
+    @And("I update radio list {page-element} with {string} from these values:")
+    public void updateRadioList(String pageElement, String valueKeyOrKey, Map<String, String> printedValues)
+            throws TechnicalException, FailureException {
+        updateRadioList(pageElement, valueKeyOrKey, printedValues);
     }
 
     /**
@@ -815,12 +836,11 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Lorsque("Je mets à jour la case à cocher {string} avec {string}(\\?)")
-    @Then("I update checkbox {string} with {string}(\\?)")
-    public void selectCheckbox(String pageElement, String value, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
-        selectCheckbox(Page.getInstance(page).getPageElementByKey('-' + elementName), Boolean.parseBoolean(value));
+    @Lorsque("Je mets à jour la case à cocher {page-element} avec {string}(\\?)")
+    @Then("I update checkbox {page-element} with {string}(\\?)")
+    public void selectCheckbox(PageElement pageElement, String value, List<GherkinStepCondition> conditions)
+            throws TechnicalException, FailureException {
+        selectCheckbox(pageElement, Boolean.parseBoolean(value));
     }
 
     /**
@@ -837,12 +857,11 @@ public class CommonSteps extends Step {
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
-    @Lorsque("Je mets à jour la case à cocher {string} avec {string} à partir de ces valeurs:")
-    @Then("I update checkbox {string} with {string} from these values:")
-    public void selectCheckbox(String pageElement, String value, Map<String, Boolean> values) throws TechnicalException, FailureException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
-        selectCheckbox(Page.getInstance(page).getPageElementByKey('-' + elementName), value, values);
+    @Lorsque("Je mets à jour la case à cocher {page-element} avec {string} à partir de ces valeurs:")
+    @Then("I update checkbox {page-element} with {string} from these values:")
+    public void selectCheckbox(PageElement pageElement, String value, Map<String, Boolean> values)
+            throws TechnicalException, FailureException {
+        selectCheckbox(pageElement, value, values);
     }
 
     /**
@@ -858,12 +877,11 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Quand("Je clarifie le texte dans {string}(\\?)")
-    @When("I clear text in {string}(\\?)")
-    public void clearText(String pageElement, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
-        clearText(Page.getInstance(page).getPageElementByKey('-' + elementName));
+    @Quand("Je clarifie le texte dans {page-element}(\\?)")
+    @When("I clear text in {page-element}(\\?)")
+    public void clearText(PageElement pageElement, List<GherkinStepCondition> conditions)
+            throws TechnicalException, FailureException {
+        clearText(pageElement);
     }
 
     /**
@@ -880,12 +898,11 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Quand("Je passe au cadre {string}(\\?)")
-    @When("I switch to {string} frame(\\?)")
-    public void switchFrame(String pageElement, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
-        switchFrame(Page.getInstance(page).getPageElementByKey('-' + elementName));
+    @Quand("Je passe au cadre {page-element}(\\?)")
+    @When("I switch to {page-element} frame(\\?)")
+    public void switchFrame(PageElement pageElement, List<GherkinStepCondition> conditions)
+            throws TechnicalException, FailureException {
+        switchFrame(pageElement);
     }
 
 }

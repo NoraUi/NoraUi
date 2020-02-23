@@ -13,7 +13,8 @@ import java.util.List;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
 
-import com.github.noraui.application.page.Page;
+import com.github.noraui.application.page.Page.PageElement;
+import com.github.noraui.browser.waits.Wait;
 import com.github.noraui.cucumber.annotation.Conditioned;
 import com.github.noraui.exception.FailureException;
 import com.github.noraui.exception.Result;
@@ -91,16 +92,19 @@ public class ScreenSteps extends Step {
      *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} message (with screenshot, no exception)
      */
     @Conditioned
-    @Et("Je sauvegarde une capture d'écran de {string} dans {string}(\\?)")
-    @And("I save a screenshot of {string} in {string}(\\?)")
-    public void saveWebElementInScreenshot(String pageElement, String screenName, List<GherkinStepCondition> conditions) throws IOException, FailureException, TechnicalException {
-        String page = pageElement.split("-")[0];
-        String element = pageElement.split("-")[1];
-        log.debug("I save a screenshot of [{}-{}] in [{}.jpg]", page, element, screenName);
+    @Et("Je sauvegarde une capture d'écran de {page-element} dans {string}(\\?)")
+    @And("I save a screenshot of {page-element} in {string}(\\?)")
+    public void saveWebElementInScreenshot(PageElement pageElement, String screenName,
+            List<GherkinStepCondition> conditions) throws IOException, FailureException, TechnicalException {
+
+        log.debug("I save a screenshot of [{}-{}] in [{}.jpg]", pageElement.getPage(), pageElement.getKey(),
+                screenName);
         try {
-            screenService.saveScreenshot(screenName, Context.waitUntil(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(Page.getInstance(page).getPageElementByKey('-' + element)))));
+            screenService.saveScreenshot(screenName,
+                    Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement))));
         } catch (Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, Page.getInstance(page).getCallBack());
+            new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT),
+                    true, pageElement.getPage().getCallBack());
         }
     }
 
@@ -119,7 +123,8 @@ public class ScreenSteps extends Step {
     @Conditioned
     @Et("Je commence la capture vidéo dans {string}(\\?)")
     @And("I start video capture in {string}(\\?)")
-    public void startVideoCapture(String screenName, List<GherkinStepCondition> conditions) throws IOException, AWTException {
+    public void startVideoCapture(String screenName, List<GherkinStepCondition> conditions)
+            throws IOException, AWTException {
         log.debug("I start video capture in [{}].", screenName);
         screenService.startVideoCapture(screenName);
     }

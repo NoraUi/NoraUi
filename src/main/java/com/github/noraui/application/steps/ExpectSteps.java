@@ -17,7 +17,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 
 import com.beust.jcommander.internal.Nullable;
-import com.github.noraui.application.page.Page;
+import com.github.noraui.application.page.Page.PageElement;
 import com.github.noraui.cucumber.annotation.Conditioned;
 import com.github.noraui.exception.FailureException;
 import com.github.noraui.exception.TechnicalException;
@@ -47,12 +47,11 @@ public class ExpectSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Et("Je m'attends à avoir {string} avec le texte {string}(\\?)")
-    @And("I expect to have {string} with the text {string}(\\?)")
-    public void expectText(String pageElement, String textOrKey, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
-        String page = pageElement.split("-")[0];
-        String elementName = pageElement.split("-")[1];
-        expectText(Page.getInstance(page).getPageElementByKey('-' + elementName), textOrKey);
+    @Et("Je m'attends à avoir {page-element} avec le texte {string}(\\?)")
+    @And("I expect to have {page-element} with the text {string}(\\?)")
+    public void expectText(PageElement pageElement, String textOrKey, List<GherkinStepCondition> conditions)
+            throws FailureException, TechnicalException {
+        expectText(pageElement, textOrKey);
     }
 
     /**
@@ -71,7 +70,8 @@ public class ExpectSteps extends Step {
             try {
                 final WebElement element = driver.findElement(locator);
                 if (element != null && value != null) {
-                    return !((element.getAttribute(VALUE) == null || !value.equals(element.getAttribute(VALUE).trim())) && !value.equals(element.getText().replaceAll("\n", "")));
+                    return !((element.getAttribute(VALUE) == null || !value.equals(element.getAttribute(VALUE).trim()))
+                            && !value.equals(element.getText().replaceAll("\n", "")));
                 }
             } catch (final Exception e) {
             }
@@ -130,7 +130,8 @@ public class ExpectSteps extends Step {
      * @return the list of WebElements once they are located
      */
     @Deprecated
-    public static ExpectedCondition<List<WebElement>> presenceOfMinimumElementsLocatedBy(final By locator, final int nb) {
+    public static ExpectedCondition<List<WebElement>> presenceOfMinimumElementsLocatedBy(final By locator,
+            final int nb) {
         return (WebDriver driver) -> {
             final List<WebElement> elements = driver.findElements(locator);
             return elements.size() >= nb ? elements : null;
@@ -147,7 +148,8 @@ public class ExpectSteps extends Step {
      * @return the list of WebElements once they are located
      */
     @Deprecated
-    public static ExpectedCondition<List<WebElement>> presenceOfMaximumElementsLocatedBy(final By locator, final int nb) {
+    public static ExpectedCondition<List<WebElement>> presenceOfMaximumElementsLocatedBy(final By locator,
+            final int nb) {
         return (WebDriver driver) -> {
             final List<WebElement> elements = driver.findElements(locator);
             return elements.size() <= nb ? elements : null;
@@ -191,6 +193,7 @@ public class ExpectSteps extends Step {
      */
     @Deprecated
     public static ExpectedCondition<Boolean> waitForLoad() {
-        return (WebDriver driver) -> ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
+        return (WebDriver driver) -> ((JavascriptExecutor) driver).executeScript("return document.readyState")
+                .equals("complete");
     }
 }

@@ -23,6 +23,7 @@ import com.github.noraui.application.model.demo.Articles;
 import com.github.noraui.application.page.bakery.DemoPage;
 import com.github.noraui.application.steps.ExpectSteps;
 import com.github.noraui.application.steps.Step;
+import com.github.noraui.browser.waits.Wait;
 import com.github.noraui.cucumber.annotation.Conditioned;
 import com.github.noraui.cucumber.annotation.RetryOnFailure;
 import com.github.noraui.cucumber.metrics.annotation.regulator.SpeedRegulator;
@@ -32,7 +33,6 @@ import com.github.noraui.exception.FailureException;
 import com.github.noraui.exception.Result;
 import com.github.noraui.gherkin.GherkinStepCondition;
 import com.github.noraui.log.annotation.Loggable;
-import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 import com.github.noraui.utils.Utilities;
 import com.google.inject.Inject;
@@ -55,14 +55,16 @@ public class HelloByeSteps extends Step {
     @Then("The DEMO portal is displayed")
     public void checkDemoPortalPage() throws FailureException {
         if (!demoPage.checkPage()) {
-            new Result.Failure<>("DEMO", Messages.getMessage(Messages.FAIL_MESSAGE_UNKNOWN_CREDENTIALS), true, this.demoPage.getCallBack());
+            new Result.Failure<>("DEMO", Messages.getMessage(Messages.FAIL_MESSAGE_UNKNOWN_CREDENTIALS), true,
+                    this.demoPage.getCallBack());
         }
     }
 
     @Lorsque("Je fait la créaton du fichier test.txt dans repertoire des téléchargements")
     @Given("I create test.txt file in download directory")
     public void createTestTxtFileInDownloadDirectory() throws IOException {
-        File f = new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + "test.txt");
+        File f = new File(
+                System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + "test.txt");
         if (!f.exists()) {
             f.createNewFile();
         } else {
@@ -71,7 +73,8 @@ public class HelloByeSteps extends Step {
     }
 
     @Time
-    @SpeedRegulators({ @SpeedRegulator(application = "DEMO2", costString = "${demo2.cost}", verbose = true), @SpeedRegulator(application = "DEMO3", cost = 2, unit = TimeUnit.SECONDS) })
+    @SpeedRegulators({ @SpeedRegulator(application = "DEMO2", costString = "${demo2.cost}", verbose = true),
+            @SpeedRegulator(application = "DEMO3", cost = 2, unit = TimeUnit.SECONDS) })
     @Conditioned
     @Etantdonné("j'ai un bonjour, s'il vous plaît. Cordialement {string}(\\?)")
     @Given("me a hello, please. Best Regards {string}(\\?)")
@@ -109,11 +112,12 @@ public class HelloByeSteps extends Step {
     public void checkFields() throws FailureException {
         By inputSelectLocator = Utilities.getLocator(demoPage.inputSelect);
         By inputTextLocator = Utilities.getLocator(demoPage.inputText);
-        Context.waitUntil(ExpectSteps.atLeastOneOfTheseElementsIsPresent(inputSelectLocator, inputTextLocator));
-        Context.waitUntil(ExpectSteps.presenceOfNbElementsLocatedBy(inputSelectLocator, 1));
-        Context.waitUntil(ExpectSteps.presenceOfNbElementsLocatedBy(inputTextLocator, 1));
-        Context.waitUntil(ExpectSteps.visibilityOfNbElementsLocatedBy(inputSelectLocator, 1));
-        Context.waitUntil(ExpectSteps.visibilityOfNbElementsLocatedBy(inputTextLocator, 1));
+
+        Wait.untilAnd(ExpectSteps.atLeastOneOfTheseElementsIsPresent(inputSelectLocator, inputTextLocator))
+                .wait(() -> ExpectSteps.presenceOfNbElementsLocatedBy(inputSelectLocator, 1))
+                .wait(() -> ExpectSteps.presenceOfNbElementsLocatedBy(inputTextLocator, 1))
+                .wait(() -> ExpectSteps.visibilityOfNbElementsLocatedBy(inputSelectLocator, 1))
+                .wait(() -> ExpectSteps.visibilityOfNbElementsLocatedBy(inputTextLocator, 1));
     }
 
     @RetryOnFailure(attempts = 3)
@@ -123,7 +127,8 @@ public class HelloByeSteps extends Step {
         articles.deserialize(jsonArticles);
         for (Article article : articles) {
             if ("anonymous".equals(article.getAuthor())) {
-                new Result.Failure<>("anonymous", "anonymous is prohibited in demo blog!!", true, this.demoPage.getCallBack());
+                new Result.Failure<>("anonymous", "anonymous is prohibited in demo blog!!", true,
+                        this.demoPage.getCallBack());
             } else {
                 log.info("> " + blog);
                 log.info("    > " + article.getTitle() + ": " + article.getText());

@@ -40,17 +40,14 @@ public class StepInterceptor implements MethodInterceptor {
         if (annotations.length > 0) {
             Annotation stepAnnotation = annotations[annotations.length - 1];
             for (Annotation a : annotations) {
-                if (a.annotationType().getName().startsWith("io.cucumber.java.en." + Context.getLocale().getLanguage())) {
+                if (a.annotationType().getName()
+                        .startsWith("io.cucumber.java.en." + Context.getLocale().getLanguage())) {
                     stepAnnotation = a;
                     break;
                 }
             }
             if (stepAnnotation.annotationType().isAnnotationPresent(StepDefAnnotation.class)) {
-                Matcher matcher = Pattern.compile("value=(.*)\\)").matcher(stepAnnotation.toString());
-                if (matcher.find()) {
-                    log.info("---> " + stepAnnotation.annotationType().getSimpleName() + " "
-                            + String.format(matcher.group(1).replaceAll("\\{\\S+\\}", "{%s}").replace("(\\?)", ""), invocation.getArguments()));
-                }
+                logRunningStep(stepAnnotation, invocation);
             }
         }
         if (m.isAnnotationPresent(RetryOnFailure.class)) {
@@ -76,6 +73,7 @@ public class StepInterceptor implements MethodInterceptor {
             }
         } else {
             try {
+
                 return invocation.proceed();
             } catch (FailureException e) {
                 if (Modifier.isPublic(m.getModifiers())) {
@@ -86,5 +84,15 @@ public class StepInterceptor implements MethodInterceptor {
             }
         }
         return result;
+    }
+
+    private void logRunningStep(Annotation annotation, MethodInvocation invocation) {
+        Matcher matcher = Pattern.compile("value=(.*)\\)").matcher(annotation.toString());
+        if (matcher.find()) {
+            Context.goToNextStep();
+            log.info("# " + Context.getCurrentStepIndex() + " - " + annotation.annotationType().getSimpleName() + " "
+                    + String.format(matcher.group(1).replaceAll("\\{\\S+\\}", "{%s}").replace("(\\?)", ""),
+                            invocation.getArguments()));
+        }
     }
 }

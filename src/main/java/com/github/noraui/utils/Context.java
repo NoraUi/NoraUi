@@ -40,8 +40,6 @@ import org.ini4j.InvalidFileFormatException;
 import org.joda.time.DateTime;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 import org.slf4j.Logger;
@@ -160,6 +158,11 @@ public class Context {
     private int currentScenarioData;
 
     /**
+     * Current running step index.
+     */
+    private int currentStepIndex;
+
+    /**
      * Current number of failures from Scenario.
      */
     private int nbFailure;
@@ -188,16 +191,6 @@ public class Context {
      * start date of current Cucumber scenario.
      */
     private DateTime startCurrentScenario;
-
-    /**
-     * Single global instance of WebDriverWait
-     */
-    private WebDriverWait webDriverWait;
-
-    /**
-     * Single global custom instance of WebDriverWait
-     */
-    private WebDriverWait webDriverCustomWait;
 
     /**
      * browser: chrome, firefox or ie.
@@ -409,16 +402,21 @@ public class Context {
         isHeadless = "true".equals(getProperty(HEADLESS, applicationProperties));
 
         // init driver callbacks
-        exceptionCallbacks.put(Callbacks.RESTART_WEB_DRIVER, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, RESTART_WEB_DRIVER_METHOD_NAME);
-        exceptionCallbacks.put(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_GITHUBAPI_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, GITHUBAPI_HOME);
-        exceptionCallbacks.put(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_BAKERY_HOME, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, BAKERY_HOME);
+        exceptionCallbacks.put(Callbacks.RESTART_WEB_DRIVER, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME,
+                RESTART_WEB_DRIVER_METHOD_NAME);
+        exceptionCallbacks.put(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_GITHUBAPI_HOME,
+                STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, GITHUBAPI_HOME);
+        exceptionCallbacks.put(Callbacks.CLOSE_WINDOW_AND_SWITCH_TO_BAKERY_HOME,
+                STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, GO_TO_URL_METHOD_NAME, BAKERY_HOME);
 
         // init applications
         initApplicationDom(clazz.getClassLoader(), selectorsVersion, BAKERY_KEY);
-        Application bakeryApp = new Application(BAKERY_HOME, getProperty(BAKERY_KEY, applicationProperties) + "/account/login");
+        Application bakeryApp = new Application(BAKERY_HOME,
+                getProperty(BAKERY_KEY, applicationProperties) + "/account/login");
         bakeryApp.addUrlPage(BAKERY_DEMO, getProperty(BAKERY_KEY, applicationProperties) + "/public");
         applications.put(BAKERY_KEY, bakeryApp);
-        applications.put(GITHUBAPI_KEY, new Application(GITHUBAPI_HOME, getProperty(GITHUBAPI_KEY, applicationProperties)));
+        applications.put(GITHUBAPI_KEY,
+                new Application(GITHUBAPI_HOME, getProperty(GITHUBAPI_KEY, applicationProperties)));
 
         // read and init all cucumber methods
         cucumberMethods = getAllCucumberMethods(clazz);
@@ -431,8 +429,6 @@ public class Context {
         instance.driverFactory.clear();
         instance.windowManager.clear();
         instance.scenarioRegistry.clear();
-        instance.webDriverWait = null;
-        instance.webDriverCustomWait = null;
         instance.scenarioName = null;
     }
 
@@ -486,6 +482,10 @@ public class Context {
         getInstance().scenarioHasWarning = false;
     }
 
+    public static void goToNextStep() {
+        getInstance().currentStepIndex++;
+    }
+
     public static void addFailure() {
         getInstance().nbFailure++;
     }
@@ -494,11 +494,12 @@ public class Context {
         getInstance().nbWarning++;
     }
 
-    /**
-     * @return line's number of data.
-     */
     public static int getCurrentScenarioData() {
         return getInstance().currentScenarioData;
+    }
+
+    public static int getCurrentStepIndex() {
+        return getInstance().currentStepIndex;
     }
 
     public static int getNbFailure() {
@@ -530,6 +531,7 @@ public class Context {
     }
 
     public static void goToNextFeature() {
+        getInstance().currentStepIndex = 0;
         getInstance().currentScenarioData = 0;
         getInstance().nbFailure = 0;
         getInstance().nbWarning = 0;
@@ -568,44 +570,6 @@ public class Context {
 
     public static void startCurrentScenario() {
         getInstance().startCurrentScenario = DateTime.now();
-    }
-
-    /**
-     * Wait will ignore instances of NotFoundException that are encountered (thrown) by default in
-     * the 'until' condition, and immediately propagate all others. You can add more to the ignore
-     * list by calling ignoring(exceptions to add).
-     * 
-     * @param <T>
-     *            The function's expected return type.
-     * @param condition
-     *            the parameter to pass to the {@link ExpectedCondition}
-     * @return The function's return value if the function returned something different
-     *         from null or false before the timeout expired.
-     */
-    public static <T> T waitUntil(ExpectedCondition<T> condition) {
-        if (getInstance().webDriverWait == null) {
-            getInstance().webDriverWait = new WebDriverWait(getDriver(), getTimeout());
-        }
-        return getInstance().webDriverWait.until(condition);
-    }
-
-    /**
-     * Wait will ignore instances of NotFoundException that are encountered (thrown) by default in
-     * the 'until' condition, and immediately propagate all others. You can add more to the ignore
-     * list by calling ignoring(exceptions to add).
-     * 
-     * @param <T>
-     *            The function's expected return type.
-     * @param condition
-     *            the parameter to pass to the {@link ExpectedCondition}
-     * @param timeOutInSeconds
-     *            The timeout in seconds when an expectation is called
-     * @return The function's return value if the function returned something different
-     *         from null or false before the timeout expired.
-     */
-    public static <T> T waitUntil(ExpectedCondition<T> condition, int timeOutInSeconds) {
-        getInstance().webDriverCustomWait = new WebDriverWait(getDriver(), timeOutInSeconds);
-        return getInstance().webDriverCustomWait.until(condition);
     }
 
     public static DataInputProvider getDataInputProvider() {
@@ -798,8 +762,9 @@ public class Context {
      * @return url in a string
      */
     public static String getUrlByPagekey(String pageKey) {
-        return getInstance().applications.values().stream().map(Application::getUrlPages).map(urlPages -> urlPages.get(pageKey)).filter(Objects::nonNull).map(Auth::usingAuthentication).findFirst()
-                .orElse(null);
+        return getInstance().applications.values().stream().map(Application::getUrlPages)
+                .map(urlPages -> urlPages.get(pageKey)).filter(Objects::nonNull).map(Auth::usingAuthentication)
+                .findFirst().orElse(null);
     }
 
     /**
@@ -810,7 +775,9 @@ public class Context {
      * @return application name in a string
      */
     public static String getApplicationByPagekey(String pageKey) {
-        return getInstance().applications.entrySet().stream().filter(a -> a.getValue().getUrlPages().get(pageKey) != null).map(Entry::getKey).findFirst().orElse(null);
+        return getInstance().applications.entrySet().stream()
+                .filter(a -> a.getValue().getUrlPages().get(pageKey) != null).map(Entry::getKey).findFirst()
+                .orElse(null);
     }
 
     /**
@@ -836,9 +803,11 @@ public class Context {
         } catch (IOException | XmlPullParserException e) {
             log.trace("noraui.version not found.");
         }
-        stat.setApplications(applications.entrySet().stream().filter(e -> e.getValue().getHomeUrl() != null).collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getHomeUrl(), (a, b) -> b)));
+        stat.setApplications(applications.entrySet().stream().filter(e -> e.getValue().getHomeUrl() != null)
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getHomeUrl(), (a, b) -> b)));
         try {
-            Map<String, String> code = ClassPath.from(loader).getTopLevelClassesRecursive(packageName).stream().collect(Collectors.toMap(ClassInfo::getName, c -> read(c.getName()), (a, b) -> b));
+            Map<String, String> code = ClassPath.from(loader).getTopLevelClassesRecursive(packageName).stream()
+                    .collect(Collectors.toMap(ClassInfo::getName, c -> read(c.getName()), (a, b) -> b));
             stat.setCucumberMethods(code);
         } catch (IOException e1) {
             log.trace("Cucumber Methods not found.");
@@ -852,7 +821,8 @@ public class Context {
      * @return
      */
     private String read(String className) {
-        String filePath = "src" + File.separator + "main" + File.separator + "java" + File.separator + className.replaceAll("\\.", "/") + ".java";
+        String filePath = "src" + File.separator + "main" + File.separator + "java" + File.separator
+                + className.replaceAll("\\.", "/") + ".java";
         StringBuilder sb = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line = br.readLine();
@@ -883,9 +853,11 @@ public class Context {
                 final String[] headers = Context.getDataInputProvider().readLine(0, false);
                 if (headers != null) {
                     final Constructor<Model> modelConstructor = DataUtils.getModelConstructor(model, headers);
-                    final Map<Integer, Map<String, ModelList>> fusionedData = DataUtils.fusionProcessor(model, modelConstructor);
+                    final Map<Integer, Map<String, ModelList>> fusionedData = DataUtils.fusionProcessor(model,
+                            modelConstructor);
                     AtomicInteger dataIndex = new AtomicInteger();
-                    indexData = fusionedData.values().stream().flatMap(models -> models.values().stream()).map(ModelList::getIds).map(ids -> new DataIndex(dataIndex.incrementAndGet(), ids))
+                    indexData = fusionedData.values().stream().flatMap(models -> models.values().stream())
+                            .map(ModelList::getIds).map(ids -> new DataIndex(dataIndex.incrementAndGet(), ids))
                             .collect(Collectors.toList());
                 } else {
                     log.error(Messages.getMessage(ScenarioInitiator.SCENARIO_INITIATOR_ERROR_EMPTY_FILE));
@@ -899,7 +871,8 @@ public class Context {
             }
             Context.getDataInputProvider().setIndexData(indexData);
         } catch (final Exception te) {
-            throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + te.getMessage(), te);
+            throw new TechnicalException(
+                    Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + te.getMessage(), te);
         }
     }
 
@@ -935,11 +908,15 @@ public class Context {
             } else if (DataProvider.type.CSV.toString().equals(dataIn)) {
                 dataInputProvider = new CsvDataProvider();
             } else if (DataProvider.type.DB.toString().equals(dataIn)) {
-                dataInputProvider = new DBDataProvider(getProperty("dataProvider.db.type", applicationProperties), getProperty("dataProvider.db.user", applicationProperties),
-                        getProperty("dataProvider.db.password", applicationProperties), getProperty("dataProvider.db.hostname", applicationProperties),
-                        getProperty("dataProvider.db.port", applicationProperties), getProperty("dataProvider.db.name", applicationProperties));
+                dataInputProvider = new DBDataProvider(getProperty("dataProvider.db.type", applicationProperties),
+                        getProperty("dataProvider.db.user", applicationProperties),
+                        getProperty("dataProvider.db.password", applicationProperties),
+                        getProperty("dataProvider.db.hostname", applicationProperties),
+                        getProperty("dataProvider.db.port", applicationProperties),
+                        getProperty("dataProvider.db.name", applicationProperties));
             } else if (DataProvider.type.REST.toString().equals(dataIn)) {
-                dataInputProvider = new RestDataProvider(getProperty("dataProvider.rest.type", applicationProperties), getProperty("dataProvider.rest.hostname", applicationProperties),
+                dataInputProvider = new RestDataProvider(getProperty("dataProvider.rest.type", applicationProperties),
+                        getProperty("dataProvider.rest.hostname", applicationProperties),
                         getProperty("dataProvider.rest.port", applicationProperties));
             } else if (DataProvider.type.GHERKIN.toString().equals(dataIn)) {
                 dataInputProvider = new InputGherkinDataProvider();
@@ -957,12 +934,15 @@ public class Context {
                     dataOutputProvider = new CsvDataProvider();
                 }
             } else if (DataProvider.type.DB.toString().equals(dataOut)) {
-                throw new NotImplementedException("Context.plugDataProvider() with 'DB' as output provider is not yet implemented");
+                throw new NotImplementedException(
+                        "Context.plugDataProvider() with 'DB' as output provider is not yet implemented");
             } else if (DataProvider.type.REST.toString().equals(dataOut)) {
                 if (dataInputProvider instanceof RestDataProvider) {
                     dataOutputProvider = (RestDataProvider) dataInputProvider;
                 } else {
-                    dataOutputProvider = new RestDataProvider(getProperty("dataProvider.rest.type", applicationProperties), getProperty("dataProvider.rest.hostname", applicationProperties),
+                    dataOutputProvider = new RestDataProvider(
+                            getProperty("dataProvider.rest.type", applicationProperties),
+                            getProperty("dataProvider.rest.hostname", applicationProperties),
                             getProperty("dataProvider.rest.port", applicationProperties));
                 }
             } else if (DataProvider.type.CONSOLE.toString().equals(dataOut)) {
@@ -991,14 +971,16 @@ public class Context {
         final CucumberOptions co = clazz.getAnnotation(CucumberOptions.class);
         final Set<Class<?>> classes = getClasses(co.glue());
         classes.add(BrowserSteps.class);
-        return classes
-                .stream().flatMap(c -> Arrays.stream(c.getDeclaredMethods())).flatMap(m -> Arrays.stream(m.getAnnotations())
-                        .filter(stepAnnotation -> stepAnnotation.annotationType().isAnnotationPresent(StepDefAnnotation.class)).map(ann -> new AbstractMap.SimpleEntry<>(ann.toString(), m)))
+        return classes.stream().flatMap(c -> Arrays.stream(c.getDeclaredMethods()))
+                .flatMap(m -> Arrays.stream(m.getAnnotations()).filter(
+                        stepAnnotation -> stepAnnotation.annotationType().isAnnotationPresent(StepDefAnnotation.class))
+                        .map(ann -> new AbstractMap.SimpleEntry<>(ann.toString(), m)))
                 .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
     }
 
     private static Set<Class<?>> getClasses(String[] packagesName) {
-        return Stream.of(packagesName).flatMap(packageName -> new Reflections(packageName, new SubTypesScanner(false)).getSubTypesOf(Step.class).stream()).collect(Collectors.toSet());
+        return Stream.of(packagesName).flatMap(packageName -> new Reflections(packageName, new SubTypesScanner(false))
+                .getSubTypesOf(Step.class).stream()).collect(Collectors.toSet());
     }
 
 }

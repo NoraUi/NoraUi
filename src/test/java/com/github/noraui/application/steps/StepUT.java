@@ -310,7 +310,7 @@ public class StepUT {
     }
 
     @Test
-    public void testFormatMessage() {
+    public void testFormatMessage() throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException {
         try {
             final DemoPage demoPage = (DemoPage) Page.getInstance(BAKERY_DEMO_PAGE_NAME);
             final PageElement pageElement = demoPage.getPageElementByKey("-input_select_field");
@@ -322,7 +322,7 @@ public class StepUT {
     }
 
     @Test
-    public void testFormatMessage2() {
+    public void testFormatMessage2() throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException {
         try {
             final DemoPage demoPage = (DemoPage) Page.getInstance(BAKERY_DEMO_PAGE_NAME);
             final PageElement pageElement = demoPage.getPageElementByKey("-submit");
@@ -334,46 +334,55 @@ public class StepUT {
     }
 
     @Test
-    public void testFormatMessageNullPageElement() {
+    public void testFormatMessageNullPageElement()
+            throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException {
         try {
             final DemoPage demoPage = (DemoPage) Page.getInstance(BAKERY_DEMO_PAGE_NAME);
             final PageElement pageElement = demoPage.getPageElementByKey("fake");
             Messages.format("Message %s in %s.", pageElement, demoPage.getApplication());
         } catch (final TechnicalException e) {
-            Assert.assertEquals("TechnicalException found", "Technical problem in the code Messages.formatMessage(String templateMessage, String... args) in NoraUi.", e.getMessage());
+            Assert.assertEquals("TechnicalException found",
+                    "Technical problem in the code Messages.formatMessage(String templateMessage, String... args) in NoraUi.",
+                    e.getMessage());
         }
     }
 
     @Test
-    public void testFormatMessageNullMessage() {
+    public void testFormatMessageNullMessage()
+            throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException {
         try {
             final DemoPage demoPage = (DemoPage) Page.getInstance(BAKERY_DEMO_PAGE_NAME);
             final PageElement pageElement = demoPage.getPageElementByKey("-input");
             Messages.format(null, pageElement, demoPage.getApplication());
         } catch (final TechnicalException e) {
-            Assert.assertEquals("TechnicalException found", Messages.getMessage("FAIL_MESSAGE_FORMAT_STRING"), e.getMessage());
+            Assert.assertEquals("TechnicalException found", Messages.getMessage("FAIL_MESSAGE_FORMAT_STRING"),
+                    e.getMessage());
         }
     }
 
     @Test
-    public void testFormatMessageNotValidMessage() {
+    public void testFormatMessageNotValidMessage()
+            throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException {
         try {
             final DemoPage demoPage = (DemoPage) Page.getInstance(BAKERY_DEMO_PAGE_NAME);
             final PageElement pageElement = demoPage.getPageElementByKey("-input");
             Messages.format("Message %s in %s.%s", pageElement, demoPage.getApplication());
         } catch (final TechnicalException e) {
-            Assert.assertEquals("TechnicalException found", Messages.getMessage("FAIL_MESSAGE_FORMAT_STRING"), e.getMessage());
+            Assert.assertEquals("TechnicalException found", Messages.getMessage("FAIL_MESSAGE_FORMAT_STRING"),
+                    e.getMessage());
         }
     }
 
     @Test
-    public void testFormatMessageNotValid2Message() {
+    public void testFormatMessageNotValid2Message()
+            throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException {
         try {
             final DemoPage demoPage = (DemoPage) Page.getInstance(BAKERY_DEMO_PAGE_NAME);
             final PageElement pageElement = demoPage.getPageElementByKey("-input");
             Messages.format("Message %s.", pageElement, demoPage.getApplication());
         } catch (final TechnicalException e) {
-            Assert.assertEquals("TechnicalException found", Messages.getMessage("FAIL_MESSAGE_FORMAT_STRING"), e.getMessage());
+            Assert.assertEquals("TechnicalException found", Messages.getMessage("FAIL_MESSAGE_FORMAT_STRING"),
+                    e.getMessage());
         }
     }
 
@@ -383,7 +392,8 @@ public class StepUT {
         final String expected = ".+;(Value1 with space\\|Value2\\|Value3 3958\\|Value 4)";
         final String actual = "OtherValue;Value 4";
         Context.saveValue("TEST-resource_type", "A Resource");
-        final GherkinConditionedLoopedStep gherkinConditionedLoopedStep = new GherkinConditionedLoopedStep("1", "I want to do '4' things I cant.", expected, actual);
+        final GherkinConditionedLoopedStep gherkinConditionedLoopedStep = new GherkinConditionedLoopedStep("1",
+                "I want to do '4' things I cant.", expected, actual);
         steps.add(gherkinConditionedLoopedStep);
         try {
             log.info("before runAllStepsInLoop {}", step);
@@ -391,7 +401,8 @@ public class StepUT {
             Assert.fail("TechnicalException should have been thrown");
         } catch (final TechnicalException e) {
             log.info("TechnicalException in catch {}", e.getMessage());
-            Assert.assertEquals(String.format(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_STEP_UNDEFINED), "I want to do '4' things I cant."), e.getMessage().replace("\"", ""));
+            Assert.assertEquals(String.format(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_STEP_UNDEFINED),
+                    "I want to do '4' things I cant."), e.getMessage().replace("\"", ""));
         }
     }
 

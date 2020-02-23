@@ -42,7 +42,8 @@ public class NoraUiModule implements Module {
     public void configure(Binder binder) {
         LOGGER.debug("NORAUI interceptors binding");
         binder.bindInterceptor(any(), annotatedWith(Conditioned.class), new ConditionedInterceptor());
-        binder.bindInterceptor(Matchers.subclassesOf(Step.class).or(Matchers.subclassesOf(BrowserSteps.class)), any(), new StepInterceptor());
+        binder.bindInterceptor(Matchers.subclassesOf(Step.class).or(Matchers.subclassesOf(BrowserSteps.class)), any(),
+                new StepInterceptor());
 
         LOGGER.debug("NORAUI service binding");
         binder.bind(CryptoService.class).to(CryptoServiceImpl.class).asEagerSingleton();

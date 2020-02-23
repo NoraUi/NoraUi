@@ -13,6 +13,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
 
 import com.github.noraui.application.page.Page;
+import com.github.noraui.browser.waits.Wait;
 import com.github.noraui.exception.Callbacks;
 import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Context;
@@ -55,7 +56,7 @@ public class DemoPage extends Page {
     @Override
     public boolean checkPage(Object... elements) {
         try {
-            Context.waitUntil(ExpectedConditions.not(ExpectedConditions.titleIs("")));
+            Wait.until(ExpectedConditions.not(ExpectedConditions.titleIs("")));
             if (!TITLE_PAGE.equals(getDriver().getTitle())) {
                 log.error("HTML title is not good");
                 return false;
