@@ -397,13 +397,12 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
-     * @throws ClassNotFoundException
      */
     @Conditioned
     @Quand("Je clique sur {page-element} et passe sur {string} de type fenêtre(\\?)")
     @When("I click on {page-element} and switch to {string} window(\\?)")
     public void clickOnAndSwitchWindow(PageElement pageElement, String windowKey, List<GherkinStepCondition> conditions)
-            throws FailureException, TechnicalException, ClassNotFoundException {
+            throws FailureException, TechnicalException {
         final Page windowPage = Page.getInstance(windowKey);
         final String wKey = pageElement.getPage().getApplication() + windowPage.getPageKey();
         final String handleToSwitch = Context.getWindows().get(wKey);
@@ -743,13 +742,12 @@ public class CommonSteps extends Step {
      * @throws TechnicalException
      *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with message and with screenshot and with exception if functional error but no screenshot and no exception if technical error.
-     * @throws ClassNotFoundException
      */
     @Conditioned
     @Lorsque("Je vérifie l'absence d'alerte dans {string}(\\?)")
     @Then("I check absence of alert in {string}(\\?)")
     public void checkAlert(String page, List<GherkinStepCondition> conditions)
-            throws FailureException, TechnicalException, ClassNotFoundException {
+            throws FailureException, TechnicalException {
         checkAlert(Page.getInstance(page));
     }
 
@@ -816,9 +814,9 @@ public class CommonSteps extends Step {
      */
     @Et("Je mets à jour la liste radio {page-element} avec {string} à partir de ces valeurs:")
     @And("I update radio list {page-element} with {string} from these values:")
-    public void updateRadioList(String pageElement, String valueKeyOrKey, Map<String, String> printedValues)
+    public void updateRadioList(PageElement pageElement, String valueKeyOrKey, Map<String, String> printedValues)
             throws TechnicalException, FailureException {
-        updateRadioList(pageElement, valueKeyOrKey, printedValues);
+        super.updateRadioList(pageElement, valueKeyOrKey, printedValues);
     }
 
     /**
@@ -861,7 +859,7 @@ public class CommonSteps extends Step {
     @Then("I update checkbox {page-element} with {string} from these values:")
     public void selectCheckbox(PageElement pageElement, String value, Map<String, Boolean> values)
             throws TechnicalException, FailureException {
-        selectCheckbox(pageElement, value, values);
+        super.selectCheckbox(pageElement, value, values);
     }
 
     /**

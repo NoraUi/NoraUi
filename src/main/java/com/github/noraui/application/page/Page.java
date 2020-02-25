@@ -13,8 +13,10 @@ import org.slf4j.Logger;
 
 import com.github.noraui.cucumber.injector.NoraUiInjector;
 import com.github.noraui.exception.Callbacks.Callback;
+import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Context;
+import com.github.noraui.utils.Messages;
 
 @Loggable
 public abstract class Page implements IPage {
@@ -24,6 +26,8 @@ public abstract class Page implements IPage {
     public static final String UNABLE_TO_RETRIEVE_PAGE = "UNABLE_TO_RETRIEVE_PAGE";
 
     public static final String UNABLE_TO_RETRIEVE_PAGE_ELEMENT = "UNABLE_TO_RETRIEVE_PAGE_ELEMENT";
+
+    public static final String ERROR_DURING_PAGE_ELEMENT_LOOKUP = "ERROR_DURING_PAGE_ELEMENT_LOOKUP";
 
     private static String pagesPackage = Page.class.getPackage().getName() + '.';
 
@@ -55,11 +59,15 @@ public abstract class Page implements IPage {
      *            Ex: 'MyPage' or 'mypackageinpages.MyPage'
      * @return
      *         A Page instance
-     * @throws ClassNotFoundException
+     * @throws TechnicalException
      *             if ClassNotFoundException in getInstance() of Page.
      */
-    public static Page getInstance(String className) throws ClassNotFoundException {
-        return (Page) NoraUiInjector.getNoraUiInjectorSource().getInstance(Class.forName(pagesPackage + className));
+    public static Page getInstance(String className) throws TechnicalException {
+        try {
+            return (Page) NoraUiInjector.getNoraUiInjectorSource().getInstance(Class.forName(pagesPackage + className));
+        } catch (ClassNotFoundException e) {
+            throw new TechnicalException(Messages.format(Messages.getMessage(UNABLE_TO_RETRIEVE_PAGE), className), e);
+        }
     }
 
     /**
@@ -75,19 +83,23 @@ public abstract class Page implements IPage {
     /**
      * {@inheritDoc}
      * 
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
+     * @throws TechnicalException
      */
     @Override
-    public PageElement getPageElementByKey(String key) throws IllegalArgumentException, IllegalAccessException {
+    public PageElement getPageElementByKey(String key) throws TechnicalException {
         PageElement p;
-        for (final Field f : getClass().getDeclaredFields()) {
-            if (PageElement.class.equals(f.getType())) {
-                p = (PageElement) f.get(this);
-                if (key.equals(p.getKey())) {
-                    return p;
+        try {
+            for (final Field f : getClass().getDeclaredFields()) {
+                if (PageElement.class.equals(f.getType())) {
+                    p = (PageElement) f.get(this);
+                    if (key.equals(p.getKey())) {
+                        return p;
+                    }
                 }
             }
+        } catch (IllegalAccessException | IllegalArgumentException e) {
+            throw new TechnicalException(Messages.format(Messages.getMessage(ERROR_DURING_PAGE_ELEMENT_LOOKUP), key),
+                    e);
         }
         return new PageElement(key);
     }

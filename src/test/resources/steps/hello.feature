@@ -158,10 +158,10 @@ Feature: hello (Function to validate the environment.)
     And I save a screenshot of 'bakery.DemoPage-changeValueButton' in 'changeValueButton<id>'
 
     Then I click on 'bakery.DemoPage-disappearButton'
-    And I wait invisibility of 'bakery.DemoPage-disappearButton' with timeout of 10 seconds
+    And The element 'bakery.DemoPage-disappearButton' should be invisible within 10 seconds
 
     Then I click on 'bakery.DemoPage-staleButton'
-    And I wait staleness of 'bakery.DemoPage-disappearButton' with timeout of 10 seconds
+    And The element 'bakery.DemoPage-disappearButton' should become stale within the 10 seconds
 
     And I update text 'bakery.DemoPage-input_text_field' with ramdom match 'noraui[a-zA-Z0-9]{6}'
 

@@ -38,17 +38,35 @@ public class CommonStepsUT {
     }
 
     @Test
-    public void checkMandatoryFieldTextTypeTest()
-            throws TechnicalException, IllegalArgumentException, IllegalAccessException, ClassNotFoundException {
+    public void testPageUnableToRetrieve() throws TechnicalException {
         try {
             s.checkMandatoryField(Page.getInstance("demo.DemoSteps").getPageElementByKey("-mockField"), "text",
                     new ArrayList<GherkinStepCondition>());
         } catch (final TechnicalException e) {
-            Assert.assertEquals(String.format(Messages.getMessage("PAGE_UNABLE_TO_RETRIEVE"), "demo.DemoSteps"),
+            Assert.assertEquals(String.format(Messages.getMessage("UNABLE_TO_RETRIEVE_PAGE"), "demo.DemoSteps"),
                     e.getMessage());
         } catch (final FailureException a) {
             Assert.assertFalse("checkMandatoryField must return TechnicalException", true);
         }
+    }
+
+    @Test
+    public void testErrorDuringPageElementLookup() throws TechnicalException {
+
+        try {
+            s.checkMandatoryField(Page.getInstance("PageWithPrivatePageElement").getPageElementByKey("-privateElement"),
+                    "text", new ArrayList<GherkinStepCondition>());
+        } catch (final TechnicalException e) {
+            Assert.assertEquals(
+                    String.format(Messages.getMessage("ERROR_DURING_PAGE_ELEMENT_LOOKUP"), "-privateElement"),
+                    e.getMessage());
+        } catch (final FailureException a) {
+            Assert.assertFalse("checkMandatoryField must return TechnicalException", true);
+        }
+    }
+
+    @Test
+    public void testFailMessageUnableToFindElement() throws TechnicalException {
         try {
             s.checkMandatoryField(Page.getInstance("bakery.DemoPage").getPageElementByKey("-mockField"), "text",
                     new ArrayList<GherkinStepCondition>());

@@ -10,6 +10,7 @@ import org.openqa.selenium.WebDriver;
 
 import com.github.noraui.application.page.Page.PageElement;
 import com.github.noraui.exception.Callbacks.Callback;
+import com.github.noraui.exception.TechnicalException;
 
 public interface IPage {
 
@@ -30,10 +31,9 @@ public interface IPage {
      * @param key
      *            of PageElement
      * @return noraui.application.page.Page.PageElement
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
+     * @throws TechnicalException
      */
-    PageElement getPageElementByKey(String key) throws IllegalArgumentException, IllegalAccessException;
+    PageElement getPageElementByKey(String key) throws TechnicalException;
 
     /**
      * @return key of page

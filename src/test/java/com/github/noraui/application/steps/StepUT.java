@@ -310,7 +310,7 @@ public class StepUT {
     }
 
     @Test
-    public void testFormatMessage() throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException {
+    public void testFormatMessage() {
         try {
             final DemoPage demoPage = (DemoPage) Page.getInstance(BAKERY_DEMO_PAGE_NAME);
             final PageElement pageElement = demoPage.getPageElementByKey("-input_select_field");
@@ -322,7 +322,7 @@ public class StepUT {
     }
 
     @Test
-    public void testFormatMessage2() throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException {
+    public void testFormatMessage2() {
         try {
             final DemoPage demoPage = (DemoPage) Page.getInstance(BAKERY_DEMO_PAGE_NAME);
             final PageElement pageElement = demoPage.getPageElementByKey("-submit");
@@ -334,8 +334,7 @@ public class StepUT {
     }
 
     @Test
-    public void testFormatMessageNullPageElement()
-            throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException {
+    public void testFormatMessageNullPageElement() {
         try {
             final DemoPage demoPage = (DemoPage) Page.getInstance(BAKERY_DEMO_PAGE_NAME);
             final PageElement pageElement = demoPage.getPageElementByKey("fake");
@@ -348,8 +347,7 @@ public class StepUT {
     }
 
     @Test
-    public void testFormatMessageNullMessage()
-            throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException {
+    public void testFormatMessageNullMessage() {
         try {
             final DemoPage demoPage = (DemoPage) Page.getInstance(BAKERY_DEMO_PAGE_NAME);
             final PageElement pageElement = demoPage.getPageElementByKey("-input");
@@ -361,8 +359,7 @@ public class StepUT {
     }
 
     @Test
-    public void testFormatMessageNotValidMessage()
-            throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException {
+    public void testFormatMessageNotValidMessage() {
         try {
             final DemoPage demoPage = (DemoPage) Page.getInstance(BAKERY_DEMO_PAGE_NAME);
             final PageElement pageElement = demoPage.getPageElementByKey("-input");
@@ -374,8 +371,7 @@ public class StepUT {
     }
 
     @Test
-    public void testFormatMessageNotValid2Message()
-            throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException {
+    public void testFormatMessageNotValid2Message() {
         try {
             final DemoPage demoPage = (DemoPage) Page.getInstance(BAKERY_DEMO_PAGE_NAME);
             final PageElement pageElement = demoPage.getPageElementByKey("-input");

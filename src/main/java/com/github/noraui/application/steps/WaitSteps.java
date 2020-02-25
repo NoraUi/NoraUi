@@ -51,7 +51,7 @@ public class WaitSteps extends Step {
     }
 
     @Conditioned
-    @Lorsque("L'attribut {string} de {page-element} {should-shouldnot} contenir {string}((\\?)")
+    @Lorsque("L'attribut {string} de {page-element} {should-shouldnot} contenir {string}(\\?)")
     @Then("The attribute {string} of {page-element} {should-shouldnot} contain {string}(\\?)")
     public void waitAttributeContains(final String attribute, PageElement pageElement, final Boolean not,
             final String value, List<GherkinStepCondition> conditions) {
@@ -75,7 +75,7 @@ public class WaitSteps extends Step {
     }
 
     @Conditioned
-    @Lorsque("L'élément {page-element} {should-shouldnot} être sélectionné\\?)")
+    @Lorsque("L'élément {page-element} {should-shouldnot} être sélectionné(\\?)")
     @Then("The element {page-element} {should-shouldnot} be selected(\\?)")
     public void waitElementToBeNotSelected(PageElement pageElement, final Boolean not,
             List<GherkinStepCondition> conditions) {
