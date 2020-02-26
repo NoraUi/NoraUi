@@ -20,6 +20,8 @@ addons:
 jdk:
 - oraclejdk8
 - openjdk8
+- oraclejdk11
+- openjdk11
 
 before_script:
 - "export DISPLAY=:99.0"
