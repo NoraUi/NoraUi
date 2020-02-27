@@ -1,823 +1,845 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.noraui</groupId>
-    <artifactId>noraui</artifactId>
-    <version>4.2.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+	<groupId>com.github.noraui</groupId>
+	<artifactId>noraui</artifactId>
+	<version>4.2.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
-    <name>NORAUI</name>
+	<name>NORAUI</name>
 
-    <description>Non-Regression Automation for User Interfaces</description>
+	<description>Non-Regression Automation for User Interfaces</description>
 
-    <url>https://github.com/NoraUi/NoraUi</url>
+	<url>https://github.com/NoraUi/NoraUi</url>
 
-    <organization>
-        <name>NoraUi</name>
-        <url>https://github.com/NoraUi</url>
-    </organization>
+	<organization>
+		<name>NoraUi</name>
+		<url>https://github.com/NoraUi</url>
+	</organization>
 
-    <licenses>
-        <license>
-            <name>GNU Affero General Public License, Version 3</name>
-            <url>https://www.gnu.org/licenses/agpl-3.0-standalone.html</url>
-            <comments>All source code is under the GNU AGPL-3 license.</comments>
-        </license>
-    </licenses>
+	<licenses>
+		<license>
+			<name>GNU Affero General Public License, Version 3</name>
+			<url>https://www.gnu.org/licenses/agpl-3.0-standalone.html</url>
+			<comments>All source code is under the GNU AGPL-3 license.</comments>
+		</license>
+	</licenses>
 
-    <developers>
-        <developer>
-            <id>sgrillon14</id>
-            <name>Stéphane GRILLON</name>
-        </developer>
-        <developer>
-            <id>nhallouin</id>
-            <name>Nicolas HALLOUIN</name>
-        </developer>
-    </developers>
+	<developers>
+		<developer>
+			<id>sgrillon14</id>
+			<name>Stéphane GRILLON</name>
+		</developer>
+		<developer>
+			<id>nhallouin</id>
+			<name>Nicolas HALLOUIN</name>
+		</developer>
+	</developers>
 
-    <scm>
-        <connection>scm:git:git://github.com/NoraUi/NoraUi.git</connection>
-        <developerConnection>scm:git:git@github.com:NoraUi/NoraUi.git</developerConnection>
-        <url>git://github.com/NoraUi/NoraUi.git</url>
-        <tag>v4.2.1</tag>
-    </scm>
+	<scm>
+		<connection>scm:git:git://github.com/NoraUi/NoraUi.git</connection>
+		<developerConnection>scm:git:git@github.com:NoraUi/NoraUi.git</developerConnection>
+		<url>git://github.com/NoraUi/NoraUi.git</url>
+		<tag>v4.2.1</tag>
+	</scm>
 
-    <properties>
-        <cucumber.options>--tags @TOSPECIFY</cucumber.options>
-        <ciToolResourcesPath>src/test/resources</ciToolResourcesPath>
-        <crypto.key>@TOSPECIFY</crypto.key>
-        <scenario.name>@TOSPECIFY</scenario.name>
-        <cucumber.version>4.7.1</cucumber.version>
-        <selenium.version>3.141.59</selenium.version>
-        <junit.version>5.5.1</junit.version>
-        <ini4j.version>0.5.4</ini4j.version>
-        <poi.version>3.17</poi.version>
-        <opencsv.version>4.0</opencsv.version>
-        <generex.version>1.0.2</generex.version>
-        <okhttp.version>3.10.0</okhttp.version>
-        <javax.mail.version>1.6.0</javax.mail.version>
-        <jsoup.version>1.11.2</jsoup.version>
-        <screen-recorder.version>0.7.7.0</screen-recorder.version>
-        <powermock.version>1.7.3</powermock.version>
-        <jsr305.version>3.0.2</jsr305.version>
-        <oracle.driver.version>12.2.0.1</oracle.driver.version>
-        <postgres.driver.version>42.1.4.jre7</postgres.driver.version>
-        <mysql.driver.version>8.0.8-dmr</mysql.driver.version>
-        <joda-time.version>2.9.9</joda-time.version>
-        <joda-convert.version>1.9.2</joda-convert.version>
-        <javassist.version>3.22.0-CR2</javassist.version>
-        <reflections.version>0.9.11</reflections.version>
-        <guava.version>23.0</guava.version>
-        <commons-io.version>2.6</commons-io.version>
-        <gson.version>2.8.4</gson.version>
-        <json-path.version>2.4.0</json-path.version>
-        <error_prone_annotations.version>2.1.1</error_prone_annotations.version>
-        <j2objc-annotations.version>1.3</j2objc-annotations.version>
-        <logback.version>1.2.3</logback.version>
-        <slf4j.version>1.7.25</slf4j.version>
-        <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
-        <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
-        <maven-javadoc-plugin.version>3.0.0-M1</maven-javadoc-plugin.version>
-        <maven-resources-plugin.version>3.0.2</maven-resources-plugin.version>
-        <exec-maven-plugin.version>1.6.0</exec-maven-plugin.version>
-        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
-        <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
-        <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
-        <jacoco-maven-plugin.version>0.8.5</jacoco-maven-plugin.version>
-        <sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
-        <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
-        <sonar.sources>${project.basedir}/src/main/java/</sonar.sources>
-        <sonar.junit.reportPaths>${project.build.directory}/surefire-reports/junit</sonar.junit.reportPaths>
-        <sonar.surefire.reportPaths>${project.build.directory}/surefire-reports</sonar.surefire.reportPaths>
-        <sonar.jacoco.directory>${project.testresult.directory}/coverage/jacoco</sonar.jacoco.directory>
-        <sonar.jacoco.reportPath>${sonar.jacoco.directory}/jacoco.exec</sonar.jacoco.reportPath>
-        <sonar.tests>${project.basedir}/src/test/</sonar.tests>
-        <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
-        <sonar.exclusions>**/cucumber/**/*,**/*Exception.*,**/annotation/**/*,**/noraui/model/**/*,**/noraui/data/rest/Row.java,**/noraui/utils/Constants.java,**/noraui/application/steps/MailSteps.java</sonar.exclusions>
-        <sonar.test.exclusions>**/*.css</sonar.test.exclusions>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <javadoc.opts>-Xdoclint:none</javadoc.opts>
-    </properties>
+	<properties>
+		<cucumber.options>--tags @TOSPECIFY</cucumber.options>
+		<ciToolResourcesPath>src/test/resources</ciToolResourcesPath>
+		<crypto.key>@TOSPECIFY</crypto.key>
+		<scenario.name>@TOSPECIFY</scenario.name>
+		<cucumber.version>4.7.1</cucumber.version>
+		<selenium.version>3.141.59</selenium.version>
+		<junit.version>5.5.1</junit.version>
+		<ini4j.version>0.5.4</ini4j.version>
+		<poi.version>3.17</poi.version>
+		<opencsv.version>4.0</opencsv.version>
+		<generex.version>1.0.2</generex.version>
+		<okhttp.version>3.10.0</okhttp.version>
+		<javax.mail.version>1.6.0</javax.mail.version>
+		<jaxb-api.version>2.3.1</jaxb-api.version>
+		<jaxb-core.version>2.3.0.1</jaxb-core.version>
+		<jaxb-impl.version>2.3.2</jaxb-impl.version>
+		<jsoup.version>1.11.2</jsoup.version>
+		<screen-recorder.version>0.7.7.0</screen-recorder.version>
+		<powermock.version>1.7.3</powermock.version>
+		<jsr305.version>3.0.2</jsr305.version>
+		<oracle.driver.version>12.2.0.1</oracle.driver.version>
+		<postgres.driver.version>42.1.4.jre7</postgres.driver.version>
+		<mysql.driver.version>8.0.8-dmr</mysql.driver.version>
+		<joda-time.version>2.9.9</joda-time.version>
+		<joda-convert.version>1.9.2</joda-convert.version>
+		<javassist.version>3.22.0-CR2</javassist.version>
+		<reflections.version>0.9.11</reflections.version>
+		<guava.version>23.0</guava.version>
+		<commons-io.version>2.6</commons-io.version>
+		<gson.version>2.8.4</gson.version>
+		<json-path.version>2.4.0</json-path.version>
+		<error_prone_annotations.version>2.1.1</error_prone_annotations.version>
+		<j2objc-annotations.version>1.3</j2objc-annotations.version>
+		<logback.version>1.2.3</logback.version>
+		<slf4j.version>1.7.25</slf4j.version>
+		<maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
+		<maven-source-plugin.version>3.0.1</maven-source-plugin.version>
+		<maven-javadoc-plugin.version>3.0.0-M1</maven-javadoc-plugin.version>
+		<maven-resources-plugin.version>3.0.2</maven-resources-plugin.version>
+		<exec-maven-plugin.version>1.6.0</exec-maven-plugin.version>
+		<maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+		<maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
+		<nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
+		<jacoco-maven-plugin.version>0.8.5</jacoco-maven-plugin.version>
+		<sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
+		<project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
+		<sonar.sources>${project.basedir}/src/main/java/</sonar.sources>
+		<sonar.junit.reportPaths>${project.build.directory}/surefire-reports/junit</sonar.junit.reportPaths>
+		<sonar.surefire.reportPaths>${project.build.directory}/surefire-reports</sonar.surefire.reportPaths>
+		<sonar.jacoco.directory>${project.testresult.directory}/coverage/jacoco</sonar.jacoco.directory>
+		<sonar.jacoco.reportPath>${sonar.jacoco.directory}/jacoco.exec</sonar.jacoco.reportPath>
+		<sonar.tests>${project.basedir}/src/test/</sonar.tests>
+		<sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
+		<sonar.exclusions>**/cucumber/**/*,**/*Exception.*,**/annotation/**/*,**/noraui/model/**/*,**/noraui/data/rest/Row.java,**/noraui/utils/Constants.java,**/noraui/application/steps/MailSteps.java</sonar.exclusions>
+		<sonar.test.exclusions>**/*.css</sonar.test.exclusions>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<javadoc.opts>-Xdoclint:none</javadoc.opts>
+	</properties>
 
-    <repositories>
-        <repository>
-            <id>jenkins-releases</id>
-            <url>http://repo.jenkins-ci.org/releases/</url>
-        </repository>
-        <repository>
-            <id>sonatype-releases</id>
-            <url>https://oss.sonatype.org/content/repositories/releases</url>
-        </repository>
-    </repositories>
+	<repositories>
+		<repository>
+			<id>jenkins-releases</id>
+			<url>http://repo.jenkins-ci.org/releases/</url>
+		</repository>
+		<repository>
+			<id>sonatype-releases</id>
+			<url>https://oss.sonatype.org/content/repositories/releases</url>
+		</repository>
+	</repositories>
 
-    <dependencies>
+	<dependencies>
 
-        <!-- cucumber -->
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-java</artifactId>
-            <version>${cucumber.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-junit</artifactId>
-            <version>${cucumber.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-guice</artifactId>
-            <version>${cucumber.version}</version>
-        </dependency>
-        
-        <!-- Google guice -->
-        <dependency>
-            <groupId>com.google.inject</groupId>
-            <artifactId>guice</artifactId>
-            <version>4.2.0</version>
-        </dependency>
-
-        <!-- Framework selenium for parsing Web HTML DOM -->
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-server</artifactId>
-            <version>${selenium.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.google.guava</groupId>
-                    <artifactId>guava</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-ie-driver</artifactId>
-            <version>${selenium.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.google.guava</groupId>
-                    <artifactId>guava</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <!-- Gson -->
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>${gson.version}</version>
-        </dependency>
-        
-        <!-- json-path -->
+		<!-- cucumber -->
 		<dependency>
-		    <groupId>com.jayway.jsonpath</groupId>
-		    <artifactId>json-path</artifactId>
-		    <version>${json-path.version}</version>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-java</artifactId>
+			<version>${cucumber.version}</version>
 		</dependency>
-        
-
-        <!-- Framework of tests -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit.version}</version>
-        </dependency>
-
-        <!-- Framework ini4j for reading *.ini files -->
-        <dependency>
-            <groupId>org.ini4j</groupId>
-            <artifactId>ini4j</artifactId>
-            <version>${ini4j.version}</version>
-        </dependency>
-
-        <!-- apache poi (Excel lib) -->
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>${poi.version}</version>
-        </dependency>
-
-        <!-- opencsv (CSV lib) -->
-        <dependency>
-            <groupId>com.opencsv</groupId>
-            <artifactId>opencsv</artifactId>
-            <version>${opencsv.version}</version>
-        </dependency>
-
-        <!-- generex (regex generator) -->
-        <dependency>
-            <groupId>com.github.mifmif</groupId>
-            <artifactId>generex</artifactId>
-            <version>${generex.version}</version>
-        </dependency>
-
-        <!-- okhttp: An HTTP+HTTP/2 client for Android and Java applications. -->
-        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp</artifactId>
-            <version>${okhttp.version}</version>
-        </dependency>
-
-        <!-- javax.mail -->
-        <dependency>
-            <groupId>com.sun.mail</groupId>
-            <artifactId>javax.mail</artifactId>
-            <version>${javax.mail.version}</version>
-        </dependency>
-
-        <!-- jsoup -->
-        <dependency>
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>${jsoup.version}</version>
-        </dependency>
-
-        <!-- monte -->
-        <dependency>
-            <groupId>com.github.stephenc.monte</groupId>
-            <artifactId>monte-screen-recorder</artifactId>
-            <version>${screen-recorder.version}</version>
-        </dependency>
-
-        <!-- powermock & mockito -->
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-api-mockito</artifactId>
-            <version>${powermock.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-module-junit4</artifactId>
-            <version>${powermock.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.javassist</groupId>
-                    <artifactId>javassist</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <!-- findbugs for sonar analyze -->
-        <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>jsr305</artifactId>
-            <version>${jsr305.version}</version>
-        </dependency>
-
-        <!-- database drivers -->
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>${postgres.driver.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.driver.version}</version>
-        </dependency>
-
-        <!-- joda time -->
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-            <version>${joda-time.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.joda</groupId>
-            <artifactId>joda-convert</artifactId>
-            <version>${joda-convert.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- guava -->
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>${guava.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.errorprone</groupId>
-            <artifactId>error_prone_annotations</artifactId>
-            <version>${error_prone_annotations.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.j2objc</groupId>
-            <artifactId>j2objc-annotations</artifactId>
-            <version>${j2objc-annotations.version}</version>
-        </dependency>
-        
-        <!-- commons-io -->
 		<dependency>
-		    <groupId>commons-io</groupId>
-		    <artifactId>commons-io</artifactId>
-		    <version>${commons-io.version}</version>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-junit</artifactId>
+			<version>${cucumber.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-guice</artifactId>
+			<version>${cucumber.version}</version>
 		</dependency>
 
-        <!-- logback -->
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-core</artifactId>
-            <version>${logback.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>${logback.version}</version>
-        </dependency>
+		<!-- Google guice -->
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+			<version>4.2.0</version>
+		</dependency>
 
-        <!-- slf4j -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
+		<!-- Framework selenium for parsing Web HTML DOM -->
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-server</artifactId>
+			<version>${selenium.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.google.guava</groupId>
+					<artifactId>guava</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-ie-driver</artifactId>
+			<version>${selenium.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.google.guava</groupId>
+					<artifactId>guava</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 
-        <!-- javassist -->
-        <dependency>
-            <groupId>org.javassist</groupId>
-            <artifactId>javassist</artifactId>
-            <version>${javassist.version}</version>
-        </dependency>
+		<!-- Gson -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>${gson.version}</version>
+		</dependency>
 
-        <!-- Framework of java reflections -->
-        <dependency>
-            <groupId>org.reflections</groupId>
-            <artifactId>reflections</artifactId>
-            <version>${reflections.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.google.guava</groupId>
-                    <artifactId>guava</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.javassist</groupId>
-                    <artifactId>javassist</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+		<!-- json-path -->
+		<dependency>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path</artifactId>
+			<version>${json-path.version}</version>
+		</dependency>
 
-        <!-- system-rules for JUnit -->
-        <dependency>
-            <groupId>com.github.stefanbirkner</groupId>
-            <artifactId>system-rules</artifactId>
-            <version>1.17.1</version>
-            <scope>test</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-model</artifactId>
-            <version>3.6.2</version>
-        </dependency>
 
-    </dependencies>
+		<!-- Framework of tests -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>${junit.version}</version>
+		</dependency>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin.version}</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>${maven-source-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>${maven-javadoc-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                        <configuration>
-                            <additionalparam>${javadoc.opts}</additionalparam>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>${maven-resources-plugin.version}</version>
-                <configuration>
-                    <escapeWindowsPaths>false</escapeWindowsPaths>
-                </configuration>
-            </plugin>
-        </plugins>
+		<!-- Framework ini4j for reading *.ini files -->
+		<dependency>
+			<groupId>org.ini4j</groupId>
+			<artifactId>ini4j</artifactId>
+			<version>${ini4j.version}</version>
+		</dependency>
 
-        <testResources>
-            <testResource>
-                <!-- copy and filter properties files -->
-                <directory>src/test/resources</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>**/*.properties</include>
-                </includes>
-            </testResource>
-            <testResource>
-                <!-- copy without filtering .feature -->
-                <directory>src/test/resources</directory>
-                <filtering>false</filtering>
-                <includes>
-                    <include>**/*.feature</include>
-                </includes>
-            </testResource>
-        </testResources>
-    </build>
+		<!-- apache poi (Excel lib) -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>${poi.version}</version>
+		</dependency>
 
-    <profiles>
-        <profile>
-            <id>default-profile</id>
-            <activation>
-                <property>
-                    <name>!pullrequest</name>
-                </property>
-            </activation>
-            <repositories>
-                <repository>
-                    <id>maven.oracle.com</id>
-                    <releases>
-                        <enabled>true</enabled>
-                    </releases>
-                    <snapshots>
-                        <enabled>false</enabled>
-                    </snapshots>
-                    <url>https://maven.oracle.com</url>
-                    <layout>default</layout>
-                </repository>
-            </repositories>
-            <pluginRepositories>
-                <pluginRepository>
-                    <id>maven.oracle.com</id>
-                    <url>https://maven.oracle.com</url>
-                </pluginRepository>
-            </pluginRepositories>
-            <dependencies>
-                <!-- database drivers -->
-                <dependency>
-                    <groupId>com.oracle.jdbc</groupId>
-                    <artifactId>ojdbc8</artifactId>
-                    <version>${oracle.driver.version}</version>
-                </dependency>
-            </dependencies>
-        </profile>
-        <profile>
-            <id>exclude-profile</id>
-            <activation>
-                <property>
-                    <name>pullrequest</name>
-                </property>
-            </activation>
-        </profile>
-        <profile>
-            <id>snapshot</id>
-            <pluginRepositories>
-                <pluginRepository>
-                    <id>sonatype-releases</id>
-                    <url>https://oss.sonatype.org/content/repositories/releases</url>
-                </pluginRepository>
-            </pluginRepositories>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>${nexus-staging-maven-plugin.version}</version>
-                        <extensions>true</extensions>
-                        <configuration>
-                            <serverId>sonatype-nexus</serverId>
-                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
+		<!-- opencsv (CSV lib) -->
+		<dependency>
+			<groupId>com.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+			<version>${opencsv.version}</version>
+		</dependency>
 
-        <profile>
-            <id>release</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>${maven-gpg-plugin.version}</version>
-                        <configuration>
-                            <useAgent>true</useAgent>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>${nexus-staging-maven-plugin.version}</version>
-                        <extensions>true</extensions>
-                        <configuration>
-                            <serverId>sonatype-nexus</serverId>
-                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
+		<!-- generex (regex generator) -->
+		<dependency>
+			<groupId>com.github.mifmif</groupId>
+			<artifactId>generex</artifactId>
+			<version>${generex.version}</version>
+		</dependency>
 
-        <profile>
-            <id>javadoc</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>${maven-javadoc-plugin.version}</version>
-                        <configuration>
-                            <additionalparam>${javadoc.opts}</additionalparam>
-                            <aggregate>true</aggregate>
-                            <stylesheetfile>${basedir}/src/test/resources/dev/stylesheet.css</stylesheetfile>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
+		<!-- okhttp: An HTTP+HTTP/2 client for Android and Java applications. -->
+		<dependency>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>okhttp</artifactId>
+			<version>${okhttp.version}</version>
+		</dependency>
 
-        <!-- preIC -->
-        <profile>
-            <id>preIC</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <id>CounterExcel-execution</id>
-                                <phase>compile</phase>
-                                <goals>
-                                    <goal>java</goal>
-                                </goals>
-                                <configuration>
-                                    <mainClass>com.github.noraui.indus.Counter</mainClass>
-                                    <arguments>
-                                        <argument>Excel</argument>
-                                    </arguments>
-                                    <systemProperties>
-                                        <systemProperty>
-                                            <key>resourcespath</key>
-                                            <value>${ciToolResourcesPath}</value>
-                                        </systemProperty>
-                                    </systemProperties>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>CounterCsv-execution</id>
-                                <phase>compile</phase>
-                                <goals>
-                                    <goal>java</goal>
-                                </goals>
-                                <configuration>
-                                    <mainClass>com.github.noraui.indus.Counter</mainClass>
-                                    <arguments>
-                                        <argument>Csv</argument>
-                                    </arguments>
-                                    <systemProperties>
-                                        <systemProperty>
-                                            <key>resourcespath</key>
-                                            <value>${ciToolResourcesPath}</value>
-                                        </systemProperty>
-                                    </systemProperties>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>CounterRestJson-execution</id>
-                                <phase>compile</phase>
-                                <goals>
-                                    <goal>java</goal>
-                                </goals>
-                                <configuration>
-                                    <mainClass>com.github.noraui.indus.Counter</mainClass>
-                                    <arguments>
-                                        <argument>RestJson</argument>
-                                    </arguments>
-                                    <systemProperties>
-                                        <systemProperty>
-                                            <key>resourcespath</key>
-                                            <value>${ciToolResourcesPath}</value>
-                                        </systemProperty>
-                                    </systemProperties>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>CounterGherkin-execution</id>
-                                <phase>compile</phase>
-                                <goals>
-                                    <goal>java</goal>
-                                </goals>
-                                <configuration>
-                                    <mainClass>com.github.noraui.indus.Counter</mainClass>
-                                    <arguments>
-                                        <argument>Gherkin</argument>
-                                    </arguments>
-                                    <systemProperties>
-                                        <systemProperty>
-                                            <key>resourcespath</key>
-                                            <value>${ciToolResourcesPath}</value>
-                                        </systemProperty>
-                                    </systemProperties>
-                                </configuration>
-                            </execution>
-                            <!-- <execution> -->
-                            <!-- <id>CounterDbOracle-execution</id> -->
-                            <!-- <phase>compile</phase> -->
-                            <!-- <goals> -->
-                            <!-- <goal>java</goal> -->
-                            <!-- </goals> -->
-                            <!-- <configuration> -->
-                            <!-- <mainClass>wiitty.indus.Counter</mainClass> -->
-                            <!-- <arguments> -->
-                            <!-- <argument>DbOracle</argument> -->
-                            <!-- </arguments> -->
-                            <!-- <systemProperties> -->
-                            <!-- <systemProperty> -->
-                            <!-- <key>resourcespath</key> -->
-                            <!-- <value>${ciToolResourcesPath}</value> -->
-                            <!-- </systemProperty> -->
-                            <!-- </systemProperties> -->
-                            <!-- </configuration> -->
-                            <!-- </execution> -->
-                            <!-- <execution> -->
-                            <!-- <id>CounterDbPostgre-execution</id> -->
-                            <!-- <phase>compile</phase> -->
-                            <!-- <goals> -->
-                            <!-- <goal>java</goal> -->
-                            <!-- </goals> -->
-                            <!-- <configuration> -->
-                            <!-- <mainClass>wiitty.indus.Counter</mainClass> -->
-                            <!-- <arguments> -->
-                            <!-- <argument>DbPostgre</argument> -->
-                            <!-- </arguments> -->
-                            <!-- <systemProperties> -->
-                            <!-- <systemProperty> -->
-                            <!-- <key>resourcespath</key> -->
-                            <!-- <value>${ciToolResourcesPath}</value> -->
-                            <!-- </systemProperty> -->
-                            <!-- </systemProperties> -->
-                            <!-- </configuration> -->
-                            <!-- </execution> -->
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
+		<!-- javax.mail -->
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+			<version>${javax.mail.version}</version>
+		</dependency>
 
-        <!-- scenarioInitiator -->
-        <profile>
-            <id>scenarioInitiator</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec-maven-plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <id>ScenarioInitiator-execution</id>
-                                <phase>compile</phase>
-                                <goals>
-                                    <goal>java</goal>
-                                </goals>
-                                <configuration>
-                                    <mainClass>com.github.noraui.main.ScenarioInitiatorRunner</mainClass>
-                                    <cleanupDaemonThreads>false</cleanupDaemonThreads>
-                                    <arguments>
-                                        <argument>${scenario.name}</argument>
-                                    </arguments>
-                                    <systemProperties>
-                                        <systemProperty>
-                                            <key>resourcespath</key>
-                                            <value>${ciToolResourcesPath}</value>
-                                        </systemProperty>
-                                        <systemProperty>
-                                            <key>crypto.key</key>
-                                            <value>${crypto.key}</value>
-                                        </systemProperty>
-                                    </systemProperties>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
+		<!-- javax.xml.bind -->
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>${jaxb-api.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-core</artifactId>
+			<version>${jaxb-core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
+			<version>${jaxb-impl.version}</version>
+		</dependency>
 
-        <profile>
-            <id>unit-tests</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.jacoco</groupId>
-                        <artifactId>jacoco-maven-plugin</artifactId>
-                        <version>${jacoco-maven-plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <id>pre-unit-tests</id>
-                                <phase>compile</phase>
-                                <goals>
-                                    <goal>prepare-agent</goal>
-                                </goals>
-                                <configuration>
-                                    <destFile>${sonar.jacoco.reportPath}</destFile>
-                                    <propertyName>surefireArgLine</propertyName>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>post-unit-test</id>
-                                <phase>test</phase>
-                                <goals>
-                                    <goal>report</goal>
-                                </goals>
-                                <configuration>
-                                    <dataFile>${sonar.jacoco.reportPath}</dataFile>
-                                    <outputDirectory>${sonar.jacoco.directory}</outputDirectory>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <version>${maven-surefire-plugin.version}</version>
-                        <configuration>
-                            <systemPropertyVariables>
-                                <resourcespath>${ciToolResourcesPath}</resourcespath>
-                                <cucumber.options>${cucumber.options}</cucumber.options>
-                                <webdriver.ie.driver>src/test/resources/drivers/%s/internetexplorer/%s/IEDriverServer%s</webdriver.ie.driver>
-                                <webdriver.chrome.driver>src/test/resources/drivers/%s/googlechrome/%s/chromedriver%s</webdriver.chrome.driver>
-                                <webdriver.gecko.driver>src/test/resources/drivers/%s/firefox/%s/geckodriver%s</webdriver.gecko.driver>
-                                <SpeedRegulator.annotation.enable>false</SpeedRegulator.annotation.enable>
-                                <SpeedRegulators.annotation.enable>false</SpeedRegulators.annotation.enable>
-                                <Time.annotation.enable>false</Time.annotation.enable>
-                                <Times.annotation.enable>false</Times.annotation.enable>
-                                <uid>${uid}</uid>
-                                <password>${password}</password>
-                                <cookie>${cookie}</cookie>
-                                <role>${role}</role>
-                            </systemPropertyVariables>
-                            <includes>
-                                <include>**/*UT.java</include>
-                                <include>**/Runner.java</include>
-                            </includes>
-                            <argLine>-Dfile.encoding=UTF-8 ${surefireArgLine}</argLine>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.sonarsource.scanner.maven</groupId>
-                        <artifactId>sonar-maven-plugin</artifactId>
-                        <version>${sonar-maven-plugin.version}</version>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
+		<!-- jsoup -->
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>${jsoup.version}</version>
+		</dependency>
 
-    </profiles>
+		<!-- monte -->
+		<dependency>
+			<groupId>com.github.stephenc.monte</groupId>
+			<artifactId>monte-screen-recorder</artifactId>
+			<version>${screen-recorder.version}</version>
+		</dependency>
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>sonatype-nexus</id>
-            <name>Sonatype Nexus Snapshots</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-        </snapshotRepository>
-        <repository>
-            <id>sonatype-nexus</id>
-            <name>Nexus Release Repository</name>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
+		<!-- powermock & mockito -->
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-mockito</artifactId>
+			<version>${powermock.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4</artifactId>
+			<version>${powermock.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.javassist</groupId>
+					<artifactId>javassist</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- findbugs for sonar analyze -->
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>jsr305</artifactId>
+			<version>${jsr305.version}</version>
+		</dependency>
+
+		<!-- database drivers -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>${postgres.driver.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql.driver.version}</version>
+		</dependency>
+
+		<!-- joda time -->
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>${joda-time.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.joda</groupId>
+			<artifactId>joda-convert</artifactId>
+			<version>${joda-convert.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- guava -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.errorprone</groupId>
+			<artifactId>error_prone_annotations</artifactId>
+			<version>${error_prone_annotations.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.j2objc</groupId>
+			<artifactId>j2objc-annotations</artifactId>
+			<version>${j2objc-annotations.version}</version>
+		</dependency>
+
+		<!-- commons-io -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${commons-io.version}</version>
+		</dependency>
+
+		<!-- logback -->
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>${logback.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback.version}</version>
+		</dependency>
+
+		<!-- slf4j -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+
+		<!-- javassist -->
+		<dependency>
+			<groupId>org.javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>${javassist.version}</version>
+		</dependency>
+
+		<!-- Framework of java reflections -->
+		<dependency>
+			<groupId>org.reflections</groupId>
+			<artifactId>reflections</artifactId>
+			<version>${reflections.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.google.guava</groupId>
+					<artifactId>guava</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.javassist</groupId>
+					<artifactId>javassist</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- system-rules for JUnit -->
+		<dependency>
+			<groupId>com.github.stefanbirkner</groupId>
+			<artifactId>system-rules</artifactId>
+			<version>1.17.1</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-model</artifactId>
+			<version>3.6.2</version>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler-plugin.version}</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>${maven-source-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${maven-javadoc-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<additionalparam>${javadoc.opts}</additionalparam>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>${maven-resources-plugin.version}</version>
+				<configuration>
+					<escapeWindowsPaths>false</escapeWindowsPaths>
+				</configuration>
+			</plugin>
+		</plugins>
+
+		<testResources>
+			<testResource>
+				<!-- copy and filter properties files -->
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/*.properties</include>
+				</includes>
+			</testResource>
+			<testResource>
+				<!-- copy without filtering .feature -->
+				<directory>src/test/resources</directory>
+				<filtering>false</filtering>
+				<includes>
+					<include>**/*.feature</include>
+				</includes>
+			</testResource>
+		</testResources>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>default-profile</id>
+			<activation>
+				<property>
+					<name>!pullrequest</name>
+				</property>
+			</activation>
+			<repositories>
+				<repository>
+					<id>maven.oracle.com</id>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+					<url>https://maven.oracle.com</url>
+					<layout>default</layout>
+				</repository>
+			</repositories>
+			<pluginRepositories>
+				<pluginRepository>
+					<id>maven.oracle.com</id>
+					<url>https://maven.oracle.com</url>
+				</pluginRepository>
+			</pluginRepositories>
+			<dependencies>
+				<!-- database drivers -->
+				<dependency>
+					<groupId>com.oracle.jdbc</groupId>
+					<artifactId>ojdbc8</artifactId>
+					<version>${oracle.driver.version}</version>
+				</dependency>
+			</dependencies>
+		</profile>
+		<profile>
+			<id>exclude-profile</id>
+			<activation>
+				<property>
+					<name>pullrequest</name>
+				</property>
+			</activation>
+		</profile>
+		<profile>
+			<id>snapshot</id>
+			<pluginRepositories>
+				<pluginRepository>
+					<id>sonatype-releases</id>
+					<url>https://oss.sonatype.org/content/repositories/releases</url>
+				</pluginRepository>
+			</pluginRepositories>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.sonatype.plugins</groupId>
+						<artifactId>nexus-staging-maven-plugin</artifactId>
+						<version>${nexus-staging-maven-plugin.version}</version>
+						<extensions>true</extensions>
+						<configuration>
+							<serverId>sonatype-nexus</serverId>
+							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+							<autoReleaseAfterClose>true</autoReleaseAfterClose>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>${maven-gpg-plugin.version}</version>
+						<configuration>
+							<useAgent>true</useAgent>
+						</configuration>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.sonatype.plugins</groupId>
+						<artifactId>nexus-staging-maven-plugin</artifactId>
+						<version>${nexus-staging-maven-plugin.version}</version>
+						<extensions>true</extensions>
+						<configuration>
+							<serverId>sonatype-nexus</serverId>
+							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+							<autoReleaseAfterClose>true</autoReleaseAfterClose>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<id>javadoc</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>${maven-javadoc-plugin.version}</version>
+						<configuration>
+							<additionalparam>${javadoc.opts}</additionalparam>
+							<aggregate>true</aggregate>
+							<stylesheetfile>${basedir}/src/test/resources/dev/stylesheet.css</stylesheetfile>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<!-- preIC -->
+		<profile>
+			<id>preIC</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<version>${exec-maven-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>CounterExcel-execution</id>
+								<phase>compile</phase>
+								<goals>
+									<goal>java</goal>
+								</goals>
+								<configuration>
+									<mainClass>com.github.noraui.indus.Counter</mainClass>
+									<arguments>
+										<argument>Excel</argument>
+									</arguments>
+									<systemProperties>
+										<systemProperty>
+											<key>resourcespath</key>
+											<value>${ciToolResourcesPath}</value>
+										</systemProperty>
+									</systemProperties>
+								</configuration>
+							</execution>
+							<execution>
+								<id>CounterCsv-execution</id>
+								<phase>compile</phase>
+								<goals>
+									<goal>java</goal>
+								</goals>
+								<configuration>
+									<mainClass>com.github.noraui.indus.Counter</mainClass>
+									<arguments>
+										<argument>Csv</argument>
+									</arguments>
+									<systemProperties>
+										<systemProperty>
+											<key>resourcespath</key>
+											<value>${ciToolResourcesPath}</value>
+										</systemProperty>
+									</systemProperties>
+								</configuration>
+							</execution>
+							<execution>
+								<id>CounterRestJson-execution</id>
+								<phase>compile</phase>
+								<goals>
+									<goal>java</goal>
+								</goals>
+								<configuration>
+									<mainClass>com.github.noraui.indus.Counter</mainClass>
+									<arguments>
+										<argument>RestJson</argument>
+									</arguments>
+									<systemProperties>
+										<systemProperty>
+											<key>resourcespath</key>
+											<value>${ciToolResourcesPath}</value>
+										</systemProperty>
+									</systemProperties>
+								</configuration>
+							</execution>
+							<execution>
+								<id>CounterGherkin-execution</id>
+								<phase>compile</phase>
+								<goals>
+									<goal>java</goal>
+								</goals>
+								<configuration>
+									<mainClass>com.github.noraui.indus.Counter</mainClass>
+									<arguments>
+										<argument>Gherkin</argument>
+									</arguments>
+									<systemProperties>
+										<systemProperty>
+											<key>resourcespath</key>
+											<value>${ciToolResourcesPath}</value>
+										</systemProperty>
+									</systemProperties>
+								</configuration>
+							</execution>
+							<!-- <execution> -->
+							<!-- <id>CounterDbOracle-execution</id> -->
+							<!-- <phase>compile</phase> -->
+							<!-- <goals> -->
+							<!-- <goal>java</goal> -->
+							<!-- </goals> -->
+							<!-- <configuration> -->
+							<!-- <mainClass>wiitty.indus.Counter</mainClass> -->
+							<!-- <arguments> -->
+							<!-- <argument>DbOracle</argument> -->
+							<!-- </arguments> -->
+							<!-- <systemProperties> -->
+							<!-- <systemProperty> -->
+							<!-- <key>resourcespath</key> -->
+							<!-- <value>${ciToolResourcesPath}</value> -->
+							<!-- </systemProperty> -->
+							<!-- </systemProperties> -->
+							<!-- </configuration> -->
+							<!-- </execution> -->
+							<!-- <execution> -->
+							<!-- <id>CounterDbPostgre-execution</id> -->
+							<!-- <phase>compile</phase> -->
+							<!-- <goals> -->
+							<!-- <goal>java</goal> -->
+							<!-- </goals> -->
+							<!-- <configuration> -->
+							<!-- <mainClass>wiitty.indus.Counter</mainClass> -->
+							<!-- <arguments> -->
+							<!-- <argument>DbPostgre</argument> -->
+							<!-- </arguments> -->
+							<!-- <systemProperties> -->
+							<!-- <systemProperty> -->
+							<!-- <key>resourcespath</key> -->
+							<!-- <value>${ciToolResourcesPath}</value> -->
+							<!-- </systemProperty> -->
+							<!-- </systemProperties> -->
+							<!-- </configuration> -->
+							<!-- </execution> -->
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<!-- scenarioInitiator -->
+		<profile>
+			<id>scenarioInitiator</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<version>${exec-maven-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>ScenarioInitiator-execution</id>
+								<phase>compile</phase>
+								<goals>
+									<goal>java</goal>
+								</goals>
+								<configuration>
+									<mainClass>com.github.noraui.main.ScenarioInitiatorRunner</mainClass>
+									<cleanupDaemonThreads>false</cleanupDaemonThreads>
+									<arguments>
+										<argument>${scenario.name}</argument>
+									</arguments>
+									<systemProperties>
+										<systemProperty>
+											<key>resourcespath</key>
+											<value>${ciToolResourcesPath}</value>
+										</systemProperty>
+										<systemProperty>
+											<key>crypto.key</key>
+											<value>${crypto.key}</value>
+										</systemProperty>
+									</systemProperties>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<id>unit-tests</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.jacoco</groupId>
+						<artifactId>jacoco-maven-plugin</artifactId>
+						<version>${jacoco-maven-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>pre-unit-tests</id>
+								<phase>compile</phase>
+								<goals>
+									<goal>prepare-agent</goal>
+								</goals>
+								<configuration>
+									<destFile>${sonar.jacoco.reportPath}</destFile>
+									<propertyName>surefireArgLine</propertyName>
+								</configuration>
+							</execution>
+							<execution>
+								<id>post-unit-test</id>
+								<phase>test</phase>
+								<goals>
+									<goal>report</goal>
+								</goals>
+								<configuration>
+									<dataFile>${sonar.jacoco.reportPath}</dataFile>
+									<outputDirectory>${sonar.jacoco.directory}</outputDirectory>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<version>${maven-surefire-plugin.version}</version>
+						<configuration>
+							<systemPropertyVariables>
+								<resourcespath>${ciToolResourcesPath}</resourcespath>
+								<cucumber.options>${cucumber.options}</cucumber.options>
+								<webdriver.ie.driver>src/test/resources/drivers/%s/internetexplorer/%s/IEDriverServer%s</webdriver.ie.driver>
+								<webdriver.chrome.driver>src/test/resources/drivers/%s/googlechrome/%s/chromedriver%s</webdriver.chrome.driver>
+								<webdriver.gecko.driver>src/test/resources/drivers/%s/firefox/%s/geckodriver%s</webdriver.gecko.driver>
+								<SpeedRegulator.annotation.enable>false</SpeedRegulator.annotation.enable>
+								<SpeedRegulators.annotation.enable>false</SpeedRegulators.annotation.enable>
+								<Time.annotation.enable>false</Time.annotation.enable>
+								<Times.annotation.enable>false</Times.annotation.enable>
+								<uid>${uid}</uid>
+								<password>${password}</password>
+								<cookie>${cookie}</cookie>
+								<role>${role}</role>
+							</systemPropertyVariables>
+							<includes>
+								<include>**/*UT.java</include>
+								<include>**/Runner.java</include>
+							</includes>
+							<argLine>-Dfile.encoding=UTF-8 ${surefireArgLine}</argLine>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.sonarsource.scanner.maven</groupId>
+						<artifactId>sonar-maven-plugin</artifactId>
+						<version>${sonar-maven-plugin.version}</version>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+	</profiles>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>sonatype-nexus</id>
+			<name>Sonatype Nexus Snapshots</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+		</snapshotRepository>
+		<repository>
+			<id>sonatype-nexus</id>
+			<name>Nexus Release Repository</name>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 
 </project>
