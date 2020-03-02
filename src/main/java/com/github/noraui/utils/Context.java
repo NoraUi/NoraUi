@@ -100,6 +100,7 @@ public class Context {
     public static final String OKHTTP_WRITE_TIMEOUT = "writeTimeout";
     public static final String OKHTTP_READ_TIMEOUT = "readTimeout";
     public static final String HEADLESS = "headless";
+    public static final String NO_SANDBOX = "noSandbox";
     public static final String LOCALE = "locale";
     public static final String AUTH_TYPE = "authentication";
     public static final String CRYPTO_KEY = "crypto.key";
@@ -254,6 +255,11 @@ public class Context {
      * Is headless mode enable ?
      */
     private boolean isHeadless;
+
+    /**
+     * Is no-sandbox mode enable ?
+     */
+    private boolean isNoSandbox;
 
     /**
      * Instance of DataInputProvider
@@ -413,6 +419,7 @@ public class Context {
 
         // enable browser headless mode ?
         isHeadless = "true".equals(getProperty(HEADLESS, applicationProperties));
+        isNoSandbox = "true".equals(getProperty(NO_SANDBOX, applicationProperties));
 
         // init driver callbacks
         exceptionCallbacks.put(Callbacks.RESTART_WEB_DRIVER, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, RESTART_WEB_DRIVER_METHOD_NAME);
@@ -774,6 +781,10 @@ public class Context {
 
     public static boolean isHeadless() {
         return getInstance().isHeadless;
+    }
+
+    public static boolean isNoSandbox() {
+        return getInstance().isNoSandbox;
     }
 
     public static String getModelPackages() {
