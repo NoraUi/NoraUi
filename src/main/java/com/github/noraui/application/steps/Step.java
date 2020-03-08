@@ -7,6 +7,7 @@
 package com.github.noraui.application.steps;
 
 import static com.github.noraui.Constants.DOWNLOADED_FILES_FOLDER;
+import static com.github.noraui.Constants.PREFIX_SAVE;
 import static com.github.noraui.Constants.USER_DIR;
 import static com.github.noraui.Constants.VALUE;
 
@@ -120,14 +121,39 @@ public abstract class Step implements IStep {
                     toClick.getPage().getCallBack());
         }
     }
+    
+    /**
+     * Click on html element.
+     *
+     * @param timeOutInSeconds
+     *            The timeout in seconds when an expectation is called.
+     * @param toClick
+     *            html element.
+     * @param args
+     *            list of arguments to format the found selector with.
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK} message (with screenshot, with exception)
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     */
+    protected void clickOn(int timeOutInSeconds, PageElement toClick, Object... args) throws TechnicalException, FailureException {
+        displayMessageAtTheBeginningOfMethod("clickOn: %s in %s", toClick.toString(), toClick.getPage().getApplication());
+        try {
+            Wait.until(ExpectedConditions.elementToBeClickable(Utilities.getLocator(toClick, args)), timeOutInSeconds).click();
+        } catch (final Exception e) {
+            new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK), toClick, toClick.getPage().getApplication()), true,
+                    toClick.getPage().getCallBack());
+        }
+    }
 
     /**
      * Click on html element by Javascript.
      *
      * @param toClick
-     *            html element
+     *            html element.
      * @param args
-     *            list of arguments to format the found selector with
+     *            list of arguments to format the found selector with.
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK} message (with screenshot, with exception)
@@ -135,6 +161,25 @@ public abstract class Step implements IStep {
      *             if the scenario encounters a functional error
      */
     protected void clickOnByJs(PageElement toClick, Object... args) throws TechnicalException, FailureException {
+        clickOnByJs(Context.getTimeout(), toClick, args);
+    }
+
+    /**
+     * Click on html element by Javascript.
+     *
+     * @param timeOutInSeconds
+     *            The timeout in seconds when an expectation is called.
+     * @param toClick
+     *            html element.
+     * @param args
+     *            list of arguments to format the found selector with.
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK} message (with screenshot, with exception)
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     */
+    protected void clickOnByJs(int timeOutInSeconds, PageElement toClick, Object... args) throws TechnicalException, FailureException {
         displayMessageAtTheBeginningOfMethod("clickOnByJs: %s in %s", toClick.toString(), toClick.getPage().getApplication());
         try {
             Wait.until(ExpectedConditions.elementToBeClickable(Utilities.getLocator(toClick, args)));
@@ -150,9 +195,9 @@ public abstract class Step implements IStep {
      * Click on html element by Javascript.
      *
      * @param page
-     *            page target application
+     *            page target application.
      * @param xpath
-     *            XPath of an element to evaluate
+     *            XPath of an element to evaluate.
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK} message (with screenshot, with exception)
@@ -160,6 +205,25 @@ public abstract class Step implements IStep {
      *             if the scenario encounters a functional error
      */
     protected void clickOnByJs(Page page, String xpath) throws TechnicalException, FailureException {
+        clickOnByJs(Context.getTimeout(), page, xpath);
+    }
+
+    /**
+     * Click on html element by Javascript.
+     *
+     * @param timeOutInSeconds
+     *            The timeout in seconds when an expectation is called.
+     * @param page
+     *            page target application.
+     * @param xpath
+     *            XPath of an element to evaluate.
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK} message (with screenshot, with exception)
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     */
+    protected void clickOnByJs(int timeOutInSeconds, Page page, String xpath) throws TechnicalException, FailureException {
         displayMessageAtTheBeginningOfMethod("clickOnByJs: %s in %s", xpath, page.getApplication());
         try {
             Wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xpath.replaceAll("\\\\'", "'"))));
@@ -173,11 +237,11 @@ public abstract class Step implements IStep {
      * Update a html input text with a text.
      *
      * @param pageElement
-     *            Is target element
+     *            Is target element.
      * @param textOrKey
-     *            Is the new data (text or text in context (after a save))
+     *            Is the new data (text or text in context (after a save)).
      * @param args
-     *            list of arguments to format the found selector with
+     *            list of arguments to format the found selector with.
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_ERROR_ON_INPUT} message (with screenshot, no exception)
@@ -191,14 +255,54 @@ public abstract class Step implements IStep {
     /**
      * Update a html input text with a text.
      *
+     * @param timeOutInSeconds
+     *            The timeout in seconds when an expectation is called.
      * @param pageElement
-     *            Is target element
+     *            Is target element.
      * @param textOrKey
-     *            Is the new data (text or text in context (after a save))
-     * @param keysToSend
-     *            character to send to the element after {@link org.openqa.selenium.WebElement#sendKeys(CharSequence...) sendKeys} with textOrKey
+     *            Is the new data (text or text in context (after a save)).
      * @param args
-     *            list of arguments to format the found selector with
+     *            list of arguments to format the found selector with.
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_ERROR_ON_INPUT} message (with screenshot, no exception)
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     */
+    protected void updateText(int timeOutInSeconds, PageElement pageElement, String textOrKey, Object... args) throws TechnicalException, FailureException {
+        updateText(timeOutInSeconds, pageElement, textOrKey, null, args);
+    }
+
+    /**
+     * Set a html input text with a text.
+     *
+     * @param pageElement
+     *            Is target element.
+     * @param textOrKey
+     *            Is the new data (text or text in context (after a save)).
+     * @param args
+     *            list of arguments to format the found selector with.
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_ERROR_ON_INPUT} message (with screenshot, no exception)
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     */
+    protected void setText(PageElement pageElement, String textOrKey, Object... args) throws TechnicalException, FailureException {
+        setText(pageElement, textOrKey, null, args);
+    }
+
+    /**
+     * Update a html input text with a text.
+     *
+     * @param pageElement
+     *            Is target element.
+     * @param textOrKey
+     *            Is the new data (text or text in context (after a save)).
+     * @param keysToSend
+     *            character to send to the element after {@link org.openqa.selenium.WebElement#sendKeys(CharSequence...) sendKeys} with textOrKey.
+     * @param args
+     *            list of arguments to format the found selector with.
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_ERROR_ON_INPUT} message (with screenshot, no exception)
@@ -206,6 +310,29 @@ public abstract class Step implements IStep {
      *             if the scenario encounters a functional error
      */
     protected void updateText(PageElement pageElement, String textOrKey, CharSequence keysToSend, Object... args) throws TechnicalException, FailureException {
+        updateText(Context.getTimeout(), pageElement, textOrKey, keysToSend, args);
+    }
+
+    /**
+     * Update a html input text with a text.
+     * 
+     * @param timeOutInSeconds
+     *            The timeout in seconds when an expectation is called.
+     * @param pageElement
+     *            Is target element.
+     * @param textOrKey
+     *            Is the new data (text or text in context (after a save)).
+     * @param keysToSend
+     *            character to send to the element after {@link org.openqa.selenium.WebElement#sendKeys(CharSequence...) sendKeys} with textOrKey.
+     * @param args
+     *            list of arguments to format the found selector with.
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_ERROR_ON_INPUT} message (with screenshot, no exception)
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     */
+    protected void updateText(int timeOutInSeconds, PageElement pageElement, String textOrKey, CharSequence keysToSend, Object... args) throws TechnicalException, FailureException {
         String value = getTextOrKey(textOrKey);
         if (!"".equals(value)) {
             try {
@@ -234,12 +361,73 @@ public abstract class Step implements IStep {
     }
 
     /**
+     * Set a html input text with a text.
+     *
+     * @param pageElement
+     *            Is target element.
+     * @param textOrKey
+     *            Is the new data (text or text in context (after a save)).
+     * @param keysToSend
+     *            character to send to the element after {@link org.openqa.selenium.WebElement#sendKeys(CharSequence...) sendKeys} with textOrKey.
+     * @param args
+     *            list of arguments to format the found selector with.
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_ERROR_ON_INPUT} message (with screenshot, no exception)
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     */
+    protected void setText(PageElement pageElement, String textOrKey, CharSequence keysToSend, Object... args) throws TechnicalException, FailureException {
+        setText(Context.getTimeout(), pageElement, textOrKey, keysToSend, args);
+    }
+
+    /**
+     * Set a html input text with a text.
+     *
+     * @param timeOutInSeconds
+     *            The timeout in seconds when an expectation is called.
+     * @param pageElement
+     *            Is target element.
+     * @param textOrKey
+     *            Is the new data (text or text in context (after a save)).
+     * @param keysToSend
+     *            character to send to the element after {@link org.openqa.selenium.WebElement#sendKeys(CharSequence...) sendKeys} with textOrKey.
+     * @param args
+     *            list of arguments to format the found selector with.
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_ERROR_ON_INPUT} message (with screenshot, no exception)
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     */
+    protected void setText(int timeOutInSeconds, PageElement pageElement, String textOrKey, CharSequence keysToSend, Object... args) throws TechnicalException, FailureException {
+        String value = getTextOrKey(textOrKey);
+        if (!"".equals(value)) {
+            try {
+                final WebElement element = Wait.until(ExpectedConditions.elementToBeClickable(Utilities.getLocator(pageElement, args)), timeOutInSeconds);
+                element.clear();
+                String javascript = "arguments[0].value=arguments[1];";
+                ((JavascriptExecutor) getDriver()).executeScript(javascript, element, value.substring(0, value.length() - 1));
+                element.sendKeys(value.substring(value.length() - 1));
+                if (keysToSend != null) {
+                    element.sendKeys(keysToSend);
+                }
+            } catch (final Exception e) {
+                new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_ERROR_ON_INPUT), pageElement, pageElement.getPage().getApplication()), true,
+                        pageElement.getPage().getCallBack());
+            }
+        } else {
+            log.debug("Empty data provided. No need to update text. If you want clear data, you need use: \"I clear text in ...\"");
+        }
+    }
+
+    /**
      * Update a html input text with "".
      *
      * @param pageElement
-     *            Is target element
+     *            Is target element.
      * @param args
-     *            list of arguments to format the found selector with
+     *            list of arguments to format the found selector with.
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_ERROR_CLEAR_ON_INPUT} message (with screenshot, no exception)
@@ -253,12 +441,31 @@ public abstract class Step implements IStep {
     /**
      * Update a html input text with "".
      *
+     * @param timeOutInSeconds
+     *            The timeout in seconds when an expectation is called.
      * @param pageElement
-     *            Is target element
-     * @param keysToSend
-     *            character to send to the element after {@link org.openqa.selenium.WebElement#sendKeys(CharSequence...) sendKeys} with textOrKey
+     *            Is target element.
      * @param args
-     *            list of arguments to format the found selector with
+     *            list of arguments to format the found selector with.
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_ERROR_CLEAR_ON_INPUT} message (with screenshot, no exception)
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     */
+    protected void clearText(int timeOutInSeconds, PageElement pageElement, Object... args) throws TechnicalException, FailureException {
+        clearText(timeOutInSeconds, pageElement, null, args);
+    }
+
+    /**
+     * Update a html input text with "".
+     *
+     * @param pageElement
+     *            Is target element.
+     * @param keysToSend
+     *            character to send to the element after {@link org.openqa.selenium.WebElement#sendKeys(CharSequence...) sendKeys} with textOrKey.
+     * @param args
+     *            list of arguments to format the found selector with.
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_ERROR_CLEAR_ON_INPUT} message (with screenshot, no exception)
@@ -266,6 +473,27 @@ public abstract class Step implements IStep {
      *             if the scenario encounters a functional error
      */
     protected void clearText(PageElement pageElement, CharSequence keysToSend, Object... args) throws TechnicalException, FailureException {
+        clearText(Context.getTimeout(), pageElement, keysToSend, args);
+    }
+
+    /**
+     * Update a html input text with "".
+     *
+     * @param timeOutInSeconds
+     *            The timeout in seconds when an expectation is called.
+     * @param pageElement
+     *            Is target element.
+     * @param keysToSend
+     *            character to send to the element after {@link org.openqa.selenium.WebElement#sendKeys(CharSequence...) sendKeys} with textOrKey.
+     * @param args
+     *            list of arguments to format the found selector with.
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_ERROR_CLEAR_ON_INPUT} message (with screenshot, no exception)
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     */
+    protected void clearText(int timeOutInSeconds, PageElement pageElement, CharSequence keysToSend, Object... args) throws TechnicalException, FailureException {
         try {
             final WebElement element = Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement, args)));
             element.clear();
@@ -282,9 +510,11 @@ public abstract class Step implements IStep {
      * Checks if input text contains expected value.
      *
      * @param pageElement
-     *            Is target element
+     *            Is target element.
      * @param textOrKey
-     *            Is the data to check (text or text in context (after a save))
+     *            Is the data to check (text or text in context (after a save)).
+     * @param args
+     *            list of arguments to format the found selector with.
      * @return true or false
      * @throws FailureException
      *             if the scenario encounters a functional error
@@ -292,7 +522,29 @@ public abstract class Step implements IStep {
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} message (with screenshot, no exception)
      */
-    protected boolean checkInputText(PageElement pageElement, String textOrKey) throws FailureException, TechnicalException {
+    protected boolean checkInputText(PageElement pageElement, String textOrKey, Object... args) throws FailureException, TechnicalException {
+        return checkInputText(Context.getTimeout(), pageElement, textOrKey, args);
+    }
+
+    /**
+     * Checks if input text contains expected value.
+     *
+     * @param timeOutInSeconds
+     *            The timeout in seconds when an expectation is called.
+     * @param pageElement
+     *            Is target element.
+     * @param textOrKey
+     *            Is the data to check (text or text in context (after a save)).
+     * @param args
+     *            list of arguments to format the found selector with.
+     * @return true or false
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} message (with screenshot, no exception)
+     */
+    protected boolean checkInputText(int timeOutInSeconds, PageElement pageElement, String textOrKey, Object... args) throws FailureException, TechnicalException {
         WebElement inputText = null;
         String value = getTextOrKey(textOrKey);
         try {
@@ -307,18 +559,43 @@ public abstract class Step implements IStep {
      * Expects that an element contains expected value.
      *
      * @param pageElement
-     *            Is target element
+     *            Is target element.
      * @param textOrKey
-     *            Is the expected data (text or text in context (after a save))
+     *            Is the expected data (text or text in context (after a save)).
+     * @param args
+     *            list of arguments to format the found selector with.
      * @throws FailureException
-     *             if the scenario encounters a functional error
+     *             if the scenario encounters a functional error.
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} message (with screenshot, no exception) or with
      *             {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_WRONG_EXPECTED_VALUE} message
      *             (with screenshot, with exception)
      */
-    protected void expectText(PageElement pageElement, String textOrKey) throws FailureException, TechnicalException {
+    protected void expectText(PageElement pageElement, String textOrKey, Object... args) throws FailureException, TechnicalException {
+        expectText(Context.getTimeout(), pageElement, textOrKey, args);
+    }
+
+    /**
+     * Expects that an element contains expected value.
+     *
+     * @param timeOutInSeconds
+     *            The timeout in seconds when an expectation is called.
+     * @param pageElement
+     *            Is target element.
+     * @param textOrKey
+     *            Is the expected data (text or text in context (after a save)).
+     * @param args
+     *            list of arguments to format the found selector with.
+     * @throws FailureException
+     *             if the scenario encounters a functional error.
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} message (with screenshot, no exception) or with
+     *             {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_WRONG_EXPECTED_VALUE} message
+     *             (with screenshot, with exception)
+     */
+    protected void expectText(int timeOutInSeconds, PageElement pageElement, String textOrKey, Object... args) throws FailureException, TechnicalException {
         WebElement element = null;
         String value = getTextOrKey(textOrKey);
         try {
@@ -340,24 +617,37 @@ public abstract class Step implements IStep {
      * Checks mandatory text field.
      *
      * @param pageElement
-     *            Is concerned element
+     *            Is concerned element.
+     * @param args
+     *            list of arguments to format the found selector with.
      * @return true or false
      * @throws FailureException
-     *             if the scenario encounters a functional error
+     *             if the scenario encounters a functional error.
      */
-    protected boolean checkMandatoryTextField(PageElement pageElement) throws FailureException {
+    protected boolean checkMandatoryTextField(PageElement pageElement, Object... args) throws FailureException {
         WebElement inputText = null;
         try {
-            inputText = Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)));
+            inputText = Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement, args)));
         } catch (final Exception e) {
             new Result.Failure<>(pageElement, Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
         }
         return !(inputText == null || "".equals(inputText.getAttribute(VALUE).trim()));
     }
 
-    protected String readValueTextField(PageElement pageElement) throws FailureException {
+    /**
+     * Read Value Text Field.
+     * 
+     * @param pageElement
+     *            Is concerned element.
+     * @param args
+     *            list of arguments to format the found selector with.
+     * @return text.
+     * @throws FailureException
+     *             if the scenario encounters a functional error.
+     */
+    protected String readValueTextField(PageElement pageElement, Object... args) throws FailureException {
         try {
-            return Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement))).getAttribute(VALUE);
+            return Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement, args))).getAttribute(VALUE);
         } catch (final Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
         }
@@ -368,16 +658,18 @@ public abstract class Step implements IStep {
      * Checks if HTML text equals expected value.
      *
      * @param pageElement
-     *            Is target element
+     *            Is target element.
      * @param textOrKey
-     *            Is the new data (text or text in context (after a save))
+     *            Is the new data (text or text in context (after a save)).
+     * @param args
+     *            list of arguments to format the found selector with.
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_WRONG_EXPECTED_VALUE} message (with screenshot, with exception) or with
      *             {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} message
      *             (with screenshot, with exception)
      * @throws FailureException
-     *             if the scenario encounters a functional error
+     *             if the scenario encounters a functional error.
      */
     protected void checkText(PageElement pageElement, String textOrKey, Object... args) throws TechnicalException, FailureException {
         WebElement webElement = null;
@@ -402,16 +694,18 @@ public abstract class Step implements IStep {
      * Checks if HTML text contains expected value.
      *
      * @param pageElement
-     *            Is target element
+     *            Is target element.
      * @param textOrKey
-     *            Is the new data (text or text in context (after a save))
+     *            Is the new data (text or text in context (after a save)).
+     * @param args
+     *            list of arguments to format the found selector with.
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_WRONG_EXPECTED_VALUE} message (with screenshot, with exception) or with
      *             {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} message
      *             (with screenshot, with exception)
      * @throws FailureException
-     *             if the scenario encounters a functional error
+     *             if the scenario encounters a functional error.
      */
     protected void checkTextContains(PageElement pageElement, String textOrKey, Object... args) throws TechnicalException, FailureException {
         WebElement webElement = null;
@@ -426,7 +720,7 @@ public abstract class Step implements IStep {
         if (log.isDebugEnabled()) {
             log.debug("checkTextContains() expected [{}] and found [{}].", textOrKey.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : value, innerText);
         }
-        if (!innerText.contains(value)) {
+        if (innerText == null || !innerText.contains(value)) {
             new Result.Failure<>(innerText, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE), pageElement,
                     textOrKey.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : value, pageElement.getPage().getApplication()), true, pageElement.getPage().getCallBack());
         }
@@ -436,9 +730,11 @@ public abstract class Step implements IStep {
      * Checks if an html element (PageElement) is displayed.
      *
      * @param pageElement
-     *            Is target element
+     *            Is target element.
      * @param displayed
-     *            Is target element supposed to be displayed
+     *            Is target element supposed to be displayed.
+     * @param args
+     *            list of arguments to format the found selector with.
      * @throws FailureException
      *             if the scenario encounters a functional error. Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} message
      *             (with screenshot, with exception)
@@ -463,9 +759,11 @@ public abstract class Step implements IStep {
      * Checks if an html element (PageElement) is displayed.
      *
      * @param pageElement
-     *            Is target element
+     *            Is target element.
      * @param present
-     *            Is target element supposed to be present
+     *            Is target element supposed to be present.
+     * @param args
+     *            list of arguments to format the found selector with.
      * @throws FailureException
      *             if the scenario encounters a functional error. Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} message
      *             (with screenshot, with exception)
@@ -490,9 +788,11 @@ public abstract class Step implements IStep {
      * Update a html select with a text value.
      *
      * @param pageElement
-     *            Is target element
+     *            Is target element.
      * @param textOrKey
-     *            Is the new data (text or text in context (after a save))
+     *            Is the new data (text or text in context (after a save)).
+     * @param args
+     *            list of arguments to format the found selector with.
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_ERROR_ON_INPUT} message (with screenshot, no exception)
@@ -515,12 +815,14 @@ public abstract class Step implements IStep {
      * Check text selected in list (html select option).
      *
      * @param pageElement
-     *            Is target element
+     *            Is target element.
      * @param text
-     *            is text searched
+     *            is text searched.
+     * @param args
+     *            list of arguments to format the found selector with.
      * @return true or false
      * @throws FailureException
-     *             if the scenario encounters a functional error
+     *             if the scenario encounters a functional error.
      */
     protected boolean checkTextSelectedInList(PageElement pageElement, String text, Object... args) throws FailureException {
         try {
@@ -537,18 +839,20 @@ public abstract class Step implements IStep {
      * Update a html input text value with a date.
      *
      * @param pageElement
-     *            Is target element
+     *            Is target element.
      * @param dateType
-     *            "any", "future", "today", "future_strict"
+     *            "any", "future", "today", "future_strict".
      * @param date
-     *            Is the new data (date)
+     *            Is the new data (date).
+     * @param args
+     *            list of arguments to format the found selector with.
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_WRONG_DATE_FORMAT} message (no screenshot, no exception) or with
      *             {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNEXPECTED_DATE} message
      *             (with screenshot, no exception)
      * @throws FailureException
-     *             if the scenario encounters a functional error
+     *             if the scenario encounters a functional error.
      */
     protected void updateDateValidated(PageElement pageElement, String dateType, String date, Object... args) throws TechnicalException, FailureException {
         log.debug("updateDateValidated with elementName={}, dateType={} and date={}", pageElement, dateType, date);
@@ -579,14 +883,16 @@ public abstract class Step implements IStep {
      * Save value in memory using default target key (Page key + field).
      *
      * @param pageElement
-     *            The concerned page of field AND name of the field to save in memory. (sample: demo.DemoPage-button)
+     *            The concerned page of field AND name of the field to save in memory. (sample: demo.DemoPage-button).
+     * @param args
+     *            list of arguments to format the found selector with.
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} message (with screenshot, with exception) or with
      *             {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_RETRIEVE_VALUE} message
      *             (with screenshot, with exception)
      * @throws FailureException
-     *             if the scenario encounters a functional error
+     *             if the scenario encounters a functional error.
      */
     protected void saveElementValue(PageElement pageElement, Object... args) throws TechnicalException, FailureException {
         log.debug("saveElementValue: {} in {}.", pageElement.getKey(), pageElement.getPage().getApplication());
@@ -597,16 +903,18 @@ public abstract class Step implements IStep {
      * Save value in memory.
      *
      * @param pageElement
-     *            The concerned page of field AND name of the field to save in memory to targetKey. (sample: demo.DemoPage-name_field in name)
+     *            The concerned page of field AND name of the field to save in memory to targetKey. (sample: demo.DemoPage-name_field in name).
      * @param targetKey
-     *            is the key to save value to
+     *            is the key to save value to.
+     * @param args
+     *            list of arguments to format the found selector with.
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} message (with screenshot, with exception) or with
      *             {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_RETRIEVE_VALUE} message
      *             (with screenshot, with exception)
      * @throws FailureException
-     *             if the scenario encounters a functional error
+     *             if the scenario encounters a functional error.
      */
     protected void saveElementValue(PageElement pageElement, String targetKey, Object... args) throws TechnicalException, FailureException {
         log.debug("saveElementValue: {} to {} in {}.", pageElement, targetKey, pageElement.getPage().getApplication());
@@ -620,7 +928,7 @@ public abstract class Step implements IStep {
         }
         try {
             Context.saveValue(targetKey, txt);
-            Context.getCurrentScenario().write("SAVE " + targetKey + "=" + txt);
+            Context.getCurrentScenario().write(PREFIX_SAVE + targetKey + "=" + txt);
         } catch (final Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_RETRIEVE_VALUE), pageElement, pageElement.getPage().getApplication()), true,
                     pageElement.getPage().getCallBack());
@@ -631,21 +939,23 @@ public abstract class Step implements IStep {
      * Update html radio button by value (value corresponding to key "index").
      *
      * @param pageElement
-     *            Is concerned element
+     *            Is concerned element.
      * @param valueKeyOrKey
-     *            key printedValues
+     *            key printedValues.
      * @param printedValues
-     *            contain all possible value (order by key)
+     *            contain all possible value (order by key).
+     * @param args
+     *            list of arguments to format the found selector with.
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_SELECT_RADIO_BUTTON} message (with screenshot, with exception)
      * @throws FailureException
-     *             if the scenario encounters a functional error
+     *             if the scenario encounters a functional error.
      */
-    protected void updateRadioList(PageElement pageElement, String valueKeyOrKey, Map<String, String> printedValues) throws TechnicalException, FailureException {
+    protected void updateRadioList(PageElement pageElement, String valueKeyOrKey, Map<String, String> printedValues, Object... args) throws TechnicalException, FailureException {
         final String valueKey = Context.getValue(valueKeyOrKey) != null ? Context.getValue(valueKeyOrKey) : valueKeyOrKey;
         try {
-            final List<WebElement> radioButtons = Wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(Utilities.getLocator(pageElement)));
+            final List<WebElement> radioButtons = Wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(Utilities.getLocator(pageElement, args)));
             String radioToSelect = printedValues.get(valueKey);
             if (radioToSelect == null) {
                 radioToSelect = printedValues.get("Default");
@@ -665,16 +975,18 @@ public abstract class Step implements IStep {
      * Checks that given value is matching the selected radio list button.
      *
      * @param pageElement
-     *            The page element
+     *            The page element.
      * @param value
-     *            The value to check the selection from
+     *            The value to check the selection from.
+     * @param args
+     *            list of arguments to format the found selector with.
      * @return true if the given value is selected, false otherwise.
      * @throws FailureException
-     *             if the scenario encounters a functional error
+     *             if the scenario encounters a functional error.
      */
-    protected boolean checkRadioList(PageElement pageElement, String value) throws FailureException {
+    protected boolean checkRadioList(PageElement pageElement, String value, Object... args) throws FailureException {
         try {
-            final List<WebElement> radioButtons = Wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(Utilities.getLocator(pageElement)));
+            final List<WebElement> radioButtons = Wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(Utilities.getLocator(pageElement, args)));
             for (final WebElement button : radioButtons) {
                 if (button.getAttribute(VALUE).equalsIgnoreCase(value) && button.isSelected()) {
                     return true;
@@ -690,19 +1002,21 @@ public abstract class Step implements IStep {
      * Update html radio button by text "input".
      *
      * @param pageElement
-     *            Is concerned element
+     *            Is concerned element.
      * @param valueOrKey
-     *            Is the value (value or value in context (after a save)) use for selection
+     *            Is the value (value or value in context (after a save)) use for selection.
+     * @param args
+     *            list of arguments to format the found selector with.
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Failure with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_SELECT_RADIO_BUTTON} message (with screenshot)
      * @throws FailureException
-     *             if the scenario encounters a functional error
+     *             if the scenario encounters a functional error.
      */
-    protected void updateRadioList(PageElement pageElement, String valueOrKey) throws TechnicalException, FailureException {
+    protected void updateRadioList(PageElement pageElement, String valueOrKey, Object... args) throws TechnicalException, FailureException {
         final String value = Context.getValue(valueOrKey) != null ? Context.getValue(valueOrKey) : valueOrKey;
         try {
-            final List<WebElement> radioButtons = Wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(Utilities.getLocator(pageElement)));
+            final List<WebElement> radioButtons = Wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(Utilities.getLocator(pageElement, args)));
             for (final WebElement button : radioButtons) {
                 if (button.getAttribute(VALUE).equals(value)) {
                     button.click();
@@ -718,17 +1032,19 @@ public abstract class Step implements IStep {
      * Passes over a specific page element triggering 'mouseover' js event.
      *
      * @param element
-     *            Target page element
+     *            Target page element.
+     * @param args
+     *            list of arguments to format the found selector with.
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Failure with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_PASS_OVER_ELEMENT} message (with screenshot)
      * @throws FailureException
-     *             if the scenario encounters a functional error
+     *             if the scenario encounters a functional error.
      */
-    protected void passOver(PageElement element) throws TechnicalException, FailureException {
+    protected void passOver(PageElement element, Object... args) throws TechnicalException, FailureException {
         try {
             Actions action = new Actions(getDriver());
-            WebElement we = getDriver().findElement(Utilities.getLocator(element));
+            WebElement we = getDriver().findElement(Utilities.getLocator(element, args));
             action.moveToElement(we).build().perform();
         } catch (final Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_PASS_OVER_ELEMENT), element, element.getPage().getApplication()), true,
@@ -741,16 +1057,16 @@ public abstract class Step implements IStep {
      * Checks a checkbox type element.
      *
      * @param element
-     *            Target page element
+     *            Target page element.
      * @param checked
-     *            Final checkbox value
+     *            Final checkbox value.
      * @param args
-     *            list of arguments to format the found selector with
+     *            list of arguments to format the found selector with.
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Failure with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_CHECK_ELEMENT} message (with screenshot)
      * @throws FailureException
-     *             if the scenario encounters a functional error
+     *             if the scenario encounters a functional error.
      */
     protected void selectCheckbox(PageElement element, boolean checked, Object... args) throws TechnicalException, FailureException {
         try {
@@ -768,21 +1084,23 @@ public abstract class Step implements IStep {
      * Checks a checkbox type element (value corresponding to key "valueKey").
      *
      * @param element
-     *            Target page element
+     *            Target page element.
      * @param valueKeyOrKey
      *            is valueKey (valueKey or key in context (after a save)) to match in values map
      * @param values
-     *            Values map
+     *            Values map.
+     * @param args
+     *            list of arguments to format the found selector with.
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Failure with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_CHECK_ELEMENT} message (with screenshot)
      * @throws FailureException
-     *             if the scenario encounters a functional error
+     *             if the scenario encounters a functional error.
      */
-    protected void selectCheckbox(PageElement element, String valueKeyOrKey, Map<String, Boolean> values) throws TechnicalException, FailureException {
+    protected void selectCheckbox(PageElement element, String valueKeyOrKey, Map<String, Boolean> values, Object... args) throws TechnicalException, FailureException {
         final String valueKey = Context.getValue(valueKeyOrKey) != null ? Context.getValue(valueKeyOrKey) : valueKeyOrKey;
         try {
-            final WebElement webElement = Wait.until(ExpectedConditions.elementToBeClickable(Utilities.getLocator(element)));
+            final WebElement webElement = Wait.until(ExpectedConditions.elementToBeClickable(Utilities.getLocator(element, args)));
             Boolean checkboxValue = values.get(valueKey);
             if (checkboxValue == null) {
                 checkboxValue = values.get("Default");
@@ -802,12 +1120,12 @@ public abstract class Step implements IStep {
      * @param element
      *            The PageElement representing a frame.
      * @param args
-     *            list of arguments to format the found selector with
+     *            list of arguments to format the found selector with.
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_SWITCH_FRAME} message (with screenshot, with exception)
      * @throws FailureException
-     *             if the scenario encounters a functional error
+     *             if the scenario encounters a functional error.
      */
     protected void switchFrame(PageElement element, Object... args) throws FailureException, TechnicalException {
         try {
@@ -822,16 +1140,16 @@ public abstract class Step implements IStep {
      * Updates a html file input with the path of the file to upload.
      *
      * @param pageElement
-     *            Is target element
+     *            Is target element.
      * @param fileOrKey
-     *            Is the file path (text or text in context (after a save))
+     *            Is the file path (text or text in context (after a save)).
      * @param args
-     *            list of arguments to format the found selector with
+     *            list of arguments to format the found selector with.
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UPLOADING_FILE} message (with screenshot, no exception)
      * @throws FailureException
-     *             if the scenario encounters a functional error
+     *             if the scenario encounters a functional error.
      */
     protected void uploadFile(PageElement pageElement, String fileOrKey, Object... args) throws TechnicalException, FailureException {
         final String path = Context.getValue(fileOrKey) != null ? Context.getValue(fileOrKey) : System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + fileOrKey;
@@ -857,13 +1175,13 @@ public abstract class Step implements IStep {
      * Displays message (concerned activity and list of authorized activities) at the beginning of method in logs.
      *
      * @param methodName
-     *            is name of java method
+     *            is name of java method.
      * @param act
-     *            is name of activity
+     *            is name of activity.
      * @param concernedActivity
-     *            is concerned activity
+     *            is concerned activity.
      * @param concernedActivities
-     *            is a list of authorized activities
+     *            is a list of authorized activities.
      */
     protected void displayMessageAtTheBeginningOfMethod(String methodName, String act, String concernedActivity, List<String> concernedActivities) {
         log.debug("{} {}: {} with {} concernedActivity(ies)", act, methodName, concernedActivity, concernedActivities.size());
@@ -878,11 +1196,11 @@ public abstract class Step implements IStep {
      * Display message (list of authorized activities) at the beginning of method in logs.
      *
      * @param methodName
-     *            is name of java method
+     *            is name of java method.
      * @param act
-     *            is name of activity
+     *            is name of activity.
      * @param concernedActivities
-     *            is a list of authorized activities
+     *            is a list of authorized activities.
      */
     protected void displayMessageAtTheBeginningOfMethod(String methodName, String act, List<String> concernedActivities) {
         log.debug("{}: {} with {} concernedActivity(ies)", act, methodName, concernedActivities.size());
@@ -897,9 +1215,9 @@ public abstract class Step implements IStep {
      * Display message (list of elements) at the beginning of method in logs.
      *
      * @param methodName
-     *            is name of java method
+     *            is name of java method.
      * @param concernedElements
-     *            is a list of concerned elements (example: authorized activities)
+     *            is a list of concerned elements (example: authorized activities).
      */
     protected void displayConcernedElementsAtTheBeginningOfMethod(String methodName, List<String> concernedElements) {
         log.debug("{}: with {} concernedElements", methodName, concernedElements.size());
@@ -915,9 +1233,9 @@ public abstract class Step implements IStep {
      * CAUTION: This check do not work with IE: https://github.com/SeleniumHQ/selenium/issues/468
      *
      * @param page
-     *            A Page
+     *            A Page.
      * @throws FailureException
-     *             if the scenario encounters a functional error
+     *             if the scenario encounters a functional error.
      */
     protected void checkAlert(Page page) throws FailureException {
         if (!DriverFactory.IE.equals(Context.getBrowser())) {
@@ -934,7 +1252,7 @@ public abstract class Step implements IStep {
      * Runs a bunch of steps for a Gherkin loop.
      *
      * @param loopedSteps
-     *            GherkinConditionedLoopedStep steps to run
+     *            GherkinConditionedLoopedStep steps to run.
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      */
@@ -971,7 +1289,7 @@ public abstract class Step implements IStep {
 
     /**
      * @param textOrKey
-     *            Is the new data (text or text in context (after a save))
+     *            Is the new data (text or text in context (after a save)).
      * @return a string from context or not (and crypted or not).
      * @throws TechnicalException
      *             is thrown if you have a technical error (decrypt value) in NoraUi.
@@ -1055,7 +1373,7 @@ public abstract class Step implements IStep {
     }
 
     private void setDropDownValue(PageElement element, String text, Object... args) throws TechnicalException, FailureException {
-        final WebElement select = Wait.until(ExpectedConditions.elementToBeClickable(Utilities.getLocator(element)));
+        final WebElement select = Wait.until(ExpectedConditions.elementToBeClickable(Utilities.getLocator(element, args)));
         final Select dropDown = new Select(select);
         final int index = userNameService.findOptionByIgnoreCaseText(text, dropDown);
         if (index != -1) {
