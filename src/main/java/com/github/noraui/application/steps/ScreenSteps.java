@@ -95,7 +95,6 @@ public class ScreenSteps extends Step {
     @Et("Je sauvegarde une capture d'écran de {page-element} dans {string}(\\?)")
     @And("I save a screenshot of {page-element} in {string}(\\?)")
     public void saveWebElementInScreenshot(PageElement pageElement, String screenName, List<GherkinStepCondition> conditions) throws IOException, FailureException, TechnicalException {
-
         log.debug("I save a screenshot of [{}-{}] in [{}.jpg]", pageElement.getPage(), pageElement.getKey(), screenName);
         try {
             screenService.saveScreenshot(screenName, Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement))));
