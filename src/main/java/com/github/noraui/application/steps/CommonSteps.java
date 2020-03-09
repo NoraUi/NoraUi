@@ -507,7 +507,7 @@ public class CommonSteps extends Step {
     public void updateText(PageElement pageElement, String textOrKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         updateText(pageElement, textOrKey);
     }
-    
+
     @Conditioned
     @Quand("Je remplace le texte {page-element} avec {string}(\\?)")
     @When("I set text {page-element} with {string}(\\?)")
@@ -662,27 +662,8 @@ public class CommonSteps extends Step {
      *
      * @param pageElement
      *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
-     * @param conditions
-     *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
-     * @throws TechnicalException
-     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
-     *             Exception with message and with screenshot and with exception if functional error but no screenshot and no exception if technical error.
-     * @throws FailureException
-     *             if the scenario encounters a functional error
-     */
-    @Deprecated
-    @Conditioned
-    @Et("Je vérifie que {page-element} est présent(\\?)")
-    @And("I check that {page-element} is present(\\?)")
-    public void checkElementPresent(PageElement pageElement, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
-        checkElementPresence(pageElement, true);
-    }
-
-    /**
-     * Checks if an html element is not present.
-     *
-     * @param pageElement
-     *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
+     * @param not
+     *            is boolean is = false and isnot = true
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
@@ -692,10 +673,10 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Et("Je vérifie que {page-element} n'est pas présent(\\?)")
-    @And("I check that {page-element} is not present(\\?)")
-    public void checkElementNotPresent(PageElement pageElement, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
-        checkElementPresence(pageElement, false);
+    @Et("Je vérifie que {page-element} {is-isnot} présent(\\?)")
+    @And("I check that {page-element} {is-isnot} present(\\?)")
+    public void checkElementNotPresent(PageElement pageElement, boolean not, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
+        checkElementPresence(pageElement, !not);
     }
 
     /**
