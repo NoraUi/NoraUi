@@ -44,7 +44,6 @@ public class AuthUT {
         testServer.start();
     }
 
-    @SuppressWarnings("deprecation")
     @Before
     public void prepare() throws TechnicalException {
         testServer.start();
