@@ -121,7 +121,7 @@ public abstract class Step implements IStep {
                     toClick.getPage().getCallBack());
         }
     }
-    
+
     /**
      * Click on html element.
      *
@@ -140,7 +140,7 @@ public abstract class Step implements IStep {
     protected void clickOn(int timeOutInSeconds, PageElement toClick, Object... args) throws TechnicalException, FailureException {
         displayMessageAtTheBeginningOfMethod("clickOn: %s in %s", toClick.toString(), toClick.getPage().getApplication());
         try {
-            Wait.until(ExpectedConditions.elementToBeClickable(Utilities.getLocator(toClick, args)), timeOutInSeconds).click();
+            Wait.until(ExpectedConditions.elementToBeClickable(Utilities.getLocator(toClick, args))).click();
         } catch (final Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK), toClick, toClick.getPage().getApplication()), true,
                     toClick.getPage().getCallBack());
@@ -495,7 +495,7 @@ public abstract class Step implements IStep {
      */
     protected void clearText(int timeOutInSeconds, PageElement pageElement, CharSequence keysToSend, Object... args) throws TechnicalException, FailureException {
         try {
-            final WebElement element = Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement, args)));
+            final WebElement element = Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement, args)), timeOutInSeconds);
             element.clear();
             if (keysToSend != null) {
                 element.sendKeys(keysToSend);
