@@ -404,7 +404,7 @@ public abstract class Step implements IStep {
         String value = getTextOrKey(textOrKey);
         if (!"".equals(value)) {
             try {
-                final WebElement element = (WebElement) Wait.until(ExpectedConditions.elementToBeClickable(Utilities.getLocator(pageElement, args)), timeOutInSeconds);
+                final WebElement element = Wait.until(ExpectedConditions.elementToBeClickable(Utilities.getLocator(pageElement, args)), timeOutInSeconds);
                 element.clear();
                 String javascript = "arguments[0].value=arguments[1];";
                 ((JavascriptExecutor) getDriver()).executeScript(javascript, element, value.substring(0, value.length() - 1));
@@ -495,7 +495,7 @@ public abstract class Step implements IStep {
      */
     protected void clearText(int timeOutInSeconds, PageElement pageElement, CharSequence keysToSend, Object... args) throws TechnicalException, FailureException {
         try {
-            final WebElement element = (WebElement) Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement, args)), timeOutInSeconds);
+            final WebElement element = Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement, args)), timeOutInSeconds);
             element.clear();
             if (keysToSend != null) {
                 element.sendKeys(keysToSend);
