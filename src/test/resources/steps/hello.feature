@@ -107,12 +107,12 @@ Feature: hello (Function to validate the environment.)
 
     And I save the value of 'bakery.DemoPage-big_title' in 'title' column of data output provider
 
-    And I check that 'bakery.DemoPage-big_title' is present
-    And I check that 'bakery.DemoPage-noExistElement' is not present
+    And The element 'bakery.DemoPage-big_title' should be present
+    And The element 'bakery.DemoPage-noExistElement' should not be present
 
-    And I check that 'bakery.DemoPage-big_title' is visible
-    And I check that 'bakery.DemoPage-visibility_hidden_title' is not visible
-    And I check that 'bakery.DemoPage-display_none_title' is not visible
+    And The element 'bakery.DemoPage-big_title' is visible
+    And The element 'bakery.DemoPage-visibility_hidden_title' is not visible
+    And The element 'bakery.DemoPage-display_none_title' is not visible
 
     When I clear text in 'bakery.DemoPage-input_text_field'
     When I update text 'bakery.DemoPage-input_text_field' and type ENTER with '<zip>'

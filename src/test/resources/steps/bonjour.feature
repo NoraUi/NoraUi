@@ -39,48 +39,48 @@ Fonctionnalité: bonjour (Fonction pour valider l'environnement.)
 
     Lorsque Je fait la créaton du fichier test.txt dans repertoire des téléchargements
     
-    Quand J'utilise l'élément 'bakery.DemoPage-file_input_text_field' pour uploader le fichier 'test.txt'
-    Et Je clique sur 'bakery.DemoPage-send'
-    Alors Je vérifie le texte 'bakery.DemoPage-input_text_field' avec 'test.txt'
+    Quand J'utilise l'élément $bakery.DemoPage-file_input_text_field pour uploader le fichier 'test.txt'
+    Et Je clique sur $bakery.DemoPage-send
+    Alors Je vérifie le texte $bakery.DemoPage-input_text_field avec 'test.txt'
     Lorsque Je vide le repertoire des téléchargements
 	
     Lorsque Mes champs sont prêts à être utilisés
-    Quand Je clarifie le texte dans 'bakery.DemoPage-input_text_field'
-    Quand Je mets à jour le texte 'bakery.DemoPage-input_text_field' avec '<auteur>'
-    Quand Je mets à jour le texte 'bakery.DemoPage-input_text_field' et entre ENTRER avec '<auteur>'
-    Et Je vérifie le champ obligatoire 'bakery.DemoPage-input_text_field' de type 'text'
-    Et Je vérifie le texte 'bakery.DemoPage-input_text_field' avec '<auteur>'
-    Quand Je mets à jour la liste déroulante 'bakery.DemoPage-input_select_field' avec '<ville>'
-    Alors Je mets à jour la date 'bakery.DemoPage-input_text_field' avec une 'future' date '<date>'
+    Quand Je clarifie le texte dans $bakery.DemoPage-input_text_field
+    Quand Je mets à jour le texte $bakery.DemoPage-input_text_field avec '<auteur>'
+    Quand Je mets à jour le texte $bakery.DemoPage-input_text_field et entre ENTRER avec '<auteur>'
+    Et Je vérifie le champ obligatoire $bakery.DemoPage-input_text_field de type 'text'
+    Et Je vérifie le texte $bakery.DemoPage-input_text_field avec '<auteur>'
+    Quand Je mets à jour la liste déroulante $bakery.DemoPage-input_select_field avec '<ville>'
+    Alors Je mets à jour la date $bakery.DemoPage-input_text_field avec une 'future' date '<date>'
 
-    Et Je mets à jour la liste radio 'bakery.DemoPage-rate' avec 'day'
+    Et Je mets à jour la liste radio $bakery.DemoPage-rate avec 'day'
     
     Alors Je mets à jour les checkboxes et vérifie la liste radio 'DEMO_HOME-agree' avec 'yes':
         |yes|true|
         |no|false|
 
-    Et Je sauvegarde la valeur de 'bakery.DemoPage-input_text_field'
+    Et Je sauvegarde la valeur de $bakery.DemoPage-input_text_field
 
-    Quand Je clique sur 'bakery.DemoPage-submit'
+    Quand Je clique sur $bakery.DemoPage-submit
 
     Lorsque moi une erreur si '<ville>' est Paris.
 
-    Et Je vérifie le texte 'bakery.DemoPage-input_current_date' avec '0'
-    Quand Je clique via js sur 'bakery.DemoPage-smilejs'
+    Et Je vérifie le texte $bakery.DemoPage-input_current_date avec '0'
+    Quand Je clique via js sur $bakery.DemoPage-smilejs
     Et Je vérifie le message 'OK' sur l'alerte
-    Et Je vérifie le texte 'bakery.DemoPage-input_current_date' avec '1'
+    Et Je vérifie le texte $bakery.DemoPage-input_current_date avec '1'
 
-    Quand Je clique via js sur xpath './/*[@name=\'smilejs\' and @title=\'smilejs\']' de 'bakery.DemoPage' page
+    Quand Je clique via js sur xpath './/*[@name=\'smilejs\' and @title=\'smilejs\']' de $bakery.DemoPage page
     Et Je vérifie le message 'OK' sur l'alerte
-    Et Je vérifie le texte 'bakery.DemoPage-input_current_date' avec '2'
+    Et Je vérifie le texte $bakery.DemoPage-input_current_date avec '2'
 
-    Quand Je clique via js sur 'bakery.DemoPage-smilejsIssue80'
+    Quand Je clique via js sur $bakery.DemoPage-smilejsIssue80
     Et Je vérifie le message 'OK' sur l'alerte
-    Et Je vérifie le texte 'bakery.DemoPage-input_current_date' avec '3'
+    Et Je vérifie le texte $bakery.DemoPage-input_current_date avec '3'
 
-    Quand Je clique sur 'bakery.DemoPage-<élément>'
+    Quand Je clique sur $bakery.DemoPage-<élément>
     Et Je vérifie le message 'OK' sur l'alerte
-    Et Je vérifie le texte 'bakery.DemoPage-input_current_date' avec '4'
+    Et Je vérifie le texte $bakery.DemoPage-input_current_date avec '4'
 
     Lorsque test pour 'Annulée'
 
@@ -93,8 +93,8 @@ Fonctionnalité: bonjour (Fonction pour valider l'environnement.)
         |key|step|expected|actual|
         |1|J'attends 3 secondes?|1|1|
         |2|J'attends 4 secondes?|1|2|
-        |3|Je mets à jour la liste déroulante 'bakery.DemoPage-input_select_field' avec '<ville>'|||
-        |4|Je sauvegarde la valeur de 'bakery.DemoPage-input_select_field' dans la clé 'myOutLoopKey' du contexte|||
+        |3|Je mets à jour la liste déroulante $bakery.DemoPage-input_select_field avec '<ville>'|||
+        |4|Je sauvegarde la valeur de $bakery.DemoPage-input_select_field dans la clé 'myOutLoopKey' du contexte|||
 
     Lorsque Si '<auteur>' vérifie '.+', je fais jusqu'à 'bakery.DemoPage-big_title' respecte 'This is a demo for NORAUI.*' avec 3 essais maxi:
         |key|step|expected|actual|
@@ -106,75 +106,75 @@ Fonctionnalité: bonjour (Fonction pour valider l'environnement.)
         |1|I wait 1 second|||
         |2|I wait 1 second?|(Rennes\|Paris\|New York)|<ville>|        
 
-    Et Je sauvegarde la valeur de 'bakery.DemoPage-big_title' dans la colonne 'titre' du fournisseur de données en sortie
+    Et Je sauvegarde la valeur de $bakery.DemoPage-big_title dans la colonne 'titre' du fournisseur de données en sortie
 
-    Et Je vérifie que 'bakery.DemoPage-big_title' est présent
-    Et Je vérifie que 'bakery.DemoPage-noExistElement' n'est pas présent
+    Et L'élément $bakery.DemoPage-big_title devrait être présent
+    Et L'élément $bakery.DemoPage-noExistElement ne devrait pas être présent
 
-    Et Je vérifie que 'bakery.DemoPage-big_title' est visible
-    Et Je vérifie que 'bakery.DemoPage-visibility_hidden_title' n'est pas visible
-    Et Je vérifie que 'bakery.DemoPage-display_none_title' n'est pas visible
+    Et L'élément $bakery.DemoPage-big_title est visible
+    Et L'élément $bakery.DemoPage-visibility_hidden_title n'est pas visible
+    Et L'élément $bakery.DemoPage-display_none_title n'est pas visible
 
-    Quand Je clarifie le texte dans 'bakery.DemoPage-input_text_field'
-    Quand Je mets à jour le texte 'bakery.DemoPage-input_text_field' et entre ENTRER avec '<codepostal>'
-    Et Je vérifie le champ obligatoire 'bakery.DemoPage-input_text_field' de type 'text'
+    Quand Je clarifie le texte dans $bakery.DemoPage-input_text_field
+    Quand Je mets à jour le texte $bakery.DemoPage-input_text_field et entre ENTRER avec '<codepostal>'
+    Et Je vérifie le champ obligatoire $bakery.DemoPage-input_text_field de type 'text'
 
-    Et Je mets à jour la liste radio 'bakery.DemoPage-rate' avec '<auteur>' à partir de ces valeurs:
+    Et Je mets à jour la liste radio $bakery.DemoPage-rate avec '<auteur>' à partir de ces valeurs:
         |Jenkins T1|week-end|
         |Jenkins T2|night|
         |Default|day|
 
-    Lorsque Je mets à jour la case à cocher 'bakery.DemoPage-iagree' avec 'true'
-    Lorsque Je mets à jour la case à cocher 'bakery.DemoPage-iagree' avec 'true'?
+    Lorsque Je mets à jour la case à cocher $bakery.DemoPage-iagree avec 'true'
+    Lorsque Je mets à jour la case à cocher $bakery.DemoPage-iagree avec 'true'?
         |key|expected|actual|
         |wid|.+|<auteur>|
-    Lorsque Je mets à jour la case à cocher 'bakery.DemoPage-iagree' avec 'yes' à partir de ces valeurs:
+    Lorsque Je mets à jour la case à cocher $bakery.DemoPage-iagree avec 'yes' à partir de ces valeurs:
         |yes|true|
         |Default|false|
-    Lorsque Je mets à jour la case à cocher 'bakery.DemoPage-iagree' avec '<auteur>' à partir de ces valeurs:
+    Lorsque Je mets à jour la case à cocher $bakery.DemoPage-iagree avec '<auteur>' à partir de ces valeurs:
         |Jenkins T1|true|
         |Default|false| 
 
-    Quand Je clique sur 'bakery.DemoPage-open_popup_button1' et passe sur 'bakery.Popup1DemoPage' de type fenêtre
+    Quand Je clique sur $bakery.DemoPage-open_popup_button1 et passe sur 'bakery.Popup1DemoPage' de type fenêtre
     Lorsque Je ferme la fenêtre actuelle et passe à la fenêtre 'bakery'
 
-    Quand Je clique sur 'bakery.DemoPage-open_popup_button1' et passe sur 'bakery.Popup1DemoPage' de type fenêtre
+    Quand Je clique sur $bakery.DemoPage-open_popup_button1 et passe sur 'bakery.Popup1DemoPage' de type fenêtre
     Quand Je passe à la fenêtre 'bakery'
-    Quand Je clique sur 'bakery.DemoPage-open_popup_button2' et passe sur 'bakery.Popup2DemoPage' de type fenêtre
+    Quand Je clique sur $bakery.DemoPage-open_popup_button2 et passe sur 'bakery.Popup2DemoPage' de type fenêtre
     Quand Je passe à la fenêtre 'bakery'
-    Quand Je clique sur 'bakery.DemoPage-open_popup_button3' et passe sur 'bakery.Popup3DemoPage' de type fenêtre
+    Quand Je clique sur $bakery.DemoPage-open_popup_button3 et passe sur 'bakery.Popup3DemoPage' de type fenêtre
     Quand J'ouvre une nouvelle fenêtre
     Lorsque I close all windows except 'bakery'
     Quand Je passe à la fenêtre 'bakery'
 
-    Quand Je clarifie le texte dans 'bakery.DemoPage-input_text_field'
-    Quand Je mets à jour le texte 'bakery.DemoPage-input_text_field' avec '01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789'
-    Et Je vérifie le texte 'bakery.DemoPage-input_text_field' avec '01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789'
+    Quand Je clarifie le texte dans $bakery.DemoPage-input_text_field
+    Quand Je mets à jour le texte $bakery.DemoPage-input_text_field avec '01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789'
+    Et Je vérifie le texte $bakery.DemoPage-input_text_field avec '01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789'
 
-    Quand Je clique sur 'bakery.DemoPage-changeValueButton'
-    Alors Je m'attends à avoir 'bakery.DemoPage-changeValueButton' avec le texte 'My value has changed'
+    Quand Je clique sur $bakery.DemoPage-changeValueButton
+    Alors Je m'attends à avoir $bakery.DemoPage-changeValueButton avec le texte 'My value has changed'
 
     Et Je prends une capture d'écran
     Et Je sauvegarde une capture d'écran dans 'myScreenshot-<id>'
-    Et Je sauvegarde une capture d'écran de 'bakery.DemoPage-changeValueButton' dans 'changeValueButton<id>'
+    Et Je sauvegarde une capture d'écran de $bakery.DemoPage-changeValueButton dans 'changeValueButton<id>'
 
-    Quand Je clique sur 'bakery.DemoPage-disappearButton'
-    Et L'élément 'bakery.DemoPage-disappearButton' devrait être invisible dans les 10 secondes
+    Quand Je clique sur $bakery.DemoPage-disappearButton
+    Et L'élément $bakery.DemoPage-disappearButton devrait être invisible dans les 10 secondes
 
-    Quand Je clique sur 'bakery.DemoPage-staleButton'
-    Et L'élément 'bakery.DemoPage-staleButton' devrait périmer dans les 10 secondes
+    Quand Je clique sur $bakery.DemoPage-staleButton
+    Et L'élément $bakery.DemoPage-staleButton devrait périmer dans les 10 secondes
 
-    Et Je mets à jour le texte 'bakery.DemoPage-input_text_field' avec une valeur aléatoire qui vérifie 'noraui[a-zA-Z0-9]{6}'
+    Et Je mets à jour le texte $bakery.DemoPage-input_text_field avec une valeur aléatoire qui vérifie 'noraui[a-zA-Z0-9]{6}'
 
-    Quand Je clarifie le texte dans 'bakery.DemoPage-input_text_field'
-    Quand Je mets à jour le texte 'bakery.DemoPage-input_text_field' avec '℗:AMAapQjwjKaAGUkO6rbttg=='
-    Et Je vérifie le texte 'bakery.DemoPage-input_text_field' avec 'foot'
-    Et Je vérifie le texte 'bakery.DemoPage-input_text_field' avec '℗:AMAapQjwjKaAGUkO6rbttg=='
+    Quand Je clarifie le texte dans $bakery.DemoPage-input_text_field
+    Quand Je mets à jour le texte $bakery.DemoPage-input_text_field avec '℗:AMAapQjwjKaAGUkO6rbttg=='
+    Et Je vérifie le texte $bakery.DemoPage-input_text_field avec 'foot'
+    Et Je vérifie le texte $bakery.DemoPage-input_text_field avec '℗:AMAapQjwjKaAGUkO6rbttg=='
 
-    Alors Je clique sur 'bakery.DemoPage-navbarDropdownMenuLink'
-    Et Je passe au dessus de 'bakery.DemoPage-navbarDropdownSubMenu'
-    Et Je passe au dessus de 'bakery.DemoPage-navbarDropdownSubSubMenu1'
-    Et Je clique sur 'bakery.DemoPage-navbarDropdownSubSubMenu2'
+    Alors Je clique sur $bakery.DemoPage-navbarDropdownMenuLink
+    Et Je passe au dessus de $bakery.DemoPage-navbarDropdownSubMenu
+    Et Je passe au dessus de $bakery.DemoPage-navbarDropdownSubSubMenu1
+    Et Je clique sur $bakery.DemoPage-navbarDropdownSubSubMenu2
 
     Et Je sauvegarde la valeur de cette API REST 'GET' 'GITHUBAPI_HOME' '/search/users?q=location:rennes+language:java&page=1&per_page=10' dans 'titre' du contexte
     Et Je sauvegarde la valeur de cette API REST 'GET' 'GITHUBAPI_HOME' '/search/users?q=location:rennes+language:java&page=1&per_page=10' dans 'titre' du fournisseur de données en sortie
@@ -183,7 +183,7 @@ Fonctionnalité: bonjour (Fonction pour valider l'environnement.)
         |key|expected|actual|
         |id|1|<id>|
 
-    Et Je clique sur 'bakery.DemoPage-exportCSV'
+    Et Je clique sur $bakery.DemoPage-exportCSV
     Et J'attends que le fichier nommé 'stock-data.csv' soit téléchargé avec un timeout de 3 secondes
     Et Le fichier 'stock-data.csv' encodé en 'ISO-8859-1' vérifie 'Symbol;Company;Price'
     Et Je supprime le fichier 'stock-data.csv' dans repertoire des téléchargements

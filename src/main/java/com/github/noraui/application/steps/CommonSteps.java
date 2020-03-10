@@ -614,8 +614,8 @@ public class CommonSteps extends Step {
     }
 
     /**
-     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.application.steps.WaitSteps.waitVisibilityOf(String pageElement, List)}
-     *             "I wait visibility of {string}(\\?)"
+     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.application.steps.WaitSteps#waitVisibilityOf(PageElement, Boolean, List)}
+     *             "The element {page-element} {is-isnot} visible(\\?)"
      *             Checks if an html element is visible.
      * @param pageElement
      *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
@@ -636,8 +636,8 @@ public class CommonSteps extends Step {
     }
 
     /**
-     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.application.steps.WaitSteps#waitInvisibilityOf(String, List)}
-     *             "I wait invisibility of {string}(\\?)"
+     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.application.steps.WaitSteps#waitInvisibilityOf(PageElement, Boolean, List)}
+     *             "The element {page-element} {is-isnot} visible(\\?)"
      *             Checks if an html element is not visible.
      * @param pageElement
      *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
@@ -658,12 +658,11 @@ public class CommonSteps extends Step {
     }
 
     /**
-     * Checks if an html element is present.
-     *
+     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.application.steps.WaitSteps#waitPresenceOfElementLocated(PageElement, Boolean, List)}
+     *             "The element {page-element} {should-shouldnot} be present(\\?)"
+     *             Checks if an html element is present.
      * @param pageElement
      *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
-     * @param not
-     *            is boolean is = false and isnot = true
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
@@ -672,11 +671,34 @@ public class CommonSteps extends Step {
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
+    @Deprecated
     @Conditioned
-    @Et("Je vérifie que {page-element} {is-isnot} présent(\\?)")
-    @And("I check that {page-element} {is-isnot} present(\\?)")
-    public void checkElementNotPresent(PageElement pageElement, boolean not, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
-        checkElementPresence(pageElement, !not);
+    @Et("Je vérifie que {page-element} est présent(\\?)")
+    @And("I check that {page-element} is present(\\?)")
+    public void checkElementPresent(PageElement pageElement, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
+        checkElementPresence(pageElement, true);
+    }
+
+    /**
+     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.application.steps.WaitSteps#waitPresenceOfElementLocated(PageElement, Boolean, List)}
+     *             "The element {page-element} {should-shouldnot} be present(\\?)"
+     *             Checks if an html element is not present.
+     * @param pageElement
+     *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
+     * @param conditions
+     *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
+     * @throws TechnicalException
+     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with message and with screenshot and with exception if functional error but no screenshot and no exception if technical error.
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     */
+    @Deprecated
+    @Conditioned
+    @Et("Je vérifie que {page-element} n'est pas présent(\\?)")
+    @And("I check that {page-element} is not present(\\?)")
+    public void checkElementNotPresent(PageElement pageElement, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
+        checkElementPresence(pageElement, false);
     }
 
     /**

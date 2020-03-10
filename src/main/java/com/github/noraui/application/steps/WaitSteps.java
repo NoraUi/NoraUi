@@ -150,7 +150,7 @@ public class WaitSteps extends Step {
     @Lorsque("L'élément {page-element} {should-shouldnot} être présent(\\?)")
     @Then("The element {page-element} {should-shouldnot} be present(\\?)")
     public void waitPresenceOfElementLocated(PageElement pageElement, final Boolean not, List<GherkinStepCondition> conditions) {
-        Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)), not);
+        Wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(Utilities.getLocator(pageElement)), not);
     }
 
     @Conditioned

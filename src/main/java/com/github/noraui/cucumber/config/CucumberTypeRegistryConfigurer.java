@@ -77,7 +77,7 @@ public class CucumberTypeRegistryConfigurer implements TypeRegistryConfigurer {
 
     public static List<ParameterType<?>> getParameterTypes() {
         if (parameterTypes.isEmpty()) {
-            parameterTypes = Arrays.asList(new ParameterType<PageElement>("page-element", "\\'(.*\\..*-.*)\\'", PageElement.class, (final String strPageElement) -> {
+            parameterTypes = Arrays.asList(new ParameterType<PageElement>("page-element", "\\$(\\w+(\\.\\w+)*-\\w+)", PageElement.class, (final String strPageElement) -> {
                 String page = null, elementName = null;
                 try {
                     page = strPageElement.split("-")[0];
@@ -86,7 +86,7 @@ public class CucumberTypeRegistryConfigurer implements TypeRegistryConfigurer {
                 } catch (Exception e) {
                     throw new TechnicalException(Messages.format(Messages.getMessage(Page.UNABLE_TO_RETRIEVE_PAGE_ELEMENT), page, elementName), e);
                 }
-            }), new ParameterType<Page>("page", "\\'(.*\\..*)\\'", Page.class, (final String strPage) -> {
+            }), new ParameterType<Page>("page", "\\$(\\w+(\\.\\w+)*)", Page.class, (final String strPage) -> {
                 try {
                     return Page.getInstance(strPage);
                 } catch (Exception e) {
