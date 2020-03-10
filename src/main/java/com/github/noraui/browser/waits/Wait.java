@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.github.noraui.utils.Context;
 
 public class Wait {
+
     /**
      * Single global instance of WebDriverWait
      */
@@ -29,8 +30,9 @@ public class Wait {
         return (T) untilAnd(condition, false).get();
     }
 
-    public static Object until(ExpectedCondition<?> condition, boolean not) {
-        return untilAnd(condition, not).get();
+    @SuppressWarnings("unchecked")
+    public static <T> T until(ExpectedCondition<T> condition, boolean not) {
+        return (T) untilAnd(condition, not).get();
     }
 
     /**
@@ -45,12 +47,14 @@ public class Wait {
      * @return The function's return value if the function returned something different
      *         from null or false before the timeout expired.
      */
-    public static Object until(ExpectedCondition<?> condition, int timeOutInSeconds) {
-        return untilAnd(condition, timeOutInSeconds, false).get();
+    @SuppressWarnings("unchecked")
+    public static <T> T until(ExpectedCondition<T> condition, int timeOutInSeconds) {
+        return (T) untilAnd(condition, timeOutInSeconds, false).get();
     }
 
-    public static Object until(ExpectedCondition<?> condition, int timeOutInSeconds, boolean not) {
-        return untilAnd(condition, timeOutInSeconds, not).get();
+    @SuppressWarnings("unchecked")
+    public static <T> T until(ExpectedCondition<T> condition, int timeOutInSeconds, boolean not) {
+        return (T) untilAnd(condition, timeOutInSeconds, not).get();
     }
 
     @SuppressWarnings("unchecked")
