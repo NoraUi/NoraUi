@@ -67,6 +67,7 @@ public class FileSteps extends Step {
      *            The name of the file removed.
      * @param conditions
      *            List of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
+     * @throws IOException
      */
     @Conditioned
     @Lorsque("Je supprime le fichier {string} dans repertoire des téléchargements(\\?)")
