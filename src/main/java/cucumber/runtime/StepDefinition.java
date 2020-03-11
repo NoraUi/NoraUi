@@ -12,7 +12,6 @@ import gherkin.pickles.PickleStep;
 import io.cucumber.stepexpression.Argument;
 
 public interface StepDefinition {
-
     /**
      * Returns a list of arguments. Return null if the step definition
      * doesn't match at all. Return an empty List if it matches with 0 arguments
@@ -29,7 +28,6 @@ public interface StepDefinition {
      *
      * @param detail
      *            true if extra detailed location information should be included.
-     * @param detail
      * @return
      */
     String getLocation(boolean detail);
@@ -52,7 +50,8 @@ public interface StepDefinition {
      * Invokes the step definition. The method should raise a Throwable
      * if the invocation fails, which will cause the step to fail.
      * 
-     * @return
+     * @param args
+     * @throws Throwable
      */
     void execute(Object[] args) throws Throwable;
 
@@ -60,6 +59,7 @@ public interface StepDefinition {
      * Return true if this matches the location. This is used to filter
      * stack traces.
      * 
+     * @param stackTraceElement
      * @return
      */
     boolean isDefinedAt(StackTraceElement stackTraceElement); // TODO: redundant with getLocation?
