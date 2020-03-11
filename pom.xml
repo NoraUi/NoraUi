@@ -430,6 +430,7 @@
 							<goal>jar</goal>
 						</goals>
 						<configuration>
+                            <source>8</source>
 							<additionalparam>${javadoc.opts}</additionalparam>
 						</configuration>
 					</execution>
@@ -579,6 +580,7 @@
 						<artifactId>maven-javadoc-plugin</artifactId>
 						<version>${maven-javadoc-plugin.version}</version>
 						<configuration>
+                            <source>8</source>
 							<additionalparam>${javadoc.opts}</additionalparam>
 							<aggregate>true</aggregate>
 							<stylesheetfile>${basedir}/src/test/resources/dev/stylesheet.css</stylesheetfile>
