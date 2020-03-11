@@ -48,8 +48,8 @@ public class StepInterceptor implements MethodInterceptor {
             if (stepAnnotation.annotationType().isAnnotationPresent(StepDefAnnotation.class)) {
                 Matcher matcher = Pattern.compile("value=(.*)\\)").matcher(stepAnnotation.toString());
                 if (matcher.find()) {
-                    log.info("---> {} "
-                            + String.format(matcher.group(1).replaceAll("\\{\\S+\\}", "{%s}").replace("(\\?)", ""), stepAnnotation.annotationType().getSimpleName(), invocation.getArguments()));
+                    log.info("---> {} {}", stepAnnotation.annotationType().getSimpleName(),
+                            (String.format(matcher.group(1).replaceAll("\\{\\S+\\}", "{%s}").replace("(\\?)", ""), invocation.getArguments())));
                 }
             }
         }
