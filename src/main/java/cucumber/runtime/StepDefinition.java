@@ -59,6 +59,8 @@ public interface StepDefinition {
     /**
      * Return true if this matches the location. This is used to filter
      * stack traces.
+     * 
+     * @return
      */
     boolean isDefinedAt(StackTraceElement stackTraceElement); // TODO: redundant with getLocation?
 
