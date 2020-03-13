@@ -16,6 +16,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -100,6 +101,7 @@ public class Context {
     public static final String OKHTTP_WRITE_TIMEOUT = "writeTimeout";
     public static final String OKHTTP_READ_TIMEOUT = "readTimeout";
     public static final String HEADLESS = "headless";
+    public static final String NO_SANDBOX = "noSandbox";
     public static final String LOCALE = "locale";
     public static final String AUTH_TYPE = "authentication";
     public static final String CRYPTO_KEY = "crypto.key";
@@ -254,6 +256,11 @@ public class Context {
      * Is headless mode enable ?
      */
     private boolean isHeadless;
+
+    /**
+     * Is no-sandbox mode enable ?
+     */
+    private boolean isNoSandbox;
 
     /**
      * Instance of DataInputProvider
@@ -413,6 +420,7 @@ public class Context {
 
         // enable browser headless mode ?
         isHeadless = "true".equals(getProperty(HEADLESS, applicationProperties));
+        isNoSandbox = "true".equals(getProperty(NO_SANDBOX, applicationProperties));
 
         // init driver callbacks
         exceptionCallbacks.put(Callbacks.RESTART_WEB_DRIVER, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, RESTART_WEB_DRIVER_METHOD_NAME);
@@ -776,6 +784,10 @@ public class Context {
         return getInstance().isHeadless;
     }
 
+    public static boolean isNoSandbox() {
+        return getInstance().isNoSandbox;
+    }
+
     public static String getModelPackages() {
         return getInstance().modelPackages;
     }
@@ -1001,10 +1013,20 @@ public class Context {
         final CucumberOptions co = clazz.getAnnotation(CucumberOptions.class);
         final Set<Class<?>> classes = getClasses(co.glue());
         classes.add(BrowserSteps.class);
-        return classes
-                .stream().flatMap(c -> Arrays.stream(c.getDeclaredMethods())).flatMap(m -> Arrays.stream(m.getAnnotations())
-                        .filter(stepAnnotation -> stepAnnotation.annotationType().isAnnotationPresent(StepDefAnnotation.class)).map(ann -> new AbstractMap.SimpleEntry<>(ann.toString(), m)))
-                .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+        //@formatter:off
+        return classes.stream() //
+               .flatMap(c -> Arrays.stream(c.getDeclaredMethods())) //
+               .flatMap(m -> Arrays.stream(m.getAnnotations()) //
+               .filter(stepAnnotation -> stepAnnotation.annotationType().isAnnotationPresent(StepDefAnnotation.class)) //
+               .map(ann -> {
+                 try {
+                   return new AbstractMap.SimpleEntry<>(ann.annotationType().getDeclaredMethod("value").invoke(ann).toString(), m);
+                 } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+                 }
+                 return null;
+                 })) //
+               .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)); //
+        //@formatter:on
     }
 
     private static Set<Class<?>> getClasses(String[] packagesName) {
