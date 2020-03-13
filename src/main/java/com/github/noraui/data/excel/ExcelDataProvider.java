@@ -241,7 +241,7 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
             }
         }
         if (extensions.size() != 1) {
-            throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_EXPECTED_EXCEL_EXTENTION_ERROR));
+            throw new TechnicalException(Messages.format(Messages.getMessage(TechnicalException.TECHNICAL_EXPECTED_EXCEL_EXTENTION_ERROR), scenarioName));
         }
         return extensions.iterator().next();
     }

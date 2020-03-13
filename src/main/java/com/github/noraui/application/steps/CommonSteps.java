@@ -27,6 +27,7 @@ import com.github.noraui.exception.Callbacks;
 import com.github.noraui.exception.FailureException;
 import com.github.noraui.exception.Result;
 import com.github.noraui.exception.TechnicalException;
+import com.github.noraui.exception.WarningException;
 import com.github.noraui.gherkin.GherkinConditionedLoopedStep;
 import com.github.noraui.gherkin.GherkinStepCondition;
 import com.github.noraui.log.annotation.Loggable;
@@ -269,11 +270,13 @@ public class CommonSteps extends Step {
      * @throws TechnicalException
      *             is thrown if the scenario encounters a technical error (format, configuration, data, ...) in NoraUi.
      *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} or {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_RETRIEVE_VALUE}
+     * @throws WarningException
+     *             if the scenario encounters a functional warning (with message and screenshot)
      */
     @Conditioned
     @Et("Je sauvegarde la valeur de {string} dans la colonne {string} du fournisseur de données en sortie(\\?)")
     @And("I save the value of {string} in {string} column of data output provider(\\?)")
-    public void saveValueInDataOutputProvider(String pageElement, String targetColumn, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+    public void saveValueInDataOutputProvider(String pageElement, String targetColumn, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException, WarningException {
         String page = pageElement.split("-")[0];
         String elementName = pageElement.split("-")[1];
         String value = "";

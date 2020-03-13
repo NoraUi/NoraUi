@@ -157,6 +157,10 @@ public class DriverFactory {
             chromeOptions.addArguments("--headless");
         }
 
+        if (Context.isHeadless()) {
+            chromeOptions.addArguments("--no-sandbox");
+        }
+
         // Proxy configuration
         if (Context.getProxy().getProxyType() != ProxyType.UNSPECIFIED && Context.getProxy().getProxyType() != ProxyType.AUTODETECT) {
             chromeOptions.setCapability(CapabilityType.PROXY, Context.getProxy());

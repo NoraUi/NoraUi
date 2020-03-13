@@ -17,7 +17,7 @@ Fonctionnalité: bonjour (Fonction pour valider l'environnement.)
         |élément|<élément>|
         |élément2|<élément2>|
 
-    Alors J'attends 1 secondes
+    Alors J'attends 1 seconde
 
     Lorsque 'BAKERY_DEMO' est ouvert
     Alors Le portail DEMO est affiché
@@ -98,13 +98,13 @@ Fonctionnalité: bonjour (Fonction pour valider l'environnement.)
 
     Lorsque Si '<auteur>' vérifie '.+', je fais jusqu'à 'bakery.DemoPage-big_title' respecte 'This is a demo for NORAUI.*' avec 3 essais maxi:
         |key|step|expected|actual|
-        |1|I wait 1 second|||
-        |2|I wait 1 second?|(Rennes\|Paris\|New York)|<ville>|
+        |1|J'attends 1 seconde|||
+        |2|J'attends 1 seconde?|(Rennes\|Paris\|New York)|<ville>|
 
     Lorsque Si '<auteur>' vérifie '.+', Tant que 'bakery.DemoPage-big_title' respecte 'This is a demo for NORAUI.*' je fais avec 3 essais maxi:
         |key|step|expected|actual|
-        |1|I wait 1 second|||
-        |2|I wait 1 second?|(Rennes\|Paris\|New York)|<ville>|        
+        |1|J'attends 1 seconde|||
+        |2|J'attends 1 seconde?|(Rennes\|Paris\|New York)|<ville>|        
 
     Et Je sauvegarde la valeur de 'bakery.DemoPage-big_title' dans la colonne 'titre' du fournisseur de données en sortie
 

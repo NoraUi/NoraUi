@@ -135,7 +135,7 @@
 			<groupId>io.cucumber</groupId>
 			<artifactId>cucumber-guice</artifactId>
 			<version>${cucumber.version}</version>
-		</dependency>
+    </dependency>
 
 		<!-- Google guice -->
 		<dependency>

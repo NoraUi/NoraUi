@@ -18,6 +18,7 @@ import com.github.noraui.exception.FailureException;
 import com.github.noraui.exception.HttpServiceException;
 import com.github.noraui.exception.Result;
 import com.github.noraui.exception.TechnicalException;
+import com.github.noraui.exception.WarningException;
 import com.github.noraui.gherkin.GherkinStepCondition;
 import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.service.HttpService;
@@ -95,11 +96,14 @@ public class RESTSteps extends Step {
      *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_EMPTY_DATA} message (no screenshot)
      * @throws FailureException
      *             if the scenario encounters a functional error
+     * @throws WarningException
+     *             if the scenario encounters a functional warning (with message and screenshot)
      */
     @Conditioned
     @Et("Je sauvegarde la valeur de cette API REST {string} {string} {string} dans {string} du fournisseur de données en sortie(\\?)")
     @And("I save the value of REST API {string} {string} {string} in {string} column of data output provider(\\?)")
-    public void saveValueInDataOutputProvider(String method, String pageKey, String uri, String targetColumn, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+    public void saveValueInDataOutputProvider(String method, String pageKey, String uri, String targetColumn, List<GherkinStepCondition> conditions)
+            throws TechnicalException, FailureException, WarningException {
         log.debug("saveValue of REST API with method [{}].", method);
         log.debug("saveValue of REST API with pageKey [{}].", pageKey);
         log.debug("saveValue of REST API with uri [{}].", uri);

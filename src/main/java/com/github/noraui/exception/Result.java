@@ -84,7 +84,7 @@ public abstract class Result {
          * @throws TechnicalException
          *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
          */
-        public Warning(O object, String message, boolean takeScreenshot, int nid) throws TechnicalException {
+        public Warning(O object, String message, boolean takeScreenshot, int nid) throws WarningException {
             this.object = object;
             try {
                 Context.getDataOutputProvider().writeWarningResult(Context.getDataInputProvider().getIndexData(Context.getCurrentScenarioData()).getIndexes().get(nid),
@@ -107,6 +107,7 @@ public abstract class Result {
             } else {
                 log.info("{}", message);
             }
+            throw new WarningException(this);
         }
 
         public O warning() {
