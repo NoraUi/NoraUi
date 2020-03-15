@@ -16,7 +16,7 @@ Feature: hello (Function to validate the environment.)
         |element|<element>|
         |element2|<element2>|
         
-    Then I wait 1 seconds
+    Then I wait 1 second
 
     Given 'BAKERY_DEMO' is opened
     Then The DEMO portal is displayed
