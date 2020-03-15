@@ -65,7 +65,7 @@ public class CommonStepsUT {
         try {
             s.checkMandatoryField(Page.getInstance("bakery.DemoPage").getPageElementByKey("-mockField"), "text", new ArrayList<GherkinStepCondition>());
         } catch (final FailureException a) {
-            Assert.assertEquals(Messages.getMessage("FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT") + " [-mockField]", a.getMessage());
+            Assert.assertEquals(Messages.getMessage("FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT") + " [bakery.BAKERY_DEMO-mockField]", a.getMessage());
         }
     }
 
