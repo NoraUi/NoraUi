@@ -614,7 +614,7 @@ public class CommonSteps extends Step {
     }
 
     /**
-     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.application.steps.WaitSteps#waitVisibilityOf(PageElement, Boolean, List)}
+     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.application.steps.WaitSteps#waitVisibilityOf()}
      *             "The element {page-element} {is-isnot} visible(\\?)"
      *             Checks if an html element is visible.
      * @param pageElement
@@ -636,7 +636,7 @@ public class CommonSteps extends Step {
     }
 
     /**
-     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.application.steps.WaitSteps#waitInvisibilityOf(PageElement, Boolean, List)}
+     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.application.steps.WaitSteps#waitInvisibilityOf()}
      *             "The element {page-element} {is-isnot} visible(\\?)"
      *             Checks if an html element is not visible.
      * @param pageElement
@@ -658,7 +658,7 @@ public class CommonSteps extends Step {
     }
 
     /**
-     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.application.steps.WaitSteps#waitPresenceOfElementLocated(PageElement, Boolean, List)}
+     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.application.steps.WaitSteps#waitPresenceOfElementLocated()}
      *             "The element {page-element} {should-shouldnot} be present(\\?)"
      *             Checks if an html element is present.
      * @param pageElement
@@ -680,7 +680,7 @@ public class CommonSteps extends Step {
     }
 
     /**
-     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.application.steps.WaitSteps#waitPresenceOfElementLocated(PageElement, Boolean, List)}
+     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.application.steps.WaitSteps#waitPresenceOfElementLocated()}
      *             "The element {page-element} {should-shouldnot} be present(\\?)"
      *             Checks if an html element is not present.
      * @param pageElement

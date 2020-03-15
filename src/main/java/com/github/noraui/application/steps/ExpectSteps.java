@@ -54,7 +54,7 @@ public class ExpectSteps extends Step {
     }
 
     /**
-     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.selenium.NoraUiExpectedConditions.textToBeEqualsToExpectedValue()}
+     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.selenium.NoraUiExpectedConditions#textToBeEqualsToExpectedValue()}
      *             Expects that the target element contains the given value as text.
      *             The inner text and 'value' attribute of the element are checked.
      * @param locator
@@ -78,7 +78,7 @@ public class ExpectSteps extends Step {
     }
 
     /**
-     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.selenium.NoraUiExpectedConditions.atLeastOneOfTheseElementsIsPresent()}
+     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.selenium.NoraUiExpectedConditions#atLeastOneOfTheseElementsIsPresent()}
      *             Expects that at least one of the given elements is present.
      * @param locators
      *            The list of elements identified by their locators
@@ -102,7 +102,7 @@ public class ExpectSteps extends Step {
     }
 
     /**
-     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.selenium.NoraUiExpectedConditions.presenceOfNbElementsLocatedBy()}
+     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.selenium.NoraUiExpectedConditions#presenceOfNbElementsLocatedBy()}
      *             An expectation for checking that nb elements that match the locator are present on the web page.
      * @param locator
      *            Locator of elements
@@ -119,7 +119,7 @@ public class ExpectSteps extends Step {
     }
 
     /**
-     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.selenium.NoraUiExpectedConditions.presenceOfMinimumElementsLocatedBy()}
+     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.selenium.NoraUiExpectedConditions#presenceOfMinimumElementsLocatedBy()}
      *             An expectation for checking that nb elements that match (or more) the locator are present on the web page.
      * @param locator
      *            Locator of elements
@@ -136,7 +136,7 @@ public class ExpectSteps extends Step {
     }
 
     /**
-     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.selenium.NoraUiExpectedConditions.presenceOfMaximumElementsLocatedBy()}
+     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.selenium.NoraUiExpectedConditions#presenceOfMaximumElementsLocatedBy()}
      *             An expectation for checking that nb elements that match (or less) the locator are present on the web page.
      * @param locator
      *            Locator of elements
@@ -153,7 +153,7 @@ public class ExpectSteps extends Step {
     }
 
     /**
-     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.selenium.NoraUiExpectedConditions.visibilityOfNbElementsLocatedBy()}
+     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.selenium.NoraUiExpectedConditions#visibilityOfNbElementsLocatedBy()}
      *             An expectation for checking that nb elements present on the web page that match the locator
      *             are visible. Visibility means that the elements are not only displayed but also have a height
      *             and width that is greater than 0.
@@ -183,7 +183,7 @@ public class ExpectSteps extends Step {
     }
 
     /**
-     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.selenium.NoraUiExpectedConditions.waitForLoad()}
+     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.selenium.NoraUiExpectedConditions#waitForLoad()}
      *             Expects that the target page is completely loaded.
      * @return true or false
      */

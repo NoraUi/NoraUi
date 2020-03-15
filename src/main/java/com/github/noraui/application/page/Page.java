@@ -143,6 +143,14 @@ public abstract class Page implements IPage {
         this.motherPage = motherPage;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return this.application + '.' + this.pageKey;
+    }
+
     public class PageElement implements IPageElement {
 
         private String key = "";
@@ -200,10 +208,13 @@ public abstract class Page implements IPage {
          */
         @Override
         public String toString() {
+            String ret = getPage().toString();
             if ("".equals(label)) {
-                return key;
+                ret += key;
+            } else {
+                ret += '.' + label;
             }
-            return label;
+            return ret;
         }
 
     }
