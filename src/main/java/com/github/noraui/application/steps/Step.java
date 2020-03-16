@@ -135,7 +135,7 @@ public abstract class Step implements IStep {
     protected void clickOn(int timeOutInSeconds, PageElement toClick, Object... args) throws TechnicalException, FailureException {
         displayMessageAtTheBeginningOfMethod("clickOn: %s in %s", toClick.toString(), toClick.getPage().getApplication());
         try {
-            Wait.until(ExpectedConditions.elementToBeClickable(Utilities.getLocator(toClick, args))).click();
+            Wait.until(ExpectedConditions.elementToBeClickable(Utilities.getLocator(toClick, args)), timeOutInSeconds).click();
         } catch (final Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_OPEN_ON_CLICK), toClick, toClick.getPage().getApplication()), true,
                     toClick.getPage().getCallBack());
@@ -252,7 +252,6 @@ public abstract class Step implements IStep {
      *
      * @param timeOutInSeconds
      *            The timeout in seconds when an expectation is called.
-     *            <<<<<<< HEAD
      * @param pageElement
      *            Is target element.
      * @param textOrKey
@@ -617,10 +616,10 @@ public abstract class Step implements IStep {
         String text = null;
         String value = getTextOrKey(textOrKey);
         try {
-            Context.waitUntil(NoraUiExpectedConditions.textToBeEqualsToExpectedValue(Utilities.getLocator(pageElement, args), value), timeOutInSeconds);
+            Wait.until(NoraUiExpectedConditions.textToBeEqualsToExpectedValue(Utilities.getLocator(pageElement, args), value), timeOutInSeconds);
         } catch (final Exception e) {
             try {
-                text = Context.waitUntil(NoraUiExpectedConditions.textToBePresentInElement(Utilities.getLocator(pageElement, args)), timeOutInSeconds);
+                text = Wait.until(NoraUiExpectedConditions.textToBePresentInElement(Utilities.getLocator(pageElement, args)), timeOutInSeconds);
             } catch (final Exception ex) {
                 log.error("error in expectText. {}", Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_TEXT_IN_ELEMENT));
                 new Result.Failure<>(ex.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_TEXT_IN_ELEMENT), true, pageElement.getPage().getCallBack());
@@ -654,10 +653,10 @@ public abstract class Step implements IStep {
         String text = null;
         String value = getTextOrKey(textOrKey);
         try {
-            Context.waitUntil(NoraUiExpectedConditions.textContainsExpectedValue(Utilities.getLocator(pageElement, args), value), timeOutInSeconds);
+            Wait.until(NoraUiExpectedConditions.textContainsExpectedValue(Utilities.getLocator(pageElement, args), value), timeOutInSeconds);
         } catch (final Exception e) {
             try {
-                text = Context.waitUntil(NoraUiExpectedConditions.textToBePresentInElement(Utilities.getLocator(pageElement, args)), timeOutInSeconds);
+                text = Wait.until(NoraUiExpectedConditions.textToBePresentInElement(Utilities.getLocator(pageElement, args)), timeOutInSeconds);
             } catch (final Exception ex) {
                 log.error("error in expectTextContains. {}", Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_TEXT_IN_ELEMENT));
                 new Result.Failure<>(ex.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_TEXT_IN_ELEMENT), true, pageElement.getPage().getCallBack());
