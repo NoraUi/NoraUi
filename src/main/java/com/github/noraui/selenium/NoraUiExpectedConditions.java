@@ -28,7 +28,7 @@ public class NoraUiExpectedConditions {
     }
 
     /**
-     * Expects that the target element contains the given value as text.
+     * Expects that the target element equals the given value as text.
      * The inner text and 'value' attribute of the element are checked.
      *
      * @param locator
@@ -43,6 +43,29 @@ public class NoraUiExpectedConditions {
                 final WebElement element = driver.findElement(locator);
                 if (element != null && value != null) {
                     return !((element.getAttribute(VALUE) == null || !value.equals(element.getAttribute(VALUE).trim())) && !value.equals(element.getText().replaceAll("\n", "")));
+                }
+            } catch (final Exception e) {
+            }
+            return false;
+        };
+    }
+
+    /**
+     * Expects that the target element contains the given value as text.
+     * The inner text and 'value' attribute of the element are checked.
+     *
+     * @param locator
+     *            is the selenium locator
+     * @param value
+     *            is the expected value
+     * @return true or false
+     */
+    public static ExpectedCondition<Boolean> textContainsExpectedValue(final By locator, final String value) {
+        return (@Nullable WebDriver driver) -> {
+            try {
+                final WebElement element = driver.findElement(locator);
+                if (element != null && value != null) {
+                    return !((element.getAttribute(VALUE) == null || !element.getAttribute(VALUE).trim().contains(value)) && !element.getText().replaceAll("\n", "").contains(value));
                 }
             } catch (final Exception e) {
             }

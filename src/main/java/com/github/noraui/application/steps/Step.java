@@ -553,7 +553,7 @@ public abstract class Step implements IStep {
     }
 
     /**
-     * Expects that an element contains expected value.
+     * Expects that an element equals expected value.
      *
      * @param pageElement
      *            Is target element.
@@ -576,6 +576,27 @@ public abstract class Step implements IStep {
     /**
      * Expects that an element contains expected value.
      *
+     * @param pageElement
+     *            Is target element.
+     * @param textOrKey
+     *            Is the expected data (text or text in context (after a save)).
+     * @param args
+     *            list of arguments to format the found selector with.
+     * @throws FailureException
+     *             if the scenario encounters a functional error.
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} message (with screenshot, no exception) or with
+     *             {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_WRONG_EXPECTED_VALUE} message
+     *             (with screenshot, with exception)
+     */
+    protected void expectTextContains(PageElement pageElement, String textOrKey, Object... args) throws FailureException, TechnicalException {
+        expectTextContains(Context.getTimeout(), pageElement, textOrKey, args);
+    }
+
+    /**
+     * Expects that an element equals expected value.
+     *
      * @param timeOutInSeconds
      *            The timeout in seconds when an expectation is called.
      * @param pageElement
@@ -593,22 +614,58 @@ public abstract class Step implements IStep {
      *             (with screenshot, with exception)
      */
     protected void expectText(int timeOutInSeconds, PageElement pageElement, String textOrKey, Object... args) throws FailureException, TechnicalException {
-        WebElement element = null;
+        String text = null;
         String value = getTextOrKey(textOrKey);
         try {
-            element = Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement)), timeOutInSeconds);
+            Context.waitUntil(NoraUiExpectedConditions.textToBeEqualsToExpectedValue(Utilities.getLocator(pageElement, args), value), timeOutInSeconds);
         } catch (final Exception e) {
-            new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
-        }
-        try {
-            Wait.until(NoraUiExpectedConditions.textToBeEqualsToExpectedValue(Utilities.getLocator(pageElement), value), timeOutInSeconds);
-
-        } catch (final Exception e) {
-            log.error("error in expectText. element is [{}]", element == null ? null : element.getText());
-            new Result.Failure<>(element == null ? null : element.getText(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE), pageElement,
+            try {
+                text = Context.waitUntil(NoraUiExpectedConditions.textToBePresentInElement(Utilities.getLocator(pageElement, args)), timeOutInSeconds);
+            } catch (final Exception ex) {
+                log.error("error in expectText. {}", Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_TEXT_IN_ELEMENT));
+                new Result.Failure<>(ex.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_TEXT_IN_ELEMENT), true, pageElement.getPage().getCallBack());
+            }
+            log.error("error in expectText. text is [{}] and expected value is [{}]", text, value);
+            new Result.Failure<>(text == null ? null : text, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE), pageElement,
                     textOrKey.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : value, pageElement.getPage().getApplication()), true, pageElement.getPage().getCallBack());
         }
+    }
 
+    /**
+     * Expects that an element contains expected value.
+     *
+     * @param timeOutInSeconds
+     *            The timeout in seconds when an expectation is called.
+     * @param pageElement
+     *            Is target element.
+     * @param textOrKey
+     *            Is the expected data (text or text in context (after a save)).
+     * @param args
+     *            list of arguments to format the found selector with.
+     * @throws FailureException
+     *             if the scenario encounters a functional error.
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} message (with screenshot, no exception) or with
+     *             {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_WRONG_EXPECTED_VALUE} message
+     *             (with screenshot, with exception)
+     */
+    protected void expectTextContains(int timeOutInSeconds, PageElement pageElement, String textOrKey, Object... args) throws FailureException, TechnicalException {
+        String text = null;
+        String value = getTextOrKey(textOrKey);
+        try {
+            Context.waitUntil(NoraUiExpectedConditions.textContainsExpectedValue(Utilities.getLocator(pageElement, args), value), timeOutInSeconds);
+        } catch (final Exception e) {
+            try {
+                text = Context.waitUntil(NoraUiExpectedConditions.textToBePresentInElement(Utilities.getLocator(pageElement, args)), timeOutInSeconds);
+            } catch (final Exception ex) {
+                log.error("error in expectTextContains. {}", Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_TEXT_IN_ELEMENT));
+                new Result.Failure<>(ex.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_TEXT_IN_ELEMENT), true, pageElement.getPage().getCallBack());
+            }
+            log.error("error in expectTextContains. text is [{}] and expected value is [{}]", text, value);
+            new Result.Failure<>(text == null ? null : text, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE), pageElement,
+                    textOrKey.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : value, pageElement.getPage().getApplication()), true, pageElement.getPage().getCallBack());
+        }
     }
 
     /**
@@ -653,7 +710,7 @@ public abstract class Step implements IStep {
     }
 
     /**
-     * Checks if HTML text equals expected value.
+     * Checks if HTML text equals expected value. If your value from Ajax, use "com.github.noraui.application.steps.Step#expectText".
      *
      * @param pageElement
      *            Is target element.
@@ -679,9 +736,7 @@ public abstract class Step implements IStep {
         }
 
         final String innerText = webElement == null ? null : webElement.getText();
-        if (log.isDebugEnabled()) {
-            log.debug("checkText() expected [{}] and found [{}].", textOrKey.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : value, innerText);
-        }
+        log.debug("checkText() expected [{}] and found [{}].", textOrKey.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : value, innerText);
         if (!value.equals(innerText)) {
             new Result.Failure<>(innerText, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE), pageElement,
                     textOrKey.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : value, pageElement.getPage().getApplication()), true, pageElement.getPage().getCallBack());
@@ -715,9 +770,7 @@ public abstract class Step implements IStep {
         }
 
         final String innerText = webElement == null ? null : webElement.getText();
-        if (log.isDebugEnabled()) {
-            log.debug("checkTextContains() expected [{}] and found [{}].", textOrKey.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : value, innerText);
-        }
+        log.debug("checkTextContains() expected [{}] and found [{}].", textOrKey.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : value, innerText);
         if (innerText == null || !innerText.contains(value)) {
             new Result.Failure<>(innerText, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_EXPECTED_VALUE), pageElement,
                     textOrKey.startsWith(cryptoService.getPrefix()) ? SECURE_MASK : value, pageElement.getPage().getApplication()), true, pageElement.getPage().getCallBack());

@@ -602,7 +602,7 @@ public class CommonSteps extends Step {
     }
 
     /**
-     * Checks if html input text contains expected value.
+     * Checks if html input text contains expected value. If your value from Ajax, use "I expect to have {string} with the text {string}".
      *
      * @param pageElement
      *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
