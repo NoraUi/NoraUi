@@ -6,8 +6,8 @@
  */
 package com.github.noraui.data.csv;
 
-import static com.github.noraui.utils.Constants.DATA_IN;
-import static com.github.noraui.utils.Constants.DATA_OUT;
+import static com.github.noraui.Constants.DATA_IN;
+import static com.github.noraui.Constants.DATA_OUT;
 
 import java.io.File;
 import java.io.FileReader;

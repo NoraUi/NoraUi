@@ -20,12 +20,12 @@ import java.util.ArrayList;
 
 import org.slf4j.Logger;
 
+import com.github.noraui.Constants;
 import com.github.noraui.data.CommonDataProvider;
 import com.github.noraui.data.DataInputProvider;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.exception.data.DatabaseException;
 import com.github.noraui.log.annotation.Loggable;
-import com.github.noraui.utils.Constants;
 import com.github.noraui.utils.Messages;
 
 @Loggable

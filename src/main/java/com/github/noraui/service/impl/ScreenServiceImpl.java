@@ -6,8 +6,8 @@
  */
 package com.github.noraui.service.impl;
 
-import static com.github.noraui.utils.Constants.DOWNLOADED_FILES_FOLDER;
-import static com.github.noraui.utils.Constants.USER_DIR;
+import static com.github.noraui.Constants.DOWNLOADED_FILES_FOLDER;
+import static com.github.noraui.Constants.USER_DIR;
 import static org.monte.media.FormatKeys.EncodingKey;
 import static org.monte.media.FormatKeys.FrameRateKey;
 import static org.monte.media.FormatKeys.KeyFrameIntervalKey;

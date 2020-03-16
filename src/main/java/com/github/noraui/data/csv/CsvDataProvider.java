@@ -6,7 +6,7 @@
  */
 package com.github.noraui.data.csv;
 
-import static com.github.noraui.utils.Constants.DEFAULT_ENDODING;
+import static com.github.noraui.Constants.DEFAULT_ENDODING;
 
 import java.io.File;
 import java.io.FileInputStream;

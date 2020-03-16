@@ -12,6 +12,8 @@ import java.lang.reflect.Modifier;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.github.noraui.Constants;
+
 public class ConstantsUT {
 
     @Test

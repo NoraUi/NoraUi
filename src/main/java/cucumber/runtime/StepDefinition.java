@@ -23,7 +23,8 @@ public interface StepDefinition {
      * The source line where the step definition is defined.
      * Example: foo/bar/Zap.brainfuck:42
      *
-     * @param detail true if extra detailed location information should be included.
+     * @param detail
+     *            true if extra detailed location information should be included.
      */
     String getLocation(boolean detail);
 
@@ -31,7 +32,7 @@ public interface StepDefinition {
      * How many declared parameters this step definition has. Returns null if unknown.
      */
     Integer getParameterCount();
-    
+
     /**
      * list of declared parameters this step definition has. Returns null if unknown.
      */

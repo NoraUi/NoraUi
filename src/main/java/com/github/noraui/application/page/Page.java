@@ -23,7 +23,11 @@ public abstract class Page implements IPage {
 
     static Logger log;
 
-    private static final String PAGE_UNABLE_TO_RETRIEVE = "PAGE_UNABLE_TO_RETRIEVE";
+    public static final String UNABLE_TO_RETRIEVE_PAGE = "UNABLE_TO_RETRIEVE_PAGE";
+
+    public static final String UNABLE_TO_RETRIEVE_PAGE_ELEMENT = "UNABLE_TO_RETRIEVE_PAGE_ELEMENT";
+
+    public static final String ERROR_DURING_PAGE_ELEMENT_LOOKUP = "ERROR_DURING_PAGE_ELEMENT_LOOKUP";
 
     private static String pagesPackage = Page.class.getPackage().getName() + '.';
 
@@ -61,8 +65,8 @@ public abstract class Page implements IPage {
     public static Page getInstance(String className) throws TechnicalException {
         try {
             return (Page) NoraUiInjector.getNoraUiInjectorSource().getInstance(Class.forName(pagesPackage + className));
-        } catch (final ClassNotFoundException e) {
-            throw new TechnicalException(Messages.format(Messages.getMessage(PAGE_UNABLE_TO_RETRIEVE), className), e);
+        } catch (ClassNotFoundException e) {
+            throw new TechnicalException(Messages.format(Messages.getMessage(UNABLE_TO_RETRIEVE_PAGE), className), e);
         }
     }
 
@@ -78,22 +82,23 @@ public abstract class Page implements IPage {
 
     /**
      * {@inheritDoc}
+     * 
+     * @throws TechnicalException
      */
     @Override
-    public PageElement getPageElementByKey(String key) {
+    public PageElement getPageElementByKey(String key) throws TechnicalException {
         PageElement p;
-        for (final Field f : getClass().getDeclaredFields()) {
-            if (f.getType() == PageElement.class) {
-                try {
+        try {
+            for (final Field f : getClass().getDeclaredFields()) {
+                if (PageElement.class.equals(f.getType())) {
                     p = (PageElement) f.get(this);
-                } catch (IllegalArgumentException | IllegalAccessException e) {
-                    log.error("error Page.getPageElementByKey()", e);
-                    return null;
-                }
-                if (key.equals(p.getKey())) {
-                    return p;
+                    if (key.equals(p.getKey())) {
+                        return p;
+                    }
                 }
             }
+        } catch (IllegalAccessException | IllegalArgumentException e) {
+            throw new TechnicalException(Messages.format(Messages.getMessage(ERROR_DURING_PAGE_ELEMENT_LOOKUP), key), e);
         }
         return new PageElement(key);
     }
@@ -136,6 +141,14 @@ public abstract class Page implements IPage {
     @Override
     public void setMotherPage(Page motherPage) {
         this.motherPage = motherPage;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return this.application + '.' + this.pageKey;
     }
 
     public class PageElement implements IPageElement {
@@ -195,10 +208,13 @@ public abstract class Page implements IPage {
          */
         @Override
         public String toString() {
+            String ret = getPage().toString();
             if ("".equals(label)) {
-                return key;
+                ret += key;
+            } else {
+                ret += '.' + label;
             }
-            return label;
+            return ret;
         }
 
     }

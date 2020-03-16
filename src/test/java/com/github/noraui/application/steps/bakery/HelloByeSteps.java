@@ -6,8 +6,8 @@
  */
 package com.github.noraui.application.steps.bakery;
 
-import static com.github.noraui.utils.Constants.DOWNLOADED_FILES_FOLDER;
-import static com.github.noraui.utils.Constants.USER_DIR;
+import static com.github.noraui.Constants.DOWNLOADED_FILES_FOLDER;
+import static com.github.noraui.Constants.USER_DIR;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +23,7 @@ import com.github.noraui.application.model.demo.Articles;
 import com.github.noraui.application.page.bakery.DemoPage;
 import com.github.noraui.application.steps.ExpectSteps;
 import com.github.noraui.application.steps.Step;
+import com.github.noraui.browser.waits.Wait;
 import com.github.noraui.cucumber.annotation.Conditioned;
 import com.github.noraui.cucumber.annotation.RetryOnFailure;
 import com.github.noraui.cucumber.metrics.annotation.regulator.SpeedRegulator;
@@ -32,7 +33,6 @@ import com.github.noraui.exception.FailureException;
 import com.github.noraui.exception.Result;
 import com.github.noraui.gherkin.GherkinStepCondition;
 import com.github.noraui.log.annotation.Loggable;
-import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 import com.github.noraui.utils.Utilities;
 import com.google.inject.Inject;
@@ -109,11 +109,10 @@ public class HelloByeSteps extends Step {
     public void checkFields() throws FailureException {
         By inputSelectLocator = Utilities.getLocator(demoPage.inputSelect);
         By inputTextLocator = Utilities.getLocator(demoPage.inputText);
-        Context.waitUntil(ExpectSteps.atLeastOneOfTheseElementsIsPresent(inputSelectLocator, inputTextLocator));
-        Context.waitUntil(ExpectSteps.presenceOfNbElementsLocatedBy(inputSelectLocator, 1));
-        Context.waitUntil(ExpectSteps.presenceOfNbElementsLocatedBy(inputTextLocator, 1));
-        Context.waitUntil(ExpectSteps.visibilityOfNbElementsLocatedBy(inputSelectLocator, 1));
-        Context.waitUntil(ExpectSteps.visibilityOfNbElementsLocatedBy(inputTextLocator, 1));
+
+        Wait.untilAnd(ExpectSteps.atLeastOneOfTheseElementsIsPresent(inputSelectLocator, inputTextLocator)).wait(() -> ExpectSteps.presenceOfNbElementsLocatedBy(inputSelectLocator, 1))
+                .wait(() -> ExpectSteps.presenceOfNbElementsLocatedBy(inputTextLocator, 1)).wait(() -> ExpectSteps.visibilityOfNbElementsLocatedBy(inputSelectLocator, 1))
+                .wait(() -> ExpectSteps.visibilityOfNbElementsLocatedBy(inputTextLocator, 1));
     }
 
     @RetryOnFailure(attempts = 3)

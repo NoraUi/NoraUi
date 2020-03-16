@@ -11,7 +11,7 @@ import com.github.noraui.utils.Messages;
 import com.google.inject.Injector;
 
 public class NoraUiInjector {
-    
+
     public static final String TECHNICAL_ERROR_MESSAGE_NORAUI_INJECTOR_SOURCE_ALREADY_EXISTS = "TECHNICAL_ERROR_MESSAGE_NORAUI_INJECTOR_SOURCE_ALREADY_EXISTS";
 
     /**

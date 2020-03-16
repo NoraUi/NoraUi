@@ -22,8 +22,8 @@ import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 
+import com.github.noraui.Constants;
 import com.github.noraui.log.annotation.Loggable;
-import com.github.noraui.utils.Constants;
 import com.github.noraui.utils.Context;
 
 @Loggable
