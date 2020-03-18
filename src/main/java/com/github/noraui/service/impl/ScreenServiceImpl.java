@@ -160,6 +160,8 @@ public class ScreenServiceImpl implements ScreenService {
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
+            log.error("InterruptedException error on scrollIntoView");
+            Thread.currentThread().interrupt();
         }
     }
 
