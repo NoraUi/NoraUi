@@ -109,6 +109,7 @@ public class StepInterceptor implements MethodInterceptor {
                 } else {
                     throw e;
                 }
+            } catch (WarningException e) {
             }
         }
         return result;
