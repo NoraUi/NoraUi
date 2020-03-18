@@ -27,37 +27,37 @@ public class ChainableWait<T> {
     }
 
     public <A, O> ChainableWait<O> wait(Function<A, ExpectedCondition<O>> condition, Function<T, A> func) {
-        return new ChainableWait<O>(webDriverWait, webDriverWait.until(condition.apply(func.apply(chainedValue))));
+        return new ChainableWait<>(webDriverWait, webDriverWait.until(condition.apply(func.apply(chainedValue))));
     }
 
     public <A, B, O> ChainableWait<O> wait(BiFunction<A, B, ExpectedCondition<O>> condition, Function<T, Pair<A, B>> func) {
         Pair<A, B> pair = func.apply(chainedValue);
-        return new ChainableWait<O>(webDriverWait, webDriverWait.until(condition.apply(pair.getValue0(), pair.getValue1())));
+        return new ChainableWait<>(webDriverWait, webDriverWait.until(condition.apply(pair.getValue0(), pair.getValue1())));
     }
 
     public <A, B, C, O> ChainableWait<O> wait(TriFunction<A, B, C, ExpectedCondition<O>> condition, Function<T, Triplet<A, B, C>> func) {
         Triplet<A, B, C> triplet = func.apply(chainedValue);
-        return new ChainableWait<O>(webDriverWait, webDriverWait.until(condition.apply(triplet.getValue0(), triplet.getValue1(), triplet.getValue2())));
+        return new ChainableWait<>(webDriverWait, webDriverWait.until(condition.apply(triplet.getValue0(), triplet.getValue1(), triplet.getValue2())));
     }
 
     public <O> ChainableWait<O> wait(Function<T, ExpectedCondition<O>> func) {
-        return new ChainableWait<O>(webDriverWait, webDriverWait.until(func.apply(chainedValue)));
+        return new ChainableWait<>(webDriverWait, webDriverWait.until(func.apply(chainedValue)));
     }
 
     public <O> ChainableWait<O> wait(Supplier<ExpectedCondition<O>> supplier) {
-        return new ChainableWait<O>(webDriverWait, webDriverWait.until(supplier.get()));
+        return new ChainableWait<>(webDriverWait, webDriverWait.until(supplier.get()));
     }
 
     public ChainableWait<T> wait(ExpectedCondition<T> condition) {
-        return new ChainableWait<T>(webDriverWait, webDriverWait.until(condition));
+        return new ChainableWait<>(webDriverWait, webDriverWait.until(condition));
     }
 
     public <A> ChainableWait<A> map(Function<T, A> func) {
-        return new ChainableWait<A>(webDriverWait, func.apply(chainedValue));
+        return new ChainableWait<>(webDriverWait, func.apply(chainedValue));
     }
 
     public <A> ChainableWait<A> map(A value) {
-        return new ChainableWait<A>(webDriverWait, value);
+        return new ChainableWait<>(webDriverWait, value);
     }
 
     public void then(Consumer<T> consumer) {
