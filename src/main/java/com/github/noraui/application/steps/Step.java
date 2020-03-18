@@ -335,7 +335,7 @@ public abstract class Step implements IStep {
                 Wait.untilAnd(ExpectedConditions.elementToBeClickable(Utilities.getLocator(pageElement, args)), timeOutInSeconds).map((WebElement elem) -> {
                     elem.clear();
                     return elem;
-                }).then((elem) -> {
+                }).then(elem -> {
                     if (DriverFactory.IE.equals(Context.getBrowser())) {
                         final String javascript = "arguments[0].value='" + value + "';";
                         ((JavascriptExecutor) getDriver()).executeScript(javascript, elem);
