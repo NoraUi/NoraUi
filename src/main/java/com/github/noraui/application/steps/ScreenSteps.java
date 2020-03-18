@@ -142,7 +142,7 @@ public class ScreenSteps extends Step {
     @Conditioned
     @Et("Je défile vers {string}(\\?)")
     @And("I scroll to {string}(\\?)")
-    public void scrollIntoView(PageElement pageElement, List<GherkinStepCondition> conditions) throws TechnicalException {
+    public void scrollIntoView(PageElement pageElement, List<GherkinStepCondition> conditions) {
         log.debug("I scroll to [{}]", pageElement);
         screenService.scrollIntoView(Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement))));
     }
