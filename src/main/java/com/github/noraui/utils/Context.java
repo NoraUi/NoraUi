@@ -447,6 +447,16 @@ public class Context {
     }
 
     /**
+     * Clear context
+     */
+    public static void quit() {
+        instance.driverFactory.quit();
+        instance.windowManager.clear();
+        instance.scenarioRegistry.clear();
+        instance.scenarioName = null;
+    }
+
+    /**
      * Get the selenium driver from the driver factory.
      *
      * @return selenium webdriver

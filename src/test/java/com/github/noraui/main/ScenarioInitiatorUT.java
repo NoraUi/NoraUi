@@ -55,7 +55,7 @@ public class ScenarioInitiatorUT {
         try {
             Context.getInstance().initializeEnv(prop);
             new ScenarioInitiator().start(args);
-            Context.clear();
+            Context.quit();
         } catch (Exception e) {
             res = "An error occured during ScenarioInitiator.main(\"" + args + "\") with \"" + prop + "\": " + e.getMessage();
         }
@@ -67,7 +67,7 @@ public class ScenarioInitiatorUT {
         try {
             Context.getInstance().initializeEnv(prop);
             ScenarioInitiatorRunner.main(args);
-            Context.clear();
+            Context.quit();
         } catch (Exception e) {
             res = "An error occured during ScenarioInitiator.main(\"" + args + "\") with \"" + prop + "\": " + e.getMessage();
         }

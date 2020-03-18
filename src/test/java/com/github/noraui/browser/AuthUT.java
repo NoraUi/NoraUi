@@ -124,7 +124,7 @@ public class AuthUT {
     @After
     public void teardown() {
         testServer.stop();
-        Context.clear();
+        Context.quit();
     }
 
 }

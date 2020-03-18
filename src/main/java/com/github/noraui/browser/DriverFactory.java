@@ -98,6 +98,16 @@ public class DriverFactory {
     }
 
     /**
+     * Quit loaded drivers
+     */
+    public void quit() {
+        for (final WebDriver wd : drivers.values()) {
+            wd.quit();
+        }
+        drivers.clear();
+    }
+
+    /**
      * Generates an ie webdriver. Unable to use it with a proxy. Causes a crash.
      *
      * @return
