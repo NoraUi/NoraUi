@@ -88,10 +88,8 @@ public class Application extends AbstractNoraUiCli {
         addApplicationSelector(applicationName, verbose);
         addApplicationInPropertiesFile(applicationName, robotContext.getSimpleName().replace("Context", ""), verbose);
         for (final File f : new File("src" + File.separator + "test" + File.separator + RESOURCES + File.separator + ENVIRONMENTS).listFiles()) {
-            if (f.isFile()) {
-                if (f.getName().matches(".*\\.properties")) {
-                    addApplicationInEnvPropertiesFile(applicationName, url, f.getName(), verbose);
-                }
+            if (f.isFile() && f.getName().matches(".*\\.properties")) {
+                addApplicationInEnvPropertiesFile(applicationName, url, f.getName(), verbose);
             }
         }
     }
