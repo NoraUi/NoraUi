@@ -38,7 +38,7 @@ public class NoraUiLoggingModule implements Module {
             .filter(c -> c.isAnnotationPresent(Loggable.class))
             .forEach(this::injectSlf4JLogger);
         } catch (IOException e) {
-            LOGGER.error("NoraUiLoggingModule.configure(Binder: " + binder + ")", e);
+            LOGGER.error("NoraUiLoggingModule.configure(Binder: {})", binder, e);
 
         }
         // @formatter:on
@@ -52,7 +52,7 @@ public class NoraUiLoggingModule implements Module {
                         field.setAccessible(true);
                         field.set(null, LoggerFactory.getLogger(field.getDeclaringClass()));
                     } catch (IllegalAccessException iae) {
-                        LOGGER.error("NoraUiLoggingModule.configure(Class<?>: " + clazz + ")", iae);
+                        LOGGER.error("NoraUiLoggingModule.configure(Class<?>: {})", clazz, iae);
                     }
                 }
             }

@@ -21,6 +21,7 @@ public abstract class AbstractNoraUiCli {
 
     static Logger log;
     protected static final String RESOURCES = "resources";
+    protected static final String ENVIRONMENTS = "environments";
 
     protected String getJavaClassHeaders(String noraRobotName) {
         StringBuilder sb = new StringBuilder();
