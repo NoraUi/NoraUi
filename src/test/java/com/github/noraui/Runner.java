@@ -13,14 +13,12 @@ import org.junit.runner.RunWith;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.utils.Context;
 
-import io.cucumber.junit.CucumberOptions;
 import io.cucumber.junit.Cucumber;
+import io.cucumber.junit.CucumberOptions;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(monochrome = true,
-                       glue = { "com.github.noraui.cucumber.config", "com.github.noraui.application.steps", "com.github.noraui.browser.steps" },
-                     plugin = { "summary", "html:target/reports/html", "json:target/reports/json/report.json", "junit:target/reports/junit/report.xml" },
-                   features = { "src/test/resources" })
+@CucumberOptions(monochrome = true, glue = { "com.github.noraui.cucumber.config", "com.github.noraui.application.steps", "com.github.noraui.browser.steps" },
+        plugin = { "summary", "html:target/reports/html", "json:target/reports/json/report.json", "junit:target/reports/junit/report.xml" }, features = { "src/test/resources" })
 public class Runner {
 
     /**
@@ -40,7 +38,7 @@ public class Runner {
      */
     @AfterClass
     public static void tearDownClass() {
-        Context.clear();
+        Context.quit();
     }
 
 }

@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 
 import com.github.noraui.browser.Auth;
 import com.github.noraui.browser.WindowManager;
+import com.github.noraui.browser.waits.Wait;
 import com.github.noraui.cucumber.annotation.Conditioned;
 import com.github.noraui.cucumber.metrics.annotation.time.Time;
 import com.github.noraui.cucumber.metrics.annotation.time.TimeName;
@@ -63,7 +64,7 @@ public class BrowserSteps {
             Set<String> initialWindows = Context.getDriver().getWindowHandles();
             String js = "window.open(\"\");";
             ((JavascriptExecutor) Context.getDriver()).executeScript(js);
-            String newWindowHandle = Context.waitUntil(WindowManager.newWindowOpens(initialWindows));
+            String newWindowHandle = Wait.until(WindowManager.newWindowOpens(initialWindows));
             Context.getDriver().switchTo().window(newWindowHandle);
         } catch (Exception e) {
             log.error("Error when open a new window: {}", e);

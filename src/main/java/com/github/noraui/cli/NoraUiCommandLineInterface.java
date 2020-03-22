@@ -6,10 +6,10 @@
  */
 package com.github.noraui.cli;
 
+import static com.github.noraui.Constants.CLI_APPLICATIONS_FILES_DIR;
+import static com.github.noraui.Constants.CLI_FILES_DIR;
+import static com.github.noraui.Constants.CLI_SCENARIOS_FILES_DIR;
 import static com.github.noraui.exception.TechnicalException.TECHNICAL_IO_EXCEPTION;
-import static com.github.noraui.utils.Constants.CLI_APPLICATIONS_FILES_DIR;
-import static com.github.noraui.utils.Constants.CLI_FILES_DIR;
-import static com.github.noraui.utils.Constants.CLI_SCENARIOS_FILES_DIR;
 import static com.github.noraui.utils.Messages.CLI_YOU_MUST_CREATE_AN_APPLICATION_FIRST;
 
 import java.io.BufferedReader;
@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 
+import com.github.noraui.Constants;
 import com.github.noraui.cli.model.NoraUiApplicationFile;
 import com.github.noraui.cli.model.NoraUiCliFile;
 import com.github.noraui.cli.model.NoraUiCliParameters;
@@ -41,7 +42,6 @@ import com.github.noraui.log.NoraUiLoggingInjector;
 import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.service.CryptoService;
 import com.github.noraui.service.impl.CryptoServiceImpl;
-import com.github.noraui.utils.Constants;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

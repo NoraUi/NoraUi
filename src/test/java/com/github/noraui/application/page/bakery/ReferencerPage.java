@@ -13,6 +13,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
 
 import com.github.noraui.application.page.Page;
+import com.github.noraui.browser.waits.Wait;
 import com.github.noraui.exception.Callbacks;
 import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Context;
@@ -41,7 +42,7 @@ public class ReferencerPage extends Page {
     @Override
     public boolean checkPage(Object... elements) {
         try {
-            Context.waitUntil(ExpectedConditions.visibilityOfElementLocated(Utilities.getLocator(titleMessage)));
+            Wait.until(ExpectedConditions.visibilityOfElementLocated(Utilities.getLocator(titleMessage)));
             return true;
         } catch (Exception e) {
             log.error("signIn message not found", e);

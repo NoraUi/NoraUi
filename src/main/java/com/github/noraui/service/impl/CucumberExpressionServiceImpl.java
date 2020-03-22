@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 
+import com.github.noraui.cucumber.config.CucumberTypeRegistryConfigurer;
 import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.service.CucumberExpressionService;
 import com.google.inject.Singleton;
@@ -35,6 +36,7 @@ public class CucumberExpressionServiceImpl implements CucumberExpressionService 
         log.debug("CucumberExpressionService match expressionString: {} and text: {}", expressionString, text);
         Expression expression;
         ParameterTypeRegistry parameterTypeRegistry = new ParameterTypeRegistry(Locale.ENGLISH);
+        CucumberTypeRegistryConfigurer.getParameterTypes().stream().forEach(parameterTypeRegistry::defineParameterType);
         expression = new CucumberExpression(expressionString, parameterTypeRegistry);
         List<Argument<?>> args = expression.match(text);
         return args == null ? null : args.stream().map(Argument::getValue).collect(Collectors.toList());

@@ -44,7 +44,6 @@ public class AuthUT {
         testServer.start();
     }
 
-    @SuppressWarnings("deprecation")
     @Before
     public void prepare() throws TechnicalException {
         testServer.start();
@@ -125,7 +124,7 @@ public class AuthUT {
     @After
     public void teardown() {
         testServer.stop();
-        Context.clear();
+        Context.quit();
     }
 
 }

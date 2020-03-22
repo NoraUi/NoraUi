@@ -32,7 +32,7 @@ public class PageUT {
     }
 
     @Test
-    public void checkGuiceSingletonTest() throws TechnicalException {
+    public void checkGuiceSingletonTest() throws TechnicalException, ClassNotFoundException {
         DemoPage demoPage1 = (DemoPage) Page.getInstance(BAKERY_DEMO_PAGE_NAME);
         DemoPage demoPage2 = (DemoPage) Page.getInstance(BAKERY_DEMO_PAGE_NAME);
         Assert.assertEquals(demoPage1, demoPage2);

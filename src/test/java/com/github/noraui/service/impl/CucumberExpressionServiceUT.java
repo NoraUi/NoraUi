@@ -13,10 +13,10 @@ import com.google.gson.Gson;
 import com.google.inject.Inject;
 
 public class CucumberExpressionServiceUT {
-    
+
     @Inject
     private CucumberExpressionService cucumberExpressionService;
-    
+
     @Before
     public void setUp() throws TechnicalException {
         NoraUiInjector.resetInjector();
@@ -42,9 +42,10 @@ public class CucumberExpressionServiceUT {
         Assert.assertEquals("[2]", res);
         res = new Gson().toJson(cucumberExpressionService.match("I wait {int} second(s)(\\?)", "I wait 2 seconds"));
         Assert.assertEquals("[2]", res);
-        res = new Gson().toJson(cucumberExpressionService.match("I wait {int} second(s)(\\?)", "I wait 2 seconds!")); //false
+        res = new Gson().toJson(cucumberExpressionService.match("I wait {int} second(s)(\\?)", "I wait 2 seconds!")); // false
         Assert.assertEquals("null", res);
-        res = new Gson().toJson(cucumberExpressionService.match("If {string} matches {string}, While {string} respects {string} I do with {int} max tries:", "If 'foo' matches '.+', While 'bakery.DemoPage-big_title' respects 'This is a demo for NORAUI.*' I do with 3 max tries:"));
+        res = new Gson().toJson(cucumberExpressionService.match("If {string} matches {string}, While {string} respects {string} I do with {int} max tries:",
+                "If 'foo' matches '.+', While 'bakery.DemoPage-big_title' respects 'This is a demo for NORAUI.*' I do with 3 max tries:"));
         Assert.assertEquals("[\"foo\",\".+\",\"bakery.DemoPage-big_title\",\"This is a demo for NORAUI.*\",3]", res);
     }
 

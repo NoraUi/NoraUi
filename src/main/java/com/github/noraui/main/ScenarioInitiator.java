@@ -6,7 +6,7 @@
  */
 package com.github.noraui.main;
 
-import static com.github.noraui.utils.Constants.USER_DIR;
+import static com.github.noraui.Constants.USER_DIR;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;

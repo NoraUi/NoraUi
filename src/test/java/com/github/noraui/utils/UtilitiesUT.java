@@ -43,7 +43,7 @@ public class UtilitiesUT {
         Context.initApplicationDom(Runner.class.getClassLoader(), "V1", this.demoPage.getApplication());
 
         // run test
-        String value = Utilities.getSelectorValue(this.demoPage.getApplication(), this.demoPage.getPageKey() + this.demoPage.xpathContainPercentChar, 1);
+        String value = Utilities.getSelectorValue(this.demoPage.getApplication(), this.demoPage.getPageKey() + this.demoPage.xpathContainPercentChar.getKey(), 1);
         Assert.assertEquals("OK", ".//input[@name='%%Surrogate_LstPrestComp']/following-sibling::label[1]/input", value);
     }
 

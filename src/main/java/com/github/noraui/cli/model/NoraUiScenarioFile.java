@@ -12,12 +12,12 @@ public class NoraUiScenarioFile {
      * Scenario name.
      */
     private String name;
-    
+
     /**
      * description of application.
      */
     private String description;
-    
+
     /**
      * application name use by this scenario.
      */

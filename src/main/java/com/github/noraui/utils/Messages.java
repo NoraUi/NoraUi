@@ -65,6 +65,7 @@ public class Messages {
     public static final String FAIL_MESSAGE_UNABLE_TO_OPEN_A_NEW_WINDOW = "FAIL_MESSAGE_UNABLE_TO_OPEN_A_NEW_WINDOW";
     public static final String FAIL_MESSAGE_UNABLE_TO_CALL_API_REST = "FAIL_MESSAGE_UNABLE_TO_CALL_API_REST";
     public static final String FAIL_MESSAGE_UNABLE_TO_CALL_METICS_API_REST = "FAIL_MESSAGE_UNABLE_TO_CALL_METICS_API_REST";
+    public static final String FAIL_MESSAGE_UNABLE_TO_FIND_TEXT_IN_ELEMENT = "FAIL_MESSAGE_UNABLE_TO_FIND_TEXT_IN_ELEMENT";
 
     /**
      * Functional fail messages with parameters.

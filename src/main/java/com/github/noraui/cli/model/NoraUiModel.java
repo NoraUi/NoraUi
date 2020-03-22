@@ -101,7 +101,7 @@ public class NoraUiModel {
         } else {
             this.results = null;
         }
-        
+
     }
 
 }

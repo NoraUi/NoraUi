@@ -41,6 +41,7 @@ public class ConditionedInterceptor implements MethodInterceptor {
                 displayMessageAtTheBeginningOfMethod(m.getName(), conditions);
                 if (!checkConditions(conditions)) {
                     Context.getCurrentScenario().write(Messages.getMessage(SKIPPED_DUE_TO_CONDITIONS));
+                    Context.goToNextStep();
                     return Void.TYPE;
                 }
             }

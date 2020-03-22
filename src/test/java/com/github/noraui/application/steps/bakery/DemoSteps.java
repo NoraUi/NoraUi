@@ -24,7 +24,7 @@ public class DemoSteps extends Step {
 
     @Alors("Je mets à jour les checkboxes et vérifie la liste radio {string} avec {string}:")
     @Then("I update checkboxes and check radio list {string} with {string}:")
-    public void selectCheckbox(String pageElement, String valueKey, Map<String, Boolean> values) throws TechnicalException, FailureException {
+    public void selectCheckbox(String pageElement, String valueKey, Map<String, Boolean> values) throws TechnicalException, FailureException, IllegalArgumentException, IllegalAccessException {
         String elementName = pageElement.split("-")[1];
         // is it a sample with inject page by Guice, but you can use 'demo.DemoPage-agree' instead of 'BAKERY_DEMO-agree'.
         // String page = pageElement.split("-")[0];

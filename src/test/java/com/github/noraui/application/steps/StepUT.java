@@ -12,10 +12,10 @@ import java.util.List;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 
+import com.github.noraui.Runner;
 import com.github.noraui.application.page.Page;
 import com.github.noraui.application.page.Page.PageElement;
 import com.github.noraui.application.page.bakery.DemoPage;
@@ -45,17 +45,15 @@ public class StepUT {
     public static final String CONTAINS_STRING = "^(.*Accès L2ETH|.*Accès L2TP).*$";
     public static final String START_STRING = "^\\[\\{\"action\":\"Qualif OSM\".*";
 
-    @BeforeClass
-    public static void setUpClass() {
-        NoraUiInjector.resetInjector();
-        step = new NoraUiInjectorSource().getInjector().getInstance(StepSample.class);
-    }
-
     @Before
-    public void setUp() {
+    public void setUp() throws TechnicalException {
         ci = new ConditionedInterceptor();
         gherkinCondition = new GherkinStepCondition();
         conditions = new ArrayList<>();
+        NoraUiInjector.resetInjector();
+        step = new NoraUiInjectorSource().getInjector().getInstance(StepSample.class);
+        Context.getInstance().initializeEnv("demoExcel.properties");
+        Context.getInstance().initializeRobot(Runner.class);
     }
 
     @AfterClass
@@ -315,7 +313,7 @@ public class StepUT {
             final DemoPage demoPage = (DemoPage) Page.getInstance(BAKERY_DEMO_PAGE_NAME);
             final PageElement pageElement = demoPage.getPageElementByKey("-input_select_field");
             final String a = Messages.format("Message %s in %s.", pageElement, demoPage.getApplication());
-            Assert.assertEquals("", "Message Input Select field in bakery.", a);
+            Assert.assertEquals("", "Message bakery.BAKERY_DEMO.Input Select field in bakery.", a);
         } catch (final TechnicalException e) {
             Assert.assertFalse("Error", true);
         }
@@ -327,7 +325,7 @@ public class StepUT {
             final DemoPage demoPage = (DemoPage) Page.getInstance(BAKERY_DEMO_PAGE_NAME);
             final PageElement pageElement = demoPage.getPageElementByKey("-submit");
             final String a = Messages.format("Message %s in %s.", pageElement, demoPage.getApplication());
-            Assert.assertEquals("", "Message Submit button in bakery.", a);
+            Assert.assertEquals("", "Message bakery.BAKERY_DEMO.Submit button in bakery.", a);
         } catch (final TechnicalException e) {
             Assert.assertFalse("Error", true);
         }
@@ -395,8 +393,22 @@ public class StepUT {
         }
     }
 
-    // TODO ajouter un test sur les loop en lancant une méthode qui existe dans le liste getCucumberMethods().
-    // Cela nécessite une initialisation complexe
+    @Test
+    public void testRunAllStepsInLoopWithDefinedStep() {
+        final List<GherkinConditionedLoopedStep> steps = new ArrayList<>();
+        final String expected = "foo";
+        final String actual = "foo";
+        final GherkinConditionedLoopedStep gherkinConditionedLoopedStep = new GherkinConditionedLoopedStep("1", "I wait 4 seconds", expected, actual);
+        steps.add(gherkinConditionedLoopedStep);
+        try {
+            log.info("before runAllStepsInLoop {}", step);
+            step.runAllStepsInLoop(steps);
+            Assert.assertTrue("Step \"I wait 4 seconds\" found", true);
+        } catch (final TechnicalException e) {
+            log.info("TechnicalException in catch {}", e.getMessage());
+            Assert.fail(String.format(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_STEP_UNDEFINED), "I wait 4 seconds"));
+        }
+    }
 
 }
 

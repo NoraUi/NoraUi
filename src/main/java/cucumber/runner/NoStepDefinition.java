@@ -28,7 +28,7 @@ final class NoStepDefinition implements StepDefinition {
     public Integer getParameterCount() {
         return 0;
     }
-    
+
     @Override
     public List<?> getParameters() {
         return null;

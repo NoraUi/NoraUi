@@ -65,6 +65,7 @@ public class WindowManager {
      */
     public void clear() {
         windows.clear();
+        this.mainWindow = "";
     }
 
     /**

@@ -6,8 +6,8 @@
  */
 package com.github.noraui.browser;
 
-import static com.github.noraui.utils.Constants.DOWNLOADED_FILES_FOLDER;
-import static com.github.noraui.utils.Constants.USER_DIR;
+import static com.github.noraui.Constants.DOWNLOADED_FILES_FOLDER;
+import static com.github.noraui.Constants.USER_DIR;
 
 import java.io.File;
 import java.util.HashMap;
@@ -88,6 +88,19 @@ public class DriverFactory {
      * Clear loaded drivers
      */
     public void clear() {
+        for (final WebDriver wd : drivers.values()) {
+            wd.manage().deleteAllCookies();
+            while (wd.getWindowHandles().size() > 1) {
+                wd.close();
+            }
+            wd.get("data:,");
+        }
+    }
+
+    /**
+     * Quit loaded drivers
+     */
+    public void quit() {
         for (final WebDriver wd : drivers.values()) {
             wd.quit();
         }

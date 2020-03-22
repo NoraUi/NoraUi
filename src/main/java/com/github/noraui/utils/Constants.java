@@ -9,6 +9,10 @@ package com.github.noraui.utils;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * @deprecated As of release 4.2.0, {@link com.github.noraui.Constants}
+ */
+@Deprecated
 public class Constants {
 
     /**
