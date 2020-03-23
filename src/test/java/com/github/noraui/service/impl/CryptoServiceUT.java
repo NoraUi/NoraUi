@@ -31,7 +31,7 @@ import com.google.inject.Inject;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ Context.class })
-@PowerMockIgnore({ "javax.crypto.*", "javax.net.ssl.*" })
+@PowerMockIgnore({ "javax.crypto.*", "javax.net.ssl.*", "com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*" })
 public class CryptoServiceUT {
 
     @Inject

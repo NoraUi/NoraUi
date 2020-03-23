@@ -16,6 +16,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -1002,10 +1003,20 @@ public class Context {
         final CucumberOptions co = clazz.getAnnotation(CucumberOptions.class);
         final Set<Class<?>> classes = getClasses(co.glue());
         classes.add(BrowserSteps.class);
-        return classes
-                .stream().flatMap(c -> Arrays.stream(c.getDeclaredMethods())).flatMap(m -> Arrays.stream(m.getAnnotations())
-                        .filter(stepAnnotation -> stepAnnotation.annotationType().isAnnotationPresent(StepDefAnnotation.class)).map(ann -> new AbstractMap.SimpleEntry<>(ann.toString(), m)))
-                .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+        //@formatter:off
+        return classes.stream() //
+               .flatMap(c -> Arrays.stream(c.getDeclaredMethods())) //
+               .flatMap(m -> Arrays.stream(m.getAnnotations()) //
+               .filter(stepAnnotation -> stepAnnotation.annotationType().isAnnotationPresent(StepDefAnnotation.class)) //
+               .map(ann -> {
+                 try {
+                   return new AbstractMap.SimpleEntry<>(ann.annotationType().getDeclaredMethod("value").invoke(ann).toString(), m);
+                 } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+                 }
+                 return null;
+                 })) //
+               .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)); //
+        //@formatter:on
     }
 
     private static Set<Class<?>> getClasses(String[] packagesName) {

@@ -16,6 +16,9 @@ public interface StepDefinition {
      * Returns a list of arguments. Return null if the step definition
      * doesn't match at all. Return an empty List if it matches with 0 arguments
      * and bigger sizes if it matches several.
+     * 
+     * @param step
+     * @return
      */
     List<Argument> matchedArguments(PickleStep step);
 
@@ -25,28 +28,39 @@ public interface StepDefinition {
      *
      * @param detail
      *            true if extra detailed location information should be included.
+     * @return
      */
     String getLocation(boolean detail);
 
     /**
      * How many declared parameters this step definition has. Returns null if unknown.
+     * 
+     * @return
      */
     Integer getParameterCount();
 
     /**
      * list of declared parameters this step definition has. Returns null if unknown.
+     * 
+     * @return
      */
     List<?> getParameters();
 
     /**
      * Invokes the step definition. The method should raise a Throwable
      * if the invocation fails, which will cause the step to fail.
+     * 
+     * @param args
+     * @throws Throwable
      */
     void execute(Object[] args) throws Throwable;
 
     /**
      * Return true if this matches the location. This is used to filter
      * stack traces.
+     * 
+     * @param stackTraceElement
+     * @return
      */
     boolean isDefinedAt(StackTraceElement stackTraceElement); // TODO: redundant with getLocation?
 

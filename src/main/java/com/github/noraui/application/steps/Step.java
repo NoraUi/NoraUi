@@ -27,8 +27,6 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.text.StringEscapeUtils;
 import org.openqa.selenium.Alert;
@@ -1377,13 +1375,10 @@ public abstract class Step implements IStep {
     private Function<GherkinConditionedLoopedStep, SimpleEntry<Method, List<?>>> findMethodToInvoke() {
         return f -> {
             for (Entry<String, Method> entry : Context.getCucumberMethods().entrySet()) {
-                log.debug("Method: {}", entry.getValue());
-                Matcher matcher = Pattern.compile("value=(.*)\\)").matcher(entry.getKey());
-                if (matcher.find()) {
-                    List<?> params = cucumberExpressionService.match(matcher.group(1), f.getStep());
-                    if (params != null) {
-                        return new AbstractMap.SimpleEntry<>(entry.getValue(), params);
-                    }
+                log.debug("Method: {}", entry.getKey());
+                List<?> params = cucumberExpressionService.match(entry.getKey(), f.getStep());
+                if (params != null) {
+                    return new AbstractMap.SimpleEntry<>(entry.getValue(), params);
                 }
                 log.debug("No match for [{}], check next...", entry.getValue());
             }
