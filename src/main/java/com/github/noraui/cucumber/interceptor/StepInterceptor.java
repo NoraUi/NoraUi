@@ -7,10 +7,8 @@
 package com.github.noraui.cucumber.interceptor;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.text.MessageFormat;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
@@ -116,22 +114,20 @@ public class StepInterceptor implements MethodInterceptor {
         return result;
     }
 
-    private void logRunningStep(Annotation annotation, MethodInvocation invocation) {
-      // TODO merge for java11 branch
-      //Class<? extends Annotation> annotationClass = stepAnnotation.annotationType();
-      //Method valueMethods = annotationClass.getDeclaredMethod("value");
-      //log.info("---> {} " + String.format(valueMethods.invoke(stepAnnotation).toString().replaceAll("\\{\\S+\\}", "{%s}").replace("(\\?)", ""), invocation.getArguments()), stepAnnotation.annotationType().getSimpleName());  
-      
-      Matcher matcher = Pattern.compile("value=(.*)\\)").matcher(annotation.toString());
-        if (matcher.find()) {
-            Context.goToNextStep();
-            final StringBuilder builder = new StringBuilder();
-            final String stepIndex = Context.getCurrentSubStepIndex() > 0 ? Context.getCurrentStepIndex() + "." + (Context.getCurrentSubStepIndex() - 1)
-                    : String.valueOf(Context.getCurrentStepIndex());
-            builder.append("#").append(stepIndex).append(" - ").append(blue(annotation.annotationType().getSimpleName())).append(" ")
-                    .append(String.format(matcher.group(1).replaceAll("\\{\\S+\\}", yellow("{%s}")).replace("(\\?)", ""), invocation.getArguments()));
-            log.info(builder.toString());
-        }
+    private void logRunningStep(Annotation stepAnnotation, MethodInvocation invocation)
+            throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        Class<? extends Annotation> annotationClass = stepAnnotation.annotationType();
+        Method valueMethods = annotationClass.getDeclaredMethod("value");
+        Context.goToNextStep();
+        final StringBuilder builder = new StringBuilder();
+        final String stepIndex = Context.getCurrentSubStepIndex() > 0 ? Context.getCurrentStepIndex() + "." + (Context.getCurrentSubStepIndex() - 1) : String.valueOf(Context.getCurrentStepIndex());
+        builder.append("#");
+        builder.append(stepIndex);
+        builder.append(" - ");
+        builder.append(blue(stepAnnotation.annotationType().getSimpleName()));
+        builder.append(" ");
+        builder.append(String.format(valueMethods.invoke(stepAnnotation).toString().replaceAll("\\{\\S+\\}", yellow("{%s}")).replace("(\\?)", ""), invocation.getArguments()));
+        log.info(builder.toString());
     }
 
     private String blue(String text) {
