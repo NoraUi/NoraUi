@@ -77,7 +77,7 @@ public class ScreenSteps extends Step {
      * Save a screenshot of one element only and add to DOWNLOAD_FILES_FOLDER folder.
      * 
      * @param pageElement
-     *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
+     *            The concerned page of field AND key of PageElement concerned (sample: $demo.DemoPage-button)
      * @param screenName
      *            name of screenshot file.
      * @param conditions

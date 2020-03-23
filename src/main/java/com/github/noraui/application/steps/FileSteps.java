@@ -67,12 +67,11 @@ public class FileSteps extends Step {
      *            The name of the file removed.
      * @param conditions
      *            List of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
-     * @throws IOException
      */
     @Conditioned
     @Lorsque("Je supprime le fichier {string} dans repertoire des téléchargements(\\?)")
     @Given("I remove {string} file in download directory(\\?)")
-    public void removefileInDownloadDirectory(String file, List<GherkinStepCondition> conditions) throws IOException {
+    public void removefileInDownloadDirectory(String file, List<GherkinStepCondition> conditions) {
         try {
             FileUtils.forceDelete(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + file));
         } catch (IOException e) {
@@ -150,7 +149,7 @@ public class FileSteps extends Step {
      * Waits the full download of a file.
      *
      * @param pageElement
-     *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
+     *            The concerned page of field AND key of PageElement concerned (sample: $demo.DemoPage-button)
      * @param filename
      *            The name of the file to upload (from the default downloaded files directory)
      * @param conditions

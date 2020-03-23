@@ -42,6 +42,8 @@ public class Wait {
      * 
      * @param condition
      *            the parameter to pass to the {@link ExpectedCondition}
+     * @param <T>
+     *            The function's expected return type.
      * @param timeOutInSeconds
      *            The timeout in seconds when an expectation is called
      * @return The function's return value if the function returned something different

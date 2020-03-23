@@ -81,8 +81,8 @@ public abstract class Result {
          *            (true or false).
          * @param nid
          *            nora-ui technical id (0 or more).
-         * @throws TechnicalException
-         *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+         * @throws WarningException
+         *             if the scenario encounters a functional warning.
          */
         public Warning(O object, String message, boolean takeScreenshot, int nid) throws WarningException {
             this.object = object;

@@ -292,7 +292,6 @@ public abstract class Step implements IStep {
      *            Is target element.
      * @param textOrKey
      *            Is the new data (text or text in context (after a save)).
-     *            >>>>>>> chainable-waits
      * @param keysToSend
      *            character to send to the element after {@link org.openqa.selenium.WebElement#sendKeys(CharSequence...) sendKeys} with textOrKey.
      * @param args
@@ -931,7 +930,7 @@ public abstract class Step implements IStep {
      * Save value in memory using default target key (Page key + field).
      *
      * @param pageElement
-     *            The concerned page of field AND name of the field to save in memory. (sample: demo.DemoPage-button).
+     *            The concerned page of field AND name of the field to save in memory. (sample: $demo.DemoPage-button).
      * @param args
      *            list of arguments to format the found selector with.
      * @throws TechnicalException

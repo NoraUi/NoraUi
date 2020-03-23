@@ -224,14 +224,13 @@ public class CommonSteps extends Step {
      * Save field in memory if all 'expected' parameters equals 'actual' parameters in conditions.
      *
      * @param pageElement
-     *            The concerned page of field AND name of the field to save in memory. (sample: demo.DemoPage-button)
+     *            The concerned page of field AND name of the field to save in memory. (sample: $demo.DemoPage-button)
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
      *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT} or {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_RETRIEVE_VALUE}
-     *             message (with screenshot, with
-     *             exception)
+     *             message (with screenshot, with exception)
      * @throws FailureException
      *             if the scenario encounters a functional error
      */
@@ -247,7 +246,7 @@ public class CommonSteps extends Step {
      * The value is saved directly into the Context targetKey.
      *
      * @param pageElement
-     *            The concerned page of field AND name of the field to save in memory. (sample: demo.DemoPage-button)
+     *            The concerned page of field AND name of the field to save in memory. (sample: $demo.DemoPage-button)
      * @param targetKey
      *            Target key to save retrieved value.
      * @param conditions
@@ -270,7 +269,7 @@ public class CommonSteps extends Step {
      * The value is saved directly into the data output provider (Excel, CSV, ...).
      *
      * @param pageElement
-     *            The concerned page of field AND name of the field to save in data output provider. (sample: demo.DemoPage-button)
+     *            The concerned page of field AND name of the field to save in data output provider. (sample: $demo.DemoPage-button)
      * @param targetColumn
      *            Target column (in data output provider) to save retrieved value.
      * @param conditions
@@ -310,7 +309,7 @@ public class CommonSteps extends Step {
      * Click on html element if all 'expected' parameters equals 'actual' parameters in conditions.
      *
      * @param pageElement
-     *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
+     *            The concerned page of field AND key of PageElement concerned (sample: $demo.DemoPage-button)
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
@@ -331,7 +330,7 @@ public class CommonSteps extends Step {
      * Click on html element using Javascript if all 'expected' parameters equals 'actual' parameters in conditions.
      *
      * @param pageElement
-     *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
+     *            The concerned page of field AND key of PageElement concerned (sample: $demo.DemoPage-button)
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
@@ -375,7 +374,7 @@ public class CommonSteps extends Step {
      * Click on html element and switch window when the scenario contain more one windows (one more application for example), if all 'expected' parameters equals 'actual' parameters in conditions.
      *
      * @param pageElement
-     *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
+     *            The concerned page of field AND key of PageElement concerned (sample: $demo.DemoPage-button)
      * @param windowKey
      *            the key of window (popup, ...) Example: 'demo.Popup1DemoPage'.
      * @param conditions
@@ -420,7 +419,7 @@ public class CommonSteps extends Step {
      * Simulates the mouse over a html element
      *
      * @param pageElement
-     *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
+     *            The concerned page of field AND key of PageElement concerned (sample: $demo.DemoPage-button)
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
@@ -440,7 +439,7 @@ public class CommonSteps extends Step {
      * Update a html input text with a date.
      *
      * @param pageElement
-     *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
+     *            The concerned page of field AND key of PageElement concerned (sample: $demo.DemoPage-button)
      * @param dateOrKey
      *            Is the new date (date or date in context (after a save))
      * @param dateType
@@ -471,7 +470,7 @@ public class CommonSteps extends Step {
      * Update a html select input text with a text data (if it exists in html "option" list).
      *
      * @param pageElement
-     *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
+     *            The concerned page of field AND key of PageElement concerned (sample: $demo.DemoPage-button)
      * @param textOrKey
      *            Is the new data (text or text in context (after a save))
      * @param conditions
@@ -493,7 +492,7 @@ public class CommonSteps extends Step {
      * Update a html input text with a given text.
      *
      * @param pageElement
-     *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
+     *            The concerned page of field AND key of PageElement concerned (sample: $demo.DemoPage-button)
      * @param textOrKey
      *            Is the new data (text or text in context (after a save))
      * @param conditions
@@ -531,7 +530,7 @@ public class CommonSteps extends Step {
      * Update a html input text with a random text.
      *
      * @param pageElement
-     *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
+     *            The concerned page of field AND key of PageElement concerned (sample: $demo.DemoPage-button)
      * @param randRegex
      *            Is the new data (random value generated and match with randRegex)
      * @param conditions
@@ -553,7 +552,7 @@ public class CommonSteps extends Step {
      * Update a html input text with a given text and then press ENTER key.
      *
      * @param pageElement
-     *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
+     *            The concerned page of field AND key of PageElement concerned (sample: $demo.DemoPage-button)
      * @param textOrKey
      *            Is the new data (text or text in context (after a save))
      * @param conditions
@@ -574,7 +573,7 @@ public class CommonSteps extends Step {
      * Checks that mandatory field is no empty with conditions.
      *
      * @param pageElement
-     *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
+     *            The concerned page of field AND key of PageElement concerned (sample: $demo.DemoPage-button)
      * @param type
      *            Type of the field ('text', 'select'...). Only 'text' is implemented for the moment!
      * @param conditions
@@ -605,7 +604,7 @@ public class CommonSteps extends Step {
      * Checks if html input text contains expected value. If your value from Ajax, use "I expect to have {string} with the text {string}".
      *
      * @param pageElement
-     *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
+     *            The concerned page of field AND key of PageElement concerned (sample: $demo.DemoPage-button)
      * @param textOrKey
      *            Is the new data (text or text in context (after a save))
      * @param conditions
@@ -626,17 +625,11 @@ public class CommonSteps extends Step {
     }
 
     /**
-     * <<<<<<< HEAD
-     * 
-     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.application.steps.WaitSteps#waitVisibilityOf(String pageElement, List)}
+     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.application.steps.WaitSteps#waitVisibilityOf(Page.PageElement pageElement, Boolean not, List)}
      *             "I wait visibility of {string}(\\?)"
-     *             =======
-     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.application.steps.WaitSteps#waitVisibilityOf()}
-     *             "The element {page-element} {is-isnot} visible(\\?)"
-     *             >>>>>>> chainable-waits
      *             Checks if an html element is visible.
      * @param pageElement
-     *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
+     *            The concerned page of field AND key of PageElement concerned (sample: $demo.DemoPage-button)
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
@@ -654,17 +647,11 @@ public class CommonSteps extends Step {
     }
 
     /**
-     * <<<<<<< HEAD
-     * 
-     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.application.steps.WaitSteps#waitInvisibilityOf(String, List)}
+     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.application.steps.WaitSteps#waitInvisibilityOf(Page.PageElement, Boolean, List)}
      *             "I wait invisibility of {string}(\\?)"
-     *             =======
-     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.application.steps.WaitSteps#waitInvisibilityOf()}
-     *             "The element {page-element} {is-isnot} visible(\\?)"
-     *             >>>>>>> chainable-waits
      *             Checks if an html element is not visible.
      * @param pageElement
-     *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
+     *            The concerned page of field AND key of PageElement concerned (sample: $demo.DemoPage-button)
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
@@ -682,11 +669,11 @@ public class CommonSteps extends Step {
     }
 
     /**
-     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.application.steps.WaitSteps#waitPresenceOfElementLocated()}
+     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.application.steps.WaitSteps#waitPresenceOfElementLocated(Page.PageElement, Boolean, List)}
      *             "The element {page-element} {should-shouldnot} be present(\\?)"
      *             Checks if an html element is present.
      * @param pageElement
-     *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
+     *            The concerned page of field AND key of PageElement concerned (sample: $demo.DemoPage-button)
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
@@ -704,11 +691,11 @@ public class CommonSteps extends Step {
     }
 
     /**
-     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.application.steps.WaitSteps#waitPresenceOfElementLocated()}
+     * @deprecated As of release 4.1, replaced by {@link com.github.noraui.application.steps.WaitSteps#waitPresenceOfElementLocated(Page.PageElement, Boolean, List)}
      *             "The element {page-element} {should-shouldnot} be present(\\?)"
      *             Checks if an html element is not present.
      * @param pageElement
-     *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
+     *            The concerned page of field AND key of PageElement concerned (sample: $demo.DemoPage-button)
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException
@@ -771,7 +758,7 @@ public class CommonSteps extends Step {
      * Updates the value of a html radio element with conditions.
      *
      * @param pageElement
-     *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
+     *            The concerned page of field AND key of PageElement concerned (sample: $demo.DemoPage-button)
      * @param valueOrKey
      *            Is the value (value or value in context (after a save)) use for selection
      * @param conditions
@@ -793,7 +780,7 @@ public class CommonSteps extends Step {
      * Updates the value of html radio element with conditions using a map of keys/printed values.
      *
      * @param pageElement
-     *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
+     *            The concerned page of field AND key of PageElement concerned (sample: $demo.DemoPage-button)
      * @param valueKeyOrKey
      *            Is valueKey (valueKey or input in context (after a save))
      * @param printedValues
@@ -814,7 +801,7 @@ public class CommonSteps extends Step {
      * Updates the value of a html checkbox element with conditions.
      *
      * @param pageElement
-     *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
+     *            The concerned page of field AND key of PageElement concerned (sample: $demo.DemoPage-button)
      * @param value
      *            To check or not ?
      * @param conditions
@@ -835,7 +822,7 @@ public class CommonSteps extends Step {
      * Updates the value of a html checkbox element with conditions regarding the provided keys/values map.
      *
      * @param pageElement
-     *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
+     *            The concerned page of field AND key of PageElement concerned (sample: $demo.DemoPage-button)
      * @param value
      *            A key to map with 'values' to find the final right checkbox value
      * @param values
@@ -855,7 +842,7 @@ public class CommonSteps extends Step {
      * Clears a html element with conditions.
      *
      * @param pageElement
-     *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
+     *            The concerned page of field AND key of PageElement concerned (sample: $demo.DemoPage-button)
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException

@@ -37,7 +37,7 @@ public class MaterialSteps extends Step {
 
     /**
      * @param pageElement
-     *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
+     *            The concerned page of field AND key of PageElement concerned (sample: $demo.DemoPage-button)
      * @param value
      *            To check or not ?
      * @param conditions
@@ -57,7 +57,7 @@ public class MaterialSteps extends Step {
 
     /**
      * @param pageElement
-     *            The concerned page of field AND key of PageElement concerned (sample: demo.DemoPage-button)
+     *            The concerned page of field AND key of PageElement concerned (sample: $demo.DemoPage-button)
      * @param valueOrKey
      *            Is the value (value or value in context (after a save)) use for selection
      * @param conditions
