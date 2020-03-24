@@ -6,7 +6,7 @@
 
 	<groupId>com.github.noraui</groupId>
 	<artifactId>noraui</artifactId>
-	<version>4.2.0-SNAPSHOT</version>
+	<version>4.2.0</version>
 	<packaging>jar</packaging>
 
 	<name>NORAUI</name>
@@ -105,7 +105,6 @@
 		<sonar.exclusions>**/cucumber/**/*,**/*Exception.*,**/annotation/**/*,**/noraui/model/**/*,**/noraui/data/rest/Row.java,**/noraui/utils/Constants.java,**/noraui/application/steps/MailSteps.java</sonar.exclusions>
 		<sonar.test.exclusions>**/*.css</sonar.test.exclusions>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<javadoc.opts>-Xdoclint:none</javadoc.opts>
 	</properties>
 
 	<repositories>
@@ -444,7 +443,7 @@
 						</goals>
 						<configuration>
                             <source>8</source>
-							<additionalparam>${javadoc.opts}</additionalparam>
+							<doclint>none</doclint>
 						</configuration>
 					</execution>
 				</executions>
@@ -594,7 +593,7 @@
 						<version>${maven-javadoc-plugin.version}</version>
 						<configuration>
                             <source>8</source>
-							<additionalparam>${javadoc.opts}</additionalparam>
+							<doclint>none</doclint>
 							<aggregate>true</aggregate>
 							<stylesheetfile>${basedir}/src/test/resources/dev/stylesheet.css</stylesheetfile>
 						</configuration>
