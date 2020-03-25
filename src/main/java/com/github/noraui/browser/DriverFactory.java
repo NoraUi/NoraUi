@@ -180,15 +180,12 @@ public class DriverFactory {
             chromeOptions.setBinary(targetBrowserBinaryPath);
         }
 
-        final String remoteWebDriverUrl = Context.getWebdriversProperties("remoteWebDriverUrl");
-        final String remoteWebDriverBrowserVersion = Context.getWebdriversProperties("remoteWebDriverBrowserVersion");
-        final String remoteWebDriverPlatformName = Context.getWebdriversProperties("remoteWebDriverPlatformName");
-        if (remoteWebDriverUrl != null && !"".equals(remoteWebDriverUrl) && remoteWebDriverBrowserVersion != null && !"".equals(remoteWebDriverBrowserVersion) && remoteWebDriverPlatformName != null
-                && !"".equals(remoteWebDriverPlatformName)) {
-            chromeOptions.setCapability("browserVersion", remoteWebDriverBrowserVersion);
-            chromeOptions.setCapability("platformName", remoteWebDriverPlatformName);
+        if (Context.getRemoteWebDriverUrl() != null && !"".equals(Context.getRemoteWebDriverUrl()) && Context.getRemoteWebDriverBrowserVersion() != null
+                && !"".equals(Context.getRemoteWebDriverBrowserVersion()) && Context.getRemoteWebDriverPlatformName() != null && !"".equals(Context.getRemoteWebDriverPlatformName())) {
+            chromeOptions.setCapability("browserVersion", Context.getRemoteWebDriverBrowserVersion());
+            chromeOptions.setCapability("platformName", Context.getRemoteWebDriverPlatformName());
             try {
-                return new RemoteWebDriver(new URL(remoteWebDriverUrl), chromeOptions);
+                return new RemoteWebDriver(new URL(Context.getRemoteWebDriverUrl()), chromeOptions);
             } catch (MalformedURLException e) {
                 throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_REMOTE_WEBDRIVER_URL));
             }
