@@ -170,13 +170,17 @@ public class DriverFactory {
             chromeOptions.addArguments("--headless");
         }
 
-        if (Context.isHeadless()) {
+        if (Context.isNoSandbox()) {
             chromeOptions.addArguments("--no-sandbox");
         }
 
         // Proxy configuration
         if (Context.getProxy().getProxyType() != ProxyType.UNSPECIFIED && Context.getProxy().getProxyType() != ProxyType.AUTODETECT) {
             chromeOptions.setCapability(CapabilityType.PROXY, Context.getProxy());
+        }
+
+        if (Context.useModifyheader()) {
+            chromeOptions.addExtensions(new File("src/test/resources/drivers/modifyheader/extension_2_5_2_0.crx"));
         }
 
         // Set custom downloaded file path. When you check content of downloaded file by robot.

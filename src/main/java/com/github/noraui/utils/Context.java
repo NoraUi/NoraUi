@@ -101,6 +101,7 @@ public class Context {
     public static final String OKHTTP_READ_TIMEOUT = "readTimeout";
     public static final String HEADLESS = "headless";
     public static final String NO_SANDBOX = "noSandbox";
+    public static final String USE_MODIFYHEADER = "useModifyheader";
     public static final String LOCALE = "locale";
     public static final String AUTH_TYPE = "authentication";
     public static final String CRYPTO_KEY = "crypto.key";
@@ -262,6 +263,11 @@ public class Context {
     private boolean isNoSandbox;
 
     /**
+     * use Modifyheader to your browser extension.
+     */
+    private boolean useModifyheader;
+
+    /**
      * Instance of DataInputProvider
      */
     private DataInputProvider dataInputProvider;
@@ -420,6 +426,7 @@ public class Context {
         // enable browser headless mode ?
         isHeadless = "true".equals(getProperty(HEADLESS, applicationProperties));
         isNoSandbox = "true".equals(getProperty(NO_SANDBOX, applicationProperties));
+        useModifyheader = "true".equals(getProperty(USE_MODIFYHEADER, applicationProperties));
 
         // init driver callbacks
         exceptionCallbacks.put(Callbacks.RESTART_WEB_DRIVER, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, RESTART_WEB_DRIVER_METHOD_NAME);
@@ -776,6 +783,10 @@ public class Context {
 
     public static boolean isNoSandbox() {
         return getInstance().isNoSandbox;
+    }
+
+    public static boolean useModifyheader() {
+        return getInstance().useModifyheader;
     }
 
     public static String getModelPackages() {
