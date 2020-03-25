@@ -10,6 +10,8 @@ import static com.github.noraui.utils.Constants.DOWNLOADED_FILES_FOLDER;
 import static com.github.noraui.utils.Constants.USER_DIR;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -32,6 +34,7 @@ import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 
 import com.github.noraui.exception.TechnicalException;
@@ -157,7 +160,7 @@ public class DriverFactory {
             chromeOptions.addArguments("--headless");
         }
 
-        if (Context.isHeadless()) {
+        if (Context.isNoSandbox()) {
             chromeOptions.addArguments("--no-sandbox");
         }
 
@@ -177,12 +180,26 @@ public class DriverFactory {
             chromeOptions.setBinary(targetBrowserBinaryPath);
         }
 
-        final String withWhitelistedIps = Context.getWebdriversProperties("withWhitelistedIps");
-        if (withWhitelistedIps != null && !"".equals(withWhitelistedIps)) {
-            final ChromeDriverService service = new ChromeDriverService.Builder().withWhitelistedIps(withWhitelistedIps).withVerbose(false).build();
-            return new ChromeDriver(service, chromeOptions);
+        final String remoteWebDriverUrl = Context.getWebdriversProperties("remoteWebDriverUrl");
+        final String remoteWebDriverBrowserVersion = Context.getWebdriversProperties("remoteWebDriverBrowserVersion");
+        final String remoteWebDriverPlatformName = Context.getWebdriversProperties("remoteWebDriverPlatformName");
+        if (remoteWebDriverUrl != null && !"".equals(remoteWebDriverUrl) && remoteWebDriverBrowserVersion != null && !"".equals(remoteWebDriverBrowserVersion) && remoteWebDriverPlatformName != null
+                && !"".equals(remoteWebDriverPlatformName)) {
+            chromeOptions.setCapability("browserVersion", remoteWebDriverBrowserVersion);
+            chromeOptions.setCapability("platformName", remoteWebDriverPlatformName);
+            try {
+                return new RemoteWebDriver(new URL(remoteWebDriverUrl), chromeOptions);
+            } catch (MalformedURLException e) {
+                throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_REMOTE_WEBDRIVER_URL));
+            }
         } else {
-            return new ChromeDriver(chromeOptions);
+            final String withWhitelistedIps = Context.getWebdriversProperties("withWhitelistedIps");
+            if (withWhitelistedIps != null && !"".equals(withWhitelistedIps)) {
+                final ChromeDriverService service = new ChromeDriverService.Builder().withWhitelistedIps(withWhitelistedIps).withVerbose(false).build();
+                return new ChromeDriver(service, chromeOptions);
+            } else {
+                return new ChromeDriver(chromeOptions);
+            }
         }
     }
 
