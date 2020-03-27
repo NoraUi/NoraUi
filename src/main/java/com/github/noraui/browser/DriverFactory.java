@@ -6,10 +6,12 @@
  */
 package com.github.noraui.browser;
 
-import static com.github.noraui.Constants.DOWNLOADED_FILES_FOLDER;
-import static com.github.noraui.Constants.USER_DIR;
+import static com.github.noraui.utils.Constants.DOWNLOADED_FILES_FOLDER;
+import static com.github.noraui.utils.Constants.USER_DIR;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -32,6 +34,7 @@ import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 
 import com.github.noraui.exception.TechnicalException;
@@ -88,19 +91,6 @@ public class DriverFactory {
      * Clear loaded drivers
      */
     public void clear() {
-        for (final WebDriver wd : drivers.values()) {
-            wd.manage().deleteAllCookies();
-            while (wd.getWindowHandles().size() > 1) {
-                wd.close();
-            }
-            wd.get("data:,");
-        }
-    }
-
-    /**
-     * Quit loaded drivers
-     */
-    public void quit() {
         for (final WebDriver wd : drivers.values()) {
             wd.quit();
         }
@@ -179,10 +169,6 @@ public class DriverFactory {
             chromeOptions.setCapability(CapabilityType.PROXY, Context.getProxy());
         }
 
-        if (Context.useModifyheader()) {
-            chromeOptions.addExtensions(new File("src/test/resources/drivers/modifyheader/extension_2_5_2_0.crx"));
-        }
-
         // Set custom downloaded file path. When you check content of downloaded file by robot.
         final HashMap<String, Object> chromePrefs = new HashMap<>();
         chromePrefs.put("download.default_directory", System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER);
@@ -194,12 +180,23 @@ public class DriverFactory {
             chromeOptions.setBinary(targetBrowserBinaryPath);
         }
 
-        final String withWhitelistedIps = Context.getWebdriversProperties("withWhitelistedIps");
-        if (withWhitelistedIps != null && !"".equals(withWhitelistedIps)) {
-            final ChromeDriverService service = new ChromeDriverService.Builder().withWhitelistedIps(withWhitelistedIps).withVerbose(false).build();
-            return new ChromeDriver(service, chromeOptions);
+        if (Context.getRemoteWebDriverUrl() != null && !"".equals(Context.getRemoteWebDriverUrl()) && Context.getRemoteWebDriverBrowserVersion() != null
+                && !"".equals(Context.getRemoteWebDriverBrowserVersion()) && Context.getRemoteWebDriverPlatformName() != null && !"".equals(Context.getRemoteWebDriverPlatformName())) {
+            chromeOptions.setCapability("browserVersion", Context.getRemoteWebDriverBrowserVersion());
+            chromeOptions.setCapability("platformName", Context.getRemoteWebDriverPlatformName());
+            try {
+                return new RemoteWebDriver(new URL(Context.getRemoteWebDriverUrl()), chromeOptions);
+            } catch (MalformedURLException e) {
+                throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_REMOTE_WEBDRIVER_URL));
+            }
         } else {
-            return new ChromeDriver(chromeOptions);
+            final String withWhitelistedIps = Context.getWebdriversProperties("withWhitelistedIps");
+            if (withWhitelistedIps != null && !"".equals(withWhitelistedIps)) {
+                final ChromeDriverService service = new ChromeDriverService.Builder().withWhitelistedIps(withWhitelistedIps).withVerbose(false).build();
+                return new ChromeDriver(service, chromeOptions);
+            } else {
+                return new ChromeDriver(chromeOptions);
+            }
         }
     }
 
