@@ -101,6 +101,9 @@ public class Context {
     public static final String OKHTTP_READ_TIMEOUT = "readTimeout";
     public static final String HEADLESS = "headless";
     public static final String NO_SANDBOX = "noSandbox";
+    public static final String REMOTE_WEBDRIVER_URL = "remoteWebDriverUrl";
+    public static final String REMOTE_WEBDRIVER_BROWSER_VERSION = "remoteWebDriverBrowserVersion";
+    public static final String REMOTE_WEBDRIVER_PLATFORM_NAME = "remoteWebDriverPlatformName";
     public static final String USE_MODIFYHEADER = "useModifyheader";
     public static final String LOCALE = "locale";
     public static final String AUTH_TYPE = "authentication";
@@ -261,6 +264,10 @@ public class Context {
      * Is no-sandbox mode enable ?
      */
     private boolean isNoSandbox;
+    
+    private String remoteWebDriverUrl;
+    private String remoteWebDriverBrowserVersion;
+    private String remoteWebDriverPlatformName;
 
     /**
      * use Modifyheader to your browser extension.
@@ -427,6 +434,10 @@ public class Context {
         isHeadless = "true".equals(getProperty(HEADLESS, applicationProperties));
         isNoSandbox = "true".equals(getProperty(NO_SANDBOX, applicationProperties));
         useModifyheader = "true".equals(getProperty(USE_MODIFYHEADER, applicationProperties));
+        
+        remoteWebDriverUrl = getProperty(REMOTE_WEBDRIVER_URL, applicationProperties);
+        remoteWebDriverBrowserVersion = getProperty(REMOTE_WEBDRIVER_BROWSER_VERSION, applicationProperties);
+        remoteWebDriverPlatformName = getProperty(REMOTE_WEBDRIVER_PLATFORM_NAME, applicationProperties);
 
         // init driver callbacks
         exceptionCallbacks.put(Callbacks.RESTART_WEB_DRIVER, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, RESTART_WEB_DRIVER_METHOD_NAME);
@@ -783,6 +794,18 @@ public class Context {
 
     public static boolean isNoSandbox() {
         return getInstance().isNoSandbox;
+    }
+    
+    public static String getRemoteWebDriverUrl() {
+        return getInstance().remoteWebDriverUrl;
+    }
+
+    public static String getRemoteWebDriverBrowserVersion() {
+        return getInstance().remoteWebDriverBrowserVersion;
+    }
+
+    public static String getRemoteWebDriverPlatformName() {
+        return getInstance().remoteWebDriverPlatformName;
     }
 
     public static boolean useModifyheader() {
