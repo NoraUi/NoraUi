@@ -91,6 +91,19 @@ public class DriverFactory {
      * Clear loaded drivers
      */
     public void clear() {
+        for (final WebDriver wd : drivers.values()) {	
+            wd.manage().deleteAllCookies();	
+            while (wd.getWindowHandles().size() > 1) {	
+                wd.close();	
+            }	
+            wd.get("data:,");	
+        }	
+    }	
+
+    /**	
+     * Quit loaded drivers	
+     */	
+    public void quit() {
         for (final WebDriver wd : drivers.values()) {
             wd.quit();
         }
@@ -167,6 +180,10 @@ public class DriverFactory {
         // Proxy configuration
         if (Context.getProxy().getProxyType() != ProxyType.UNSPECIFIED && Context.getProxy().getProxyType() != ProxyType.AUTODETECT) {
             chromeOptions.setCapability(CapabilityType.PROXY, Context.getProxy());
+        }
+        
+        if (Context.useModifyheader()) {	
+            chromeOptions.addExtensions(new File("src/test/resources/drivers/modifyheader/extension_2_5_2_0.crx"));	
         }
 
         // Set custom downloaded file path. When you check content of downloaded file by robot.
