@@ -6,9 +6,9 @@
  */
 package com.github.noraui.application.steps;
 
-import static com.github.noraui.utils.Constants.DEFAULT_DATE_FORMAT;
-import static com.github.noraui.utils.Constants.DEFAULT_ZONE_ID;
-import static com.github.noraui.utils.Constants.PREFIX_SAVE;
+import static com.github.noraui.Constants.DEFAULT_DATE_FORMAT;
+import static com.github.noraui.Constants.DEFAULT_ZONE_ID;
+import static com.github.noraui.Constants.PREFIX_SAVE;
 
 import java.time.LocalDate;
 import java.time.ZoneId;

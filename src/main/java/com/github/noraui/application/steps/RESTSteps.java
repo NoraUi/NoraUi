@@ -6,7 +6,7 @@
  */
 package com.github.noraui.application.steps;
 
-import static com.github.noraui.utils.Constants.PREFIX_SAVE;
+import static com.github.noraui.Constants.PREFIX_SAVE;
 
 import java.util.List;
 

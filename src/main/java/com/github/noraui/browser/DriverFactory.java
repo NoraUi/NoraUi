@@ -6,8 +6,8 @@
  */
 package com.github.noraui.browser;
 
-import static com.github.noraui.utils.Constants.DOWNLOADED_FILES_FOLDER;
-import static com.github.noraui.utils.Constants.USER_DIR;
+import static com.github.noraui.Constants.DOWNLOADED_FILES_FOLDER;
+import static com.github.noraui.Constants.USER_DIR;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -91,18 +91,18 @@ public class DriverFactory {
      * Clear loaded drivers
      */
     public void clear() {
-        for (final WebDriver wd : drivers.values()) {	
-            wd.manage().deleteAllCookies();	
-            while (wd.getWindowHandles().size() > 1) {	
-                wd.close();	
-            }	
-            wd.get("data:,");	
-        }	
-    }	
+        for (final WebDriver wd : drivers.values()) {
+            wd.manage().deleteAllCookies();
+            while (wd.getWindowHandles().size() > 1) {
+                wd.close();
+            }
+            wd.get("data:,");
+        }
+    }
 
-    /**	
-     * Quit loaded drivers	
-     */	
+    /**
+     * Quit loaded drivers
+     */
     public void quit() {
         for (final WebDriver wd : drivers.values()) {
             wd.quit();
@@ -181,9 +181,9 @@ public class DriverFactory {
         if (Context.getProxy().getProxyType() != ProxyType.UNSPECIFIED && Context.getProxy().getProxyType() != ProxyType.AUTODETECT) {
             chromeOptions.setCapability(CapabilityType.PROXY, Context.getProxy());
         }
-        
-        if (Context.useModifyheader()) {	
-            chromeOptions.addExtensions(new File("src/test/resources/drivers/modifyheader/extension_2_5_2_0.crx"));	
+
+        if (Context.useModifyheader()) {
+            chromeOptions.addExtensions(new File("src/test/resources/drivers/modifyheader/extension_2_5_2_0.crx"));
         }
 
         // Set custom downloaded file path. When you check content of downloaded file by robot.
