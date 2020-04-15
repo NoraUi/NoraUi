@@ -78,7 +78,7 @@ public class WaitSteps extends Step {
 
     @Conditioned
     @Lorsque("L'élément {page-element} {should-shouldnot} être cliquable(\\?)")
-    @Then("he element {page-element} {should-shouldnot} be clickable(\\?)")
+    @Then("The element {page-element} {should-shouldnot} be clickable(\\?)")
     public void waitElementToBeClickable(PageElement pageElement, final Boolean not, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         try {
             Wait.until(ExpectedConditions.elementToBeClickable(Utilities.getLocator(pageElement)), not);
