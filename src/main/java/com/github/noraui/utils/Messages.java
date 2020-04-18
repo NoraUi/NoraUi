@@ -108,6 +108,9 @@ public class Messages {
     public static final String FAIL_MESSAGE_CONTEXT_NOT_CONTAINS = "FAIL_MESSAGE_CONTEXT_NOT_CONTAINS";
     public static final String FAIL_MESSAGE_DATE_FORMATTER = "FAIL_MESSAGE_DATE_FORMATTER";
     public static final String FAIL_MESSAGE_UNABLE_TO_GENERATE_RANDOM_VALUE = "FAIL_MESSAGE_UNABLE_TO_GENERATE_RANDOM_VALUE";
+    public static final String FAIL_MESSAGE_UNABLE_TO_COPY_VALUE = "FAIL_MESSAGE_UNABLE_TO_COPY_VALUE";
+    public static final String FAIL_MESSAGE_UNABLE_TO_CHANGE_VALUE = "FAIL_MESSAGE_UNABLE_TO_CHANGE_VALUE";
+    public static final String FAIL_MESSAGE_FORMAT = "FAIL_MESSAGE_FORMAT";
 
     /**
      * Functional Material fail messages with parameters.
@@ -167,7 +170,6 @@ public class Messages {
             } else {
                 messagesBundles.put(bundle, ResourceBundle.getBundle("i18n/" + bundle, Context.getLocale()));
             }
-
         }
         return messagesBundles.get(bundle).getString(key);
     }
