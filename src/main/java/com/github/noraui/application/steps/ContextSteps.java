@@ -6,7 +6,7 @@
  */
 package com.github.noraui.application.steps;
 
-import static com.github.noraui.utils.Constants.PREFIX_SAVE;
+import static com.github.noraui.Constants.PREFIX_SAVE;
 
 import java.util.List;
 
@@ -25,6 +25,7 @@ import com.mifmif.common.regex.Generex;
 
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.When;
+import io.cucumber.java.fr.Et;
 import io.cucumber.java.fr.Quand;
 
 @Loggable
@@ -48,6 +49,7 @@ public class ContextSteps extends Step {
      *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
      */
     @Conditioned
+    @Et("Je vérifie que {string} est égal à {string}(\\?)")
     @And("I check that {string} equals to {string}(\\?)")
     public void checkThatValueInContextEqualsTo(String srcValueOrKey, String compareValueOrKey, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
         final String src = Context.getValue(srcValueOrKey) != null ? Context.getValue(srcValueOrKey) : srcValueOrKey;
@@ -74,6 +76,7 @@ public class ContextSteps extends Step {
      *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
      */
     @Conditioned
+    @Et("Je vérifie que {string} est égal à {string} en ignorant la case(\\?)")
     @And("I check that {string} equals ignore case to {string}(\\?)")
     public void checkThatValueInContextEqualsIgnoreCaseTo(String srcValueOrKey, String compareValueOrKey, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
         final String src = Context.getValue(srcValueOrKey) != null ? Context.getValue(srcValueOrKey) : srcValueOrKey;
@@ -100,6 +103,7 @@ public class ContextSteps extends Step {
      *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
      */
     @Conditioned
+    @Et("Je vérifie que {string} contient {string}(\\?)")
     @And("I check that {string} contains {string}(\\?)")
     public void checkThatValueInContextContains(String srcValueOrKey, String compareValueOrKey, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
         final String src = Context.getValue(srcValueOrKey) != null ? Context.getValue(srcValueOrKey) : srcValueOrKey;
@@ -126,7 +130,7 @@ public class ContextSteps extends Step {
      *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
      */
     @Conditioned
-    @Quand("Je génère du texte aléatoire correspond à {string} et j\'enregistre la valeur dans la clé {string} d contexte(\\?)")
+    @Quand("Je génère du texte aléatoire correspond à {string} et j\'enregistre la valeur dans la clé {string} du contexte(\\?)")
     @When("I generate text with ramdom match {string} and save the value in {string} context key(\\?)")
     public void generateAndSaveTextWithRamdomValueMatchRegexp(String randRegex, String targetKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         try {
@@ -135,6 +139,35 @@ public class ContextSteps extends Step {
             Context.getCurrentScenario().write(PREFIX_SAVE + targetKey + "=" + rand);
         } catch (final Exception e) {
             new Result.Failure<>("", Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_GENERATE_RANDOM_VALUE), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+        }
+    }
+
+    /**
+     * Copy source value or value in context.
+     * 
+     * @since 4.2.3
+     * @param srcValueOrKey
+     *            is source value (or value in context).
+     * @param targetKey
+     *            Target key to save retrieved value.
+     * @param conditions
+     *            list of 'expected' values condition and 'actual' values
+     *            ({@link com.github.noraui.gherkin.GherkinStepCondition}).
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     * @throws TechnicalException
+     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     */
+    @Conditioned
+    @Quand("Je copie {string} dans la clé {string} du contexte(\\?)")
+    @When("I copy {string} to {string} context key(\\?)")
+    public void copyContext(String srcValueOrKey, String targetKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+        try {
+            final String src = Context.getValue(srcValueOrKey) != null ? Context.getValue(srcValueOrKey) : srcValueOrKey;
+            Context.saveValue(targetKey, src);
+            Context.getCurrentScenario().write(PREFIX_SAVE + targetKey + "=" + src);
+        } catch (final Exception e) {
+            new Result.Failure<>("", Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_COPY_VALUE), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
     }
 
