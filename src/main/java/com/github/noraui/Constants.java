@@ -9,6 +9,9 @@ package com.github.noraui;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * @since 4.2.0
+ */
 public class Constants {
 
     /**
