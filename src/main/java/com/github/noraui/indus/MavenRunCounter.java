@@ -104,7 +104,7 @@ public class MavenRunCounter {
                 if (counter != null) {
                     countAndAddToList(manager, result, scenarioName, nbStep, counter);
                 } else {
-                    throw new TechnicalException(Messages.format(Messages.getMessage(Messages.SCENARIO_ERROR_MESSAGE_SCENARIO_OUTLINE_IS_MANDATORY, scenarioName)));
+                    throw new TechnicalException(Messages.format(Messages.getMessage(Messages.SCENARIO_ERROR_MESSAGE_SCENARIO_OUTLINE_IS_MANDATORY), scenarioName));
                 }
             }
         }
