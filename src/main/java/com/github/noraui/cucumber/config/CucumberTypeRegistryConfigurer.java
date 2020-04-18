@@ -28,8 +28,9 @@ import io.cucumber.cucumberexpressions.ParameterType;
 import io.cucumber.datatable.DataTableType;
 import io.cucumber.datatable.TableEntryTransformer;
 
-/*
- * Maps datatables in feature files to custom domain objects.
+/**
+ * @since 4.2.0
+ *        Maps datatables in feature files to custom domain objects.
  */
 @Loggable
 public class CucumberTypeRegistryConfigurer implements TypeRegistryConfigurer {
