@@ -21,7 +21,6 @@ import org.slf4j.Logger;
 import com.github.noraui.application.model.demo.Article;
 import com.github.noraui.application.model.demo.Articles;
 import com.github.noraui.application.page.bakery.DemoPage;
-import com.github.noraui.application.steps.ExpectSteps;
 import com.github.noraui.application.steps.Step;
 import com.github.noraui.browser.waits.Wait;
 import com.github.noraui.cucumber.annotation.Conditioned;
@@ -33,6 +32,7 @@ import com.github.noraui.exception.FailureException;
 import com.github.noraui.exception.Result;
 import com.github.noraui.gherkin.GherkinStepCondition;
 import com.github.noraui.log.annotation.Loggable;
+import com.github.noraui.selenium.NoraUiExpectedConditions;
 import com.github.noraui.utils.Messages;
 import com.github.noraui.utils.Utilities;
 import com.google.inject.Inject;
@@ -110,9 +110,9 @@ public class HelloByeSteps extends Step {
         By inputSelectLocator = Utilities.getLocator(demoPage.inputSelect);
         By inputTextLocator = Utilities.getLocator(demoPage.inputText);
 
-        Wait.untilAnd(ExpectSteps.atLeastOneOfTheseElementsIsPresent(inputSelectLocator, inputTextLocator)).wait(() -> ExpectSteps.presenceOfNbElementsLocatedBy(inputSelectLocator, 1))
-                .wait(() -> ExpectSteps.presenceOfNbElementsLocatedBy(inputTextLocator, 1)).wait(() -> ExpectSteps.visibilityOfNbElementsLocatedBy(inputSelectLocator, 1))
-                .wait(() -> ExpectSteps.visibilityOfNbElementsLocatedBy(inputTextLocator, 1));
+        Wait.untilAnd(NoraUiExpectedConditions.atLeastOneOfTheseElementsIsPresent(inputSelectLocator, inputTextLocator))
+                .wait(() -> NoraUiExpectedConditions.presenceOfNbElementsLocatedBy(inputSelectLocator, 1)).wait(() -> NoraUiExpectedConditions.presenceOfNbElementsLocatedBy(inputTextLocator, 1))
+                .wait(() -> NoraUiExpectedConditions.visibilityOfNbElementsLocatedBy(inputSelectLocator, 1)).wait(() -> NoraUiExpectedConditions.visibilityOfNbElementsLocatedBy(inputTextLocator, 1));
     }
 
     @RetryOnFailure(attempts = 3)

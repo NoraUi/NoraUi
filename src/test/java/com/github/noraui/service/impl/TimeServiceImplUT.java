@@ -6,8 +6,8 @@
  */
 package com.github.noraui.service.impl;
 
-import static com.github.noraui.utils.Constants.DEFAULT_DATE_FORMAT;
-import static com.github.noraui.utils.Constants.DEFAULT_ZONE_ID;
+import static com.github.noraui.Constants.DEFAULT_DATE_FORMAT;
+import static com.github.noraui.Constants.DEFAULT_ZONE_ID;
 
 import org.junit.After;
 import org.junit.Before;
