@@ -91,7 +91,13 @@ public class Context {
     static Logger log;
 
     public static final String STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME = BrowserSteps.class.getCanonicalName();
+    /**
+     * @deprecated As of release 4.2.3, replaced by {@link com.github.noraui.browser.steps.BrowserSteps#GO_TO_URL_METHOD_NAME}
+     */
     public static final String GO_TO_URL_METHOD_NAME = "goToUrl";
+    /**
+     * @deprecated As of release 4.2.3, replaced by {@link com.github.noraui.browser.steps.BrowserSteps#RESTART_WEB_DRIVER_METHOD_NAME}
+     */
     public static final String RESTART_WEB_DRIVER_METHOD_NAME = "restartWebDriver";
     public static final String HTTP_PROXY = "http_proxy";
     public static final String HTTPS_PROXY = "https_proxy";
@@ -264,7 +270,7 @@ public class Context {
      * Is no-sandbox mode enable ?
      */
     private boolean isNoSandbox;
-    
+
     private String remoteWebDriverUrl;
     private String remoteWebDriverBrowserVersion;
     private String remoteWebDriverPlatformName;
@@ -434,7 +440,7 @@ public class Context {
         isHeadless = "true".equals(getProperty(HEADLESS, applicationProperties));
         isNoSandbox = "true".equals(getProperty(NO_SANDBOX, applicationProperties));
         useModifyheader = "true".equals(getProperty(USE_MODIFYHEADER, applicationProperties));
-        
+
         remoteWebDriverUrl = getProperty(REMOTE_WEBDRIVER_URL, applicationProperties);
         remoteWebDriverBrowserVersion = getProperty(REMOTE_WEBDRIVER_BROWSER_VERSION, applicationProperties);
         remoteWebDriverPlatformName = getProperty(REMOTE_WEBDRIVER_PLATFORM_NAME, applicationProperties);
@@ -795,7 +801,7 @@ public class Context {
     public static boolean isNoSandbox() {
         return getInstance().isNoSandbox;
     }
-    
+
     public static String getRemoteWebDriverUrl() {
         return getInstance().remoteWebDriverUrl;
     }

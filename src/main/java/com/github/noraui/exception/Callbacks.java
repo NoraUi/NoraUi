@@ -35,6 +35,16 @@ public class Callbacks extends HashMap<String, Callback> {
         put(RESTART_WEB_DRIVER, Context.STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, "restartWebDriver");
     }
 
+    /**
+     * @param key
+     *            is key of Callbacks Map
+     * @param strClass
+     *            String full name of class (ex: "utils.CLASSNAME")
+     * @param strMethod
+     *            String method to call
+     * @param parameters
+     *            Method to call parameters
+     */
     public void put(String key, String strClass, String strMethod, Object... parameters) {
         put(key, new Callback(strClass, strMethod, parameters));
     }
@@ -52,11 +62,11 @@ public class Callbacks extends HashMap<String, Callback> {
          * Constructor
          *
          * @param strClass
-         *            String full name of class (ex: "utils.CLASSNAME")
+         *            String full name of class (ex: "utils.CLASSNAME").
          * @param strMethod
-         *            String method to call
+         *            String method to call.
          * @param parameters
-         *            Method to call parameters
+         *            Method to call parameters.
          */
         public Callback(String strClass, String strMethod, Object... parameters) {
             try {
