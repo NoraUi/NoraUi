@@ -45,6 +45,9 @@ public class BrowserSteps {
 
     public static final String CLOSE_WINDOW_AND_SWITCH_TO = "closeWindowAndSwitchTo";
     public static final String CLOSE_ALL_WINDOWS_AND_SWITCH_TO = "closeAllWindowsAndSwitchTo";
+    public static final String GO_TO_URL_METHOD_NAME = "goToUrl";
+    public static final String RESTART_WEB_DRIVER_METHOD_NAME = "restartWebDriver";
+    public static final String RESTART_WEB_DRIVER_AND_SWITCH_TO = "restartWebDriverAndSwitchTo";
 
     /**
      * Open new window with conditions.
@@ -181,13 +184,34 @@ public class BrowserSteps {
     }
 
     /**
+     * Restart WebDriver with a {@link Context#clear()} and switches to target window with conditions.
+     * 
+     * @param backTo
+     *            url to go back to.
+     * @param conditions
+     *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_CLOSE_APP} message (with screenshot, with exception)
+     *             or {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_OPEN_APPLICATION} message (with screenshot, with exception)
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     */
+    @Conditioned
+    @Lorsque("Je redémarre le web driver et passe à la fenêtre {string}(\\?)")
+    @Then("I restart the web driver and switch to {string} window(\\?)")
+    public void restartWebDriverAndSwitchTo(String backTo, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+        restartWebDriverAndSwitchTo(backTo);
+    }
+
+    /**
      * Closes a specific window and go to the given url.
      * This method is called by reflexion from @see exceptions.ExceptionCallback#getCallBack(String).
      *
      * @param key
-     *            window key to close
+     *            window key to keep.
      * @param backTo
-     *            url to go back to
+     *            url to go back to.
      * @throws TechnicalException
      *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
      *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_CLOSE_APP} message (with screenshot, with exception)
@@ -197,6 +221,24 @@ public class BrowserSteps {
      */
     public void closeWindowAndSwitchTo(String key, String backTo) throws TechnicalException, FailureException {
         closeWindowAndSwitchTo(key);
+        goToUrl(backTo);
+    }
+
+    /**
+     * Restart WebDriver with a {@link Context#clear()} and go to the given url.
+     * This method is called by reflexion from @see exceptions.ExceptionCallback#getCallBack(String).
+     *
+     * @param backTo
+     *            url to go back to.
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_CLOSE_APP} message (with screenshot, with exception)
+     *             or {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_OPEN_APPLICATION} message (with screenshot, with exception)
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     */
+    public void restartWebDriverAndSwitchTo(String backTo) throws TechnicalException, FailureException {
+        restartWebDriver();
         goToUrl(backTo);
     }
 
