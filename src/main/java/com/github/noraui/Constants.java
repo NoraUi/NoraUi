@@ -60,6 +60,7 @@ public class Constants {
     public static final String DATA_OUT = "/data/out/";
 
     public static final String DOWNLOADED_FILES_FOLDER = "downloadFiles";
+    public static final String EXPECTED_FILES_FOLDER = "expectedFiles";
 
     public static final String TOP_LEVEL_PACKAGE = Constants.class.getPackage().getName();
 

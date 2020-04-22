@@ -550,7 +550,8 @@ public class CommonSteps extends Step {
 
     /**
      * Update a html input text with a given text and then press org.openqa.selenium.Keys (ENTER, ESCAPE, ...).
-     *
+     * 
+     * @since 4.2.4
      * @param pageElement
      *            The concerned page of field AND key of PageElement concerned (sample: $demo.DemoPage-button)
      * @param key

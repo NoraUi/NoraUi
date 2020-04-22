@@ -106,8 +106,9 @@ public class ScreenSteps extends Step {
     }
 
     /**
-     * Save a screenshot and add to DOWNLOAD_FILES_FOLDER folder.
+     * Take a screenshot and compare to screen all ready to disc.
      *
+     * @since 4.2.4
      * @param screenName
      *            name of screenshot file.
      * @param conditions
@@ -122,7 +123,7 @@ public class ScreenSteps extends Step {
     public void compareScreenshot(String screenName, Inequality inequality, double percentReference, List<GherkinStepCondition> conditions) throws IOException, FailureException {
         log.info("I compare a screenshot with [{}] and assert a failure if difference is [{}] [{}].", screenName, inequality.getValue(), percentReference);
         screenService.saveScreenshot("tmp");
-        double percent = screenService.getDifferencePercent(screenName, "tmp");
+        double percent = screenService.getDifferencePercent("tmp", screenName);
         log.info("percent difference is [{}].", percent);
         switch (inequality) {
             case SUPERIOR:

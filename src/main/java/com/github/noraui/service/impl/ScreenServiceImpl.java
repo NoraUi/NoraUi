@@ -7,6 +7,7 @@
 package com.github.noraui.service.impl;
 
 import static com.github.noraui.Constants.DOWNLOADED_FILES_FOLDER;
+import static com.github.noraui.Constants.EXPECTED_FILES_FOLDER;
 import static com.github.noraui.Constants.USER_DIR;
 import static org.monte.media.FormatKeys.EncodingKey;
 import static org.monte.media.FormatKeys.FrameRateKey;
@@ -171,25 +172,24 @@ public class ScreenServiceImpl implements ScreenService {
      * @throws IOException
      */
     @Override
-    public double getDifferencePercent(String imgName1, String imgName2) throws IOException {
-        BufferedImage img1 = ImageIO.read(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + imgName1 + ".jpg"));
-        BufferedImage img2 = ImageIO.read(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + imgName2 + ".jpg"));
-        int width = img1.getWidth();
-        int height = img1.getHeight();
-        int width2 = img2.getWidth();
-        int height2 = img2.getHeight();
-        if (width != width2 || height != height2) {
-            throw new IllegalArgumentException(String.format("Images must have the same dimensions: (%d,%d) vs. (%d,%d)", width, height, width2, height2));
+    public double getDifferencePercent(String actual, String expected) throws IOException {
+        BufferedImage imgActual = ImageIO.read(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + actual + ".jpg"));
+        BufferedImage imgExpected = ImageIO.read(new File(System.getProperty(USER_DIR) + File.separator + EXPECTED_FILES_FOLDER + File.separator + expected + ".jpg"));
+        int widthActual = imgActual.getWidth();
+        int heightActual = imgActual.getHeight();
+        int widthExpected = imgExpected.getWidth();
+        int heightExpected = imgExpected.getHeight();
+        if (widthActual != widthExpected || heightActual != heightExpected) {
+            throw new IllegalArgumentException(String.format("Images must have the same dimensions: (%d,%d) vs. (%d,%d)", widthActual, heightActual, widthExpected, heightExpected));
         }
 
         long diff = 0;
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                diff += pixelDiff(img1.getRGB(x, y), img2.getRGB(x, y));
+        for (int y = 0; y < heightActual; y++) {
+            for (int x = 0; x < widthActual; x++) {
+                diff += pixelDiff(imgActual.getRGB(x, y), imgExpected.getRGB(x, y));
             }
         }
-        long maxDiff = 3L * 255 * width * height;
-
+        long maxDiff = 3L * 255 * widthActual * heightActual;
         return 100.0 * diff / maxDiff;
     }
 

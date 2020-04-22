@@ -74,12 +74,13 @@ public interface ScreenService {
     /**
      * Percentage difference between images.
      * 
-     * @param img1
-     *            is expected source.
-     * @param img2
+     * @since 4.2.4
+     * @param actual
      *            is actual source.
+     * @param expected
+     *            is expected source.
      * @return
      */
-    double getDifferencePercent(String img1, String img2) throws IOException;
+    double getDifferencePercent(String actual, String expected) throws IOException;
 
 }
