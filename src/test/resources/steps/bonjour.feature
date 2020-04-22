@@ -47,7 +47,7 @@ Fonctionnalité: bonjour (Fonction pour valider l'environnement.)
     Lorsque Mes champs sont prêts à être utilisés
     Quand Je clarifie le texte dans $bakery.DemoPage-input_text_field
     Quand Je mets à jour le texte $bakery.DemoPage-input_text_field avec '<auteur>'
-    Quand Je mets à jour le texte $bakery.DemoPage-input_text_field et entre ENTRER avec '<auteur>'
+    Quand Je mets à jour le texte $bakery.DemoPage-input_text_field et entre ENTER avec '<auteur>'
     Et Je vérifie le champ obligatoire $bakery.DemoPage-input_text_field de type 'text'
     Et Je vérifie le texte $bakery.DemoPage-input_text_field avec '<auteur>'
     Quand Je mets à jour la liste déroulante $bakery.DemoPage-input_select_field avec '<ville>'
@@ -116,7 +116,7 @@ Fonctionnalité: bonjour (Fonction pour valider l'environnement.)
     Et L'élément $bakery.DemoPage-display_none_title n'est pas visible
 
     Quand Je clarifie le texte dans $bakery.DemoPage-input_text_field
-    Quand Je mets à jour le texte $bakery.DemoPage-input_text_field et entre ENTRER avec '<codepostal>'
+    Quand Je mets à jour le texte $bakery.DemoPage-input_text_field et entre ENTER avec '<codepostal>'
     Et Je vérifie le champ obligatoire $bakery.DemoPage-input_text_field de type 'text'
 
     Et Je mets à jour la liste radio $bakery.DemoPage-rate avec '<auteur>' à partir de ces valeurs:
