@@ -71,4 +71,15 @@ public interface ScreenService {
      */
     void scrollIntoView(WebElement element);
 
+    /**
+     * Percentage difference between images.
+     * 
+     * @param img1
+     *            is expected source.
+     * @param img2
+     *            is actual source.
+     * @return
+     */
+    double getDifferencePercent(String img1, String img2) throws IOException;
+
 }

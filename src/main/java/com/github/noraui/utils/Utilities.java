@@ -102,7 +102,7 @@ public class Utilities {
                 Assert.fail(entry.getKey() + " NOT implemented!");
             }
         } else {
-            Assert.fail(code + " NOT implemented in ini file " + Context.iniFiles.get(applicationKey) + "!");
+            Assert.fail("[" + code + "] NOT implemented in ini file " + Context.iniFiles.get(applicationKey) + "!");
         }
         return locator;
     }
