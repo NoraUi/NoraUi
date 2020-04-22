@@ -16,10 +16,12 @@ import org.slf4j.Logger;
 import com.github.noraui.application.page.Page.PageElement;
 import com.github.noraui.browser.waits.Wait;
 import com.github.noraui.cucumber.annotation.Conditioned;
+import com.github.noraui.exception.Callbacks;
 import com.github.noraui.exception.FailureException;
 import com.github.noraui.exception.Result;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.GherkinStepCondition;
+import com.github.noraui.gherkin.Inequality;
 import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.service.ScreenService;
 import com.github.noraui.utils.Context;
@@ -100,6 +102,59 @@ public class ScreenSteps extends Step {
             screenService.saveScreenshot(screenName, Wait.until(ExpectedConditions.presenceOfElementLocated(Utilities.getLocator(pageElement))));
         } catch (Exception e) {
             new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
+        }
+    }
+
+    /**
+     * Save a screenshot and add to DOWNLOAD_FILES_FOLDER folder.
+     *
+     * @param screenName
+     *            name of screenshot file.
+     * @param conditions
+     *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
+     * @throws IOException
+     *             if file or directory is wrong.
+     * @throws FailureException
+     */
+    @Conditioned
+    @Et("Je compare une capture d\'écran avec {string} et affirmer un échec si la différence est {inequality} {float}(\\?)")
+    @And("I compare a screenshot with {string} and assert a failure if difference is {inequality} {float}(\\?)")
+    public void compareScreenshot(String screenName, Inequality inequality, double percentReference, List<GherkinStepCondition> conditions) throws IOException, FailureException {
+        log.info("I compare a screenshot with [{}] and assert a failure if difference is [{}] [{}].", screenName, inequality.getValue(), percentReference);
+        screenService.saveScreenshot("tmp");
+        double percent = screenService.getDifferencePercent(screenName, "tmp");
+        log.info("percent difference is [{}].", percent);
+        switch (inequality) {
+            case SUPERIOR:
+                if (percent > percentReference) {
+                    new Result.Failure<>("", Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+                }
+                break;
+            case INFERIOR:
+                if (percent < percentReference) {
+                    new Result.Failure<>("", Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+                }
+                break;
+            case SUPERIOR_OR_EQUALS:
+                if (percent >= percentReference) {
+                    new Result.Failure<>("", Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+                }
+                break;
+            case INFERIOR_OR_EQUALS:
+                if (percent <= percentReference) {
+                    new Result.Failure<>("", Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+                }
+                break;
+            case EQUALS:
+                if (percent == percentReference) {
+                    new Result.Failure<>("", Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+                }
+                break;
+            case NOT_EQUALS:
+                if (percent != percentReference) {
+                    new Result.Failure<>("", Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+                }
+                break;
         }
     }
 

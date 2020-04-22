@@ -186,6 +186,8 @@ Feature: hello (Function to validate the environment.)
     And I wait file named 'stock-data.csv' to be downloaded with timeout of 3 seconds
     And The file 'stock-data.csv' encoded in 'ISO-8859-1' matches 'Symbol;Company;Price'
     And I remove 'stock-data.csv' file in download directory
+    
+    And I update text $bakery.DemoPage-input_text_field and type ESCAPE with '<author>'
 
     And I go back to 'BAKERY_DEMO'        
 

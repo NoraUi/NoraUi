@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.openqa.selenium.Keys;
 import org.slf4j.Logger;
 
 import com.github.noraui.application.page.Page;
@@ -19,6 +20,7 @@ import com.github.noraui.application.page.Page.PageElement;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.GherkinConditionedLoopedStep;
 import com.github.noraui.gherkin.GherkinStepCondition;
+import com.github.noraui.gherkin.Inequality;
 import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Messages;
 
@@ -97,8 +99,22 @@ public class CucumberTypeRegistryConfigurer implements TypeRegistryConfigurer {
                 return Boolean.valueOf(not.split(" ").length > 1);
             }), new ParameterType<Boolean>("should-shouldnot", "(should( not)?)|(devrait|devraient|ne devrait pas|ne devraient pas)", Boolean.class, (final String not) -> {
                 return Boolean.valueOf(not.split(" ").length > 1);
+            }), new ParameterType<Inequality>("inequality", "<|>|<=|>=|==|!=", Inequality.class, (final String symbol) -> {
+                return Inequality.findBySymbol(symbol);
+            }), new ParameterType<Keys>("keyboard-key", getAllKeys(), Keys.class, (final String key) -> {
+                return Keys.valueOf(key);
             }));
         }
         return parameterTypes;
     }
+
+    private static String getAllKeys() {
+        StringBuilder sb = new StringBuilder();
+        for (Keys kk : Keys.values()) {
+            sb.append(kk.name()).append("|");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        return sb.toString();
+    }
+
 }

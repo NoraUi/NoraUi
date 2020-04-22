@@ -549,10 +549,12 @@ public class CommonSteps extends Step {
     }
 
     /**
-     * Update a html input text with a given text and then press ENTER key.
+     * Update a html input text with a given text and then press org.openqa.selenium.Keys (ENTER, ESCAPE, ...).
      *
      * @param pageElement
      *            The concerned page of field AND key of PageElement concerned (sample: $demo.DemoPage-button)
+     * @param key
+     *            contain org.openqa.selenium.Keys element.
      * @param textOrKey
      *            Is the new data (text or text in context (after a save))
      * @param conditions
@@ -563,10 +565,10 @@ public class CommonSteps extends Step {
      *             if the scenario encounters a functional error
      */
     @Conditioned
-    @Quand("Je mets à jour le texte {page-element} et entre ENTRER avec {string}(\\?)")
-    @When("I update text {page-element} and type ENTER with {string}(\\?)")
-    public void updateTextAndEnter(PageElement pageElement, String textOrKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
-        updateText(pageElement, textOrKey, Keys.ENTER);
+    @Quand("Je mets à jour le texte {page-element} et entre {keyboard-key} avec {string}(\\?)")
+    @When("I update text {page-element} and type {keyboard-key} with {string}(\\?)")
+    public void updateTextAndSeleniumKeys(PageElement pageElement, Keys key, String textOrKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+        updateText(pageElement, textOrKey, key);
     }
 
     /**
