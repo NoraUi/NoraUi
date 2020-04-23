@@ -182,8 +182,8 @@ public class DriverFactory {
             chromeOptions.setCapability(CapabilityType.PROXY, Context.getProxy());
         }
 
-        if (Context.useModifyheader()) {
-            chromeOptions.addExtensions(new File("src/test/resources/drivers/modifyheader/extension_2_5_2_0.crx"));
+        if (Context.getModifyheaderPath() != null && !"".equals(Context.getModifyheaderPath())) {
+            chromeOptions.addExtensions(new File(Context.getModifyheaderPath()));
         }
 
         // Set custom downloaded file path. When you check content of downloaded file by robot.
@@ -329,8 +329,6 @@ public class DriverFactory {
 
     /**
      * List of external non-java web drivers.
-     *
-     * @author Nicolas HALLOUIN
      */
     public enum Driver {
         IE("webdriver.ie.driver"), CHROME("webdriver.chrome.driver"), FIREFOX("webdriver.gecko.driver");

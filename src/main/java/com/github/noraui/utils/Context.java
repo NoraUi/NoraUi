@@ -110,7 +110,7 @@ public class Context {
     public static final String REMOTE_WEBDRIVER_URL = "remoteWebDriverUrl";
     public static final String REMOTE_WEBDRIVER_BROWSER_VERSION = "remoteWebDriverBrowserVersion";
     public static final String REMOTE_WEBDRIVER_PLATFORM_NAME = "remoteWebDriverPlatformName";
-    public static final String USE_MODIFYHEADER = "useModifyheader";
+    public static final String MODIFYHEADER_PATH = "modifyheaderPath";
     public static final String LOCALE = "locale";
     public static final String AUTH_TYPE = "authentication";
     public static final String CRYPTO_KEY = "crypto.key";
@@ -278,7 +278,7 @@ public class Context {
     /**
      * use Modifyheader to your browser extension.
      */
-    private boolean useModifyheader;
+    private String modifyheaderPath;
 
     /**
      * Instance of DataInputProvider
@@ -439,7 +439,7 @@ public class Context {
         // enable browser headless mode ?
         isHeadless = "true".equals(getProperty(HEADLESS, applicationProperties));
         isNoSandbox = "true".equals(getProperty(NO_SANDBOX, applicationProperties));
-        useModifyheader = "true".equals(getProperty(USE_MODIFYHEADER, applicationProperties));
+        modifyheaderPath = getProperty(MODIFYHEADER_PATH, applicationProperties);
 
         remoteWebDriverUrl = getProperty(REMOTE_WEBDRIVER_URL, applicationProperties);
         remoteWebDriverBrowserVersion = getProperty(REMOTE_WEBDRIVER_BROWSER_VERSION, applicationProperties);
@@ -814,8 +814,8 @@ public class Context {
         return getInstance().remoteWebDriverPlatformName;
     }
 
-    public static boolean useModifyheader() {
-        return getInstance().useModifyheader;
+    public static String getModifyheaderPath() {
+        return getInstance().modifyheaderPath;
     }
 
     public static String getModelPackages() {
