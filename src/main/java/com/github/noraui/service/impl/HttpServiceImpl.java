@@ -102,6 +102,8 @@ public class HttpServiceImpl implements HttpService {
         org.openqa.selenium.Proxy proxy = Context.getProxy();
         if (proxy != null && proxy.getHttpProxy() != null && !"".equals(proxy.getHttpProxy())) {
             String[] p = proxy.getHttpProxy().split(":");
+            log.info("proxy address is: {}", p[0]);
+            log.info("proxy port is: {}", p[1]);
             client = new OkHttpClient.Builder().proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(p[0], Integer.parseInt(p[1])))).connectTimeout(Context.getConnectTimeout(), TimeUnit.SECONDS)
                     .writeTimeout(Context.getWriteTimeout(), TimeUnit.SECONDS).readTimeout(Context.getReadTimeout(), TimeUnit.SECONDS).build();
         } else {
