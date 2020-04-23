@@ -6,6 +6,8 @@
  */
 package com.github.noraui.gherkin;
 
+import static com.github.noraui.Constants.DEFAULT_ENDODING;
+
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -22,7 +24,6 @@ import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 
-import com.github.noraui.Constants;
 import com.github.noraui.log.annotation.Loggable;
 import com.github.noraui.utils.Context;
 
@@ -55,7 +56,7 @@ public class GherkinFactory {
         try {
             if (!examplesTable.isEmpty()) {
                 final Path filePath = getFeaturePath(filename);
-                final String fileContent = new String(Files.readAllBytes(filePath), Constants.DEFAULT_ENDODING);
+                final String fileContent = new String(Files.readAllBytes(filePath), DEFAULT_ENDODING);
                 String lang = getFeatureLanguage(fileContent);
                 log.info(lang);
                 StringBuilder examplesString;
@@ -77,7 +78,7 @@ public class GherkinFactory {
                             "$1" + examplesString.toString() + "$2");
                 }
 
-                try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath.toString()), Constants.DEFAULT_ENDODING));) {
+                try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath.toString()), DEFAULT_ENDODING));) {
                     int i = 0;
                     bw.write(scenarioOutlines[i]);
 
@@ -113,7 +114,7 @@ public class GherkinFactory {
     public static String[] getExamples(String filename) {
         try {
             final Path filePath = getFeaturePath(filename);
-            final String fileContent = new String(Files.readAllBytes(filePath), Constants.DEFAULT_ENDODING);
+            final String fileContent = new String(Files.readAllBytes(filePath), DEFAULT_ENDODING);
             final Pattern pattern = Pattern.compile(DATA + "([\\s\\S]*)" + DATA_END);
             final Matcher matcher = pattern.matcher(fileContent);
             String lines = "";

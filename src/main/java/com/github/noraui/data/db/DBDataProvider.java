@@ -6,6 +6,8 @@
  */
 package com.github.noraui.data.db;
 
+import static com.github.noraui.Constants.DEFAULT_ENDODING;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,7 +22,6 @@ import java.util.ArrayList;
 
 import org.slf4j.Logger;
 
-import com.github.noraui.Constants;
 import com.github.noraui.data.CommonDataProvider;
 import com.github.noraui.data.DataInputProvider;
 import com.github.noraui.exception.TechnicalException;
@@ -94,7 +95,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
         String sqlRequest = "";
         try {
             final Path file = Paths.get(dataInPath + scenarioName + ".sql");
-            sqlRequest = new String(Files.readAllBytes(file), Constants.DEFAULT_ENDODING);
+            sqlRequest = new String(Files.readAllBytes(file), DEFAULT_ENDODING);
             sqlSanitized4readOnly(sqlRequest);
         } catch (final IOException e) {
             throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), e);
@@ -121,7 +122,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
         String sqlRequest;
         try {
             final Path file = Paths.get(dataInPath + scenarioName + ".sql");
-            sqlRequest = new String(Files.readAllBytes(file), Constants.DEFAULT_ENDODING);
+            sqlRequest = new String(Files.readAllBytes(file), DEFAULT_ENDODING);
             sqlSanitized4readOnly(sqlRequest);
         } catch (final IOException e) {
             throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), e);
@@ -151,7 +152,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
         String sqlRequest;
         try {
             final Path file = Paths.get(dataInPath + scenarioName + ".sql");
-            sqlRequest = new String(Files.readAllBytes(file), Constants.DEFAULT_ENDODING);
+            sqlRequest = new String(Files.readAllBytes(file), DEFAULT_ENDODING);
             sqlSanitized4readOnly(sqlRequest);
         } catch (final IOException e) {
             throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), e);
@@ -185,7 +186,7 @@ public class DBDataProvider extends CommonDataProvider implements DataInputProvi
         String sqlRequest;
         try {
             final Path file = Paths.get(dataInPath + scenarioName + ".sql");
-            sqlRequest = new String(Files.readAllBytes(file), Constants.DEFAULT_ENDODING);
+            sqlRequest = new String(Files.readAllBytes(file), DEFAULT_ENDODING);
             sqlSanitized4readOnly(sqlRequest);
         } catch (final IOException e) {
             throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE) + e.getMessage(), e);

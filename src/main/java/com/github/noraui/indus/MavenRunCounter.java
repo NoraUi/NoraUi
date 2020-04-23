@@ -6,10 +6,13 @@
  */
 package com.github.noraui.indus;
 
+import static com.github.noraui.Constants.DEFAULT_ENDODING;
+
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -74,9 +77,8 @@ public class MavenRunCounter {
                 int nbScenario = 0;
                 Counter counter = null;
                 Matcher matcher;
-                try (BufferedReader br = new BufferedReader(new FileReader(file));) {
+                try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), DEFAULT_ENDODING));) {
                     String sCurrentLine;
-
                     while ((sCurrentLine = br.readLine()) != null) {
                         matcher = newScenario.matcher(sCurrentLine);
                         if (matcher.find()) {
@@ -86,7 +88,6 @@ public class MavenRunCounter {
                             nbScenario++;
                             counter = new Counter(scenarioName, nbScenario);
                             nbStep = 0;
-
                         } else {
                             matcher = requiredPattern.matcher(sCurrentLine);
                             if (matcher.find()) {
