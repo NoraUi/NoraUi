@@ -188,7 +188,7 @@ Fonctionnalité: bonjour (Fonction pour valider l'environnement.)
     Et Le fichier 'stock-data.csv' encodé en 'ISO-8859-1' vérifie 'Symbol;Company;Price'
     Et Je supprime le fichier 'stock-data.csv' dans repertoire des téléchargements
 
-    Et Je mets à jour le texte $bakery.DemoPage-input_text_field  et entre ESCAPE avec '<author>'
+    Et Je mets à jour le texte $bakery.DemoPage-input_text_field et entre ESCAPE avec '<author>'
 
     Et Je retourne vers 'BAKERY_DEMO'
 
