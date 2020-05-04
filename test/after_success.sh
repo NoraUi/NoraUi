@@ -7,10 +7,17 @@ echo "TRAVIS_PULL_REQUEST is $TRAVIS_PULL_REQUEST"
 if [ "$TRAVIS_REPO_SLUG" == 'NoraUi/NoraUi' ] && [ "$TRAVIS_BRANCH" == 'master' ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ]; then
     
     echo "******** publish javadoc"
+    cd $(dirname $0)
+    cd ..
+    pwd
+    ls -l
+    
     cd $HOME
+    pwd
     git config --global user.email "travis@travis-ci.org"
     git config --global user.name "travis-ci"
     git clone --quiet --branch=master https://${GH_TOKEN}@github.com/NoraUi/NoraUi NoraUi > /dev/null
+    ls -l
 
     # Commit and Push the Changes
     cd NoraUi
