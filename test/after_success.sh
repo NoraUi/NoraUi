@@ -10,7 +10,7 @@ if [ "$TRAVIS_REPO_SLUG" == 'NoraUi/NoraUi' ] && [ "$TRAVIS_BRANCH" == 'master' 
     cd $HOME
     git config --global user.email "travis@travis-ci.org"
     git config --global user.name "travis-ci"
-    git clone --quiet --branch=master https://${GH_TOKEN}@github.com/NoraUi/NoraUi NoraUi > /dev/null
+    git clone --quiet --branch=master https://${GITHUB_TOKEN}@github.com/NoraUi/NoraUi NoraUi > /dev/null
 
     # Commit and Push the Changes
     cd NoraUi
