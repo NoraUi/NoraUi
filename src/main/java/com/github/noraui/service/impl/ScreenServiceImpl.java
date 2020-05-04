@@ -69,7 +69,8 @@ public class ScreenServiceImpl implements ScreenService {
      */
     @Override
     public void takeScreenshot(Scenario scenario) {
-        log.debug("takeScreenshot with the scenario named [{}]", scenario.getName());
+        log.info("takeScreenshot with the scenario named [{}]", scenario.getName());
+        log.info("size: {}x{}", Context.getDriver().manage().window().getSize().getWidth(), Context.getDriver().manage().window().getSize().getHeight());
         final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
         scenario.embed(screenshot, "image/png");
     }
@@ -79,7 +80,8 @@ public class ScreenServiceImpl implements ScreenService {
      */
     @Override
     public void saveScreenshot(String screenName) throws IOException {
-        log.debug("saveScreenshot with the scenario named [{}]", screenName);
+        log.info("saveScreenshot with the scenario named [{}]", screenName);
+        log.info("size: {}x{}", Context.getDriver().manage().window().getSize().getWidth(), Context.getDriver().manage().window().getSize().getHeight());
         final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
         FileUtils.forceMkdir(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER));
         FileUtils.writeByteArrayToFile(new File(System.getProperty(USER_DIR) + File.separator + DOWNLOADED_FILES_FOLDER + File.separator + screenName + ".jpg"), screenshot);
