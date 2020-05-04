@@ -8,8 +8,8 @@ if [ "$TRAVIS_REPO_SLUG" == 'NoraUi/NoraUi' ] && [ "$TRAVIS_BRANCH" == 'master' 
     
     echo "******** publish javadoc"
     cd $HOME
-    git config --global user.email "travis@travis-ci.org"
-    git config --global user.name "travis-ci"
+    git config --global user.email "sgrillon@hotmail.fr"
+    git config --global user.name "Stéphane GRILLON"
     git clone --quiet --branch=master https://${GITHUB_TOKEN}@github.com/NoraUi/NoraUi NoraUi > /dev/null
 
     # Commit and Push the Changes
