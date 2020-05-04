@@ -15,7 +15,8 @@ if [ "$TRAVIS_REPO_SLUG" == 'NoraUi/NoraUi' ] && [ "$TRAVIS_BRANCH" == 'master' 
     # Commit and Push the Changes
     cd NoraUi
     git rm -rf ./docs
-    cp -Rf $(dirname $0)/target/apidocs ./docs
+    echo "******** $(dirname $0)"
+    cp -Rf `$(dirname $0)`/target/apidocs ./docs
     git add -f .
     git commit -m "Lastest javadoc on successful travis build $TRAVIS_BUILD_NUMBER auto-pushed to NoraUi"
     git push -fq origin NoraUi > /dev/null
