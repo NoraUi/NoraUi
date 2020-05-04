@@ -36,7 +36,6 @@ before_script:
 
 script:
 - test/run.sh
-- ngh --dir=target/apidocs --message="deploy by Travis-ci" --repo=https://$GITHUB_TOKEN@github.com/NoraUi/NoraUi.io.git/docs --branch=master
 
 after_success:
 - test/after_success.sh
