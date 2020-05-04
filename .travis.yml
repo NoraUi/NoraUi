@@ -33,6 +33,7 @@ before_script:
 - psql -U travis -d noraui -a -f config/noraui-db.sql
 - mysql -e 'CREATE DATABASE noraui;'
 - mysql --user=travis noraui < config/noraui-db.sql > output.tab
+- export AUTHOR_NAME="$(git log -1 $TRAVIS_COMMIT --pretty="%aN")"
 
 script:
 - test/run.sh
