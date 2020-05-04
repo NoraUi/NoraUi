@@ -3,6 +3,7 @@
 echo "TRAVIS_REPO_SLUG is $TRAVIS_REPO_SLUG"
 echo "TRAVIS_BRANCH is $TRAVIS_BRANCH"
 echo "TRAVIS_PULL_REQUEST is $TRAVIS_PULL_REQUEST"
+echo "TRAVIS_COMMIT is $TRAVIS_COMMIT"
   		  
 if [ "$TRAVIS_REPO_SLUG" == 'NoraUi/NoraUi' ] && [ "$TRAVIS_BRANCH" == 'master' ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ]; then
     
