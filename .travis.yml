@@ -50,7 +50,3 @@ notifications:
     urls:
       - https://webhooks.gitter.im/e/b8f036338cae1f916682
     on_failure: always  # options: [always|never|change] default: always
-    
-env:
-  global:
-    secure: DBXYfDqbeXTEEBRPJT8aElrD8wjxAF4aPYYGvvqjyp5/xLCQsP6AiHt1SkVdEkY4fUkQ8T4mENjcVYLSG5dK2dGpzbESD2xMEu63lueW44HO7O6yUHEWA0A4tAahgOtB35WmZJPkYJhyOewTYbngRxzUfvTORl5nAXMFK13lDEM+pXQvTyRtCTWlyyATBL58a6Td70Ok2AvzdcPCXOsSvXOZ86IIE+9YcQbNV2d41PDTm0s8abflusBFePEpyoETOSOJTQHgCipMy9nVwtjPwcwHYVKDbWr+eK7vpk/KcVarG/R4Q6WhlkmyOmLt6sP6CGg+g0ZJOt/RcPqK2LZMi6rGaWHHdWkTJu/+8YDwLCmglGdCLv5jBcW6FkApsBeoDy/xc7sRpaLK5PjDIs+GVxuFmPa52w8smI5X+84krYPc3nf/cQ/NV6Ym+gqVvHxT6ElSRZPFzLuLlyKPGNEh5ghUfx4a3s+q2hLMOhCnfE5/pNKcgrgIPR8Whf8YHB1YOD+MaCZd2EnKxY4Z7+OvcmYD9WFNFkLLnO3Or2z5BHos/IG4aPLt5AZ1giVSTuxTKRf61oJSzBsaf4FLvpunypK7mZytCUqbGv67CFREir98HsXQL6s1DWf0Sb6IIgHzuaBK4VHSngGuwxn3k7LKZ45AToW4XoLoCjsEArpKURs=
