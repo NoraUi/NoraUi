@@ -34,26 +34,12 @@ before_script:
 - mysql -e 'CREATE DATABASE noraui;'
 - mysql --user=travis noraui < config/noraui-db.sql > output.tab
 - export AUTHOR_NAME="$(git log -1 $TRAVIS_COMMIT --pretty="%cN")"
-- curl -Lo travis_after_all.py https://raw.github.com/dmakhno/travis_after_all/master/travis_after_all.py
 
 script:
 - test/run.sh
 
 after_success:
-- python travis_after_all.py https://api.travis-ci.com
-- export $(cat .to_export_back)
-- |
-      if [ "$BUILD_LEADER" = "YES" ]; then
-        if [ "$BUILD_AGGREGATE_STATUS" = "others_succeeded" ]; then
-          echo "All jobs succeeded! PUBLISHING..."
-        else
-          echo "Some jobs failed"
-        fi
-      fi
 - test/after_success.sh
-
-after_script:
-- echo leader=$BUILD_LEADER status=$BUILD_AGGREGATE_STATUS
 
 cache:
   directories:
