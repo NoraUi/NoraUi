@@ -2,7 +2,7 @@
 
 curl -Lo travis_after_all.py https://raw.github.com/dmakhno/travis_after_all/master/travis_after_all.py
 ls -l
-python travis_after_all.py https://api.travis-ci.com
+python travis_after_all.py https://api.travis-ci.org
 ls -l
 export $(cat .to_export_back)
 
