@@ -4,8 +4,10 @@ echo "TRAVIS_REPO_SLUG is $TRAVIS_REPO_SLUG"
 echo "TRAVIS_BRANCH is $TRAVIS_BRANCH"
 echo "TRAVIS_PULL_REQUEST is $TRAVIS_PULL_REQUEST"
 echo "AUTHOR_NAME is $AUTHOR_NAME"
+echo "BUILD_LEADER is $BUILD_LEADER"
+echo "BUILD_AGGREGATE_STATUS is $BUILD_AGGREGATE_STATUS"
   		  
-if [ "$TRAVIS_REPO_SLUG" == 'NoraUi/NoraUi' ] && [ "$TRAVIS_BRANCH" == 'master' ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ] && [ "$AUTHOR_NAME" != 'Travis-CI' ]; then
+if [ "$TRAVIS_REPO_SLUG" == 'NoraUi/NoraUi' ] && [ "$TRAVIS_BRANCH" == 'master' ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ] && [ "$AUTHOR_NAME" != 'Travis-CI' ] && [ "$BUILD_LEADER" != 'YES' ] && [ "$BUILD_AGGREGATE_STATUS" != 'others_succeeded' ]; then
 
     echo "******** publish javadoc"
     cd $HOME
