@@ -52,6 +52,9 @@ after_success:
       fi
 - test/after_success.sh
 
+after_script:
+- echo leader=$BUILD_LEADER status=$BUILD_AGGREGATE_STATUS
+
 cache:
   directories:
     - $HOME/.m2/repository
