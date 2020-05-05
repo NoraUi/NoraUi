@@ -38,7 +38,7 @@ before_script:
 script:
 - test/run.sh
 
-deploy:
+after_success:
 - test/after_success.sh
 
 cache:
