@@ -69,8 +69,8 @@ public class ScreenServiceImpl implements ScreenService {
      */
     @Override
     public void takeScreenshot(Scenario scenario) {
-        log.info("takeScreenshot with the scenario named [{}]", scenario.getName());
-        log.info("size: {}x{}", Context.getDriver().manage().window().getSize().getWidth(), Context.getDriver().manage().window().getSize().getHeight());
+        log.debug("takeScreenshot with the scenario named [{}]", scenario.getName());
+        log.debug("size: {}x{}", Context.getDriver().manage().window().getSize().getWidth(), Context.getDriver().manage().window().getSize().getHeight());
         final byte[] screenshot = ((TakesScreenshot) Context.getDriver()).getScreenshotAs(OutputType.BYTES);
         scenario.embed(screenshot, "image/png");
     }
