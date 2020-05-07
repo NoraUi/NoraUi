@@ -628,6 +628,51 @@ public class CommonSteps extends Step {
     }
 
     /**
+     * Checks if radio list expected value with conditions.
+     * 
+     * @since 4.2.5
+     * @param pageElement
+     *            The concerned page of field AND key of PageElement concerned (sample: $bakery.DemoPage-rate)
+     * @param textOrKey
+     *            Is the new data (text or text in context (after a save))
+     * @param conditions
+     *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
+     * @throws TechnicalException
+     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with message and with screenshot and with exception if functional error but no screenshot and no exception if technical error.
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     */
+    @Conditioned
+    @Et("Je vérifie la liste radio {page-element} avec {string}(\\?)")
+    @And("I check radio list {page-element} with {string}(\\?)")
+    public void checkRadioList(PageElement pageElement, String valueOrKey, List<GherkinStepCondition> conditions) throws FailureException, TechnicalException {
+        checkRadioList(pageElement, valueOrKey);
+    }
+
+    /**
+     * Checks if radio list expected value using a map of keys/printed values.
+     * 
+     * @since 4.2.5
+     * @param pageElement
+     *            The concerned page of field AND key of PageElement concerned (sample: $demo.DemoPage-button)
+     * @param valueKeyOrKey
+     *            Is valueKey (valueKey or input in context (after a save))
+     * @param printedValues
+     *            is the display value
+     * @throws TechnicalException
+     *             is throws if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_SELECT_RADIO_BUTTON} message (with screenshot, with exception)
+     * @throws FailureException
+     *             if the scenario encounters a functional error
+     */
+    @Et("Je vérifie la liste radio {page-element} avec {string} à partir de ces valeurs:")
+    @And("I check radio list {page-element} with {string} from these values:")
+    public void checkRadioList(PageElement pageElement, String valueKeyOrKey, Map<String, String> printedValues) throws TechnicalException, FailureException {
+        super.checkRadioList(pageElement, valueKeyOrKey, printedValues);
+    }
+
+    /**
      * @deprecated As of release 4.1, replaced by {@link com.github.noraui.application.steps.WaitSteps#waitVisibilityOf(Page.PageElement pageElement, Boolean not, List)}
      *             "I wait visibility of {string}(\\?)"
      *             Checks if an html element is visible.

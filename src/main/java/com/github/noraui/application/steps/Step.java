@@ -1031,11 +1031,46 @@ public abstract class Step implements IStep {
      * @throws FailureException
      *             if the scenario encounters a functional error.
      */
-    protected boolean checkRadioList(PageElement pageElement, String value, Object... args) throws FailureException {
+    protected boolean checkRadioList(PageElement pageElement, String valueOrKey, Object... args) throws FailureException {
+        final String value = Context.getValue(valueOrKey) != null ? Context.getValue(valueOrKey) : valueOrKey;
         try {
             final List<WebElement> radioButtons = Wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(Utilities.getLocator(pageElement, args)));
             for (final WebElement button : radioButtons) {
                 if (button.getAttribute(VALUE).equalsIgnoreCase(value) && button.isSelected()) {
+                    return true;
+                }
+            }
+        } catch (final Exception e) {
+            new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
+        }
+        return false;
+    }
+
+    /**
+     * Checks that given value is matching the selected radio list button by value (value corresponding to key "index").
+     * 
+     * @since 4.2.5
+     * @param pageElement
+     *            Is concerned element.
+     * @param valueKeyOrKey
+     *            key printedValues.
+     * @param printedValues
+     *            contain all possible value (order by key).
+     * @param args
+     *            list of arguments to format the found selector with.
+     * @throws TechnicalException
+     *             is thrown if you have a technical error (format, configuration, datas, ...) in NoraUi.
+     *             Exception with {@value com.github.noraui.utils.Messages#FAIL_MESSAGE_UNABLE_TO_SELECT_RADIO_BUTTON} message (with screenshot, with exception)
+     * @throws FailureException
+     *             if the scenario encounters a functional error.
+     */
+    protected boolean checkRadioList(PageElement pageElement, String valueKeyOrKey, Map<String, String> printedValues, Object... args) throws TechnicalException, FailureException {
+        final String valueKey = Context.getValue(valueKeyOrKey) != null ? Context.getValue(valueKeyOrKey) : valueKeyOrKey;
+        try {
+            final List<WebElement> radioButtons = Wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(Utilities.getLocator(pageElement, args)));
+            String radioValue = printedValues.get(valueKey);
+            for (final WebElement button : radioButtons) {
+                if (button.getAttribute(VALUE).equalsIgnoreCase(radioValue) && button.isSelected()) {
                     return true;
                 }
             }
