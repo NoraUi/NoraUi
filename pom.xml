@@ -6,7 +6,7 @@
 
 	<groupId>com.github.noraui</groupId>
 	<artifactId>noraui</artifactId>
-	<version>4.2.5</version>
+	<version>4.2.6-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>NORAUI</name>
