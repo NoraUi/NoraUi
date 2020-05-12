@@ -27,6 +27,7 @@
 
 	<logger name="org.openqa.selenium" level="off"/>
 	<logger name="com.gargoylesoftware" level="off"/>
+	<logger name="okhttp3.internal" level="off"/>
 
     <logger name="com.github.noraui.cli" additivity="false">
         <appender-ref ref="cli" />
