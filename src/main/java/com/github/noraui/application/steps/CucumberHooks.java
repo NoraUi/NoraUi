@@ -6,8 +6,6 @@
  */
 package com.github.noraui.application.steps;
 
-import java.util.Collection;
-
 import org.joda.time.DateTime;
 import org.joda.time.Seconds;
 import org.slf4j.Logger;
@@ -34,10 +32,11 @@ public class CucumberHooks {
 
     @Before()
     public static void setUpScenario(Scenario scenario) throws TechnicalException {
-        log.debug("setUpScenario {} scenario.", scenario.getName());
+        log.info("setUpScenario [{}] scenario.", scenario.getName());
         if (Context.getCurrentScenarioData() == 0) {
             // Retrieve input data provider (by scenario name) to read
-            String scenarioName = System.getProperty("scenario.name") != null ? System.getProperty("scenario.name") : getFirstNonEnvironmentTag(scenario.getSourceTagNames());
+            String scenarioName = System.getProperty("scenario.name") != null ? System.getProperty("scenario.name") : getFeatueName(scenario.getUri());
+            log.info("scenarioName: {}.", scenarioName);
             Context.setScenarioName(scenarioName);
             Context.getDataInputProvider().prepare(Context.getScenarioName());
             Context.getDataOutputProvider().prepare(Context.getScenarioName());
@@ -98,13 +97,8 @@ public class CucumberHooks {
         return totalTimecalculated - pastTime.getSeconds();
     }
 
-    private static String getFirstNonEnvironmentTag(Collection<String> collection) {
-        for (String tag : collection) {
-            if (!tag.startsWith("@~")) {
-                return tag.replace("@", "");
-            }
-        }
-        return null;
+    private static String getFeatueName(String uri) {
+        return uri.substring(uri.lastIndexOf("/") + 1).replace(".feature", "");
     }
 
 }

@@ -6,10 +6,17 @@
  */
 package com.github.noraui.main;
 
+import static com.github.noraui.Constants.DEFAULT_ENDODING;
 import static com.github.noraui.Constants.USER_DIR;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,25 +59,84 @@ public class ScenarioInitiator {
         log.info("ScenarioInitiator > start()");
         if (args != null && args.length == 1 && !"@TOSPECIFY".equals(args[0])) {
             log.info("# {}", args[0]);
-            final String scenarioName = args[0];
-            processInjection(scenarioName);
+            for (final String scenarioName : getScenarios(args[0])) {
+                processInjection(scenarioName);
+            }
         } else {
             log.warn(Messages.getMessage(SCENARIO_INITIATOR_USAGE));
             final String cucumberOptions = System.getProperty("cucumber.options");
             if (cucumberOptions != null && cucumberOptions.contains("--tags")) {
                 final Matcher matcher = Pattern.compile(".*--tags '(.*)'.*").matcher(cucumberOptions);
                 if (matcher.find() && matcher.groupCount() > 0) {
-                    final String tags = matcher.group(1).replace("not ", "").replace(")", "").replace("(", "").replace(" and ", " ").replace(" or ", " ").replace("@", "");
-                    for (final String s : tags.split(" ")) {
-                        if (!s.startsWith("~")) {
-                            processInjection(s);
-                        }
+                    final String tags = matcher.group(1).replace("not ", "").replace(")", "").replace("(", "").replace(" and ", " ").replace(" or ", " ");
+                    for (final String scenarioName : getScenarios(tags.split(" "))) {
+                        processInjection(scenarioName);
                     }
                 }
             } else {
                 log.error(Messages.getMessage(SCENARIO_INITIATOR_ERROR_UNABLE_TO_GET_TAGS));
             }
         }
+    }
+
+    /**
+     * Get all scenario name (feature/data files).
+     * 
+     * @param tag
+     *            tag write in Maven command input. CAUTION: only one tag replace "@TOSPECIFY" in "scenario.name" properties.
+     * @return a list of string contains all scenario name.
+     */
+    private static List<String> getScenarios(String tag) {
+        return getScenarios(new String[] { tag });
+    }
+
+    /**
+     * Get all scenario name (feature/data files).
+     * 
+     * @param tags
+     *            all tags write in Maven command input.
+     * @return a list of string contains all scenario name.
+     */
+    private static List<String> getScenarios(String[] tags) {
+        List<String> scenarios = new ArrayList<>();
+        for (String scenario : listAllFeatuesInStepFolder(new File(Context.getResourcesPath() + "/steps"))) {
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(scenario), DEFAULT_ENDODING));) {
+                String sCurrentLine;
+                while ((sCurrentLine = br.readLine()) != null) {
+                    if (Arrays.stream(tags).parallel().anyMatch(sCurrentLine::contains)) {
+                        String scenarionName = scenario.substring(scenario.lastIndexOf(File.separator) + 1).replace(".feature", "");
+                        if (!scenarios.contains(scenarionName)) {
+                            scenarios.add(scenarionName);
+                        }
+                    }
+                }
+            } catch (final IOException e) {
+                log.error("IOException error: ", e);
+            }
+        }
+        for (String scenario : scenarios) {
+            log.info("# scenario: {}", scenario);
+        }
+        return scenarios;
+    }
+
+    /**
+     * List all featues in steps folder.
+     * 
+     * @param stepsFolder
+     *            is "steps" main folder or sub folders.
+     * @return List of string all featues file path contains in steps folder
+     */
+    private static List<String> listAllFeatuesInStepFolder(final File stepsFolder) {
+        final List<String> files = new ArrayList<>();
+        for (final File fileEntry : stepsFolder.listFiles()) {
+            if (fileEntry.isDirectory()) {
+                files.addAll(listAllFeatuesInStepFolder(fileEntry));
+            } else {
+                files.add(fileEntry.getAbsolutePath());
+            }
+        }
+        return files;
     }
 
     /**
