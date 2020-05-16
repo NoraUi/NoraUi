@@ -47,7 +47,7 @@
 	</scm>
 
 	<properties>
-		<cucumber.options>--tags @TOSPECIFY</cucumber.options>
+		<cucumber.options>--tags '@TOSPECIFY'</cucumber.options>
 		<ciToolResourcesPath>src/test/resources</ciToolResourcesPath>
 		<crypto.key>@TOSPECIFY</crypto.key>
 		<scenario.name>@TOSPECIFY</scenario.name>
