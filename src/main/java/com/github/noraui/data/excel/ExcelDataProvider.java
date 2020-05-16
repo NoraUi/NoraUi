@@ -274,8 +274,8 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
     private String readCell(Cell cell) {
         String txt = "";
         if (cell != null) {
-            log.debug("readCellByType with type: {}", cell.getCellTypeEnum());
-            txt = readCellByType(cell, cell.getCellTypeEnum());
+            log.debug("readCellByType with type: {}", cell.getCellType());
+            txt = readCellByType(cell, cell.getCellType());
         }
         return txt.trim();
     }
@@ -301,7 +301,7 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
                     log.debug("CELL_TYPE_STRING: {}", txt);
                     break;
                 case FORMULA:
-                    txt = readCellByType(cell, cell.getCachedFormulaResultTypeEnum());
+                    txt = readCellByType(cell, cell.getCachedFormulaResultType());
                     log.debug("CELL_TYPE_FORMULA: {}", txt);
                     break;
                 case BLANK:
@@ -322,7 +322,7 @@ public abstract class ExcelDataProvider extends CommonDataProvider implements Da
     private String dateOrNumberProcessing(Cell cell) {
         String txt;
         if (DateUtil.isCellDateFormatted(cell)) {
-            final DateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT);
+            final DateFormat formatter = new SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT);
             txt = String.valueOf(formatter.format(cell.getDateCellValue()));
             log.debug("CELL_TYPE_NUMERIC (date): {}", txt);
         } else {
