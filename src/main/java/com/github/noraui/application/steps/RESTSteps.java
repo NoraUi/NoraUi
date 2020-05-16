@@ -72,7 +72,8 @@ public class RESTSteps extends Step {
             json = httpService.get(Context.getUrlByPagekey(pageKey), uri);
         } catch (HttpServiceException e) {
             log.error(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_CALL_API_REST), e);
-            new Result.Failure<>(Context.getApplicationByPagekey(pageKey), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_CALL_API_REST), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+            new Result.Failure<>(Context.getApplicationByPagekey(pageKey), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_CALL_API_REST), false,
+                    Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
         Context.saveValue(targetKey, json);
         Context.getCurrentScenario().write(PREFIX_SAVE + targetKey + "=" + json);
@@ -115,7 +116,8 @@ public class RESTSteps extends Step {
                 Context.getDataOutputProvider().writeDataResult(targetColumn, line, json);
             }
         } catch (HttpServiceException e) {
-            new Result.Failure<>(Context.getApplicationByPagekey(pageKey), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_CALL_API_REST), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+            new Result.Failure<>(Context.getApplicationByPagekey(pageKey), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_CALL_API_REST), false,
+                    Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         } catch (final TechnicalException e) {
             new Result.Warning<>(e.getMessage(), Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_WRITE_MESSAGE_IN_RESULT_FILE), targetColumn), false, 0);
         }
