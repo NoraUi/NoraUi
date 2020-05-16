@@ -166,8 +166,11 @@ public class DriverFactory {
         final ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
         chromeOptions.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
+        chromeOptions.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+        chromeOptions.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
 
         setLoggingLevel(chromeOptions);
+        chromeOptions.addArguments("--ignore-certificate-errors");
 
         if (Context.isHeadless()) {
             chromeOptions.addArguments("--headless");
