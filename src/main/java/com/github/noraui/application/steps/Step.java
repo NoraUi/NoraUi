@@ -903,7 +903,7 @@ public abstract class Step implements IStep {
      */
     protected void updateDateValidated(PageElement pageElement, String dateType, String date, Object... args) throws TechnicalException, FailureException {
         log.debug("updateDateValidated with elementName={}, dateType={} and date={}", pageElement, dateType, date);
-        final DateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT);
+        final DateFormat formatter = new SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT);
         final Date today = Calendar.getInstance().getTime();
         try {
             final Date valideDate = formatter.parse(date);
