@@ -458,7 +458,7 @@ public class CommonSteps extends Step {
     public void updateDate(PageElement pageElement, String dateType, String dateOrKey, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
         final String date = Context.getValue(dateOrKey) != null ? Context.getValue(dateOrKey) : dateOrKey;
         if (!"".equals(date)) {
-            if (date.matches(Constants.DATE_FORMAT_REG_EXP)) {
+            if (date.matches(Constants.DEFAULT_DATE_FORMAT_REG_EXP)) {
                 updateDateValidated(pageElement, dateType, date);
             } else {
                 new Result.Failure<>(date, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_WRONG_DATE_FORMAT), date, pageElement), false, pageElement.getPage().getCallBack());
