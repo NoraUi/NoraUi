@@ -1023,7 +1023,8 @@ public abstract class Step implements IStep {
      *
      * @param pageElement
      *            The page element.
-     * @param value
+     * @param valueOrKey
+     *            (value or value in context (after a save)).
      *            The value to check the selection from.
      * @param args
      *            list of arguments to format the found selector with.

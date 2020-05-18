@@ -633,8 +633,8 @@ public class CommonSteps extends Step {
      * @since 4.2.5
      * @param pageElement
      *            The concerned page of field AND key of PageElement concerned (sample: $bakery.DemoPage-rate)
-     * @param textOrKey
-     *            Is the new data (text or text in context (after a save))
+     * @param valueOrKey
+     *            Is the new data (value or value in context (after a save))
      * @param conditions
      *            list of 'expected' values condition and 'actual' values ({@link com.github.noraui.gherkin.GherkinStepCondition}).
      * @throws TechnicalException

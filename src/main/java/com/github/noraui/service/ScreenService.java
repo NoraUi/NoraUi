@@ -79,7 +79,7 @@ public interface ScreenService {
      *            is actual source.
      * @param expected
      *            is expected source.
-     * @return
+     * @return percent of difference.
      */
     double getDifferencePercent(String actual, String expected) throws IOException;
 
