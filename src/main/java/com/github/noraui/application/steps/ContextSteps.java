@@ -56,7 +56,7 @@ public class ContextSteps extends Step {
         final String compare = Context.getValue(compareValueOrKey) != null ? Context.getValue(compareValueOrKey) : compareValueOrKey;
         if (!src.equals(compare)) {
             log.error("The value « {} » not equals « {} »", src, compare);
-            new Result.Failure<>("", Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_CONTEXT_NOT_EQUALS), src, compare), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+            new Result.Failure<>("", Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_CONTEXT_NOT_EQUALS), src, compare), false, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
     }
 
@@ -83,7 +83,8 @@ public class ContextSteps extends Step {
         final String compare = Context.getValue(compareValueOrKey) != null ? Context.getValue(compareValueOrKey) : compareValueOrKey;
         if (!src.equalsIgnoreCase(compare)) {
             log.error("The value « {} » not equals ignore case « {} »", src, compare);
-            new Result.Failure<>("", Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_CONTEXT_NOT_EQUALS_IGNORE_CASE), src, compare), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
+            new Result.Failure<>("", Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_CONTEXT_NOT_EQUALS_IGNORE_CASE), src, compare), false,
+                    Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
     }
 
