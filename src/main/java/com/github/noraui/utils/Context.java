@@ -262,22 +262,41 @@ public class Context {
     private boolean displayStackTrace;
 
     /**
-     * Is headless mode enable ?
+     * @deprecated As of release 4.4, replaced by same property in src\main\resources\webdrivers.properties.
+     *             Is headless mode enable ?
      */
+    @Deprecated
     private boolean isHeadless;
 
     /**
-     * Is no-sandbox mode enable ?
+     * @deprecated As of release 4.4, replaced by same property in src\main\resources\webdrivers.properties.
+     *             Is no-sandbox mode enable ?
      */
+    @Deprecated
     private boolean isNoSandbox;
 
+    /**
+     * @deprecated As of release 4.4, replaced by same property in src\main\resources\webdrivers.properties.
+     */
+    @Deprecated
     private String remoteWebDriverUrl;
+
+    /**
+     * @deprecated As of release 4.4, replaced by same property in src\main\resources\webdrivers.properties.
+     */
+    @Deprecated
     private String remoteWebDriverBrowserVersion;
+    /**
+     * @deprecated As of release 4.4, replaced by same property in src\main\resources\webdrivers.properties.
+     */
+    @Deprecated
     private String remoteWebDriverPlatformName;
 
     /**
-     * use Modifyheader to your browser extension.
+     * @deprecated As of release 4.4, replaced by same property in src\main\resources\webdrivers.properties.
+     *             use Modifyheader to your browser extension.
      */
+    @Deprecated
     private String modifyheaderPath;
 
     /**
@@ -794,26 +813,50 @@ public class Context {
         return getInstance().displayStackTrace;
     }
 
+    /**
+     * @deprecated As of release 4.4, replaced by same property in src\main\resources\webdrivers.properties.
+     */
+    @Deprecated
     public static boolean isHeadless() {
         return getInstance().isHeadless;
     }
 
+    /**
+     * @deprecated As of release 4.4, replaced by same property in src\main\resources\webdrivers.properties.
+     */
+    @Deprecated
     public static boolean isNoSandbox() {
         return getInstance().isNoSandbox;
     }
 
+    /**
+     * @deprecated As of release 4.4, replaced by same property in src\main\resources\webdrivers.properties.
+     */
+    @Deprecated
     public static String getRemoteWebDriverUrl() {
         return getInstance().remoteWebDriverUrl;
     }
 
+    /**
+     * @deprecated As of release 4.4, replaced by same property in src\main\resources\webdrivers.properties.
+     */
+    @Deprecated
     public static String getRemoteWebDriverBrowserVersion() {
         return getInstance().remoteWebDriverBrowserVersion;
     }
 
+    /**
+     * @deprecated As of release 4.4, replaced by same property in src\main\resources\webdrivers.properties.
+     */
+    @Deprecated
     public static String getRemoteWebDriverPlatformName() {
         return getInstance().remoteWebDriverPlatformName;
     }
 
+    /**
+     * @deprecated As of release 4.4, replaced by same property in src\main\resources\webdrivers.properties.
+     */
+    @Deprecated
     public static String getModifyheaderPath() {
         return getInstance().modifyheaderPath;
     }
