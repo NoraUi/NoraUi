@@ -185,6 +185,7 @@ public class DriverFactory {
             chromeOptions.setCapability(CapabilityType.PROXY, Context.getProxy());
         }
 
+        // add Modifyheader Extensions to Chrome
         if (Context.getModifyheaderPath() != null && !"".equals(Context.getModifyheaderPath())) {
             chromeOptions.addExtensions(new File(Context.getModifyheaderPath()));
         }
