@@ -1438,7 +1438,7 @@ public abstract class Step implements IStep {
             try {
                 f.getKey().invoke(NoraUiInjector.getNoraUiInjectorSource().getInstance(f.getKey().getDeclaringClass()), tab);
             } catch (final Exception e) {
-                log.error("Exception when invoking {}", e);
+                log.error("Exception when invoking [{}]", f.getKey(), e);
             }
             return f;
         };
