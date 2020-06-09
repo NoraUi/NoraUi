@@ -82,7 +82,7 @@ SNAPSHOT:
 * Cucumber 4+
 * Selenium 3+
 * Webdriver (Chrome, IE and firefox)
-* Java 8 (Both Oracle JDK and OpenJDK are supported).
+* Java 8 (Oracle JDK8, OpenJDK8, Oracle JDK11 and OpenJDK11 are supported).
 * Maven
 * Google guice
 * JUnit 5 / Mockito
