@@ -10,7 +10,9 @@ Non-Regression Automation for User Interfaces
 
 [![Javadocs](https://img.shields.io/badge/javadoc-4.3.0-brightgreen.svg)](https://noraui.github.io/NoraUi)
 
-[Migration guide](https://noraui.github.io/migrate.md). /!\ IMPORTANT migration 4.1.x to 4.2.x !!!
+[Migration guide](https://noraui.github.io/migrate.md).
+/!\ IMPORTANT migration 4.1.x to 4.2.x !!!
+/!\ IMPORTANT migration 4.3.x to 4.4.x !!!
 
 # News 
 See [change log](https://noraui.github.io/changelog.txt) for details
@@ -80,7 +82,7 @@ SNAPSHOT:
 * Cucumber 4+
 * Selenium 3+
 * Webdriver (Chrome, IE and firefox)
-* Java 8 (Both Oracle JDK and OpenJDK are supported).
+* Java 8 (Oracle JDK8, OpenJDK8, Oracle JDK11 and OpenJDK11 are supported).
 * Maven
 * Google guice
 * JUnit 5 / Mockito
