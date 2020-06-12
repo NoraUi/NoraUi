@@ -1,6 +1,5 @@
 package com.github.noraui.browser.waits;
 
-import com.edelia.noraui.poc_equilibre.application.model.Donnees;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
