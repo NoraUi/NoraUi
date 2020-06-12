@@ -1,23 +1,57 @@
 package com.github.noraui.browser.waits;
 
+import com.edelia.noraui.poc_equilibre.application.model.Donnees;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.github.noraui.utils.Context;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Wait {
+
+    private static Wait uniqueInstance;
 
     /**
      * Single global instance of WebDriverWait
      */
-    private static WebDriverWait webDriverWait;
+    private final Map<WebDriver, WebDriverWait> webDriverWaits;
+
+    public Wait() {
+        webDriverWaits = new HashMap<WebDriver, WebDriverWait>();
+    }
+
+    // Méthode statique qui sert de pseudo-constructeur (utilisation du mot clef
+    // "synchronized" pour le multithread).
+    public static synchronized Wait getInstance() {
+        if (uniqueInstance == null) {
+            uniqueInstance = new Wait();
+        }
+        return uniqueInstance;
+    }
+
+    public void addDriver(WebDriver webDriver){
+        if(!webDriverWaits.containsKey(webDriver)) {
+            webDriverWaits.put(webDriver, new WebDriverWait(webDriver, Context.getTimeout()));
+        }
+    }
+
+    public void removeDriver(WebDriver webDriver){
+        webDriverWaits.remove(webDriver);
+    }
+
+    protected WebDriverWait getWebDriverWait(){
+        return webDriverWaits.get(Context.getDriver());
+    }
 
     /**
      * Wait will ignore instances of NotFoundException that are encountered (thrown) by default in
      * the 'until' condition, and immediately propagate all others. You can add more to the ignore
      * list by calling ignoring(exceptions to add).
-     * 
+     *
      * @param <T>
      *            The function's expected return type.
      * @param condition
@@ -39,7 +73,7 @@ public class Wait {
      * Wait will ignore instances of NotFoundException that are encountered (thrown) by default in
      * the 'until' condition, and immediately propagate all others. You can add more to the ignore
      * list by calling ignoring(exceptions to add).
-     * 
+     *
      * @param condition
      *            the parameter to pass to the {@link ExpectedCondition}
      * @param <T>
@@ -65,10 +99,7 @@ public class Wait {
     }
 
     public static <T> ChainableWait<?> untilAnd(ExpectedCondition<T> condition, boolean not) {
-        if (webDriverWait == null) {
-            webDriverWait = new WebDriverWait(Context.getDriver(), Context.getTimeout());
-        }
-        return not ? new ChainableWait<Boolean>(webDriverWait).wait(ExpectedConditions.not(condition)) : new ChainableWait<T>(webDriverWait).wait(condition);
+        return not ? new ChainableWait<Boolean>(getInstance().getWebDriverWait()).wait(ExpectedConditions.not(condition)) : new ChainableWait<T>(getInstance().getWebDriverWait()).wait(condition);
     }
 
     @SuppressWarnings("unchecked")
