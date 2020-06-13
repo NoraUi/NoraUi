@@ -58,6 +58,16 @@ public class DriverFactory {
     public static final String FIREFOX = "firefox";
     public static final String DEFAULT_DRIVER = CHROME;
 
+    public static final String REMOTE_WEBDRIVER_URL = "remoteWebDriverUrl";
+    public static final String REMOTE_WEBDRIVER_BROWSER_VERSION = "remoteWebDriverBrowserVersion";
+    public static final String REMOTE_WEBDRIVER_PLATFORM_NAME = "remoteWebDriverPlatformName";
+
+    public static final String TARGET_BROWSER_BINARY_PATH = "targetBrowserBinaryPath";
+    public static final String WITH_WHITE_LISTED_IPS = "withWhitelistedIps";
+
+    public static final String WEBDRIVER_OPTIONS_ADDITIONAL_ARGS = "webdriverOptionsAdditionalArgs";
+    public static final String MODIFYHEADER_PATH = "modifyheaderPath";
+
     /** Selenium drivers. **/
     private final Map<String, WebDriver> drivers;
 
@@ -176,18 +186,14 @@ public class DriverFactory {
             chromeOptions.addArguments("--headless");
         }
 
-        if (Context.isNoSandbox()) {
-            chromeOptions.addArguments("--no-sandbox");
-        }
-
         // Proxy configuration
         if (Context.getProxy().getProxyType() != ProxyType.UNSPECIFIED && Context.getProxy().getProxyType() != ProxyType.AUTODETECT) {
             chromeOptions.setCapability(CapabilityType.PROXY, Context.getProxy());
         }
 
         // add Modifyheader Extensions to Chrome
-        if (Context.getModifyheaderPath() != null && !"".equals(Context.getModifyheaderPath())) {
-            chromeOptions.addExtensions(new File(Context.getModifyheaderPath()));
+        if (Context.getWebdriversProperties(MODIFYHEADER_PATH) != null && !"".equals(Context.getWebdriversProperties(MODIFYHEADER_PATH))) {
+            chromeOptions.addExtensions(new File(Context.getWebdriversProperties(MODIFYHEADER_PATH)));
         }
 
         // Set custom downloaded file path. When you check content of downloaded file by robot.
@@ -196,22 +202,29 @@ public class DriverFactory {
         chromeOptions.setExperimentalOption("prefs", chromePrefs);
 
         // Set custom chromium (if you not use default chromium on your target device)
-        final String targetBrowserBinaryPath = Context.getWebdriversProperties("targetBrowserBinaryPath");
+        final String targetBrowserBinaryPath = Context.getWebdriversProperties(TARGET_BROWSER_BINARY_PATH);
         if (targetBrowserBinaryPath != null && !"".equals(targetBrowserBinaryPath)) {
             chromeOptions.setBinary(targetBrowserBinaryPath);
         }
 
-        if (Context.getRemoteWebDriverUrl() != null && !"".equals(Context.getRemoteWebDriverUrl()) && Context.getRemoteWebDriverBrowserVersion() != null
-                && !"".equals(Context.getRemoteWebDriverBrowserVersion()) && Context.getRemoteWebDriverPlatformName() != null && !"".equals(Context.getRemoteWebDriverPlatformName())) {
-            chromeOptions.setCapability("browserVersion", Context.getRemoteWebDriverBrowserVersion());
-            chromeOptions.setCapability("platformName", Context.getRemoteWebDriverPlatformName());
+        log.info("addArguments [{}] to webdriver.", Context.getWebdriversProperties(WEBDRIVER_OPTIONS_ADDITIONAL_ARGS));
+        for (String additionalArgument : Context.getWebdriversProperties(WEBDRIVER_OPTIONS_ADDITIONAL_ARGS).split(",")) {
+            log.info("addArgument [{}] to webdriver.", additionalArgument);
+            chromeOptions.addArguments(additionalArgument);
+        }
+
+        if (Context.getWebdriversProperties(REMOTE_WEBDRIVER_URL) != null && !"".equals(Context.getWebdriversProperties(REMOTE_WEBDRIVER_URL))
+                && Context.getWebdriversProperties(REMOTE_WEBDRIVER_BROWSER_VERSION) != null && !"".equals(Context.getWebdriversProperties(REMOTE_WEBDRIVER_BROWSER_VERSION))
+                && Context.getWebdriversProperties(REMOTE_WEBDRIVER_PLATFORM_NAME) != null && !"".equals(Context.getWebdriversProperties(REMOTE_WEBDRIVER_PLATFORM_NAME))) {
+            chromeOptions.setCapability("browserVersion", Context.getWebdriversProperties(REMOTE_WEBDRIVER_BROWSER_VERSION));
+            chromeOptions.setCapability("platformName", Context.getWebdriversProperties(REMOTE_WEBDRIVER_PLATFORM_NAME));
             try {
-                return new RemoteWebDriver(new URL(Context.getRemoteWebDriverUrl()), chromeOptions);
+                return new RemoteWebDriver(new URL(Context.getWebdriversProperties(REMOTE_WEBDRIVER_URL)), chromeOptions);
             } catch (MalformedURLException e) {
                 throw new TechnicalException(Messages.getMessage(TechnicalException.TECHNICAL_ERROR_MESSAGE_REMOTE_WEBDRIVER_URL));
             }
         } else {
-            final String withWhitelistedIps = Context.getWebdriversProperties("withWhitelistedIps");
+            final String withWhitelistedIps = Context.getWebdriversProperties(WITH_WHITE_LISTED_IPS);
             if (withWhitelistedIps != null && !"".equals(withWhitelistedIps)) {
                 final ChromeDriverService service = new ChromeDriverService.Builder().withWhitelistedIps(withWhitelistedIps).withVerbose(false).build();
                 return new ChromeDriver(service, chromeOptions);
