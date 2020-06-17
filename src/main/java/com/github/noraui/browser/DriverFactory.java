@@ -6,6 +6,9 @@
  */
 package com.github.noraui.browser;
 
+import static com.github.noraui.Constants.DOWNLOADED_FILES_FOLDER;
+import static com.github.noraui.Constants.USER_DIR;
+
 import com.github.noraui.browser.waits.Wait;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.log.annotation.Loggable;
@@ -14,11 +17,20 @@ import com.github.noraui.utils.Messages;
 import com.github.noraui.utils.Utilities;
 import com.github.noraui.utils.Utilities.OperatingSystem;
 import com.github.noraui.utils.Utilities.SystemArchitecture;
+
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.MutableCapabilities;
-import org.openqa.selenium.Proxy.ProxyType;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.Proxy.ProxyType;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -33,17 +45,6 @@ import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
-
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-
-import static com.github.noraui.Constants.DOWNLOADED_FILES_FOLDER;
-import static com.github.noraui.Constants.USER_DIR;
 
 @Loggable
 public class DriverFactory {
@@ -338,6 +339,7 @@ public class DriverFactory {
      */
     public enum Driver {
         IE("webdriver.ie.driver"), CHROME("webdriver.chrome.driver"), FIREFOX("webdriver.gecko.driver");
+
         private String driverName;
 
         Driver(String driverName) {

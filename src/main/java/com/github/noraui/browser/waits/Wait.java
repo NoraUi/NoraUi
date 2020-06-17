@@ -1,14 +1,14 @@
 package com.github.noraui.browser.waits;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
 import com.github.noraui.utils.Context;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class Wait {
 
@@ -32,17 +32,17 @@ public class Wait {
         return uniqueInstance;
     }
 
-    public void addDriver(WebDriver webDriver){
-        if(!webDriverWaits.containsKey(webDriver)) {
+    public void addDriver(WebDriver webDriver) {
+        if (!webDriverWaits.containsKey(webDriver)) {
             webDriverWaits.put(webDriver, new WebDriverWait(webDriver, Context.getTimeout()));
         }
     }
 
-    public void removeDriver(WebDriver webDriver){
+    public void removeDriver(WebDriver webDriver) {
         webDriverWaits.remove(webDriver);
     }
 
-    protected WebDriverWait getWebDriverWait(){
+    protected WebDriverWait getWebDriverWait() {
         return webDriverWaits.get(Context.getDriver());
     }
 
