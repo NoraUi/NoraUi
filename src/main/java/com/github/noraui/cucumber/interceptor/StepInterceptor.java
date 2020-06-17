@@ -6,6 +6,14 @@
  */
 package com.github.noraui.cucumber.interceptor;
 
+import com.github.noraui.Constants;
+import com.github.noraui.cucumber.annotation.RetryOnFailure;
+import com.github.noraui.cucumber.annotation.RetryOnWarning;
+import com.github.noraui.exception.FailureException;
+import com.github.noraui.exception.WarningException;
+import com.github.noraui.log.annotation.Loggable;
+import com.github.noraui.utils.Context;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -14,14 +22,6 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.openqa.selenium.NoSuchSessionException;
 import org.slf4j.Logger;
-
-import com.github.noraui.Constants;
-import com.github.noraui.cucumber.annotation.RetryOnFailure;
-import com.github.noraui.cucumber.annotation.RetryOnWarning;
-import com.github.noraui.exception.FailureException;
-import com.github.noraui.exception.WarningException;
-import com.github.noraui.log.annotation.Loggable;
-import com.github.noraui.utils.Context;
 
 import cucumber.runtime.java.StepDefAnnotation;
 import javassist.Modifier;
@@ -113,7 +113,7 @@ public class StepInterceptor implements MethodInterceptor {
                 } catch (WarningException e) {
                 }
             }
-        }catch (NoSuchSessionException nsse){
+        } catch (NoSuchSessionException nsse) {
             log.warn("Getting error with an unknown driver session. Quit all !! " + nsse);
             Context.quit();
             throw nsse;
