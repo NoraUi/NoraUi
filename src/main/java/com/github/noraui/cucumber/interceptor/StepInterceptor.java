@@ -12,6 +12,7 @@ import java.lang.reflect.Method;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.openqa.selenium.NoSuchSessionException;
 import org.slf4j.Logger;
 
 import com.github.noraui.Constants;
@@ -51,65 +52,71 @@ public class StepInterceptor implements MethodInterceptor {
                 logRunningStep(stepAnnotation, invocation);
             }
         }
-        if (m.isAnnotationPresent(RetryOnFailure.class) || m.isAnnotationPresent(RetryOnWarning.class)) {
-            RetryOnFailure retryOnFailureAnnotation = null;
-            RetryOnWarning retryOnWarningAnnotation = null;
-            if (m.isAnnotationPresent(RetryOnFailure.class)) {
-                retryOnFailureAnnotation = m.getAnnotation(RetryOnFailure.class);
-                if (retryOnFailureAnnotation.verbose()) {
-                    log.info("NORAUI StepInterceptor invoke method " + m);
-                }
-            }
-            if (m.isAnnotationPresent(RetryOnWarning.class)) {
-                retryOnWarningAnnotation = m.getAnnotation(RetryOnWarning.class);
-                if (retryOnWarningAnnotation.verbose()) {
-                    log.info("NORAUI StepInterceptor invoke method " + m);
-                }
-            }
-            int i = 0;
-            do {
-                try {
-                    if ((retryOnFailureAnnotation != null && retryOnFailureAnnotation.verbose()) || (retryOnWarningAnnotation != null && retryOnWarningAnnotation.verbose())) {
-                        log.info("NORAUI StepInterceptor attempt n° " + i);
+        try {
+            if (m.isAnnotationPresent(RetryOnFailure.class) || m.isAnnotationPresent(RetryOnWarning.class)) {
+                RetryOnFailure retryOnFailureAnnotation = null;
+                RetryOnWarning retryOnWarningAnnotation = null;
+                if (m.isAnnotationPresent(RetryOnFailure.class)) {
+                    retryOnFailureAnnotation = m.getAnnotation(RetryOnFailure.class);
+                    if (retryOnFailureAnnotation.verbose()) {
+                        log.info("NORAUI StepInterceptor invoke method " + m);
                     }
+                }
+                if (m.isAnnotationPresent(RetryOnWarning.class)) {
+                    retryOnWarningAnnotation = m.getAnnotation(RetryOnWarning.class);
+                    if (retryOnWarningAnnotation.verbose()) {
+                        log.info("NORAUI StepInterceptor invoke method " + m);
+                    }
+                }
+                int i = 0;
+                do {
+                    try {
+                        if ((retryOnFailureAnnotation != null && retryOnFailureAnnotation.verbose()) || (retryOnWarningAnnotation != null && retryOnWarningAnnotation.verbose())) {
+                            log.info("NORAUI StepInterceptor attempt n° " + i);
+                        }
+                        return invocation.proceed();
+                    } catch (FailureException e) {
+                        if (retryOnFailureAnnotation.verbose()) {
+                            log.info("NORAUI StepInterceptor FailureException " + e.getMessage());
+                        }
+                        if (i == retryOnFailureAnnotation.attempts() - 1) {
+                            e.getFailure().fail();
+                        }
+                        if (retryOnFailureAnnotation.verbose()) {
+                            log.info("NORAUI StepInterceptor waitting " + retryOnFailureAnnotation.unit().toMillis(retryOnFailureAnnotation.delay()) + " ms");
+                        }
+                        Thread.sleep(retryOnFailureAnnotation.unit().toMillis(retryOnFailureAnnotation.delay()));
+                        if (retryOnFailureAnnotation.verbose()) {
+                            log.info("NORAUI StepInterceptor wait finished");
+                        }
+                    } catch (WarningException e) {
+                        if (retryOnWarningAnnotation.verbose()) {
+                            log.info("NORAUI StepInterceptor WarningException " + e.getMessage());
+                            log.info("NORAUI StepInterceptor waitting " + retryOnWarningAnnotation.unit().toMillis(retryOnWarningAnnotation.delay()) + " ms");
+                        }
+                        Thread.sleep(retryOnWarningAnnotation.unit().toMillis(retryOnWarningAnnotation.delay()));
+                        if (retryOnWarningAnnotation.verbose()) {
+                            log.info("NORAUI StepInterceptor wait finished");
+                        }
+                    }
+                    i++;
+                } while ((retryOnFailureAnnotation != null && i < retryOnFailureAnnotation.attempts()) || (retryOnWarningAnnotation != null && i < retryOnWarningAnnotation.attempts()));
+            } else {
+                try {
                     return invocation.proceed();
                 } catch (FailureException e) {
-                    if (retryOnFailureAnnotation.verbose()) {
-                        log.info("NORAUI StepInterceptor FailureException " + e.getMessage());
-                    }
-                    if (i == retryOnFailureAnnotation.attempts() - 1) {
+                    if (Modifier.isPublic(m.getModifiers())) {
                         e.getFailure().fail();
-                    }
-                    if (retryOnFailureAnnotation.verbose()) {
-                        log.info("NORAUI StepInterceptor waitting " + retryOnFailureAnnotation.unit().toMillis(retryOnFailureAnnotation.delay()) + " ms");
-                    }
-                    Thread.sleep(retryOnFailureAnnotation.unit().toMillis(retryOnFailureAnnotation.delay()));
-                    if (retryOnFailureAnnotation.verbose()) {
-                        log.info("NORAUI StepInterceptor wait finished");
+                    } else {
+                        throw e;
                     }
                 } catch (WarningException e) {
-                    if (retryOnWarningAnnotation.verbose()) {
-                        log.info("NORAUI StepInterceptor WarningException " + e.getMessage());
-                        log.info("NORAUI StepInterceptor waitting " + retryOnWarningAnnotation.unit().toMillis(retryOnWarningAnnotation.delay()) + " ms");
-                    }
-                    Thread.sleep(retryOnWarningAnnotation.unit().toMillis(retryOnWarningAnnotation.delay()));
-                    if (retryOnWarningAnnotation.verbose()) {
-                        log.info("NORAUI StepInterceptor wait finished");
-                    }
                 }
-                i++;
-            } while ((retryOnFailureAnnotation != null && i < retryOnFailureAnnotation.attempts()) || (retryOnWarningAnnotation != null && i < retryOnWarningAnnotation.attempts()));
-        } else {
-            try {
-                return invocation.proceed();
-            } catch (FailureException e) {
-                if (Modifier.isPublic(m.getModifiers())) {
-                    e.getFailure().fail();
-                } else {
-                    throw e;
-                }
-            } catch (WarningException e) {
             }
+        }catch (NoSuchSessionException nsse){
+            log.warn("Getting error with an unknown driver session. Quit all !! " + nsse);
+            Context.quit();
+            throw nsse;
         }
         return result;
     }
