@@ -106,11 +106,6 @@ public class Context {
     public static final String OKHTTP_WRITE_TIMEOUT = "writeTimeout";
     public static final String OKHTTP_READ_TIMEOUT = "readTimeout";
     public static final String HEADLESS = "headless";
-    public static final String NO_SANDBOX = "noSandbox";
-    public static final String REMOTE_WEBDRIVER_URL = "remoteWebDriverUrl";
-    public static final String REMOTE_WEBDRIVER_BROWSER_VERSION = "remoteWebDriverBrowserVersion";
-    public static final String REMOTE_WEBDRIVER_PLATFORM_NAME = "remoteWebDriverPlatformName";
-    public static final String MODIFYHEADER_PATH = "modifyheaderPath";
     public static final String LOCALE = "locale";
     public static final String AUTH_TYPE = "authentication";
     public static final String CRYPTO_KEY = "crypto.key";
@@ -262,42 +257,10 @@ public class Context {
     private boolean displayStackTrace;
 
     /**
-     * @deprecated As of release 4.4, replaced by same property in src\main\resources\webdrivers.properties.
-     *             Is headless mode enable ?
+     * As of release 4.4, replaced by same property in src\main\resources\webdrivers.properties.
+     * Is headless mode enable ?
      */
-    @Deprecated
     private boolean isHeadless;
-
-    /**
-     * @deprecated As of release 4.4, replaced by same property in src\main\resources\webdrivers.properties.
-     *             Is no-sandbox mode enable ?
-     */
-    @Deprecated
-    private boolean isNoSandbox;
-
-    /**
-     * @deprecated As of release 4.4, replaced by same property in src\main\resources\webdrivers.properties.
-     */
-    @Deprecated
-    private String remoteWebDriverUrl;
-
-    /**
-     * @deprecated As of release 4.4, replaced by same property in src\main\resources\webdrivers.properties.
-     */
-    @Deprecated
-    private String remoteWebDriverBrowserVersion;
-    /**
-     * @deprecated As of release 4.4, replaced by same property in src\main\resources\webdrivers.properties.
-     */
-    @Deprecated
-    private String remoteWebDriverPlatformName;
-
-    /**
-     * @deprecated As of release 4.4, replaced by same property in src\main\resources\webdrivers.properties.
-     *             use Modifyheader to your browser extension.
-     */
-    @Deprecated
-    private String modifyheaderPath;
 
     /**
      * Instance of DataInputProvider
@@ -456,13 +419,7 @@ public class Context {
         displayStackTrace = "true".equals(getProperty(DISPLAY_STACK_TRACE, applicationProperties));
 
         // enable browser headless mode ?
-        isHeadless = "true".equals(getProperty(HEADLESS, applicationProperties));
-        isNoSandbox = "true".equals(getProperty(NO_SANDBOX, applicationProperties));
-        modifyheaderPath = getProperty(MODIFYHEADER_PATH, applicationProperties);
-
-        remoteWebDriverUrl = getProperty(REMOTE_WEBDRIVER_URL, applicationProperties);
-        remoteWebDriverBrowserVersion = getProperty(REMOTE_WEBDRIVER_BROWSER_VERSION, applicationProperties);
-        remoteWebDriverPlatformName = getProperty(REMOTE_WEBDRIVER_PLATFORM_NAME, applicationProperties);
+        isHeadless = "true".equals(Context.getWebdriversProperties(HEADLESS));
 
         // init driver callbacks
         exceptionCallbacks.put(Callbacks.RESTART_WEB_DRIVER, STEPS_BROWSER_STEPS_CLASS_QUALIFIED_NAME, RESTART_WEB_DRIVER_METHOD_NAME);
@@ -813,52 +770,8 @@ public class Context {
         return getInstance().displayStackTrace;
     }
 
-    /**
-     * @deprecated As of release 4.4, replaced by same property in src\main\resources\webdrivers.properties.
-     */
-    @Deprecated
     public static boolean isHeadless() {
         return getInstance().isHeadless;
-    }
-
-    /**
-     * @deprecated As of release 4.4, replaced by same property in src\main\resources\webdrivers.properties.
-     */
-    @Deprecated
-    public static boolean isNoSandbox() {
-        return getInstance().isNoSandbox;
-    }
-
-    /**
-     * @deprecated As of release 4.4, replaced by same property in src\main\resources\webdrivers.properties.
-     */
-    @Deprecated
-    public static String getRemoteWebDriverUrl() {
-        return getInstance().remoteWebDriverUrl;
-    }
-
-    /**
-     * @deprecated As of release 4.4, replaced by same property in src\main\resources\webdrivers.properties.
-     */
-    @Deprecated
-    public static String getRemoteWebDriverBrowserVersion() {
-        return getInstance().remoteWebDriverBrowserVersion;
-    }
-
-    /**
-     * @deprecated As of release 4.4, replaced by same property in src\main\resources\webdrivers.properties.
-     */
-    @Deprecated
-    public static String getRemoteWebDriverPlatformName() {
-        return getInstance().remoteWebDriverPlatformName;
-    }
-
-    /**
-     * @deprecated As of release 4.4, replaced by same property in src\main\resources\webdrivers.properties.
-     */
-    @Deprecated
-    public static String getModifyheaderPath() {
-        return getInstance().modifyheaderPath;
     }
 
     public static String getModelPackages() {

@@ -15,7 +15,6 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.slf4j.Logger;
 
 import com.github.noraui.browser.Auth;
-import com.github.noraui.browser.WindowManager;
 import com.github.noraui.browser.waits.Wait;
 import com.github.noraui.cucumber.annotation.Conditioned;
 import com.github.noraui.cucumber.metrics.annotation.time.Time;
@@ -27,6 +26,7 @@ import com.github.noraui.exception.Result;
 import com.github.noraui.exception.TechnicalException;
 import com.github.noraui.gherkin.GherkinStepCondition;
 import com.github.noraui.log.annotation.Loggable;
+import com.github.noraui.selenium.NoraUiExpectedConditions;
 import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 
@@ -67,10 +67,10 @@ public class BrowserSteps {
             Set<String> initialWindows = Context.getDriver().getWindowHandles();
             String js = "window.open(\"\");";
             ((JavascriptExecutor) Context.getDriver()).executeScript(js);
-            String newWindowHandle = Wait.until(WindowManager.newWindowOpens(initialWindows));
+            String newWindowHandle = Wait.until(NoraUiExpectedConditions.newWindowOpens(initialWindows));
             Context.getDriver().switchTo().window(newWindowHandle);
         } catch (Exception e) {
-            log.error("Error when open a new window: {}", e);
+            log.error("Error when open a new window.", e);
             new Result.Failure<>(e.getMessage(), Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_OPEN_A_NEW_WINDOW), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
     }
