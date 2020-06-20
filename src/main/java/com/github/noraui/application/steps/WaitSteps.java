@@ -55,8 +55,7 @@ public class WaitSteps extends Step {
     @Conditioned
     @Lorsque("L'attribut {string} de {page-element} {should-shouldnot} contenir {string}(\\?)")
     @Then("The attribute {string} of {page-element} {should-shouldnot} contain {string}(\\?)")
-    public void waitAttributeContains(final String attribute, PageElement pageElement, final Boolean not, final String value, List<GherkinStepCondition> conditions)
-            throws TechnicalException, FailureException {
+    public void waitAttributeContains(final String attribute, PageElement pageElement, final Boolean not, final String value, List<GherkinStepCondition> conditions) throws FailureException {
         try {
             Wait.until(ExpectedConditions.attributeContains(Utilities.getLocator(pageElement), attribute, value), not);
         } catch (final Exception e) {
@@ -67,8 +66,7 @@ public class WaitSteps extends Step {
     @Conditioned
     @Lorsque("L'attribut {string} de {page-element} {should-shouldnot} être égale à {string}(\\?)")
     @Then("The attribute {string} of {page-element} {should-shouldnot} be equals to {string}(\\?)")
-    public void waitAttributeToBe(final String attribute, PageElement pageElement, final Boolean not, final String value, List<GherkinStepCondition> conditions)
-            throws TechnicalException, FailureException {
+    public void waitAttributeToBe(final String attribute, PageElement pageElement, final Boolean not, final String value, List<GherkinStepCondition> conditions) throws FailureException {
         try {
             Wait.until(ExpectedConditions.attributeToBe(Utilities.getLocator(pageElement), attribute, value), not);
         } catch (final Exception e) {
@@ -79,7 +77,7 @@ public class WaitSteps extends Step {
     @Conditioned
     @Lorsque("L'élément {page-element} {should-shouldnot} être cliquable(\\?)")
     @Then("The element {page-element} {should-shouldnot} be clickable(\\?)")
-    public void waitElementToBeClickable(PageElement pageElement, final Boolean not, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+    public void waitElementToBeClickable(PageElement pageElement, final Boolean not, List<GherkinStepCondition> conditions) throws FailureException {
         try {
             Wait.until(ExpectedConditions.elementToBeClickable(Utilities.getLocator(pageElement)), not);
         } catch (final Exception e) {
@@ -90,7 +88,7 @@ public class WaitSteps extends Step {
     @Conditioned
     @Lorsque("L'élément {page-element} {should-shouldnot} être sélectionné(\\?)")
     @Then("The element {page-element} {should-shouldnot} be selected(\\?)")
-    public void waitElementToBeNotSelected(PageElement pageElement, final Boolean not, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+    public void waitElementToBeNotSelected(PageElement pageElement, final Boolean not, List<GherkinStepCondition> conditions) throws FailureException {
         try {
             Wait.until(ExpectedConditions.elementSelectionStateToBe(Utilities.getLocator(pageElement), !not));
         } catch (final Exception e) {
@@ -152,7 +150,7 @@ public class WaitSteps extends Step {
     @Conditioned
     @Lorsque("L'élément {page-element} avec le texte {string} {should-shouldnot} être invisible(\\?)")
     @Then("The element {page-element} avec le texte {string} {should-shouldnot} be invisible(\\?)")
-    public void waitInvisibilityOfElementWithText(PageElement pageElement, final String text, final Boolean not, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+    public void waitInvisibilityOfElementWithText(PageElement pageElement, final String text, final Boolean not, List<GherkinStepCondition> conditions) throws FailureException {
         try {
             Wait.until(ExpectedConditions.invisibilityOfElementWithText(Utilities.getLocator(pageElement), text), not);
         } catch (final Exception e) {
@@ -164,7 +162,7 @@ public class WaitSteps extends Step {
     @Lorsque("L'élément {page-element} avec le texte {string} {should-shouldnot} être invisible dans les {int} seconde(s)(\\?)")
     @Then("The element {page-element} with the text {string} {should-shouldnot} be invisible within {int} second(s)(\\?)")
     public void waitInvisibilityOfElementWithTextWithTimeout(PageElement pageElement, final String text, final Boolean not, int timeOutInSeconds, List<GherkinStepCondition> conditions)
-            throws TechnicalException, FailureException {
+            throws FailureException {
         try {
             Wait.until(ExpectedConditions.invisibilityOfElementWithText(Utilities.getLocator(pageElement), text), timeOutInSeconds, not);
         } catch (final Exception e) {
@@ -175,7 +173,7 @@ public class WaitSteps extends Step {
     @Conditioned
     @Lorsque("Le nombre d'élements {page-element} {should-shouldnot} être égale à {int}(\\?)")
     @Then("The number of elements {page-element} {should-shouldnot} be equal to {int}(\\?)")
-    public void waitNumberOfElementsToBe(PageElement pageElement, final Boolean not, final int number, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+    public void waitNumberOfElementsToBe(PageElement pageElement, final Boolean not, final int number, List<GherkinStepCondition> conditions) throws FailureException {
         try {
             Wait.until(ExpectedConditions.numberOfElementsToBe(Utilities.getLocator(pageElement), number), not);
         } catch (final Exception e) {
@@ -186,7 +184,7 @@ public class WaitSteps extends Step {
     @Conditioned
     @Lorsque("Le nombre d'éléments {page-element} {should-shouldnot} être inférieur à {int}(\\?)")
     @Then("The number of elements {page-element} {should-shouldnot} be less than {int}(\\?)")
-    public void waitNumberOfElementsToBeLessThan(PageElement pageElement, final Boolean not, final Integer number, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+    public void waitNumberOfElementsToBeLessThan(PageElement pageElement, final Boolean not, final Integer number, List<GherkinStepCondition> conditions) throws FailureException {
         try {
             Wait.until(ExpectedConditions.numberOfElementsToBeLessThan(Utilities.getLocator(pageElement), number), not);
         } catch (final Exception e) {
@@ -197,7 +195,7 @@ public class WaitSteps extends Step {
     @Conditioned
     @Lorsque("Le nombre d'éléments {page-element} {should-shouldnot} être supérieur à {int}(\\?)")
     @Then("The number of elements {page-element} {should-shouldnot} be more than {int}(\\?)")
-    public void waitNumberOfElementsToBeMoreThan(PageElement pageElement, final Boolean not, final Integer number, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+    public void waitNumberOfElementsToBeMoreThan(PageElement pageElement, final Boolean not, final Integer number, List<GherkinStepCondition> conditions) throws FailureException {
         try {
             Wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(Utilities.getLocator(pageElement), number), not);
         } catch (final Exception e) {
@@ -208,7 +206,7 @@ public class WaitSteps extends Step {
     @Conditioned
     @Lorsque("Le nombre de fenêtres {should-shouldnot} être {int}(\\?)")
     @Then("The number of windows {should-shouldnot} be {int}(\\?)")
-    public void waitNumberOfWindowsToBe(final Boolean not, final Integer expectedNumberOfWindows, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+    public void waitNumberOfWindowsToBe(final Boolean not, final Integer expectedNumberOfWindows, List<GherkinStepCondition> conditions) throws FailureException {
         try {
             Wait.until(ExpectedConditions.numberOfWindowsToBe(expectedNumberOfWindows), not);
         } catch (final Exception e) {
@@ -219,7 +217,7 @@ public class WaitSteps extends Step {
     @Conditioned
     @Lorsque("L'élément {page-element} {should-shouldnot} être présent(\\?)")
     @Then("The element {page-element} {should-shouldnot} be present(\\?)")
-    public void waitPresenceOfElementLocated(PageElement pageElement, final Boolean not, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+    public void waitPresenceOfElementLocated(PageElement pageElement, final Boolean not, List<GherkinStepCondition> conditions) throws FailureException {
         try {
             Wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(Utilities.getLocator(pageElement)), not);
         } catch (final Exception e) {
@@ -230,8 +228,7 @@ public class WaitSteps extends Step {
     @Conditioned
     @Lorsque("Les éléments imbriqués {page-element} et {page-element} {should-shouldnot} être présents(\\?)")
     @Then("Nested elements {page-element} and {page-element} {should-shouldnot} be present(\\?)")
-    public void waitPresenceOfNestedElementLocatedBy(PageElement pageElement, PageElement childPageElement, final Boolean not, List<GherkinStepCondition> conditions)
-            throws TechnicalException, FailureException {
+    public void waitPresenceOfNestedElementLocatedBy(PageElement pageElement, PageElement childPageElement, final Boolean not, List<GherkinStepCondition> conditions) throws FailureException {
         try {
             Wait.until(ExpectedConditions.presenceOfNestedElementLocatedBy(Utilities.getLocator(pageElement), Utilities.getLocator(childPageElement)), not);
         } catch (final Exception e) {
@@ -269,7 +266,7 @@ public class WaitSteps extends Step {
     @Conditioned
     @Lorsque("Le texte de {page-element} {should-shouldnot} respecter {string}(\\?)")
     @Then("The text of {page-element} {should-shouldnot} respect {string}(\\?)")
-    public void waitTextMatches(PageElement pageElement, final Boolean not, String regexp, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+    public void waitTextMatches(PageElement pageElement, final Boolean not, String regexp, List<GherkinStepCondition> conditions) throws FailureException {
         try {
             Pattern pattern = Pattern.compile(regexp);
             Wait.until(ExpectedConditions.textMatches(Utilities.getLocator(pageElement), pattern), not);
@@ -281,7 +278,7 @@ public class WaitSteps extends Step {
     @Conditioned
     @Lorsque("Le texte de {page-element} {should-shouldnot} être {string}(\\?)")
     @Then("The text of {page-element} {should-shouldnot} be {string}(\\?)")
-    public void waitTextToBe(PageElement pageElement, final Boolean not, final String value, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+    public void waitTextToBe(PageElement pageElement, final Boolean not, final String value, List<GherkinStepCondition> conditions) throws FailureException {
         try {
             Wait.until(ExpectedConditions.textToBe(Utilities.getLocator(pageElement), value), not);
         } catch (final Exception e) {
@@ -292,7 +289,7 @@ public class WaitSteps extends Step {
     @Conditioned
     @Lorsque("Le texte de {page-element} {should-shouldnot} contenir {string}(\\?)")
     @Then("The text of {page-element} {should-shouldnot} contain {string}(\\?)")
-    public void waitTextToBePresentInElementLocated(PageElement pageElement, final Boolean not, final String text, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+    public void waitTextToBePresentInElementLocated(PageElement pageElement, final Boolean not, final String text, List<GherkinStepCondition> conditions) throws FailureException {
         try {
             Wait.until(ExpectedConditions.textToBePresentInElementLocated(Utilities.getLocator(pageElement), text), not);
         } catch (final Exception e) {
@@ -330,7 +327,7 @@ public class WaitSteps extends Step {
     @Conditioned
     @Lorsque("Le titre {should-shouldnot} contenir {string}(\\?)")
     @Then("Title {should-shouldnot} contain {string}(\\?)")
-    public void waitTitleContains(final Boolean not, final String title, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+    public void waitTitleContains(final Boolean not, final String title, List<GherkinStepCondition> conditions) throws FailureException {
         try {
             Wait.until(ExpectedConditions.titleContains(title), not);
         } catch (final Exception e) {
@@ -341,7 +338,7 @@ public class WaitSteps extends Step {
     @Conditioned
     @Lorsque("Le titre {should-shouldnot} être égale à {string}(\\?)")
     @Then("Title {should-shouldnot} be equal to {string}(\\?)")
-    public void waitTitleIs(final Boolean not, final String title, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+    public void waitTitleIs(final Boolean not, final String title, List<GherkinStepCondition> conditions) throws FailureException {
         try {
             Wait.until(ExpectedConditions.titleIs(title), not);
         } catch (final Exception e) {
@@ -352,7 +349,7 @@ public class WaitSteps extends Step {
     @Conditioned
     @Lorsque("L'url courante {should-shouldnot} contenir {string}(\\?)")
     @Then("Current url {should-shouldnot} contain {string}(\\?)")
-    public void waitUrlContains(final Boolean not, final String fraction, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+    public void waitUrlContains(final Boolean not, final String fraction, List<GherkinStepCondition> conditions) throws FailureException {
         try {
             Wait.until(ExpectedConditions.urlContains(fraction), not);
         } catch (final Exception e) {
@@ -363,7 +360,7 @@ public class WaitSteps extends Step {
     @Conditioned
     @Lorsque("L'url courante {should-shouldnot} respecter {string}(\\?)")
     @Then("Current url {should-shouldnot} respect {string}(\\?)")
-    public void waitUrlMatches(final Boolean not, final String regex, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+    public void waitUrlMatches(final Boolean not, final String regex, List<GherkinStepCondition> conditions) throws FailureException {
         try {
             Wait.until(ExpectedConditions.urlMatches(regex), not);
         } catch (final Exception e) {
@@ -374,7 +371,7 @@ public class WaitSteps extends Step {
     @Conditioned
     @Lorsque("L'url courante {should-shouldnot} être égale à {string}(\\?)")
     @Then("Current url {should-shouldnot} be equal to {string}(\\?)")
-    public void waitUrlToBe(final Boolean not, final String url, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+    public void waitUrlToBe(final Boolean not, final String url, List<GherkinStepCondition> conditions) throws FailureException {
         try {
             Wait.until(ExpectedConditions.urlToBe(url), not);
         } catch (final Exception e) {
@@ -385,13 +382,13 @@ public class WaitSteps extends Step {
     @Conditioned
     @Alors("L'élément {page-element} {is-isnot} visible(\\?)")
     @Then("The element {page-element} {is-isnot} visible(\\?)")
-    public void waitVisibilityOf(final PageElement pageElement, final Boolean not, List<GherkinStepCondition> conditions) throws TechnicalException, FailureException {
+    public void waitVisibilityOf(final PageElement pageElement, final Boolean not, List<GherkinStepCondition> conditions) throws FailureException {
         WebElement webElement = null;
         try {
             webElement = Utilities.findElement(pageElement);
             Wait.until(ExpectedConditions.visibilityOf(webElement), not);
         } catch (Exception e) {
-            if (!not) {
+            if (Boolean.FALSE.equals(not)) {
                 new Result.Failure<>(pageElement, Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_FIND_ELEMENT), true, pageElement.getPage().getCallBack());
             }
         }
@@ -401,7 +398,7 @@ public class WaitSteps extends Step {
     @Alors("Les éléments imbriqués {page-element} et {page-element} {should-shouldnot} être visibles(\\?)")
     @Then("Nested elements {page-element} and {page-element} {should-shouldnot} be visible(\\?)")
     public void waitVisibilityOfNestedElementsLocatedBy(final PageElement pageElement, final Boolean not, final PageElement childPageElement, List<GherkinStepCondition> conditions)
-            throws TechnicalException, FailureException {
+            throws FailureException {
         try {
             Wait.until(ExpectedConditions.visibilityOfNestedElementsLocatedBy(Utilities.getLocator(pageElement), Utilities.getLocator(childPageElement)), not);
         } catch (final Exception e) {
