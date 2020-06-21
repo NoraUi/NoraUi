@@ -233,7 +233,19 @@ public class NoraUiCommandLineInterfaceUT {
         String[] args = { "-f", "7", "-d", "password", "-k", "my-secret", "-interactiveMode", "false", "--verbose" };
         cli.runCli(UnitTest4CLIContext.class, UnitTest4CLICounter.class, args);
         Assert.assertTrue(stdOutLog.getLog().contains("Encrypt a data [password] with this crypto key: [my-secret]"));
-        Assert.assertTrue(stdOutLog.getLog().contains("Encrypted value is ℗:7y+CKIH1Zd5RVORZ0PAQBA=="));
+        Assert.assertTrue(stdOutLog.getLog().contains("Encrypted value is ℗:"));
+        Assert.assertTrue(stdOutLog.getLog().contains("NoraUi Command Line Interface finished with success."));
+        Assert.assertTrue(stdOutLog.getLog().contains("Exit NoraUi Command Line Interface with success."));
+
+        // read value Crypted juste before (this value is not unic and change each execution.
+        String value = stdOutLog.getLog().substring(stdOutLog.getLog().indexOf("Encrypted value is ") + 19);
+        value = value.substring(0, value.indexOf(System.lineSeparator()));
+
+        // Decrypte value Crypted juste before
+        String[] args2 = { "-f", "8", "-d", value, "-k", "my-secret", "-interactiveMode", "false", "--verbose" };
+        cli.runCli(UnitTest4CLIContext.class, UnitTest4CLICounter.class, args2);
+        Assert.assertTrue(stdOutLog.getLog().contains("Decrypt a data [" + value + "] with this crypto key: [my-secret]"));
+        Assert.assertTrue(stdOutLog.getLog().contains("Decrypted value is password"));
         Assert.assertTrue(stdOutLog.getLog().contains("NoraUi Command Line Interface finished with success."));
         Assert.assertTrue(stdOutLog.getLog().contains("Exit NoraUi Command Line Interface with success."));
     }
