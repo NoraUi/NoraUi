@@ -70,7 +70,7 @@
 		<jsr305.version>3.0.2</jsr305.version>
 		<oracle.driver.version>12.2.0.1</oracle.driver.version>
 		<postgres.driver.version>42.1.4.jre7</postgres.driver.version>
-		<mysql.driver.version>8.0.8-dmr</mysql.driver.version>
+		<mysql.driver.version>8.0.16</mysql.driver.version>
 		<joda-time.version>2.9.9</joda-time.version>
 		<joda-convert.version>1.9.2</joda-convert.version>
 		<javassist.version>3.22.0-CR2</javassist.version>
