@@ -6,10 +6,6 @@
  */
 package com.github.noraui.utils;
 
-import static com.github.noraui.Constants.DATA_IN;
-import static com.github.noraui.Constants.DATA_OUT;
-import static com.github.noraui.Constants.SCENARIO_FILE;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -43,7 +39,6 @@ import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
-import org.slf4j.Logger;
 
 import com.github.noraui.Constants;
 import com.github.noraui.application.Application;
@@ -52,6 +47,7 @@ import com.github.noraui.browser.Auth;
 import com.github.noraui.browser.DriverFactory;
 import com.github.noraui.browser.WindowManager;
 import com.github.noraui.browser.steps.BrowserSteps;
+import com.github.noraui.browser.waits.Wait;
 import com.github.noraui.data.DataIndex;
 import com.github.noraui.data.DataInputProvider;
 import com.github.noraui.data.DataOutputProvider;
@@ -451,6 +447,7 @@ public class Context {
      * Clear context
      */
     public static void quit() {
+        Wait.clear();
         instance.driverFactory.quit();
         instance.windowManager.clear();
         instance.scenarioRegistry.clear();
