@@ -6,6 +6,10 @@
  */
 package com.github.noraui.utils;
 
+import static com.github.noraui.Constants.DATA_IN;
+import static com.github.noraui.Constants.DATA_OUT;
+import static com.github.noraui.Constants.SCENARIO_FILE;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -39,6 +43,7 @@ import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
+import org.slf4j.Logger;
 
 import com.github.noraui.Constants;
 import com.github.noraui.application.Application;
