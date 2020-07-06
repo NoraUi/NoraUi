@@ -52,6 +52,7 @@ import com.github.noraui.browser.Auth;
 import com.github.noraui.browser.DriverFactory;
 import com.github.noraui.browser.WindowManager;
 import com.github.noraui.browser.steps.BrowserSteps;
+import com.github.noraui.browser.waits.Wait;
 import com.github.noraui.data.DataIndex;
 import com.github.noraui.data.DataInputProvider;
 import com.github.noraui.data.DataOutputProvider;
@@ -451,6 +452,7 @@ public class Context {
      * Clear context
      */
     public static void quit() {
+        Wait.clear();
         instance.driverFactory.quit();
         instance.windowManager.clear();
         instance.scenarioRegistry.clear();
