@@ -43,7 +43,7 @@
 		<connection>scm:git:git://github.com/NoraUi/NoraUi.git</connection>
 		<developerConnection>scm:git:git@github.com:NoraUi/NoraUi.git</developerConnection>
 		<url>git://github.com/NoraUi/NoraUi.git</url>
-		<tag>v4.3.2</tag>
+		<tag>v4.4.1</tag>
 	</scm>
 
 	<properties>
@@ -65,7 +65,7 @@
 		<jaxb-impl.version>2.3.2</jaxb-impl.version>
 		<jsoup.version>1.11.2</jsoup.version>
 		<screen-recorder.version>0.7.7.0</screen-recorder.version>
-        <mockito.version>2.23.4</mockito.version>
+    <mockito.version>2.23.4</mockito.version>
 		<powermock.version>2.0.5</powermock.version>
 		<jsr305.version>3.0.2</jsr305.version>
 		<oracle.driver.version>12.2.0.1</oracle.driver.version>
@@ -86,8 +86,8 @@
 		<javatuples.version>1.2</javatuples.version>
 		<maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
 		<maven-source-plugin.version>3.2.1</maven-source-plugin.version>
-        <maven-javadoc-plugin.version>3.1.1</maven-javadoc-plugin.version>
-        <download-maven-plugin.version>1.5.0</download-maven-plugin.version>
+    <maven-javadoc-plugin.version>3.1.1</maven-javadoc-plugin.version>
+    <download-maven-plugin.version>1.5.0</download-maven-plugin.version>
 		<maven-resources-plugin.version>3.0.2</maven-resources-plugin.version>
 		<exec-maven-plugin.version>1.6.0</exec-maven-plugin.version>
 		<maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
@@ -99,7 +99,7 @@
 		<sonar.sources>${project.basedir}/src/main/java/</sonar.sources>
 		<sonar.junit.reportPaths>${project.build.directory}/surefire-reports/junit</sonar.junit.reportPaths>
 		<sonar.surefire.reportPaths>${project.build.directory}/surefire-reports</sonar.surefire.reportPaths>
-		<sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+		<sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 		<sonar.tests>${project.basedir}/src/test/</sonar.tests>
 		<sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
 		<sonar.exclusions>**/cucumber/**/*,**/*Exception.*,**/annotation/**/*,**/noraui/model/**/*,**/noraui/data/rest/Row.java,**/noraui/utils/Constants.java,**/noraui/application/steps/MailSteps.java</sonar.exclusions>
