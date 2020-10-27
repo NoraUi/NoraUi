@@ -99,8 +99,7 @@
 		<sonar.sources>${project.basedir}/src/main/java/</sonar.sources>
 		<sonar.junit.reportPaths>${project.build.directory}/surefire-reports/junit</sonar.junit.reportPaths>
 		<sonar.surefire.reportPaths>${project.build.directory}/surefire-reports</sonar.surefire.reportPaths>
-		<sonar.jacoco.directory>${project.testresult.directory}/coverage/jacoco</sonar.jacoco.directory>
-		<sonar.jacoco.reportPath>${sonar.jacoco.directory}/jacoco.exec</sonar.jacoco.reportPath>
+		<sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 		<sonar.tests>${project.basedir}/src/test/</sonar.tests>
 		<sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
 		<sonar.exclusions>**/cucumber/**/*,**/*Exception.*,**/annotation/**/*,**/noraui/model/**/*,**/noraui/data/rest/Row.java,**/noraui/utils/Constants.java,**/noraui/application/steps/MailSteps.java</sonar.exclusions>
@@ -862,7 +861,6 @@
 									<goal>prepare-agent</goal>
 								</goals>
 								<configuration>
-									<destFile>${sonar.jacoco.reportPath}</destFile>
 									<propertyName>surefireArgLine</propertyName>
 								</configuration>
 							</execution>
@@ -872,10 +870,6 @@
 								<goals>
 									<goal>report</goal>
 								</goals>
-								<configuration>
-									<dataFile>${sonar.jacoco.reportPath}</dataFile>
-									<outputDirectory>${sonar.jacoco.directory}</outputDirectory>
-								</configuration>
 							</execution>
 						</executions>
 					</plugin>
