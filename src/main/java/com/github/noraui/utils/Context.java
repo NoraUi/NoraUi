@@ -52,6 +52,7 @@ import com.github.noraui.browser.Auth;
 import com.github.noraui.browser.DriverFactory;
 import com.github.noraui.browser.WindowManager;
 import com.github.noraui.browser.steps.BrowserSteps;
+import com.github.noraui.browser.waits.Wait;
 import com.github.noraui.data.DataIndex;
 import com.github.noraui.data.DataInputProvider;
 import com.github.noraui.data.DataOutputProvider;
@@ -75,8 +76,6 @@ import com.github.noraui.model.Model;
 import com.github.noraui.model.ModelList;
 import com.github.noraui.statistics.Statistics;
 import com.github.noraui.statistics.StatisticsService;
-import com.google.common.reflect.ClassPath;
-import com.google.common.reflect.ClassPath.ClassInfo;
 
 import cucumber.runtime.java.StepDefAnnotation;
 import io.cucumber.core.api.Scenario;
@@ -451,6 +450,7 @@ public class Context {
      * Clear context
      */
     public static void quit() {
+        Wait.clear();
         instance.driverFactory.quit();
         instance.windowManager.clear();
         instance.scenarioRegistry.clear();
@@ -845,12 +845,15 @@ public class Context {
             log.trace("noraui.version not found.");
         }
         stat.setApplications(applications.entrySet().stream().filter(e -> e.getValue().getHomeUrl() != null).collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getHomeUrl(), (a, b) -> b)));
-        try {
-            Map<String, String> code = ClassPath.from(loader).getTopLevelClassesRecursive(packageName).stream().collect(Collectors.toMap(ClassInfo::getName, c -> read(c.getName()), (a, b) -> b));
-            stat.setCucumberMethods(code);
-        } catch (IOException e1) {
-            log.trace("Cucumber Methods not found.");
-        }
+        // temporarily disabled: too much data
+        /*
+         * try {
+         * Map<String, String> code = ClassPath.from(loader).getTopLevelClassesRecursive(packageName).stream().collect(Collectors.toMap(ClassInfo::getName, c -> read(c.getName()), (a, b) -> b));
+         * stat.setCucumberMethods(code);
+         * } catch (IOException e1) {
+         * log.trace("Cucumber Methods not found.");
+         * }
+         */
         return stat;
     }
 

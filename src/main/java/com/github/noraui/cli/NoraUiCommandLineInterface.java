@@ -1040,8 +1040,8 @@ public class NoraUiCommandLineInterface {
     /**
      * @param cryptoKey
      *            is AES key (secret key).
-     * @param description
-     *            is description of scenario.
+     * @param encrypted
+     *            is encrypted value of secret text.
      * @param input
      *            NoraUI CLI use Java Scanner class.
      * @param interactiveMode
@@ -1054,26 +1054,26 @@ public class NoraUiCommandLineInterface {
      *             InvalidKeyException | IllegalBlockSizeException | BadPaddingException | IOException,
      *             ...) in NoraUi.
      */
-    private void decrypt(String cryptoKey, String description, Scanner input, boolean interactiveMode) throws TechnicalException {
+    private void decrypt(String cryptoKey, String encrypted, Scanner input, boolean interactiveMode) throws TechnicalException {
         if (interactiveMode) {
             if (cryptoKey == null || "".equals(cryptoKey)) {
                 log.info("Enter crypto key:");
                 cryptoKey = input.nextLine();
             }
-            if (description == null || "".equals(description)) {
+            if (encrypted == null || "".equals(encrypted)) {
                 log.info("Enter data:");
-                description = input.nextLine();
+                encrypted = input.nextLine();
             }
             if (log.isInfoEnabled()) {
-                log.info("Decrypt a data [{}] with this crypto key: [{}]", description, cryptoKey);
-                log.info("Decrypted value is {}", cryptoService.decrypt(cryptoKey, description));
+                log.info("Decrypt a data [{}] with this crypto key: [{}]", encrypted, cryptoKey);
+                log.info("Decrypted value is {}", cryptoService.decrypt(cryptoKey, encrypted));
             }
         } else {
-            if (cryptoKey == null || "".equals(cryptoKey) || description == null || "".equals(description)) {
+            if (cryptoKey == null || "".equals(cryptoKey) || encrypted == null || "".equals(encrypted)) {
                 log.error("When you want to decrypt data with interactiveMode is false, you need use -d and -k");
             } else if (log.isInfoEnabled()) {
-                log.info("Decrypt a data [{}] with this crypto key: [{}]", description, cryptoKey);
-                log.info("Decrypted value is {}", cryptoService.decrypt(cryptoKey, description));
+                log.info("Decrypt a data [{}] with this crypto key: [{}]", encrypted, cryptoKey);
+                log.info("Decrypted value is {}", cryptoService.decrypt(cryptoKey, encrypted));
             }
         }
     }

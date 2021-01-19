@@ -20,8 +20,13 @@ import com.github.noraui.log.annotation.Loggable;
 public abstract class AbstractNoraUiCli {
 
     static Logger log;
+
     protected static final String RESOURCES = "resources";
     protected static final String ENVIRONMENTS = "environments";
+
+    protected static final String IMPORT_SLF4J_LOGGER = "import org.slf4j.Logger;";
+    protected static final String NORAUI_LOGGABLE_ANNOTATION = "@Loggable";
+    protected static final String GOOGLE_INJECT_SINGLETON_ANNOTATION = "@Singleton";
 
     protected String getJavaClassHeaders(String noraRobotName) {
         StringBuilder sb = new StringBuilder();

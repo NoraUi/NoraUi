@@ -1,3 +1,11 @@
+/**
+ * NoraUi is licensed under the license GNU AFFERO GENERAL PUBLIC LICENSE
+ * 
+ * @author Nicolas HALLOUIN
+ * @author Stéphane GRILLON
+ *
+ *         This class handles waits for any ExpectedConditions and allows to chain them.
+ */
 package com.github.noraui.browser.waits;
 
 import com.github.noraui.utils.Context;
@@ -109,5 +117,13 @@ public class Wait {
     public static <T> ChainableWait<?> untilAnd(ExpectedCondition<T> condition, int timeOutInSeconds, boolean not) {
         return not ? new ChainableWait<Boolean>(new WebDriverWait(Context.getDriver(), timeOutInSeconds)).wait(ExpectedConditions.not(condition))
                 : new ChainableWait<T>(new WebDriverWait(Context.getDriver(), timeOutInSeconds)).wait(condition);
+    }
+
+    /**
+     * Clears the instance of WebDriverWait.
+     * New instance will be used at the next use of Wait methods.
+     */
+    public static void clear() {
+        webDriverWait = null;
     }
 }

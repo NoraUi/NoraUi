@@ -1385,6 +1385,11 @@ public abstract class Step implements IStep {
         return value;
     }
 
+    /**
+     * check conditions expected & actual sizes.
+     * 
+     * @return boolean use by java lambda filter.
+     */
     private Predicate<GherkinConditionedLoopedStep> checkConditionExpectedsAndActuals() {
         return p -> {
             boolean equalSizes = p.getActual().split(";").length == p.getExpected().split(";").length;

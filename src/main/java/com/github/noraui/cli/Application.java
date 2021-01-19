@@ -148,7 +148,7 @@ public class Application extends AbstractNoraUiCli {
         sb.append("import static " + robotContext.getCanonicalName() + "." + applicationName.toUpperCase() + SUFFIX_KEY).append(System.lineSeparator());
         sb.append(System.lineSeparator());
         sb.append("import org.openqa.selenium.support.ui.ExpectedConditions;").append(System.lineSeparator());
-        sb.append("import org.slf4j.Logger;").append(System.lineSeparator());
+        sb.append(IMPORT_SLF4J_LOGGER).append(System.lineSeparator());
         sb.append(System.lineSeparator());
         sb.append("import " + robotContext.getCanonicalName() + ";").append(System.lineSeparator());
         sb.append(System.lineSeparator());
@@ -159,8 +159,8 @@ public class Application extends AbstractNoraUiCli {
         sb.append("import com.github.noraui.utils.Utilities;").append(System.lineSeparator());
         sb.append("import com.google.inject.Singleton;").append(System.lineSeparator());
         sb.append(System.lineSeparator());
-        sb.append("@Loggable").append(System.lineSeparator());
-        sb.append("@Singleton").append(System.lineSeparator());
+        sb.append(NORAUI_LOGGABLE_ANNOTATION).append(System.lineSeparator());
+        sb.append(GOOGLE_INJECT_SINGLETON_ANNOTATION).append(System.lineSeparator());
         sb.append("public class " + applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "HomePage extends Page {").append(System.lineSeparator());
         sb.append(System.lineSeparator());
         sb.append("    static Logger log;").append(System.lineSeparator());
@@ -231,7 +231,7 @@ public class Application extends AbstractNoraUiCli {
         sb.append("import static " + robotContext.getCanonicalName() + "." + applicationName.toUpperCase() + SUFFIX_KEY).append(System.lineSeparator());
         sb.append(System.lineSeparator());
         sb.append("import org.openqa.selenium.support.ui.ExpectedConditions;").append(System.lineSeparator());
-        sb.append("import org.slf4j.Logger;").append(System.lineSeparator());
+        sb.append(IMPORT_SLF4J_LOGGER).append(System.lineSeparator());
         sb.append(System.lineSeparator());
         sb.append("import " + robotContext.getCanonicalName() + ";").append(System.lineSeparator());
         sb.append(System.lineSeparator());
@@ -242,8 +242,8 @@ public class Application extends AbstractNoraUiCli {
         sb.append("import com.github.noraui.utils.Utilities;").append(System.lineSeparator());
         sb.append("import com.google.inject.Singleton;").append(System.lineSeparator());
         sb.append(System.lineSeparator());
-        sb.append("@Loggable").append(System.lineSeparator());
-        sb.append("@Singleton").append(System.lineSeparator());
+        sb.append(NORAUI_LOGGABLE_ANNOTATION).append(System.lineSeparator());
+        sb.append(GOOGLE_INJECT_SINGLETON_ANNOTATION).append(System.lineSeparator());
         sb.append("public class " + applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "Page extends Page {").append(System.lineSeparator());
         sb.append(System.lineSeparator());
         sb.append("    static Logger log;").append(System.lineSeparator());
@@ -302,7 +302,7 @@ public class Application extends AbstractNoraUiCli {
         sb.append(System.lineSeparator());
         sb.append("import static " + robotContext.getCanonicalName() + "." + applicationName.toUpperCase() + SUFFIX_KEY).append(System.lineSeparator());
         sb.append(System.lineSeparator());
-        sb.append("import org.slf4j.Logger;").append(System.lineSeparator());
+        sb.append(IMPORT_SLF4J_LOGGER).append(System.lineSeparator());
         sb.append(System.lineSeparator());
         sb.append("import " + robotContext.getCanonicalName() + ";").append(System.lineSeparator());
         sb.append(System.lineSeparator());
@@ -311,13 +311,12 @@ public class Application extends AbstractNoraUiCli {
         sb.append("import com.github.noraui.utils.Context;").append(System.lineSeparator());
         sb.append("import com.google.inject.Singleton;").append(System.lineSeparator());
         sb.append(System.lineSeparator());
-        sb.append("@Loggable").append(System.lineSeparator());
-        sb.append("@Singleton").append(System.lineSeparator());
+        sb.append(NORAUI_LOGGABLE_ANNOTATION).append(System.lineSeparator());
+        sb.append(GOOGLE_INJECT_SINGLETON_ANNOTATION).append(System.lineSeparator());
         sb.append("public class CommonPage extends Page {").append(System.lineSeparator());
         sb.append(System.lineSeparator());
         sb.append("    static Logger log;").append(System.lineSeparator());
         sb.append(System.lineSeparator());
-
         sb.append("    /**").append(System.lineSeparator());
         sb.append("     * select2 is javascript librairy.").append(System.lineSeparator());
         sb.append("     */").append(System.lineSeparator());
@@ -401,7 +400,7 @@ public class Application extends AbstractNoraUiCli {
         sb.append(getJavaClassHeaders(noraRobotName)).append(System.lineSeparator());
         sb.append(robotContext.getPackage().toString().replace("utils", "application.steps." + applicationName) + ";").append(System.lineSeparator());
         sb.append(System.lineSeparator());
-        sb.append("import org.slf4j.Logger;").append(System.lineSeparator());
+        sb.append(IMPORT_SLF4J_LOGGER).append(System.lineSeparator());
         sb.append(System.lineSeparator());
         sb.append("import " + robotContext.getCanonicalName().replace("utils", "application.pages." + applicationName).replaceAll(robotContext.getSimpleName(),
                 applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "HomePage;")).append(System.lineSeparator());
@@ -415,7 +414,7 @@ public class Application extends AbstractNoraUiCli {
         sb.append(System.lineSeparator());
         sb.append("import io.cucumber.java.en.Then;").append(System.lineSeparator());
         sb.append(System.lineSeparator());
-        sb.append("@Loggable").append(System.lineSeparator());
+        sb.append(NORAUI_LOGGABLE_ANNOTATION).append(System.lineSeparator());
         sb.append("public class " + applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "HomeSteps extends Step {").append(System.lineSeparator());
         sb.append(System.lineSeparator());
         sb.append("    static Logger log;").append(System.lineSeparator());
@@ -465,7 +464,7 @@ public class Application extends AbstractNoraUiCli {
         sb.append(getJavaClassHeaders(noraRobotName)).append(System.lineSeparator());
         sb.append(robotContext.getPackage().toString().replace("utils", "application.steps." + applicationName) + ";").append(System.lineSeparator());
         sb.append(System.lineSeparator());
-        sb.append("import org.slf4j.Logger;").append(System.lineSeparator());
+        sb.append(IMPORT_SLF4J_LOGGER).append(System.lineSeparator());
         sb.append(System.lineSeparator());
         sb.append("import " + robotContext.getCanonicalName().replace("utils", "application.pages." + applicationName).replaceAll(robotContext.getSimpleName(),
                 applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "Page;")).append(System.lineSeparator());
@@ -479,7 +478,7 @@ public class Application extends AbstractNoraUiCli {
         sb.append(System.lineSeparator());
         sb.append("import io.cucumber.java.en.Then;").append(System.lineSeparator());
         sb.append(System.lineSeparator());
-        sb.append("@Loggable").append(System.lineSeparator());
+        sb.append(NORAUI_LOGGABLE_ANNOTATION).append(System.lineSeparator());
         sb.append("public class " + applicationName.toUpperCase().charAt(0) + applicationName.substring(1) + "Steps extends Step {").append(System.lineSeparator());
         sb.append(System.lineSeparator());
         sb.append("    static Logger log;").append(System.lineSeparator());
@@ -528,7 +527,7 @@ public class Application extends AbstractNoraUiCli {
         sb.append(getJavaClassHeaders(noraRobotName)).append(System.lineSeparator());
         sb.append(robotContext.getPackage().toString().replace("utils", "application.steps." + applicationName) + ";").append(System.lineSeparator());
         sb.append(System.lineSeparator());
-        sb.append("import org.slf4j.Logger;").append(System.lineSeparator());
+        sb.append(IMPORT_SLF4J_LOGGER).append(System.lineSeparator());
         sb.append(System.lineSeparator());
         sb.append("import " + robotContext.getCanonicalName().replace("utils", "application.pages." + applicationName).replaceAll(robotContext.getSimpleName(), "CommonPage;"))
                 .append(System.lineSeparator());
@@ -544,7 +543,7 @@ public class Application extends AbstractNoraUiCli {
         sb.append(System.lineSeparator());
         sb.append("import io.cucumber.java.en.Then;").append(System.lineSeparator());
         sb.append(System.lineSeparator());
-        sb.append("@Loggable").append(System.lineSeparator());
+        sb.append(NORAUI_LOGGABLE_ANNOTATION).append(System.lineSeparator());
         sb.append("public class CommonSteps extends Step {").append(System.lineSeparator());
         sb.append(System.lineSeparator());
         sb.append("     static Logger log;").append(System.lineSeparator());

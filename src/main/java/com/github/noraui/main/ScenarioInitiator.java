@@ -65,11 +65,13 @@ public class ScenarioInitiator {
         } else {
             log.warn(Messages.getMessage(SCENARIO_INITIATOR_USAGE));
             final String cucumberOptions = System.getProperty("cucumber.options");
+            log.info("cucumberOptions: {}", cucumberOptions);
             if (cucumberOptions != null && cucumberOptions.contains("--tags")) {
                 final Matcher matcher = Pattern.compile(".*--tags '(.*)'.*").matcher(cucumberOptions);
                 if (matcher.find() && matcher.groupCount() > 0) {
                     final String tags = matcher.group(1).replace("not ", "").replace(")", "").replace("(", "").replace(" and ", " ").replace(" or ", " ");
                     for (final String scenarioName : getScenarios(tags.split(" "))) {
+                        log.info("# {}", scenarioName);
                         processInjection(scenarioName);
                     }
                 }
