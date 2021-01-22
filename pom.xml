@@ -625,9 +625,9 @@
                           </goals>
                           <configuration>
                             <unpack>true</unpack>
-                            <url>https://chromedriver.storage.googleapis.com/86.0.4240.22/chromedriver_win32.zip</url>
+                            <url>https://chromedriver.storage.googleapis.com/88.0.4324.96/chromedriver_win32.zip</url>
                             <outputDirectory>src/test/resources/drivers/windows/googlechrome/64bit/</outputDirectory>
-                            <md5>bfbb2a4b657284571b390002086b5eb3</md5>
+                            <md5>9f5e7741994b46b1acca15d779cfe7ad</md5>
                           </configuration>
                         </execution>
                         <execution>
@@ -638,9 +638,9 @@
                           </goals>
                           <configuration>
                             <unpack>true</unpack>
-                            <url>https://chromedriver.storage.googleapis.com/86.0.4240.22/chromedriver_linux64.zip</url>
+                            <url>https://chromedriver.storage.googleapis.com/88.0.4324.96/chromedriver_linux64.zip</url>
                             <outputDirectory>src/test/resources/drivers/linux/googlechrome/64bit/</outputDirectory>
-                            <md5>0b080bc38261fe200602d8c525931ea7</md5>
+                            <md5>40537b052b77c418f05abc1428ecc3c3</md5>
                           </configuration>
                         </execution>
                         <execution>
@@ -651,9 +651,9 @@
                           </goals>
                           <configuration>
                             <unpack>true</unpack>
-                            <url>https://chromedriver.storage.googleapis.com/86.0.4240.22/chromedriver_mac64.zip</url>
+                            <url>https://chromedriver.storage.googleapis.com/88.0.4324.96/chromedriver_mac64.zip</url>
                             <outputDirectory>src/test/resources/drivers/mac/googlechrome/64bit/</outputDirectory>
-                            <md5>f9ed96fe96d5a23979f3ae9648643047</md5>
+                            <md5>b91266f2468907e6c3e58220182cf19f</md5>
                           </configuration>
                         </execution>
                         <execution>
