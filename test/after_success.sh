@@ -1,7 +1,7 @@
 #!/bin/bash
 
 curl -Lo travis_after_all.py https://raw.github.com/dmakhno/travis_after_all/master/travis_after_all.py
-python travis_after_all.py https://api.travis-ci.org
+python travis_after_all.py https://api.travis-ci.com
 export $(cat .to_export_back)
 
 echo "TRAVIS_REPO_SLUG is $TRAVIS_REPO_SLUG"
