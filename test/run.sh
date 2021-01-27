@@ -61,6 +61,7 @@ echo "******** noraui-datas-webservices STOPED"
 # read Maven console
 echo "******** Travis logs avalable here: https://api.travis-ci.com/v3/job/${TRAVIS_JOB_ID}/log.txt?deansi=true"
 curl -s "https://api.travis-ci.com/v3/job/${TRAVIS_JOB_ID}/log.txt?deansi=true" > nonaui.log
+sleep 15
 
 # check if BUILD FAILURE finded in logs
 nb_failure=$(sed -n ":;s/BUILD FAILURE//p;t" nonaui.log | sed -n '$=')
