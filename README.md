@@ -8,7 +8,7 @@ Non-Regression Automation for User Interfaces
 
 [Public website for NoraUi (Non-Regression Automation for User Interfaces)](https://noraui.github.io/).
 
-[![Javadocs](https://img.shields.io/badge/javadoc-4.3.0-brightgreen.svg)](https://noraui.github.io/NoraUi)
+[![Javadocs](https://img.shields.io/badge/javadoc-4.5.0-brightgreen.svg)](https://noraui.github.io/NoraUi)
 
 [Migration guide](https://noraui.github.io/migrate.md).
 /!\ IMPORTANT migration 4.1.x to 4.2.x !!!
