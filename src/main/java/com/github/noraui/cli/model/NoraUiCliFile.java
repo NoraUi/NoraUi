@@ -118,9 +118,9 @@ public class NoraUiCliFile {
             if (applicationName.equals(e.getName())) {
                 List<NoraUiModel> models = e.getModels();
                 for (int j = 0; j < models.size(); j++) {
-                    NoraUiModel m = models.get(i);
+                    NoraUiModel m = models.get(j);
                     if (m.getName().equals(modelName)) {
-                        models.remove(i);
+                        models.remove(j);
                         break;
                     }
                 }
