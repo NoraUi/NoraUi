@@ -225,7 +225,7 @@ public class DriverFactory {
             }
         } else {
             final String withWhitelistedIps = Context.getWebdriversProperties(WITH_WHITE_LISTED_IPS);
-            if (withWhitelistedIps != null && !"".equals(withWhitelistedIps)) {
+            if (withWhitelistedIps != null) {
                 final ChromeDriverService service = new ChromeDriverService.Builder().withWhitelistedIps(withWhitelistedIps).withVerbose(false).build();
                 return new ChromeDriver(service, chromeOptions);
             } else {
