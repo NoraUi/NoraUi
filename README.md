@@ -37,7 +37,7 @@ These are the currently supported languages
 Does NoraUi not support your language? Please help us with a [PR](https://github.com/NoraUi/NoraUi/pulls)!
 
 # Continuous Integration status
-[![Build Status](https://travis-ci.com/NoraUi/NoraUi.svg?branch=master)](https://travis-ci.com/NoraUi/NoraUi)
+[![Build Status](https://travis-ci.com/NoraUi/NoraUi.svg?branch=master)](https://app.travis-ci.com/github/NoraUi/NoraUi)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FNoraUi%2FNoraUi.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FNoraUi%2FNoraUi?ref=badge_shield)
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=com.github.noraui%3Anoraui&metric=alert_status)](https://sonarcloud.io/dashboard/index/com.github.noraui:noraui)
 [![SonarCloud Coverage](https://sonarcloud.io/api/project_badges/measure?project=com.github.noraui%3Anoraui&metric=coverage)](https://sonarcloud.io/component_measures/metric/coverage/list?id=com.github.noraui:noraui)
