@@ -625,9 +625,9 @@
                           </goals>
                           <configuration>
                             <unpack>true</unpack>
-                            <url>https://chromedriver.storage.googleapis.com/99.0.4844.51/chromedriver_win32.zip</url>
+                            <url>https://chromedriver.storage.googleapis.com/101.0.4951.41/chromedriver_win32.zip</url>
                             <outputDirectory>src/test/resources/drivers/windows/googlechrome/64bit/</outputDirectory>
-                            <md5>c42faa8f2d89fe5d3f3ba20658787144</md5>
+                            <md5>594669544f54e61c3762252d1a85f3d8</md5>
                           </configuration>
                         </execution>
                         <execution>
@@ -638,9 +638,9 @@
                           </goals>
                           <configuration>
                             <unpack>true</unpack>
-                            <url>https://chromedriver.storage.googleapis.com/99.0.4844.51/chromedriver_linux64.zip</url>
+                            <url>https://chromedriver.storage.googleapis.com/101.0.4951.41/chromedriver_linux64.zip</url>
                             <outputDirectory>src/test/resources/drivers/linux/googlechrome/64bit/</outputDirectory>
-                            <md5>59450a2dc9281e3f54bce151ee702283</md5>
+                            <md5>57fc88db21f5d009cdf526480378cbf9</md5>
                           </configuration>
                         </execution>
                         <execution>
@@ -651,9 +651,9 @@
                           </goals>
                           <configuration>
                             <unpack>true</unpack>
-                            <url>https://chromedriver.storage.googleapis.com/99.0.4844.51/chromedriver_mac64.zip</url>
+                            <url>https://chromedriver.storage.googleapis.com/101.0.4951.41/chromedriver_mac64.zip</url>
                             <outputDirectory>src/test/resources/drivers/mac/googlechrome/64bit/</outputDirectory>
-                            <md5>5bc84c9fbf3242117788b35595aa9082</md5>
+                            <md5>1589eb6b65c5a6848d44dd43c88f1e73</md5>
                           </configuration>
                         </execution>
                         <execution>
