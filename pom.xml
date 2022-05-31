@@ -51,6 +51,10 @@
 		<ciToolResourcesPath>src/test/resources</ciToolResourcesPath>
 		<crypto.key>@TOSPECIFY</crypto.key>
 		<scenario.name>@TOSPECIFY</scenario.name>
+        <chrome.version>102.0.5005.61</chrome.version>
+        <chromedriver.md5.linux64>29452b3ec1afadc764820f8894fd81ea</chromedriver.md5.linux64>
+        <chromedriver.md5.mac64>17c3e75d98e7787e5715e10f845c9d09</chromedriver.md5.mac64>
+        <chromedriver.md5.win32>21c5d8c3dd0a59d9c71148dfbdeea380</chromedriver.md5.win32>
 		<cucumber.version>4.7.1</cucumber.version>
 		<selenium.version>3.141.59</selenium.version>
 		<junit.version>5.5.1</junit.version>
@@ -625,9 +629,9 @@
                           </goals>
                           <configuration>
                             <unpack>true</unpack>
-                            <url>https://chromedriver.storage.googleapis.com/101.0.4951.41/chromedriver_win32.zip</url>
+                            <url>https://chromedriver.storage.googleapis.com/${chrome.version}/chromedriver_win32.zip</url>
                             <outputDirectory>src/test/resources/drivers/windows/googlechrome/64bit/</outputDirectory>
-                            <md5>594669544f54e61c3762252d1a85f3d8</md5>
+                            <md5>${chromedriver.md5.win32}</md5>
                           </configuration>
                         </execution>
                         <execution>
@@ -638,9 +642,9 @@
                           </goals>
                           <configuration>
                             <unpack>true</unpack>
-                            <url>https://chromedriver.storage.googleapis.com/101.0.4951.41/chromedriver_linux64.zip</url>
+                            <url>https://chromedriver.storage.googleapis.com/${chrome.version}/chromedriver_linux64.zip</url>
                             <outputDirectory>src/test/resources/drivers/linux/googlechrome/64bit/</outputDirectory>
-                            <md5>57fc88db21f5d009cdf526480378cbf9</md5>
+                            <md5>${chromedriver.md5.linux64}</md5>
                           </configuration>
                         </execution>
                         <execution>
@@ -651,9 +655,9 @@
                           </goals>
                           <configuration>
                             <unpack>true</unpack>
-                            <url>https://chromedriver.storage.googleapis.com/101.0.4951.41/chromedriver_mac64.zip</url>
+                            <url>https://chromedriver.storage.googleapis.com/${chrome.version}/chromedriver_mac64.zip</url>
                             <outputDirectory>src/test/resources/drivers/mac/googlechrome/64bit/</outputDirectory>
-                            <md5>1589eb6b65c5a6848d44dd43c88f1e73</md5>
+                            <md5>${chromedriver.md5.mac64}</md5>
                           </configuration>
                         </execution>
                         <execution>
