@@ -225,7 +225,7 @@ public class DriverFactory {
             }
         } else {
             final String withWhitelistedIps = Context.getWebdriversProperties(WITH_WHITE_LISTED_IPS);
-            if (withWhitelistedIps != null && !"".equals(withWhitelistedIps)) {
+            if (withWhitelistedIps != null) {
                 final ChromeDriverService service = new ChromeDriverService.Builder().withWhitelistedIps(withWhitelistedIps).withVerbose(false).build();
                 return new ChromeDriver(service, chromeOptions);
             } else {
@@ -334,14 +334,27 @@ public class DriverFactory {
         final OperatingSystem currentOperatingSystem = OperatingSystem.getCurrentOperatingSystem();
         String format = "";
         if ("webdriver.ie.driver".equals(currentDriver.driverName)) {
-            format = Utilities.setProperty(Context.getWebdriversProperties(currentDriver.driverName), "src/test/resources/drivers/%s/internetexplorer/%s/IEDriverServer%s");
+            return Utilities.setProperty(Context.getWebdriversProperties(currentDriver.driverName), "src/test/resources/drivers/internetexplorer/IEDriverServer");
         } else if ("webdriver.chrome.driver".equals(currentDriver.driverName)) {
-            format = Utilities.setProperty(Context.getWebdriversProperties(currentDriver.driverName), "src/test/resources/drivers/%s/googlechrome/%s/chromedriver%s");
+            format = Utilities.setProperty(Context.getWebdriversProperties(currentDriver.driverName), "src/test/resources/drivers/chromedriver-%s");
+            String bin = "linux64";
+            switch (currentOperatingSystem.getOperatingSystemDir()) {
+                case "windows":
+                    bin = "win32";
+                    break;
+                case "mac":
+                    bin = "mac-x64";
+                    break;
+                case "linux":
+                    bin = "linux64";
+                    break;
+            }
+            return String.format(format, bin);
         } else if ("webdriver.gecko.driver".equals(currentDriver.driverName)) {
-            format = Utilities.setProperty(Context.getWebdriversProperties(currentDriver.driverName), "src/test/resources/drivers/%s/firefox/%s/geckodriver%s");
+            return Utilities.setProperty(Context.getWebdriversProperties(currentDriver.driverName), "src/test/resources/drivers/firefox/geckodriver");
+        } else {
+            return "";
         }
-        return String.format(format, currentOperatingSystem.getOperatingSystemDir(), SystemArchitecture.getCurrentSystemArchitecture().getSystemArchitectureName(),
-                currentOperatingSystem.getSuffixBinary());
     }
 
     /**
@@ -349,6 +362,7 @@ public class DriverFactory {
      */
     public enum Driver {
         IE("webdriver.ie.driver"), CHROME("webdriver.chrome.driver"), FIREFOX("webdriver.gecko.driver");
+
         private String driverName;
 
         Driver(String driverName) {

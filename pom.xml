@@ -135,7 +135,7 @@
 			<groupId>io.cucumber</groupId>
 			<artifactId>cucumber-guice</artifactId>
 			<version>${cucumber.version}</version>
-    </dependency>
+		</dependency>
 
 		<!-- Google guice -->
 		<dependency>
@@ -167,12 +167,12 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<dependency>
-	        <groupId>net.lightbody.bmp</groupId>
-	        <artifactId>browsermob-core</artifactId>
-	        <version>2.1.5</version>
-	    </dependency>
+			<groupId>net.lightbody.bmp</groupId>
+			<artifactId>browsermob-core</artifactId>
+			<version>2.1.5</version>
+		</dependency>
 
 		<!-- Gson -->
 		<dependency>
@@ -270,7 +270,7 @@
 		</dependency>
 
 		<!-- powermock & mockito -->
-        <dependency>
+		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
 			<version>${mockito.version}</version>
@@ -390,11 +390,11 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<dependency>
-		    <groupId>org.javatuples</groupId>
-		    <artifactId>javatuples</artifactId>
-		    <version>${javatuples.version}</version>
+			<groupId>org.javatuples</groupId>
+			<artifactId>javatuples</artifactId>
+			<version>${javatuples.version}</version>
 		</dependency>
 
 		<!-- system-rules for JUnit -->
@@ -448,7 +448,7 @@
 							<goal>jar</goal>
 						</goals>
 						<configuration>
-                            <source>8</source>
+							<source>8</source>
 							<doclint>none</doclint>
 						</configuration>
 					</execution>
@@ -598,7 +598,7 @@
 						<artifactId>maven-javadoc-plugin</artifactId>
 						<version>${maven-javadoc-plugin.version}</version>
 						<configuration>
-                            <source>8</source>
+							<source>8</source>
 							<doclint>none</doclint>
 							<aggregate>true</aggregate>
 							<stylesheetfile>${basedir}/src/test/resources/dev/stylesheet.css</stylesheetfile>
@@ -607,73 +607,73 @@
 				</plugins>
 			</build>
 		</profile>
-		
+
 		<profile>
-            <id>drivers</id>
-            <build>
-                <plugins>
-                    <plugin>
-                      <groupId>com.googlecode.maven-download-plugin</groupId>
-                      <artifactId>download-maven-plugin</artifactId>
-                      <version>${download-maven-plugin.version}</version>
-                      <executions>
-                        <execution>
-                          <id>download-googlechrome-webdriver4win</id>
-                          <phase>compile</phase>
-                          <goals>
-                            <goal>wget</goal>
-                          </goals>
-                          <configuration>
-                            <unpack>true</unpack>
-                            <url>https://chromedriver.storage.googleapis.com/90.0.4430.24/chromedriver_win32.zip</url>
-                            <outputDirectory>src/test/resources/drivers/windows/googlechrome/64bit/</outputDirectory>
-                            <md5>eeb5e37fc4d4b21337a46576137a2053</md5>
-                          </configuration>
-                        </execution>
-                        <execution>
-                          <id>download-googlechrome-webdriver4linux</id>
-                          <phase>compile</phase>
-                          <goals>
-                            <goal>wget</goal>
-                          </goals>
-                          <configuration>
-                            <unpack>true</unpack>
-                            <url>https://chromedriver.storage.googleapis.com/90.0.4430.24/chromedriver_linux64.zip</url>
-                            <outputDirectory>src/test/resources/drivers/linux/googlechrome/64bit/</outputDirectory>
-                            <md5>ff32297377308392f3e5b44cf282f77a</md5>
-                          </configuration>
-                        </execution>
-                        <execution>
-                          <id>download-googlechrome-webdriver4mac</id>
-                          <phase>compile</phase>
-                          <goals>
-                            <goal>wget</goal>
-                          </goals>
-                          <configuration>
-                            <unpack>true</unpack>
-                            <url>https://chromedriver.storage.googleapis.com/90.0.4430.24/chromedriver_mac64.zip</url>
-                            <outputDirectory>src/test/resources/drivers/mac/googlechrome/64bit/</outputDirectory>
-                            <md5>01378f44ca91150771859e254809fb66</md5>
-                          </configuration>
-                        </execution>
-                        <execution>
-                                <id>download-geckodriver-webdriver4win</id>
-                            <phase>compile</phase>
-                            <goals>
-                                <goal>wget</goal>
-                            </goals>
-                            <configuration>
-                                <unpack>true</unpack>
-                                <url>https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-win64.zip</url>
-                                <outputDirectory>src/test/resources/drivers/windows/firefox/64bit/</outputDirectory>
-                                <md5>1d70a4fad9997d1d912a8b7dd1e89bda</md5>
-                            </configuration>
-                        </execution>
-                      </executions>
-                  </plugin>
-                </plugins>
-            </build>
-        </profile>
+			<id>drivers</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.googlecode.maven-download-plugin</groupId>
+						<artifactId>download-maven-plugin</artifactId>
+						<version>${download-maven-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>download-googlechrome-webdriver4win</id>
+								<phase>compile</phase>
+								<goals>
+									<goal>wget</goal>
+								</goals>
+								<configuration>
+									<unpack>true</unpack>
+									<url>https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/119.0.6045.105/win32/chromedriver-win32.zip</url>
+									<outputDirectory>src/test/resources/drivers/</outputDirectory>
+									<md5>3ee05ac7812cd3252a486341a23ea6dc</md5>
+								</configuration>
+							</execution>
+							<execution>
+								<id>download-googlechrome-webdriver4linux</id>
+								<phase>compile</phase>
+								<goals>
+									<goal>wget</goal>
+								</goals>
+								<configuration>
+									<unpack>true</unpack>
+									<url>https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/119.0.6045.105/linux64/chromedriver-linux64.zip</url>
+									<outputDirectory>src/test/resources/drivers/</outputDirectory>
+									<md5>85ec71ca03948612b1d2ce7c49ab2b21</md5>
+								</configuration>
+							</execution>
+							<execution>
+								<id>download-googlechrome-webdriver4mac</id>
+								<phase>compile</phase>
+								<goals>
+									<goal>wget</goal>
+								</goals>
+								<configuration>
+									<unpack>true</unpack>
+									<url>https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/119.0.6045.105/mac-x64/chromedriver-mac-x64.zip</url>
+									<outputDirectory>src/test/resources/drivers/</outputDirectory>
+									<md5>d8d8a29c011ddb8f9cfd89e273c48e19</md5>
+								</configuration>
+							</execution>
+							<execution>
+								<id>download-geckodriver-webdriver4win</id>
+								<phase>compile</phase>
+								<goals>
+									<goal>wget</goal>
+								</goals>
+								<configuration>
+									<unpack>true</unpack>
+									<url>https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-win64.zip</url>
+									<outputDirectory>src/test/resources/drivers/windows/firefox/64bit/</outputDirectory>
+									<md5>1d70a4fad9997d1d912a8b7dd1e89bda</md5>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 
 		<!-- preIC -->
 		<profile>
