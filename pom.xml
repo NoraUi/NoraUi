@@ -51,6 +51,10 @@
 		<ciToolResourcesPath>src/test/resources</ciToolResourcesPath>
 		<crypto.key>@TOSPECIFY</crypto.key>
 		<scenario.name>@TOSPECIFY</scenario.name>
+        <chrome.version>119.0.6045.105</chrome.version>
+        <chromedriver.md5.linux64>85ec71ca03948612b1d2ce7c49ab2b21</chromedriver.md5.linux64>
+        <chromedriver.md5.mac64>d8d8a29c011ddb8f9cfd89e273c48e19</chromedriver.md5.mac64>
+        <chromedriver.md5.win32>3ee05ac7812cd3252a486341a23ea6dc</chromedriver.md5.win32>
 		<cucumber.version>4.7.1</cucumber.version>
 		<selenium.version>3.141.59</selenium.version>
 		<junit.version>5.5.1</junit.version>
@@ -76,12 +80,12 @@
 		<javassist.version>3.22.0-CR2</javassist.version>
 		<reflections.version>0.9.11</reflections.version>
 		<guava.version>29.0-jre</guava.version>
-		<commons-io.version>2.6</commons-io.version>
+		<commons-io.version>2.7</commons-io.version>
 		<gson.version>2.8.4</gson.version>
 		<json-path.version>2.4.0</json-path.version>
 		<error_prone_annotations.version>2.1.1</error_prone_annotations.version>
 		<j2objc-annotations.version>1.3</j2objc-annotations.version>
-		<logback.version>1.2.3</logback.version>
+		<logback.version>1.2.9</logback.version>
 		<slf4j.version>1.7.30</slf4j.version>
 		<javatuples.version>1.2</javatuples.version>
 		<maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
@@ -625,7 +629,7 @@
 								</goals>
 								<configuration>
 									<unpack>true</unpack>
-									<url>https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/119.0.6045.105/win32/chromedriver-win32.zip</url>
+									<url>https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/${chrome.version}/win32/chromedriver-win32.zip</url>
 									<outputDirectory>src/test/resources/drivers/</outputDirectory>
 									<md5>3ee05ac7812cd3252a486341a23ea6dc</md5>
 								</configuration>
@@ -638,7 +642,7 @@
 								</goals>
 								<configuration>
 									<unpack>true</unpack>
-									<url>https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/119.0.6045.105/linux64/chromedriver-linux64.zip</url>
+									<url>https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/${chrome.version}/linux64/chromedriver-linux64.zip</url>
 									<outputDirectory>src/test/resources/drivers/</outputDirectory>
 									<md5>85ec71ca03948612b1d2ce7c49ab2b21</md5>
 								</configuration>
@@ -651,7 +655,7 @@
 								</goals>
 								<configuration>
 									<unpack>true</unpack>
-									<url>https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/119.0.6045.105/mac-x64/chromedriver-mac-x64.zip</url>
+									<url>https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/${chrome.version}/mac-x64/chromedriver-mac-x64.zip</url>
 									<outputDirectory>src/test/resources/drivers/</outputDirectory>
 									<md5>d8d8a29c011ddb8f9cfd89e273c48e19</md5>
 								</configuration>
@@ -674,7 +678,6 @@
 				</plugins>
 			</build>
 		</profile>
-
 		<!-- preIC -->
 		<profile>
 			<id>preIC</id>
