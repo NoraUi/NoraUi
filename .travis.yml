@@ -34,6 +34,7 @@ before_script:
 - mysql -e 'CREATE DATABASE noraui;'
 - mysql --user=travis noraui < config/noraui-db.sql > output.tab
 - export AUTHOR_NAME="$(git log -1 $TRAVIS_COMMIT --pretty="%cN")"
+- sudo apt-get install libnss3-dev
 
 script:
 - test/run.sh
