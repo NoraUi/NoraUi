@@ -340,13 +340,13 @@ public class DriverFactory {
             String bin = "linux64";
             switch (currentOperatingSystem.getOperatingSystemDir()) {
                 case "windows":
-                    bin = "win32";
+                    bin = "win32/chromedriver.exe";
                     break;
                 case "mac":
-                    bin = "mac-x64";
+                    bin = "mac-x64/chromedriver";
                     break;
                 case "linux":
-                    bin = "linux64";
+                    bin = "linux64/chromedriver";
                     break;
             }
             return String.format(format, bin);
