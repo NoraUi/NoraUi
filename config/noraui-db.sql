@@ -20,7 +20,7 @@ INSERT INTO hello VALUES (8, 'Jenkins T8', '', 'Rennes', 'smile', 'smile', '', '
 CREATE TABLE loginLogout (
     id int primary key not null,
     `user` text,
-    password text,
+    `password` text,
     profile text
 );
 INSERT INTO loginLogout VALUES (1, 'sgrillon', '℗:qmTAYKS9UG87rNuUQ0Ao6Q==', 'admin');
