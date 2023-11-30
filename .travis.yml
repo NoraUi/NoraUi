@@ -6,12 +6,13 @@ install: true
 services:
 - postgresql
 - mysql
-- xvfb
+- xvfb  
 
 addons:
   apt:
     packages:
       - dpkg
+      - xvfb
   postgresql: "9.4"
   sonarcloud:
     organization: "noraui"
