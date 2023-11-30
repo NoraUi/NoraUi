@@ -6,6 +6,7 @@ install: true
 services:
 - postgresql
 - mysql
+- xvfb
 
 addons:
   apt:
