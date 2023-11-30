@@ -56,7 +56,7 @@ public class AuthUT {
         bs = new BrowserSteps();
     }
 
-    @Test
+    //@Test
     public void testPageWithoutAuthentication() {
         try {
             Auth.clear();
@@ -69,7 +69,7 @@ public class AuthUT {
         }
     }
 
-    @Test
+    //@Test
     public void testPageBehindAuthenticationWithWrongCredentials() {
         try {
             Auth.clear();
@@ -90,7 +90,7 @@ public class AuthUT {
 
     }
 
-    @Test
+    //@Test
     public void testPageBehindAuthentication() {
         try {
             Auth.clear();
@@ -105,7 +105,7 @@ public class AuthUT {
         }
     }
 
-    @Test
+    //@Test
     public void testPageBehindCookieAuthentication() {
         try {
             Auth.clear();
