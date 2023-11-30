@@ -34,8 +34,7 @@ before_script:
 - export AUTHOR_NAME="$(git log -1 $TRAVIS_COMMIT --pretty="%cN")"
 
 script:
-- xvfb-run make test
-- test/run.sh
+- xvfb-run test/run.sh
 
 after_success:
 - test/after_success.sh
