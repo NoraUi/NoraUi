@@ -1,6 +1,6 @@
 language: java
 sudo: required
-dist: trusty
+dist: xenial
 install: true
 
 services:
@@ -9,7 +9,6 @@ services:
 
 addons:
   apt:
-    update: true
     packages:
       - dpkg
   postgresql: "9.4"
@@ -35,7 +34,6 @@ before_script:
 - mysql -e 'CREATE DATABASE noraui;'
 - mysql --user=travis noraui < config/noraui-db.sql > output.tab
 - export AUTHOR_NAME="$(git log -1 $TRAVIS_COMMIT --pretty="%cN")"
-- sudo apt-get install libnss3-dev libgdk-pixbuf2.0-dev libgtk-3-dev libxss-dev
 
 script:
 - test/run.sh
