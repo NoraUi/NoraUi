@@ -29,7 +29,7 @@ before_script:
 - chmod +x test/after_success.sh
 - psql -c 'create database noraui owner travis;' -U postgres
 - psql -U travis -d noraui -a -f config/noraui-db.sql
-- mysql -e 'CREATE DATABASE noraui;'
+- mysql -e 'CREATE DATABASE noraui DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;'
 - mysql --user=travis noraui < config/noraui-db.sql > output.tab
 - export AUTHOR_NAME="$(git log -1 $TRAVIS_COMMIT --pretty="%cN")"
 
