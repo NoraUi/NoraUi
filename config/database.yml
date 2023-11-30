@@ -2,8 +2,10 @@ mysql:
   adapter: mysql2
   username: travis
   database: noraui
+  encoding: utf8
 
 postgresql:
   adapter: postgresql
   username: travis
   database: noraui
+  encoding: utf8
