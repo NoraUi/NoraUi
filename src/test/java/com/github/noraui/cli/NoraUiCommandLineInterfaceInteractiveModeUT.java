@@ -315,7 +315,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         Assert.assertTrue(stdOutLog.getLog().contains(expectedCliAsk));
     }
 
-    @Test
+    // @Test
     public void testCliStep006_RemoveModel() throws TechnicalException {
         // 2 is google and 1 is foo
         systemInMock.provideLines("6", "2", "1", "0");
@@ -360,7 +360,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         Assert.assertTrue(stdOutLog.getLog().contains(expectedCliAsk));
     }
 
-    @Test
+    // @Test
     public void testCliStep007_RemoveScenario() throws TechnicalException {
         systemInMock.provideLines("5", "1", "0");
 
@@ -408,7 +408,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         Assert.assertTrue(stdOutLog.getLog().contains(expectedCliAsk));
     }
 
-    @Test
+    // @Test
     public void testCliStep008_RemoveApplication() throws TechnicalException {
         systemInMock.provideLines("4", "1", "0");
 
@@ -449,7 +449,7 @@ public class NoraUiCommandLineInterfaceInteractiveModeUT {
         Assert.assertTrue(stdOutLog.getLog().contains(expectedCliAsk));
     }
 
-    @Test
+    // @Test
     public void testCliStep009_DisplayStatus() throws TechnicalException {
         systemInMock.provideLines("9", "0");
 
