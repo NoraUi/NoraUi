@@ -194,7 +194,7 @@ Feature: hello (Function to validate the environment.)
   Examples:
     #DATA
     |id|author|zip|city|element|element2|date|title|
-    |1|Jenkins T1|35000|Rennes|smile|smile|16/01/2050||
+    |1|Jenkins T1|35000|Rennes|smile|smile|2050-01-16||
     |2|Jenkins T2|75000|Paris|smile|smile|||
     |3|Jenkins T3|56100|Lorient|smile|smile|||
     |4|Jenkins T4|35000|Rennes|smile|smile|||

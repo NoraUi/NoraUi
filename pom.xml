@@ -884,9 +884,6 @@
 							<systemPropertyVariables>
 								<resourcespath>${ciToolResourcesPath}</resourcespath>
 								<cucumber.options>${cucumber.options}</cucumber.options>
-								<webdriver.ie.driver>src/test/resources/drivers/%s/internetexplorer/%s/IEDriverServer%s</webdriver.ie.driver>
-								<webdriver.chrome.driver>src/test/resources/drivers/%s/googlechrome/%s/chromedriver%s</webdriver.chrome.driver>
-								<webdriver.gecko.driver>src/test/resources/drivers/%s/firefox/%s/geckodriver%s</webdriver.gecko.driver>
 								<SpeedRegulator.annotation.enable>false</SpeedRegulator.annotation.enable>
 								<SpeedRegulators.annotation.enable>false</SpeedRegulators.annotation.enable>
 								<Time.annotation.enable>false</Time.annotation.enable>

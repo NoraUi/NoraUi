@@ -43,7 +43,6 @@ import com.github.noraui.utils.Context;
 import com.github.noraui.utils.Messages;
 import com.github.noraui.utils.Utilities;
 import com.github.noraui.utils.Utilities.OperatingSystem;
-import com.github.noraui.utils.Utilities.SystemArchitecture;
 
 @Loggable
 public class DriverFactory {
@@ -337,7 +336,8 @@ public class DriverFactory {
             return Utilities.setProperty(Context.getWebdriversProperties(currentDriver.driverName), "src/test/resources/drivers/internetexplorer/IEDriverServer");
         } else if ("webdriver.chrome.driver".equals(currentDriver.driverName)) {
             format = Utilities.setProperty(Context.getWebdriversProperties(currentDriver.driverName), "src/test/resources/drivers/chromedriver-%s");
-            String bin = "linux64";
+            String bin = "";
+            log.info("Operating System: {}", currentOperatingSystem.getOperatingSystemDir());
             switch (currentOperatingSystem.getOperatingSystemDir()) {
                 case "windows":
                     bin = "win32/chromedriver.exe";
@@ -349,7 +349,9 @@ public class DriverFactory {
                     bin = "linux64/chromedriver";
                     break;
             }
-            return String.format(format, bin);
+            String binaryPath = String.format(format, bin);
+            log.info("chrome binary path: {}", binaryPath);
+            return binaryPath;
         } else if ("webdriver.gecko.driver".equals(currentDriver.driverName)) {
             return Utilities.setProperty(Context.getWebdriversProperties(currentDriver.driverName), "src/test/resources/drivers/firefox/geckodriver");
         } else {
