@@ -188,8 +188,8 @@ public class DriverFactory {
         }
         String lang = Context.getLang();
         if (lang != null && !"".equals(lang)) {
-            log.info("Chrome Options --lang={}", lang);
-            chromeOptions.addArguments("--lang=" + lang);
+            log.info("Chrome Options --accept-lang={}", lang);
+            chromeOptions.addArguments("--accept-lang=" + lang);
         }
 
         // Proxy configuration
