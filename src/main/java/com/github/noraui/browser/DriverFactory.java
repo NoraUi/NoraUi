@@ -180,12 +180,15 @@ public class DriverFactory {
 
         setLoggingLevel(chromeOptions);
         chromeOptions.addArguments("--ignore-certificate-errors");
+        log.info("Chrome Options --ignore-certificate-errors}");
 
         if (Context.isHeadless()) {
+            log.info("Chrome Options --headless}");
             chromeOptions.addArguments("--headless");
         }
         String lang = Context.getLang();
         if (lang != null && !"".equals(lang)) {
+            log.info("Chrome Options --lang={}", lang);
             chromeOptions.addArguments("--lang=" + lang);
         }
 
