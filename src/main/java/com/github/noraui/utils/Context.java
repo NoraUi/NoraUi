@@ -111,6 +111,7 @@ public class Context {
     public static final String DISPLAY_STACK_TRACE = "display.stacktrace";
     public static final String TIMEOUT_KEY = "timeout";
     public static final String BROWSER_KEY = "browser";
+    public static final String LANG_KEY = "lang";
     public static final String MODEL_PACKAGES = "model.packages";
     public static final String SELECTORS_VERSION = "selectors.version";
 
@@ -208,6 +209,11 @@ public class Context {
      * browser: chrome, firefox or ie.
      */
     private String browser;
+    
+    /**
+     * lang: eu, fr ...
+     */
+    private String lang;
 
     /**
      * Maximum timeout
@@ -369,7 +375,8 @@ public class Context {
         log.info("Context > initializeRobot() with {}", clazz.getCanonicalName());
         // set browser: chrome,firefox or ie
         browser = getProperty(BROWSER_KEY, applicationProperties);
-
+        lang = getProperty(LANG_KEY, applicationProperties);
+        
         // set Webdriver file: src/test/resources/drivers/...
         initializeWebdriversProperties(Thread.currentThread().getContextClassLoader());
 
@@ -736,6 +743,10 @@ public class Context {
 
     public static String getBrowser() {
         return getInstance().browser;
+    }
+    
+    public static String getLang() {
+        return getInstance().lang;
     }
 
     public static int getTimeout() {

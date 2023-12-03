@@ -184,6 +184,10 @@ public class DriverFactory {
         if (Context.isHeadless()) {
             chromeOptions.addArguments("--headless");
         }
+        String lang = Context.getLang();
+        if (lang != null && !"".equals(lang)) {
+            chromeOptions.addArguments("--lang=" + lang);
+        }
 
         // Proxy configuration
         if (Context.getProxy().getProxyType() != ProxyType.UNSPECIFIED && Context.getProxy().getProxyType() != ProxyType.AUTODETECT) {
