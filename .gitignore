@@ -5,3 +5,6 @@ target/
 .classpath
 .project
 noraui.iml
+downloadFiles
+.vscode
+src/test/resources/drivers

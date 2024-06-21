@@ -51,7 +51,7 @@
 		<ciToolResourcesPath>src/test/resources</ciToolResourcesPath>
 		<crypto.key>@TOSPECIFY</crypto.key>
 		<scenario.name>@TOSPECIFY</scenario.name>
-        <chrome.version>119.0.6045.105</chrome.version>
+        <chrome.version>126.0.6478.62</chrome.version>
         <chromedriver.md5.linux64>85ec71ca03948612b1d2ce7c49ab2b21</chromedriver.md5.linux64>
         <chromedriver.md5.mac64>d8d8a29c011ddb8f9cfd89e273c48e19</chromedriver.md5.mac64>
         <chromedriver.md5.win32>3ee05ac7812cd3252a486341a23ea6dc</chromedriver.md5.win32>
@@ -518,7 +518,7 @@
 			<dependencies>
 				<!-- database drivers -->
 				<dependency>
-					<groupId>com.oracle.jdbc</groupId>
+					<groupId>com.oracle.database.jdbc</groupId>
 					<artifactId>ojdbc8</artifactId>
 					<version>${oracle.driver.version}</version>
 				</dependency>
@@ -629,9 +629,9 @@
 								</goals>
 								<configuration>
 									<unpack>true</unpack>
-									<url>https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/${chrome.version}/win32/chromedriver-win32.zip</url>
+									<url>https://storage.googleapis.com/chrome-for-testing-public/${chrome.version}/win64/chrome-win64.zip</url>
 									<outputDirectory>src/test/resources/drivers/</outputDirectory>
-									<md5>3ee05ac7812cd3252a486341a23ea6dc</md5>
+									<!-- <md5>3ee05ac7812cd3252a486341a23ea6dc</md5> --> <!-- md5 is not given publicly on this page -->
 								</configuration>
 							</execution>
 							<execution>
@@ -642,9 +642,9 @@
 								</goals>
 								<configuration>
 									<unpack>true</unpack>
-									<url>https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/${chrome.version}/linux64/chromedriver-linux64.zip</url>
+									<url>https://storage.googleapis.com/chrome-for-testing-public/${chrome.version}/linux64/chrome-linux64.zip</url>
 									<outputDirectory>src/test/resources/drivers/</outputDirectory>
-									<md5>85ec71ca03948612b1d2ce7c49ab2b21</md5>
+									<!-- <md5>85ec71ca03948612b1d2ce7c49ab2b21</md5> -->
 								</configuration>
 							</execution>
 							<execution>
@@ -655,9 +655,9 @@
 								</goals>
 								<configuration>
 									<unpack>true</unpack>
-									<url>https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/${chrome.version}/mac-x64/chromedriver-mac-x64.zip</url>
+									<url>https://storage.googleapis.com/chrome-for-testing-public/${chrome.version}/mac-x64/chrome-mac-x64.zip</url>
 									<outputDirectory>src/test/resources/drivers/</outputDirectory>
-									<md5>d8d8a29c011ddb8f9cfd89e273c48e19</md5>
+									<!-- <md5>d8d8a29c011ddb8f9cfd89e273c48e19</md5> -->
 								</configuration>
 							</execution>
 							<execution>
@@ -668,9 +668,9 @@
 								</goals>
 								<configuration>
 									<unpack>true</unpack>
-									<url>https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-win64.zip</url>
+									<url>https://github.com/mozilla/geckodriver/releases/download/v0.34.0/geckodriver-v0.34.0-win64.zip</url>
 									<outputDirectory>src/test/resources/drivers/windows/firefox/64bit/</outputDirectory>
-									<md5>1d70a4fad9997d1d912a8b7dd1e89bda</md5>
+									<!-- <md5>1d70a4fad9997d1d912a8b7dd1e89bda</md5> -->
 								</configuration>
 							</execution>
 						</executions>

@@ -48,6 +48,8 @@ public class BrowserSteps {
     public static final String GO_TO_URL_METHOD_NAME = "goToUrl";
     public static final String RESTART_WEB_DRIVER_METHOD_NAME = "restartWebDriver";
     public static final String RESTART_WEB_DRIVER_AND_SWITCH_TO = "restartWebDriverAndSwitchTo";
+    public static final String CLEAR_WEB_STORAGE = "clearWebStorage";
+    public static final String CLEAR_WEB_STORAGE_AND_RESTART_WEB_DRIVER = "clearWebStorageAndRestartWebDriver";
 
     /**
      * Open new window with conditions.
@@ -365,6 +367,25 @@ public class BrowserSteps {
             log.error("Error when switch Window: handleToSwitch is null");
             new Result.Failure<>(windowKey, Messages.format(Messages.getMessage(Messages.FAIL_MESSAGE_UNABLE_TO_SWITCH_WINDOW), windowKey), true, Context.getCallBack(Callbacks.RESTART_WEB_DRIVER));
         }
+    }
+
+    /**
+     * Clear browser storages (IndexesDB, localStorage, SessionStorage and Cookies)
+     */
+    @Et("J'effacer les stockages du navigateur")
+    @And("I clear browser storage")
+    public void clearWebStorage() {
+       ((JavascriptExecutor) Context.getDriver()).executeScript("window.localStorage.clear();window.sessionStorage.clear();");
+    }
+
+    /**
+     * Clear browser storages and restart WebDriver.
+     */
+    @Et("J'effacer les stockages du navigateur et redémarrer le WebDriver")
+    @And("I clear browser storage and restart WebDriver")
+    public void clearWebStorageAndRestartWebDriver() {
+        clearWebStorage();
+        restartWebDriver();
     }
 
 }
